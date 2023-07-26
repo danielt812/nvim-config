@@ -2,6 +2,7 @@ return {
   "rose-pine/neovim",
   lazy = true, -- make sure we load this during startup if it is your main colorscheme
   -- priority = 1000, -- make sure to load this before all the other start plugins
+  event = { "BufRead" },
   opts = function()
     return {
       --- @usage 'auto'|'main'|'moon'|'dawn'
@@ -24,12 +25,10 @@ return {
         comment = "muted",
         link = "iris",
         punctuation = "subtle",
-
         error = "love",
         hint = "iris",
         info = "foam",
         warn = "gold",
-
         headings = {
           h1 = "iris",
           h2 = "foam",
@@ -41,7 +40,6 @@ return {
         -- or set all headings at once
         -- headings = 'subtle'
       },
-
       -- Change specific vim highlight groups
       -- https://github.com/rose-pine/neovim/wiki/Recipes
       highlight_groups = {

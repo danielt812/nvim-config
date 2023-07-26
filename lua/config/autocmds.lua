@@ -13,7 +13,7 @@ local format_on_save_group = vim.api.nvim_create_augroup("format_on_save", { cle
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   group = format_on_save_group,
   desc = "Format On Save",
-  pattern = { "*.lua" },
+  pattern = { "*.lua", "*.js" },
   callback = function()
     vim.lsp.buf.format()
   end,
