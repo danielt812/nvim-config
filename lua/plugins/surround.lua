@@ -15,7 +15,7 @@ return {
         delete = "ds",
         change = "cs",
         change_line = "cS",
-    },
+      },
       aliases = {
         ["a"] = ">",
         ["b"] = ")",

@@ -1,8 +1,3 @@
-local g = vim.g
-g.mapleader = " "
-g.maplocalleader = " "
-g.markdown_recommended_style = 0 -- Fix markdown indentation settings
-
 local opt = vim.opt
 
 opt.autowrite = true -- Enable auto write
@@ -12,7 +7,7 @@ opt.conceallevel = 3 -- Hide * markup for bold and italic
 opt.confirm = false -- Confirm to save changes before exiting modified buffer
 opt.cursorline = true -- Enable highlighting of the current line
 opt.expandtab = true -- Use spaces instead of tabs
-opt.fillchars = "eob: " -- Remove tilde at end of buffer
+-- opt.fillchars = "eob: " -- Remove tilde at end of buffer
 opt.formatoptions = "jcroqlnt" -- tcqj
 -- opt.grepformat = "%f:%l:%c:%m"
 -- opt.grepprg = "rg --vimgrep"
@@ -21,6 +16,7 @@ opt.inccommand = "nosplit" -- preview incremental substitute
 opt.laststatus = 0
 opt.list = true -- Show some invisible characters (tabs...
 opt.mouse = "a" -- Enable mouse mode
+-- opt.matchpairs = true -- Match  pairs
 opt.number = true -- Print line number
 opt.pumblend = 10 -- Popup blend
 opt.pumheight = 10 -- Maximum number of entries in a popup
@@ -45,12 +41,6 @@ opt.timeoutlen = 300
 opt.undofile = true
 opt.undolevels = 10000
 opt.updatetime = 200 -- Save swap file and trigger CursorHold
-opt.wildmode = "longest:full,full" -- Command-line completion mode
 opt.winminwidth = 5 -- Minimum window width
 opt.wrap = false -- Disable line wrap
-opt.showcmd = false
-
--- if vim.fn.has("nvim-0.9.0") == 1 then
---   opt.splitkeep = "screen"
---   opt.shortmess:append({ C = true })
--- end
+-- opt.showcmd = false

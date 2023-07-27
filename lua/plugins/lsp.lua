@@ -5,7 +5,7 @@ return {
   dependencies = {
     { "folke/neodev.nvim", opts = {} },
     { "hrsh7th/cmp-nvim-lsp" },
-    { "williamboman/mason-lspconfig.nvim" }
+    { "b0o/SchemaStore.nvim" },
   },
   opts = function()
     local signs = {
@@ -36,31 +36,42 @@ return {
     }
   end,
   config = function(_, opts)
+    require("neodev").setup()
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true
+    capabilities.textDocument.completion.completionItem.resolveSupport = {
+      properties = {
+        "documentation",
+        "detail",
+        "additionalTextEdits",
+      },
+    }
     capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
     local function lsp_keymaps(bufnr)
-      local function opts(desc)
+      local function key_opts(desc)
         return { desc = desc, noremap = true, silent = true }
       end
 
-      local function map(key, cmd, opts)
-        return vim.api.nvim_buf_set_keymap(bufnr, "n", key, cmd, opts)
+      local function map(key, cmd, desc)
+        return vim.api.nvim_buf_set_keymap(bufnr, "n", key, cmd, desc)
       end
 
-      map("K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts("Show Hover"))
-      map("gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts("Go to Declaration"))
-      map("gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts("Go to Definition"))
-      map("gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts("Go to Implementation"))
-      map("gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts("Go to references"))
-      map("gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts("Open Float"))
-      map("<leader>lf", "<cmd>lua vim.lsp.buf.format{ async = true }<CR>", opts("Format"))
+      map("K", "<cmd>lua vim.lsp.buf.hover()<CR>", key_opts("Show Hover"))
+      map("gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", key_opts("Go to Declaration"))
+      map("gd", "<cmd>lua vim.lsp.buf.definition()<CR>", key_opts("Go to Definition"))
+      map("gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", key_opts("Go to Type Definition"))
+      map("gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", key_opts("Go to Implementation"))
+      map("gr", "<cmd>lua vim.lsp.buf.references()<CR>", key_opts("Go to references"))
+      map("gl", "<cmd>lua vim.diagnostic.open_float()<CR>", key_opts("Open Float"))
+      map("gR", "<cmd>lua vim.lsp.buf.rename()<CR>", key_opts("Rename Definition"))
+      map("gA", "<cmd>lua vim.lsp.buf.code_action()<CR>", key_opts("Code Action"))
     end
 
     local lspconfig = require("lspconfig")
     local on_attach = function(client, bufnr)
       lsp_keymaps(bufnr)
+      -- require("illuminate").on_attach(client)
     end
 
     for _, server in pairs(require("servers")) do
@@ -71,10 +82,9 @@ return {
 
       server = vim.split(server, "@")[1]
 
-      local require_ok, conf_opts = pcall(require, "settings." .. server)
-      if require_ok then
-        Opts = vim.tbl_deep_extend("force", conf_opts, Opts)
-      end
+      local conf_opts = require("lsp_settings." .. server)
+
+      Opts = vim.tbl_deep_extend("force", conf_opts, Opts)
 
       lspconfig[server].setup(Opts)
     end

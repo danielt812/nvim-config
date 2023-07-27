@@ -9,8 +9,8 @@ return {
     local diagnostics = {
       "diagnostics",
       sources = { "nvim_diagnostic" },
-      sections = { "error", "warn" },
-      symbols = { error = " ", warn = " " },
+      sections = { "error", "warn", "info", "hint" },
+      symbols = { error = " ", warn = " ", info = " ", hint = " " },
       colored = false,
       update_in_insert = false,
       always_visible = false,
@@ -47,14 +47,24 @@ return {
       padding = 0,
     }
 
-    local progress = function()
-      local current_line = vim.fn.line(".")
-      local total_lines = vim.fn.line("$")
-      local chars = { "__", "▁▁", "▂▂", "▃▃", "▄▄", "▅▅", "▆▆", "▇▇", "██" }
-      local line_ratio = current_line / total_lines
-      local index = math.ceil(line_ratio * #chars)
-      return chars[index]
-    end
+    local lspstatus = {}
+
+    -- local progress = function()
+    --   local current_line = vim.fn.line(".")
+    --   local total_lines = vim.fn.line("$")
+    --   local chars = { "__", "▁▁", "▂▂", "▃▃", "▄▄", "▅▅", "▆▆", "▇▇", "██" }
+    --   local line_ratio = current_line / total_lines
+    --   local index = math.ceil(line_ratio * #chars)
+    --   return chars[index]
+    -- end
+
+    local progress = {
+      "progress",
+      fmt = function()
+        return "%P/%L"
+      end,
+      color = {},
+    }
 
     local spaces = function()
       return "󰌒 " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
@@ -81,16 +91,16 @@ return {
         lualine_c = {},
         lualine_x = { diff, spaces, "encoding", filetype },
         lualine_y = { location },
-        lualine_z = { progress },
+        lualine_z = { "progress" },
       },
-      inactive_sections = {
-        lualine_a = {},
-        lualine_b = {},
-        lualine_c = { "filename" },
-        lualine_x = { "location" },
-        lualine_y = {},
-        lualine_z = {},
-      },
+      -- inactive_sections = {
+      --   lualine_a = {},
+      --   lualine_b = {},
+      --   lualine_c = { "filename" },
+      --   lualine_x = { "location" },
+      --   lualine_y = {},
+      --   lualine_z = {},
+      -- },
       tabline = {},
       extensions = {},
     }

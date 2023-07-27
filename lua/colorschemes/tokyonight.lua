@@ -1,9 +1,7 @@
 return {
   "folke/tokyonight.nvim",
-  lazy = true, -- make sure we load this during startup if it is your main colorscheme
-  event = { "BufRead" },
-
-  -- priority = 1000, -- make sure to load this before all the other start plugins
+  lazy = false, -- make sure we load this during startup if it is your main colorscheme
+  priority = 1000, -- make sure to load this before all the other start plugins
   opts = function()
     return {
       style = "night", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
@@ -31,6 +29,6 @@ return {
   config = function(_, opts)
     require("tokyonight").setup(opts)
     -- Load the colorscheme here
-    -- vim.cmd("colorscheme tokyonight")
+    vim.cmd("colorscheme tokyonight")
   end,
 }

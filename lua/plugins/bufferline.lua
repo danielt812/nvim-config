@@ -15,7 +15,7 @@ return {
         return true
       end
       local tab_num = vim.fn.tabpagenr()
-      local last_tab = vim.fn.tabpagenr "$"
+      local last_tab = vim.fn.tabpagenr("$")
       local is_log = is_ft(buf, "log")
       if last_tab == 1 then
         return true
@@ -95,7 +95,7 @@ return {
         groups = { items = {}, options = { toggle_hidden_on_enter = true } },
         hover = { enabled = false, reveal = { "close" }, delay = 200 },
         debug = { logging = false },
-      }
+      },
     }
   end,
   config = function(_, opts)

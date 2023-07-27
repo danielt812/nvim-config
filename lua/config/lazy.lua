@@ -5,13 +5,24 @@ if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable",
     lazypath })
 end
+
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
+
+vim.g.mapleader = " "
+-- vim.g.markdown_recommended_style = 0 -- Fix markdown indentation settings
 
 require("lazy").setup({
   spec = {
     { import = "colorschemes" },
     { import = "plugins" },
     { "mg979/vim-visual-multi", event = { "BufEnter" } },
+  },
+  change_detection = {
+    enabled = true,
+    notify = false,
+  },
+  install = {
+    colorscheme = { "nightfox" },
   },
   defaults = {
     -- If you know what you're doing, you can set this to `true` to have all your custom plugins lazy-loaded by default.
@@ -24,8 +35,8 @@ require("lazy").setup({
       -- disable some rtp plugins
       disabled_plugins = {
         "gzip",
-        "matchit",
-        "matchparen",
+        -- "matchit",
+        -- "matchparen",
         "netrwPlugin",
         "tarPlugin",
         "tohtml",

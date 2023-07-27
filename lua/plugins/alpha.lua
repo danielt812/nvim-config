@@ -25,18 +25,19 @@ return {
       type = "group",
       val = {
         dashboard.button("f", " " .. " Find file", ":Telescope find_files <CR>"),
-        dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
+        -- dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
         dashboard.button("o", "󰼙 " .. " Oil", ":Oil <CR>"),
-        dashboard.button("r", " " .. " Recent files", ":Telescope oldfiles <CR>"),
+        -- dashboard.button("r", " " .. " Recent files", ":Telescope oldfiles <CR>"),
         dashboard.button("g", " " .. " Grep text", ":Telescope live_grep <CR>"),
         dashboard.button("h", " " .. " Check Health", ":checkhealth <CR>"),
         dashboard.button("c", " " .. " Config", ":cd $HOME/.config/nvim | e $MYVIMRC <CR>"),
-        dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy<CR>"),
-        dashboard.button("q", " " .. " Quit", ":qa<CR>"),
+        dashboard.button("m", "󰢛 " .. " Mason", ":Mason <CR>"),
+        dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy <CR>"),
+        dashboard.button("q", " " .. " Quit", ":qa <CR>"),
       },
       opts = {
         spacing = 1,
-        hl_shortcut = "Keyword"
+        hl_shortcut = "Keyword",
       },
     }
 
@@ -67,7 +68,7 @@ return {
         { type = "padding", val = 2 },
         buttons,
         { type = "padding", val = 2 },
-        footer
+        footer,
       },
     }
   end,

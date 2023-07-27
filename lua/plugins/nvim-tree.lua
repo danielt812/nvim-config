@@ -18,18 +18,18 @@ return {
       end
 
       api.config.mappings.default_on_attach(bufnr)
-      map('?', api.tree.toggle_help, opts('Help'))
-      map('p', api.node.open.preview, opts('Preview'))
-      map('<C-t>', api.tree.change_root_to_parent, opts('cd ..'))
-      map('.', api.tree.toggle_hidden_filter, opts('Toggle Hidden'))
-      map('l', api.node.open.edit, opts('Open'))
-      map('<CR>', api.node.open.edit, opts("Open"))
-      map('v', api.node.open.vertical, opts("Open: Vertical Split"))
-      map('h', api.node.navigate.parent_close, opts("Close Directory"))
-      map('C', api.tree.change_root_to_node, opts("CD"))
-      map('G', telescope.live_grep, opts("Telescope Live Grep"))
-      map('F', telescope.find_files, opts("Telescope Find File"))
-      map('q', "<cmd>NvimTreeClose<CR>", opts("Close Explorer"))
+      map("?", api.tree.toggle_help, opts("Help"))
+      map("p", api.node.open.preview, opts("Preview"))
+      map("<C-t>", api.tree.change_root_to_parent, opts("cd .."))
+      map(".", api.tree.toggle_hidden_filter, opts("Toggle Hidden"))
+      map("l", api.node.open.edit, opts("Open"))
+      map("<CR>", api.node.open.edit, opts("Open"))
+      map("v", api.node.open.vertical, opts("Open: Vertical Split"))
+      map("h", api.node.navigate.parent_close, opts("Close Directory"))
+      map("C", api.tree.change_root_to_node, opts("CD"))
+      map("G", telescope.live_grep, opts("Telescope Live Grep"))
+      map("F", telescope.find_files, opts("Telescope Find File"))
+      map("q", "<cmd>NvimTreeClose<CR>", opts("Close Explorer"))
     end
 
     return {
@@ -177,7 +177,7 @@ return {
         dotfiles = false,
         git_clean = false,
         no_buffer = false,
-        custom = { "node_modules", "\\.cache" },
+        custom = { "node_modules", ".git" },
         exclude = {},
       },
       filesystem_watchers = {

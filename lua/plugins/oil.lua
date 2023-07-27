@@ -1,7 +1,7 @@
 return {
   "stevearc/oil.nvim",
   lazy = false,
-  opts = function ()
+  opts = function()
     return {
       -- Id is automatically added at the beginning, and name at the end
       -- See :help oil-columns
@@ -109,7 +109,7 @@ return {
       },
     }
   end,
-  config = function (_, opts)
+  config = function(_, opts)
     require("oil").setup(opts)
-  end
+  end,
 }

@@ -20,7 +20,6 @@ return {
         "lazy",
         "neogitstatus",
         "Trouble",
-        "lir",
         "Outline",
         "spectre_panel",
         "toggleterm",
@@ -46,7 +45,7 @@ return {
     }
   end,
   config = function(_, opts)
-    require("illuminate").configure(opts)
+    -- require("illuminate").configure(opts)
     vim.api.nvim_set_hl(0, "IlluminatedWordText", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "Underlined" })
@@ -69,8 +68,4 @@ return {
       end,
     })
   end,
-  keys = {
-    { "]]", desc = "Next Reference" },
-    { "[[", desc = "Prev Reference" },
-  },
 }

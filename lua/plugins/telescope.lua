@@ -9,6 +9,7 @@ return {
         prompt_prefix = " ",
         selection_caret = " ",
         path_display = { "smart" },
+        file_ignore_patterns = { "^.git/" },
         mappings = {
           i = {
             ["<C-n>"] = actions.cycle_history_next,
@@ -46,6 +47,7 @@ return {
         live_grep = {
           --@usage don't include the filename in the search results
           only_sort_text = true,
+          hidden = true,
         },
         grep_string = {
           only_sort_text = true,
@@ -56,6 +58,9 @@ return {
         },
         colorscheme = {
           enable_preview = true,
+        },
+        find_files = {
+          hidden = true,
         },
       },
       extensions = {

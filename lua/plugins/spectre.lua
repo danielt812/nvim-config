@@ -9,7 +9,7 @@ return {
       highlight = {
         ui = "String",
         search = "DiffChange",
-        replace = "DiffDelete"
+        replace = "DiffDelete",
       },
       find_engine = {
         ["rg"] = {
@@ -25,14 +25,14 @@ return {
             ["ignore-case"] = {
               value = "--ignore-case",
               icon = "[I]",
-              desc = "ignore case"
+              desc = "ignore case",
             },
             ["hidden"] = {
               value = "--hidden",
               desc = "hidden file",
-              icon = "[H]"
+              icon = "[H]",
             },
-          }
+          },
         },
       },
       replace_engine = {
@@ -43,25 +43,25 @@ return {
             ["ignore-case"] = {
               value = "--ignore-case",
               icon = "[I]",
-              desc = "ignore case"
+              desc = "ignore case",
             },
-          }
+          },
         },
       },
       default = {
         find = {
           cmd = "rg",
-          options = { "ignore-case" }
+          options = { "ignore-case" },
         },
         replace = {
-          cmd = "sed"
-        }
+          cmd = "sed",
+        },
       },
       is_open_target_win = true, --open file on opener window
-      is_insert_mode = true      -- start open panel on is_insert_mode
+      is_insert_mode = true, -- start open panel on is_insert_mode
     }
   end,
   config = function(_, opts)
     require("spectre").setup(opts)
-  end
+  end,
 }

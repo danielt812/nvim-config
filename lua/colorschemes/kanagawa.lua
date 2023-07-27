@@ -1,8 +1,7 @@
 return {
   "rebelot/kanagawa.nvim",
-  lazy = true, -- make sure we load this during startup if it is your main colorscheme
-  event = { "BufRead" },
-  -- priority = 1000, -- make sure to load this before all the other start plugins
+  lazy = false, -- make sure we load this during startup if it is your main colorscheme
+  priority = 1000, -- make sure to load this before all the other start plugins
   opts = function()
     return {
       compile = false, -- enable compiling the colorscheme

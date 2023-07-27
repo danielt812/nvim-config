@@ -8,5 +8,5 @@ return {
   "bashls",
   "jsonls",
   "yamlls",
-  "eslint"
+  "eslint",
 }

@@ -31,16 +31,6 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
-local startup_group = vim.api.nvim_create_augroup("startup", { clear = true })
-vim.api.nvim_create_autocmd({ "VimEnter" }, {
-  -- Hide Tabline
-  group = startup_group,
-  desc = "Hide Tabline",
-  callback = function(bufnr)
-    vim.opt_local.showtabline = 0
-  end,
-})
-
 local colorscheme_switch_group = vim.api.nvim_create_augroup("colorscheme_switch", { clear = true })
 -- Set Illuminate Highlight
 vim.api.nvim_create_autocmd({ "ColorScheme" }, {
@@ -50,6 +40,12 @@ vim.api.nvim_create_autocmd({ "ColorScheme" }, {
     vim.api.nvim_set_hl(0, "IlluminatedWordText", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "Underlined" })
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "VimEnter" }, {
+  callback = function()
+    vim.cmd "hi link illuminatedWord LspReferenceText"
   end,
 })
 
@@ -68,8 +64,8 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   -- Hide Tabline
   group = filetype_settings_group,
   desc = "Hide Tabline and Number",
-  pattern = { "lir", "alpha", "lazy", "Telescope*", "checkhealth" },
-  callback = function(bufnr)
+  pattern = { "alpha", "lazy", "Telescope*", "checkhealth" },
+  callback = function()
     vim.opt_local.number = false
     vim.opt_local.showtabline = 0
   end,
@@ -79,16 +75,17 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   -- Hide Tabline
   group = filetype_settings_group,
   desc = "Hide Tabline",
-  pattern = { "oil" },
-  callback = function(bufnr)
+  pattern = { "oil", "mason", "lazy" },
+  callback = function()
+    local buf = vim.api.nvim_get_current_buf()
     vim.opt_local.showtabline = 0
   end,
 })
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  -- Q To Exit
+  -- q To Exit
   group = filetype_settings_group,
-  desc = "Q To Exit",
+  desc = "q To Exit",
   pattern = {
     "qf",
     "help",
@@ -98,27 +95,15 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     "null-ls-info",
     "tsplayground",
     "checkhealth",
+    "spectre_panel",
   },
   callback = function()
-    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = true })
+    vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true })
     vim.opt_local.buflisted = true
   end,
 })
 
 -- local dir_opened_group = vim.api.nvim_create_augroup("dir_opened", { clear = true })
-
--- Function to set the 'buftype' option for directory buffers
--- Open Nvim-Tree if the opened buffer is a directory
--- vim.api.nvim_create_autocmd({ "BufEnter" }, {
---   group = dir_opened_group,
---   callback = function()
-
---     local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
---     if stats and stats.type == "directory" then
---       vim.cmd("NvimTreeOpen")
---     end
---   end,
--- })
 
 -- vim.api.nvim_create_autocmd({ "User" }, {
 --   group = filetype_settings_group,
@@ -136,51 +121,4 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 --   callback = function()
 --     vim.opt_local.showtabline = 2
 --   end,
--- })
-
--- vim.api.nvim_create_autocmd('LspAttach', {
---   desc = 'LSP actions',
---   callback = function()
---     local bufmap = function(mode, lhs, rhs)
---       local opts = {buffer = true}
---       vim.keymap.set(mode, lhs, rhs, opts)
---     end
-
---     -- Displays hover information about the symbol under the cursor
---     bufmap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
-
---     -- Jump to the definition
---     bufmap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>')
-
---     -- Jump to declaration
---     bufmap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
-
---     -- Lists all the implementations for the symbol under the cursor
---     bufmap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>')
-
---     -- Jumps to the definition of the type symbol
---     bufmap('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>')
-
---     -- Lists all the references
---     bufmap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>')
-
---     -- Displays a function's signature information
---     bufmap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
-
---     -- Renames all references to the symbol under the cursor
---     bufmap('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>')
-
---     -- Selects a code action available at the current cursor position
---     bufmap('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>')
---     bufmap('x', '<F4>', '<cmd>lua vim.lsp.buf.range_code_action()<cr>')
-
---     -- Show diagnostics in a floating window
---     bufmap('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>')
-
---     -- Move to the previous diagnostic
---     bufmap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
-
---     -- Move to the next diagnostic
---     bufmap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>')
---   end
 -- })
