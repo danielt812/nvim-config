@@ -2,7 +2,7 @@ return {
   "nvim-treesitter/nvim-treesitter",
   event = { "BufReadPost", "BufNewFile" },
   dependencies = {
-    { "nvim-tree/nvim-web-devicons", event = "VeryLazy", },
+    { "nvim-tree/nvim-web-devicons", event = "VeryLazy" },
   },
   cmd = {
     "TSInstall",
@@ -31,7 +31,7 @@ return {
         additional_vim_regex_highlighting = false,
       },
       indent = {
-        enable = true,
+        enable = false,
       },
     }
   end,

@@ -3,7 +3,6 @@ return {
   event = { "BufReadPre", "BufNewFile" },
   cmd = { "LspInfo", "LspInstall", "LspUninstall" },
   dependencies = {
-    { "folke/neodev.nvim", opts = {} },
     { "hrsh7th/cmp-nvim-lsp" },
     { "b0o/SchemaStore.nvim" },
   },
@@ -36,7 +35,6 @@ return {
     }
   end,
   config = function(_, opts)
-    require("neodev").setup()
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true
     capabilities.textDocument.completion.completionItem.resolveSupport = {
@@ -62,7 +60,7 @@ return {
       map("gd", "<cmd>lua vim.lsp.buf.definition()<CR>", key_opts("Go to Definition"))
       map("gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", key_opts("Go to Type Definition"))
       map("gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", key_opts("Go to Implementation"))
-      map("gr", "<cmd>lua vim.lsp.buf.references()<CR>", key_opts("Go to references"))
+      map("gr", "<cmd>lua vim.lsp.buf.references()<CR>", key_opts("Go to References"))
       map("gl", "<cmd>lua vim.diagnostic.open_float()<CR>", key_opts("Open Float"))
       map("gR", "<cmd>lua vim.lsp.buf.rename()<CR>", key_opts("Rename Definition"))
       map("gA", "<cmd>lua vim.lsp.buf.code_action()<CR>", key_opts("Code Action"))
@@ -71,7 +69,7 @@ return {
     local lspconfig = require("lspconfig")
     local on_attach = function(client, bufnr)
       lsp_keymaps(bufnr)
-      -- require("illuminate").on_attach(client)
+      require("illuminate").on_attach(client)
     end
 
     for _, server in pairs(require("servers")) do

@@ -1,5 +1,6 @@
 -- Language Servers
 return {
+  "angularls",
   "lua_ls",
   "cssls",
   "html",

@@ -29,6 +29,6 @@ return {
   config = function(_, opts)
     require("tokyonight").setup(opts)
     -- Load the colorscheme here
-    vim.cmd("colorscheme tokyonight")
+    -- vim.cmd("colorscheme tokyonight")
   end,
 }

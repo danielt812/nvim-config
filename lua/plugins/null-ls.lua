@@ -13,7 +13,13 @@ return {
       sources = {
         formatting.prettierd.with({
           extra_filetypes = { "toml" },
-          extra_args = { "--trailing-comma=none", "--use-tabs", "--single-quote", "--jsx-single-quote" },
+          extra_args = {
+            "--trailing-comma=none",
+            "--use-tabs",
+            -- "--single-quote",
+            -- "--jsx-single-quote",
+            "--print-width=120",
+          },
         }),
         formatting.black.with({ extra_args = { "--fast" } }),
         formatting.stylua.with({

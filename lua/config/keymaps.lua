@@ -41,10 +41,11 @@ map("n", "<C-b>", "<C-b>zz", { desc = "Full Page Up" })
 map("n", "<C-f>", "<C-f>zz", { desc = "Full Page Up" })
 
 -- Toggle Join/Split
--- map("n", "J", "<cmd>TSJToggle<CR>", { desc = "Join/Split" })
+map("n", "J", "<cmd>TSJToggle<CR>", { desc = "Join/Split" })
 
 -- Clear search with <esc>
 map({ "i", "n" }, "<esc>", "<cmd>noh<CR><esc>", { desc = "Escape and clear hlsearch" })
+map({ "n" }, "<CR>", "<cmd>noh<CR><esc>", { desc = "Enter and clear hlsearch" })
 
 -- n always goes forward and N always go backwards regardless of / or ?
 map("n", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })

@@ -2,6 +2,7 @@ return {
   "kylechui/nvim-surround",
   event = { "BufEnter" },
   opts = function()
+    local M = require("nvim-surround")
     return {
       keymaps = {
         insert = "<C-g>s",

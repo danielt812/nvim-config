@@ -1,8 +1,9 @@
 return {
   "williamboman/mason.nvim",
   dependencies = {
-    "williamboman/mason-lspconfig.nvim",
-    "jay-babu/mason-null-ls.nvim"
+    { "williamboman/mason-lspconfig.nvim" },
+    { "jay-babu/mason-null-ls.nvim" },
+    { "folke/neodev.nvim" },
   },
   event = { "BufReadPre" },
   cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
@@ -10,7 +11,7 @@ return {
     local path = require("mason-core.path")
     return {
       -- The directory in which to install packages.
-      install_root_dir = path.concat { vim.fn.stdpath "data", "mason" },
+      install_root_dir = path.concat({ vim.fn.stdpath("data"), "mason" }),
       -- The directory in which to install packages.
       -- Packages are installed in Neovim's data directory (:h standard-path) by default
       -- install_root_dir = path.concat { vim.fn.stdpath "data", "mason" },
@@ -113,6 +114,8 @@ return {
   end,
   config = function(_, opts)
     require("mason").setup(opts)
+
+    require("neodev").setup()
 
     require("mason-lspconfig").setup({
       ensure_installed = require("servers"),
