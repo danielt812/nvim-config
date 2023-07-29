@@ -3,7 +3,6 @@ return {
   dependencies = {
     { "williamboman/mason-lspconfig.nvim" },
     { "jay-babu/mason-null-ls.nvim" },
-    { "folke/neodev.nvim" },
   },
   event = { "BufReadPre" },
   cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
@@ -114,8 +113,6 @@ return {
   end,
   config = function(_, opts)
     require("mason").setup(opts)
-
-    require("neodev").setup()
 
     require("mason-lspconfig").setup({
       ensure_installed = require("servers"),

@@ -5,6 +5,8 @@ return {
   dependencies = {
     { "hrsh7th/cmp-nvim-lsp" },
     { "b0o/SchemaStore.nvim" },
+    { "folke/neodev.nvim" },
+    { "ray-x/lsp_signature.nvim" },
   },
   opts = function()
     local signs = {
@@ -71,6 +73,9 @@ return {
       lsp_keymaps(bufnr)
       require("illuminate").on_attach(client)
     end
+
+    require("lsp_signature").setup()
+    require("neodev").setup()
 
     for _, server in pairs(require("servers")) do
       Opts = {

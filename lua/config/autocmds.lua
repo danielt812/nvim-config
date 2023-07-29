@@ -46,6 +46,7 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
     vim.api.nvim_set_hl(0, "LspReferenceText", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "LspReferenceRead", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "LspReferenceWrite", { link = "Underlined" })
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
   end,
 })
 
