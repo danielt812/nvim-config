@@ -218,7 +218,7 @@ return {
           },
           s = {
             name = "+Surround 󰅪 ",
-            ["a"] = { "<Plug>(nvim-surround-normal)", "Around" },
+            ["a"] = { "<Plug>(nvim-surround-normal)a", "Around" },
             ["c"] = { "<Plug>(nvim-surround-change)", "Change" },
             ["d"] = { "<Plug>(nvim-surround-delete)", "Delete" },
             ["l"] = { "<Plug>(nvim-surround-normal-line)", "Line" },
