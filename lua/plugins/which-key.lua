@@ -190,9 +190,10 @@ return {
             d = {
               name = "+Diagnostics  ",
               ["b"] = { "<cmd>Telescope diagnostics bufnr=0 theme=get_ivy<CR>", "Buffer Diagnostics" },
+              ["f"] = { "<cmd>vim.diagnostic.open_float<CR>", "Float Diagnostic" },
               ["j"] = { "<cmd>lua vim.diagnostic.goto_next()<CR>", "Next Diagnostic 󰮱 " },
               ["k"] = { "<cmd>lua vim.diagnostic.goto_prev()<CR>", "Prev Diagnostic 󰮳 " },
-              ["w"] = { "<cmd>Telescope diagnostics<CR>", "Diagnostics" },
+              -- ["l"] = { "<cmd>lua vim.diagnostic.setloclist()<CR>", "Location List" }, -- Use Trouble Instead
               ["t"] = { "<cmd>TroubleToggle<CR>", "Trouble Toggle  " },
             },
             i = {
@@ -204,9 +205,10 @@ return {
             },
             f = {
               name = "+Find  ",
-              ["d"] = { "<cmd>Telescope lsp_document_symbols<CR>", "Document Symbols" },
+              ["u"] = { "<cmd>Telescope lsp_document_symbols<CR>", "Document Symbols" },
               ["w"] = { "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", "Workspace Symbols" },
               ["q"] = { "<cmd>Telescope quickfix<CR>", "Quickfix" },
+              ["d"] = { "<cmd>Telescope diagnostics<CR>", "Diagnostics" },
             },
             ["a"] = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
             -- ["f"] = { "<cmd>lua vim.lsp.buf.format()<CR>", "Format File 󰘞 " },

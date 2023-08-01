@@ -10,20 +10,15 @@ return {
         "regex",
       },
       -- delay: delay in milliseconds
-      delay = 100,
+      delay = 0,
       -- filetypes_denylist: filetypes to not illuminate, this overrides filetypes_allowlist
       filetypes_denylist = {
-        "dirvish",
-        "fugitive",
         "alpha",
         "NvimTree",
         "lazy",
         "neogitstatus",
         "Trouble",
-        "Outline",
         "spectre_panel",
-        "toggleterm",
-        "DressingSelect",
         "TelescopePrompt",
       },
       -- filetypes_allowlist: filetypes to illuminate, this is overriden by filetypes_denylist
@@ -45,7 +40,7 @@ return {
     }
   end,
   config = function(_, opts)
-    -- require("illuminate").configure(opts)
+    require("illuminate").configure(opts)
     vim.api.nvim_set_hl(0, "IlluminatedWordText", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "Underlined" })

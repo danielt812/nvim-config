@@ -11,7 +11,7 @@ local format_on_save_group = vim.api.nvim_create_augroup("format_on_save", { cle
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   group = format_on_save_group,
   desc = "Format On Save",
-  pattern = { "*.lua", "*.js" },
+  pattern = { "*.lua", "*.js", "*.jsx" },
   callback = function()
     vim.lsp.buf.format()
   end,
@@ -33,6 +33,7 @@ vim.api.nvim_create_autocmd({ "ColorScheme" }, {
   group = illuminate_highlight_group,
   desc = "Set Illuminate Highlight on colorscheme change",
   callback = function()
+    print("colorscheme changed")
     vim.api.nvim_set_hl(0, "IlluminatedWordText", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "Underlined" })

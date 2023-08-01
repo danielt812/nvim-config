@@ -8,13 +8,13 @@ end
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
--- Move to window using the <ctrl> hjkl keys
+-- Move to window using the <cmd> + hjkl keys
 map("n", "<C-h>", "<C-w>h", { desc = "Go to left window", remap = true })
 map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })
 map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
 map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
 
--- Resize window using <cmd> arrow keys
+-- Resize window using <cmd> + arrow keys
 map("n", "<A-Up>", "<cmd>resize +2<CR>", { desc = "Increase window height" })
 map("n", "<A-Down>", "<cmd>resize -2<CR>", { desc = "Decrease window height" })
 map("n", "<A-Left>", "<cmd>vertical resize -2<CR>", { desc = "Decrease window width" })
@@ -29,8 +29,8 @@ map("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move down" })
 map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move up" })
 
 -- BufferLine
-map("n", "<S-h>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer" })
-map("n", "<S-l>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
+map("n", "<A-h>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer" })
+map("n", "<A-l>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
 map("n", "[b", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer" })
 map("n", "]b", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
 
@@ -66,15 +66,11 @@ map({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<CR><esc>", { desc = "Save file" })
 -- Better indenting
 map("v", "<", "<gv", { desc = "Indent block to left", silent = true })
 map("v", ">", ">gv", { desc = "Indent block to right", silent = true })
-map("n", "<", "<<", { desc = "Indent line to left", silent = true })
-map("n", ">", ">>", { desc = "Indent line to right", silent = true })
 
 -- Always go to beginning of line when using gg or G
 map("n", "gg", "gg0", { desc = "Go to beginning of file" })
 map("n", "G", "G0", { desc = "Go to end of file" })
 
--- new file
--- map("n", "<leader>fn", "<cmd>enew<CR>", { desc = "New File" })
-
--- map("n", "<leader>xl", "<cmd>lopen<CR>", { desc = "Location List" })
--- map("n", "<leader>xq", "<cmd>copen<CR>", { desc = "Quickfix List" })
+-- Cycle diagnostics
+map("n", "[d", vim.diagnostic.goto_prev, { desc = "Prev diagnostic" })
+map("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })

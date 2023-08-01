@@ -4,23 +4,22 @@ return {
   cmd = { "LspInfo", "LspInstall", "LspUninstall" },
   dependencies = {
     { "hrsh7th/cmp-nvim-lsp" },
-    { "b0o/SchemaStore.nvim" },
+    { "b0o/SchemaStore.nvim" }, -- SchemaStore is for json/yaml config
     { "folke/neodev.nvim" },
     { "ray-x/lsp_signature.nvim" },
   },
   opts = function()
-    local signs = {
-      { name = "DiagnosticSignError", text = " " },
-      { name = "DiagnosticSignWarn", text = " " },
-      { name = "DiagnosticSignHint", text = " " },
-      { name = "DiagnosticSignInfo", text = " " },
-    }
     return {
       -- disable virtual text
       virtual_text = false,
       -- show signs
       signs = {
-        active = signs,
+        active = {
+          { name = "DiagnosticSignError", text = " " },
+          { name = "DiagnosticSignWarn", text = " " },
+          { name = "DiagnosticSignHint", text = " " },
+          { name = "DiagnosticSignInfo", text = " " },
+        },
       },
       update_in_insert = true,
       underline = true,
@@ -39,6 +38,8 @@ return {
   config = function(_, opts)
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true
+    capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
+    capabilities.textDocument.completion.completionItem.preselectSupport = true
     capabilities.textDocument.completion.completionItem.resolveSupport = {
       properties = {
         "documentation",
@@ -68,28 +69,25 @@ return {
       map("gA", "<cmd>lua vim.lsp.buf.code_action()<CR>", key_opts("Code Action"))
     end
 
-    local lspconfig = require("lspconfig")
-    local on_attach = function(client, bufnr)
+    local on_attach = function(_, bufnr)
       lsp_keymaps(bufnr)
-      require("illuminate").on_attach(client)
     end
 
     require("lsp_signature").setup()
+    -- Set up neodev before lua_ls
     require("neodev").setup()
 
     for _, server in pairs(require("servers")) do
-      Opts = {
+      local lsp_opts = {
         on_attach = on_attach,
         capabilities = capabilities,
       }
 
-      server = vim.split(server, "@")[1]
-
       local conf_opts = require("lsp_settings." .. server)
 
-      Opts = vim.tbl_deep_extend("force", conf_opts, Opts)
+      lsp_opts = vim.tbl_deep_extend("force", conf_opts, lsp_opts)
 
-      lspconfig[server].setup(Opts)
+      require("lspconfig")[server].setup(lsp_opts)
     end
 
     local signs = {
