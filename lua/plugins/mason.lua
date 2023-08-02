@@ -5,7 +5,7 @@ return {
     { "jay-babu/mason-null-ls.nvim" },
   },
   event = { "BufReadPre" },
-  cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
+  cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog", "MasonUpdate" },
   opts = function()
     local path = require("mason-core.path")
     return {

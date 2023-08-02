@@ -41,7 +41,6 @@ vim.api.nvim_create_autocmd({ "ColorScheme" }, {
   group = illuminate_highlight_group,
   desc = "Set Illuminate Highlight on colorscheme change",
   callback = function()
-    print("colorscheme changed")
     vim.api.nvim_set_hl(0, "IlluminatedWordText", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "Underlined" })

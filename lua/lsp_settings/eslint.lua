@@ -13,9 +13,7 @@ return {
     format = false,
     quiet = false,
     onIgnoredFiles = "off",
-    rulesCustomizations = {
-      ["react/prop-types"] = 0,
-    },
+    rulesCustomizations = {},
     run = "onType",
     problems = {
       shortenToSingleLine = false,
