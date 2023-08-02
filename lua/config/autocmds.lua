@@ -7,13 +7,21 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
   end,
 })
 
-local format_on_save_group = vim.api.nvim_create_augroup("format_on_save", { clear = true })
+local buffer_options_group = vim.api.nvim_create_augroup("buffer_options", { clear = true })
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  group = format_on_save_group,
+  group = buffer_options_group,
   desc = "Format On Save",
   pattern = { "*.lua", "*.js", "*.jsx" },
   callback = function()
     vim.lsp.buf.format()
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = buffer_options_group,
+  desc = "Disable New Line Comment",
+  callback = function()
+    vim.opt.formatoptions:remove({ "c", "r", "o" })
   end,
 })
 
