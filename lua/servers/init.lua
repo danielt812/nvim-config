@@ -1,13 +1,13 @@
 -- Language Servers
 return {
   "angularls",
-  "lua_ls",
-  "cssls",
-  "html",
-  "tsserver",
-  "pyright",
   "bashls",
-  "jsonls",
-  "yamlls",
+  "cssls",
   "eslint",
+  "html",
+  "jsonls",
+  "lua_ls",
+  "pyright",
+  "tsserver",
+  "yamlls",
 }
