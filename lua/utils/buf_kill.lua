@@ -72,5 +72,5 @@ return {
     if vim.api.nvim_buf_is_valid(bufnr) and bo[bufnr].buflisted then
       vim.cmd(string.format("%s %d", kill_command, bufnr))
     end
-  end
+  end,
 }

@@ -113,6 +113,7 @@ return {
           ["h"] = { "<cmd>nohlsearch<CR>", "Clear Highlight 󰹊 " },
           ["q"] = { "<cmd>confirm q<CR>", "Quit  " },
           ["s"] = { "<cmd>w<CR>", "Save  " },
+          ["z"] = { "<cmd>ZenMode<CR>", "Zen Mode 󱅼 " },
           b = {
             name = "+Buffer  ",
             g = {
@@ -195,6 +196,7 @@ return {
           t = {
             name = "+Toggle 󰨚  ",
             ["e"] = { "<cmd>NvimTreeToggle<CR>", "Explorer 󰙅 " },
+            ["r"] = { "<cmd>ToggleRelative<CR>", "Relative  " },
             ["t"] = { "<cmd>Trouble<CR>", "Trouble  " },
             ["w"] = { "<cmd>Twilight<CR>", "Twilight 󰖚 " },
           },

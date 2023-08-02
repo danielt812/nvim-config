@@ -92,6 +92,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   pattern = { "oil", "mason", "Telescope*", "lazy" },
   callback = function()
     vim.opt_local.showtabline = 0
+    vim.opt_local.relativenumber = false
   end,
 })
 

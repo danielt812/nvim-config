@@ -1,8 +1,25 @@
 return {
   "phaazon/hop.nvim",
-  event = { "VeryLazy" },
+  event = { "BufEnter" },
+  opts = function()
+    return {
+      keys = "asdghklqwertyuiopzxcvbnmfj",
+      quit_key = "<Esc>",
+      perm_method = require("hop.perm").TrieBacktrackFilling,
+      reverse_distribution = false,
+      teasing = true,
+      jump_on_sole_occurrence = true,
+      case_insensitive = true,
+      create_hl_autocmd = true,
+      current_line_only = false,
+      uppercase_labels = false,
+      multi_windows = false,
+      hint_position = require("hop.hint").HintPosition.BEGIN,
+      hint_offset = 0,
+    }
+  end,
   config = function(_, opts)
-    require("hop").setup()
+    require("hop").setup(opts)
     -- place this in one of your configuration file(s)
     local hop = require("hop")
     local directions = require("hop.hint").HintDirection

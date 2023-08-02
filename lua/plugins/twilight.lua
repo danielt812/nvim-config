@@ -1,6 +1,6 @@
 return {
   "folke/twilight.nvim",
-  event = { "BufRead", "BufNew" },
+  cmd = { "Twilight", "TwilightEnable", "TwilightEnable" },
   opts = function()
     return {
       dimming = {
