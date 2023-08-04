@@ -14,7 +14,7 @@ return {
         formatting.prettierd.with({
           extra_filetypes = { "toml" },
           extra_args = {
-            "--trailing-comma=none",
+            "--trailing-comma=es5",
             "--use-tabs",
             -- "--single-quote",
             "--jsx-single-quote",
