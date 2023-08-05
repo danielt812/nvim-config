@@ -4,4 +4,5 @@ return {
   "prettierd",
   "stylua",
   "flake8",
+  "selene",
 }
