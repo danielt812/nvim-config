@@ -3,6 +3,7 @@ return {
   dependencies = {
     { "williamboman/mason-lspconfig.nvim" },
     { "jay-babu/mason-null-ls.nvim" },
+    { "jay-babu/mason-nvim-dap.nvim" },
   },
   event = { "BufReadPre" },
   cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog", "MasonUpdate" },
@@ -116,6 +117,11 @@ return {
 
     require("mason-lspconfig").setup({
       ensure_installed = require("servers"),
+      automatic_installation = true,
+    })
+
+    require("mason-nvim-dap").setup({
+      ensure_installed = require("adapters"),
       automatic_installation = true,
     })
 
