@@ -24,8 +24,10 @@ return {
         "python",
         "regex",
         "scss",
+        "toml",
         "tsx",
         "typescript",
+        "vim",
       },
 
       -- Install parsers synchronously (only applied to `ensure_installed`)

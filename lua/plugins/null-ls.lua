@@ -27,7 +27,7 @@ return {
           extra_args = { "--config-path=stylua.toml" },
         }),
         diagnostics.flake8,
-        diagnostics.selene,
+        -- diagnostics.selene,
       },
     }
   end,
