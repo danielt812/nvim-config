@@ -45,22 +45,22 @@ return {
       -- it will use the mapping at require("oil.actions").<name>
       -- Set to `false` to remove a keymap
       -- See :help oil-actions for a list of all available actions
+      -- Set to false to disable all of the above keymaps
       keymaps = {
         ["?"] = "actions.show_help",
-        ["h"] = "actions.parent",
         ["l"] = "actions.select",
         ["V"] = "actions.select_vsplit",
         ["H"] = "actions.select_split",
         ["<tab>"] = "actions.select_tab",
-        ["p"] = "actions.preview",
+        ["P"] = "actions.preview",
         ["q"] = "actions.close",
-        ["r"] = "actions.refresh",
+        ["R"] = "actions.refresh",
+        ["h"] = "actions.parent",
         ["_"] = "actions.open_cwd",
-        ["d"] = "actions.cd",
+        ["`"] = "actions.cd",
         ["~"] = "actions.tcd",
         ["."] = "actions.toggle_hidden",
       },
-      -- Set to false to disable all of the above keymaps
       use_default_keymaps = false,
       view_options = {
         -- Show files and directories that start with "."
