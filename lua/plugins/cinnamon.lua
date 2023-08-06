@@ -5,8 +5,8 @@ return {
     return {
       -- KEYMAPS:
       default_keymaps = true, -- Create default keymaps.
-      extra_keymaps = false, -- Create extra keymaps.
-      extended_keymaps = false, -- Create extended keymaps.
+      extra_keymaps = true, -- Create extra keymaps.
+      extended_keymaps = true, -- Create extended keymaps.
       override_keymaps = false, -- The plugin keymaps will override any existing keymaps.
 
       -- OPTIONS:
