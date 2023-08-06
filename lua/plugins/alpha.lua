@@ -26,7 +26,7 @@ return {
       val = {
         dashboard.button("f", " " .. " Find file", ":Telescope find_files <CR>"),
         -- dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
-        dashboard.button("o", "󰼙 " .. " Oil", ":Oil <CR>"),
+        dashboard.button("o", " " .. " Oil", ":Oil <CR>"),
         -- dashboard.button("r", " " .. " Recent files", ":Telescope oldfiles <CR>"),
         dashboard.button("g", " " .. " Grep text", ":Telescope live_grep <CR>"),
         dashboard.button("h", " " .. " Check Health", ":checkhealth <CR>"),

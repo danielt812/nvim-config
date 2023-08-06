@@ -31,14 +31,10 @@ map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move up" })
 -- BufferLine
 map("n", "<A-h>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer" })
 map("n", "<A-l>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
+map("n", "<S-h>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer" })
+map("n", "<S-l>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
 map("n", "[b", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer" })
 map("n", "]b", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
-
--- Vertical movement
-map("n", "<C-d>", "<C-d>zz", { desc = "Half Page Down" })
-map("n", "<C-u>", "<C-u>zz", { desc = "Half Page Up" })
-map("n", "<C-b>", "<C-b>zz", { desc = "Full Page Up" })
-map("n", "<C-f>", "<C-f>zz", { desc = "Full Page Up" })
 
 -- Toggle Join/Split
 map("n", "J", "<cmd>TSJToggle<CR>", { desc = "Join/Split" })
