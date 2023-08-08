@@ -89,7 +89,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 vim.api.nvim_create_autocmd({ "FileType" }, {
   group = filetype_settings_group,
   desc = "Hide Tabline",
-  pattern = { "oil", "mason", "Telescope*", "lazy" },
+  pattern = { "oil", "mason", "lazy" },
   callback = function()
     vim.opt_local.showtabline = 0
     vim.opt_local.relativenumber = false

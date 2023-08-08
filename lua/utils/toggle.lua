@@ -31,4 +31,12 @@ return {
       vim.opt_local.wrap = true
     end
   end,
+  toggle_case = function()
+    local case = vim.opt.ignorecase:get()
+    if case == true then
+      vim.opt_local.ignorecase = false
+    else
+      vim.opt_local.ignorecase = true
+    end
+  end,
 }

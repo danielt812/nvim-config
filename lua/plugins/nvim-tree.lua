@@ -9,7 +9,7 @@ return {
       local api = require("nvim-tree.api")
       local telescope = require("telescope.builtin")
 
-      local function opts(desc)
+      local function keyopts(desc)
         return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
       end
 
@@ -18,18 +18,18 @@ return {
       end
 
       api.config.mappings.default_on_attach(bufnr)
-      map("?", api.tree.toggle_help, opts("Help"))
-      map("p", api.node.open.preview, opts("Preview"))
-      map("<C-t>", api.tree.change_root_to_parent, opts("cd .."))
-      map(".", api.tree.toggle_hidden_filter, opts("Toggle Hidden"))
-      map("l", api.node.open.edit, opts("Open"))
-      map("<CR>", api.node.open.edit, opts("Open"))
-      map("v", api.node.open.vertical, opts("Open: Vertical Split"))
-      map("h", api.node.navigate.parent_close, opts("Close Directory"))
-      map("C", api.tree.change_root_to_node, opts("CD"))
-      map("G", telescope.live_grep, opts("Telescope Live Grep"))
-      map("F", telescope.find_files, opts("Telescope Find File"))
-      map("q", "<cmd>NvimTreeClose<CR>", opts("Close Explorer"))
+      map("?", api.tree.toggle_help, keyopts("Help"))
+      map("p", api.node.open.preview, keyopts("Preview"))
+      map("<C-t>", api.tree.change_root_to_parent, keyopts("cd .."))
+      map(".", api.tree.toggle_hidden_filter, keyopts("Toggle Hidden"))
+      map("l", api.node.open.edit, keyopts("Open"))
+      map("<CR>", api.node.open.edit, keyopts("Open"))
+      map("v", api.node.open.vertical, keyopts("Open: Vertical Split"))
+      map("h", api.node.navigate.parent_close, keyopts("Close Directory"))
+      map("C", api.tree.change_root_to_node, keyopts("CD"))
+      map("G", telescope.live_grep, keyopts("Telescope Live Grep"))
+      map("F", telescope.find_files, keyopts("Telescope Find File"))
+      map("q", "<cmd>NvimTreeClose<CR>", keyopts("Close Explorer"))
     end
 
     return {
