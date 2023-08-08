@@ -115,3 +115,30 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     vim.opt_local.buflisted = true
   end,
 })
+
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  group = filetype_settings_group,
+  desc = "Add statusline to dap ui",
+  pattern = { "*" },
+  callback = function()
+    local win_ids = vim.api.nvim_list_wins()
+    -- Iterate through each window ID and check the filetype of its associated buffer
+    for _, win_id in ipairs(win_ids) do
+      local buf_id = vim.api.nvim_win_get_buf(win_id)
+      local buf_ft = vim.api.nvim_buf_get_option(buf_id, "filetype")
+      if buf_ft == "dapui_breakpoints" then
+        vim.wo[win_id].winbar = "DAP Breakpoints  "
+      elseif buf_ft == "dapui_stacks" then
+        vim.wo[win_id].winbar = "DAP Stacks  "
+      elseif buf_ft == "dapui_scopes" then
+        vim.wo[win_id].winbar = "DAP Scopes  "
+      elseif buf_ft == "dapui_watches" then
+        vim.wo[win_id].winbar = "DAP Watches 󰂥 "
+      elseif buf_ft == "dapui_console" then
+        vim.wo[win_id].winbar = "DAP Console  "
+      end
+    end
+    vim.api.nvim_set_hl(0, "WinBar", { link = "Character" })
+    vim.api.nvim_set_hl(0, "WinBarNC", { link = "Character" })
+  end,
+})

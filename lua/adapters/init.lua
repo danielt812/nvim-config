@@ -1,4 +1,4 @@
 return {
-  "js",
+  "node2",
   "python",
 }

@@ -40,8 +40,8 @@ map("n", "]b", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
 map("n", "J", "<cmd>TSJToggle<CR>", { desc = "Join/Split" })
 
 -- Clear search with <esc>
-map({ "i", "n" }, "<esc>", "<cmd>noh<CR><esc>", { desc = "Escape and clear hlsearch" })
-map({ "n" }, "<CR>", "<cmd>noh<CR><esc>", { desc = "Enter and clear hlsearch" })
+map({ "i", "n" }, "<esc>", "<cmd>nohlsearch<CR><esc>", { desc = "Escape and clear hlsearch" })
+map({ "n" }, "<CR>", "<cmd>nohlsearch<CR><esc>", { desc = "Enter and clear hlsearch" })
 
 -- n always goes forward and N always go backwards regardless of / or ?
 map("n", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
@@ -50,6 +50,16 @@ map("o", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result
 map("n", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
 map("x", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
 map("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
+
+-- Prevent some registers from yanking
+map({ "n", "v", "x" }, "x", '"_x', { desc = "Prevent x from yanking to clipboard" })
+map({ "n", "v", "x" }, "X", '"_X', { desc = "Prevent X from yanking to clipboard" })
+map({ "n", "v", "x" }, "c", '"_c', { desc = "Prevent c from yanking to clipboard" })
+map({ "n", "v", "x" }, "C", '"_C', { desc = "Prevent C from yanking to clipboard" })
+map({ "n", "v", "x" }, "s", '"_s', { desc = "Prevent s from yanking to clipboard" })
+map({ "n", "v", "x" }, "S", '"_S', { desc = "Prevent S from yanking to clipboard" })
+map({ "n", "v", "x" }, "d", '"_d', { desc = "Prevent d from yanking to clipboard" })
+map({ "n", "v", "x" }, "D", '"_D', { desc = "Prevent D from yanking to clipboard" })
 
 -- Add undo break-points
 map("i", ",", ",<c-g>u")

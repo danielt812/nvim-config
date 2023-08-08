@@ -1,101 +1,149 @@
 return {
-  "mfussenegger/nvim-dap",
+  "rcarriga/nvim-dap-ui",
   dependencies = {
-    "rcarriga/nvim-dap-ui",
+    "mfussenegger/nvim-dap",
+    "mfussenegger/nvim-dap-python",
   },
   event = { "VeryLazy" },
   opts = function()
     return {
-      icons = { expanded = "", collapsed = "", current_frame = "" },
-      mappings = {
-        -- Use a table to apply multiple mappings
-        expand = { "<CR>", "<2-LeftMouse>" },
-        open = "o",
-        remove = "d",
-        edit = "e",
-        repl = "r",
-        toggle = "t",
+      active = true,
+      on_config_done = nil,
+      breakpoint = {
+        text = "",
+        texthl = "DiagnosticSignError",
+        linehl = "",
+        numhl = "",
       },
-      element_mappings = {},
-      force_buffers = true,
-      layouts = {
-        {
-          -- You can change the order of elements in the sidebar
-          elements = {
-            -- Provide IDs as strings or tables with "id" and "size" keys
-            {
-              id = "scopes",
-              size = 0.25, -- Can be float or integer > 1
-            },
-            { id = "breakpoints", size = 0.25 },
-            { id = "stacks", size = 0.25 },
-            { id = "watches", size = 0.25 },
-          },
-          size = 40,
-          position = "left", -- Can be "left" or "right"
-        },
-        {
-          elements = {
-            "repl",
-            "console",
-          },
-          size = 10,
-          position = "bottom", -- Can be "bottom" or "top"
-        },
+      breakpoint_rejected = {
+        text = "",
+        texthl = "DiagnosticSignError",
+        linehl = "",
+        numhl = "",
       },
-      floating = {
-        max_height = nil,
-        max_width = nil,
-        border = "single",
+      stopped = {
+        text = "",
+        texthl = "DiagnosticSignWarn",
+        linehl = "Visual",
+        numhl = "DiagnosticSignWarn",
+      },
+      log = {
+        level = "info",
+      },
+      ui = {
+        icons = { expanded = "", collapsed = "", current_frame = "" },
         mappings = {
-          ["close"] = { "q", "<Esc>" },
+          -- Use a table to apply multiple mappings
+          expand = { "<CR>", "<2-LeftMouse>" },
+          open = "o",
+          remove = "d",
+          edit = "e",
+          repl = "r",
+          toggle = "t",
         },
-      },
-      controls = {
-        enabled = vim.fn.exists("+winbar") == 1,
-        element = "repl",
-        icons = {
-          pause = "",
-          play = "",
-          step_into = "",
-          step_over = "",
-          step_out = "",
-          step_back = "",
-          run_last = "",
-          terminate = "",
-          disconnect = "",
+        element_mappings = {},
+        expand_lines = true,
+        force_buffers = true,
+        layouts = {
+          {
+            -- You can change the order of elements in the sidebar
+            elements = {
+              -- Provide IDs as strings or tables with "id" and "size" keys
+              {
+                id = "scopes",
+                size = 0.25, -- Can be float or integer > 1
+              },
+              { id = "breakpoints", size = 0.25 },
+              { id = "stacks", size = 0.25 },
+              { id = "watches", size = 0.25 },
+            },
+            size = 40,
+            position = "left", -- Can be "left" or "right"
+          },
+          {
+            elements = {
+              { id = "repl", size = 0.45 },
+              { id = "console", size = 0.55 },
+            },
+            size = 9,
+            position = "bottom", -- Can be "bottom" or "top"
+          },
         },
-      },
-      render = {
-        max_type_length = nil, -- Can be integer or nil.
-        max_value_lines = 100, -- Can be integer or nil.
-        indent = 1,
+        floating = {
+          max_height = nil,
+          max_width = nil,
+          border = "single",
+          mappings = {
+            ["close"] = { "q", "<Esc>" },
+          },
+        },
+        controls = {
+          enabled = true,
+          element = "repl",
+          icons = {
+            pause = "",
+            play = "",
+            step_into = "",
+            step_over = "",
+            step_out = "",
+            step_back = "",
+            run_last = "",
+            terminate = "",
+            disconnect = "",
+          },
+        },
+        -- windows = { indent = 1 },
+        render = {
+          max_type_length = nil, -- Can be integer or nil.
+          max_value_lines = 100, -- Can be integer or nil.
+          indent = 1,
+        },
       },
     }
   end,
   config = function(_, opts)
     local dap = require("dap")
-    dap.adapters["pwa-node"] = {
-      type = "server",
-      host = "localhost",
-      port = "${port}",
-      executable = {
-        command = "node",
-        -- args = {"/path/to/js-debug/src/dapDebugServer.js", "${port}"},
-      }
+    vim.fn.sign_define("DapBreakpoint", opts.breakpoint)
+    vim.fn.sign_define("DapBreakpointRejected", opts.breakpoint_rejected)
+    vim.fn.sign_define("DapStopped", opts.stopped)
+
+    -- require("dap-python").setup(vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python")
+    require("dap-python").setup("/usr/local/bin/python3.11") -- use global pip
+    -- require("dap-python").setup("~/.virtualenvs/debugpy/bin/python")
+
+    local dapui = require("dapui")
+    dap.adapters.node2 = {
+      type = "executable",
+      command = "node-debug2-adapter",
+      args = {},
     }
 
-    dap.configurations.javascript = {
-      {
-        type = "pwa-node",
-        request = "launch",
-        name = "Launch file",
-        program = "${file}",
-        cwd = "${workspaceFolder}",
+    for _, language in ipairs({ "javascript", "typescript" }) do
+      dap.configurations[language] = {
+        {
+          type = "node2",
+          name = "Launch",
+          request = "launch",
+          program = "${file}",
+          cwd = vim.fn.getcwd(),
+          sourceMaps = true,
+          protocol = "inspector",
+          console = "integratedTerminal",
+        },
+        {
+          type = "node2",
+          name = "Attach",
+          request = "attach",
+          program = "${file}",
+          cwd = vim.fn.getcwd(),
+          sourceMaps = true,
+          protocol = "inspector",
+          console = "integratedTerminal",
+        },
       }
-    }
-    local dapui = require("dapui")
-    dapui.setup(opts)
+    end
+
+    dapui.setup(opts.ui)
     dap.listeners.after.event_initialized["dapui_config"] = function()
       dapui.open({})
     end
