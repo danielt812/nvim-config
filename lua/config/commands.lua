@@ -13,3 +13,7 @@ end, {})
 vim.api.nvim_create_user_command("ToggleSpell", function()
   require("utils.toggle").toggle_spell()
 end, {})
+
+vim.api.nvim_create_user_command("ToggleWrap", function()
+  require("utils.toggle").toggle_wrap()
+end, {})

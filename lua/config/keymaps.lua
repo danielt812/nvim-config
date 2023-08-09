@@ -8,13 +8,13 @@ end
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
--- Move to window using the <cmd> + hjkl keys
+-- Move to window/tmux pane using the <ctl> + hjkl keys
 map("n", "<C-h>", "<C-w>h", { desc = "Go to left window", remap = true })
 map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })
 map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
 map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
 
--- Resize window using <cmd> + arrow keys
+-- Resize window using <alt> + arrow keys
 map("n", "<A-Up>", "<cmd>resize +2<CR>", { desc = "Increase window height" })
 map("n", "<A-Down>", "<cmd>resize -2<CR>", { desc = "Decrease window height" })
 map("n", "<A-Left>", "<cmd>vertical resize -2<CR>", { desc = "Decrease window width" })
