@@ -1,7 +1,7 @@
 return {
   {
     "folke/which-key.nvim",
-    event = "VeryLazy",
+    event = { "BufReadPost" },
     init = function()
       vim.o.timeout = true
       vim.o.timeoutlen = 0
@@ -106,12 +106,12 @@ return {
           -- expr = false,   -- use `expr` when creating keymaps
         },
         mappings = {
-          ["."] = { "<cmd>lua vim.lsp.buf.format()<CR>", "Format 󰘞 " },
-          [";"] = { "<cmd>Alpha<CR>", "Dashboard 󱒉 " },
-          ["c"] = { "<cmd>BufferClose<CR>", "Close Buffer   " },
-          ["e"] = { "<cmd>NvimTreeToggle<CR>", "Explorer 󰙅 " },
-          ["h"] = { "<cmd>nohlsearch<CR>", "Clear Highlight 󰹊 " },
-          ["/"] = { name = "+Comment  " },
+          -- ["."] = { "<cmd>lua vim.lsp.buf.format()<CR>", "Format 󰘞 " },
+          -- [";"] = { "<cmd>Alpha<CR>", "Dashboard 󱒉 " },
+          -- ["c"] = { "<cmd>BufferClose<CR>", "Close Buffer   " },
+          -- ["e"] = { "<cmd>NvimTreeToggle<CR>", "Explorer 󰙅 " },
+          -- ["h"] = { "<cmd>nohlsearch<CR>", "Clear Highlight 󰹊 " },
+          -- ["/"] = { name = "+Comment  " },
           ["b"] = {
             name = "+Buffer  ",
             g = { name = "+GoTo  " },

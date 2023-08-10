@@ -1,6 +1,6 @@
 return {
   "rcarriga/nvim-notify",
-  event = { "VeryLazy" },
+  event = { "BufReadPre" },
   opts = function()
     return {
       level = vim.log.levels.INFO,

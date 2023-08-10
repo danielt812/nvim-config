@@ -1,6 +1,6 @@
 return {
   "declancm/cinnamon.nvim",
-  event = { "BufEnter" },
+  event = { "BufRead" },
   opts = function()
     return {
       -- KEYMAPS:

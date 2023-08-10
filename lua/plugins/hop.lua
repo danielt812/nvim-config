@@ -1,6 +1,6 @@
 return {
   "phaazon/hop.nvim",
-  event = { "BufEnter" },
+  event = { "BufReadPre" },
   opts = function()
     return {
       keys = "asdghklqwertyuiopzxcvbnmfj",

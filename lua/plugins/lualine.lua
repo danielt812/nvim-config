@@ -1,6 +1,6 @@
 return {
   "nvim-lualine/lualine.nvim",
-  event = "VeryLazy",
+  event = { "BufReadPre" },
   opts = function()
     local hide_in_width = function()
       return vim.fn.winwidth(0) > 80
@@ -47,8 +47,6 @@ return {
       padding = 1,
     }
 
-    local lspstatus = {}
-
     -- local progress = function()
     --   local current_line = vim.fn.line(".")
     --   local total_lines = vim.fn.line("$")
@@ -57,14 +55,6 @@ return {
     --   local index = math.ceil(line_ratio * #chars)
     --   return chars[index]
     -- end
-
-    local progress = {
-      "progress",
-      fmt = function()
-        return "%P/%L"
-      end,
-      color = {},
-    }
 
     local spaces = function()
       return "󰌒 " .. vim.api.nvim_buf_get_option(0, "shiftwidth")

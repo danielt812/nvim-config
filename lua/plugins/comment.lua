@@ -1,6 +1,6 @@
 return {
   "numToStr/Comment.nvim",
-  event = { "VeryLazy" },
+  event = { "BufReadPost" },
   opts = function()
     return {
       ---Add a space b/w comment and the line
@@ -47,16 +47,5 @@ return {
   end,
   config = function(_, opts)
     require("Comment").setup(opts)
-
-    local map = function(mode, lhs, rhs, key_opts)
-      key_opts = key_opts or {}
-      key_opts.silent = true
-      vim.keymap.set(mode, lhs, rhs, key_opts)
-    end
-
-    map("n", "<leader>/l", "<Plug>(comment_toggle_linewise_current)", { desc = "Linewise" })
-    map("n", "<leader>/b", "<Plug>(comment_toggle_blockwise_current)", { desc = "Blockwise" })
-    map("x", "<leader>/l", "<Plug>(comment_toggle_linewise_visual)", { desc = "Linewise" })
-    map("x", "<leader>/b", "<Plug>(comment_toggle_blockwise_visual)", { desc = "Blockwise" })
   end,
 }

@@ -16,7 +16,7 @@ require("lazy").setup({
   spec = {
     { import = "colorschemes" },
     { import = "plugins" },
-    { "mg979/vim-visual-multi", event = { "BufEnter" } },
+    { "mg979/vim-visual-multi", event = { "BufReadPre" } },
   },
   change_detection = {
     enabled = true,

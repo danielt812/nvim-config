@@ -4,7 +4,7 @@ return {
     "mfussenegger/nvim-dap",
     "mfussenegger/nvim-dap-python",
   },
-  event = { "VeryLazy" },
+  event = { "BufRead" },
   opts = function()
     return {
       active = true,

@@ -1,6 +1,5 @@
 return {
   "folke/twilight.nvim",
-  event = { "BufReadPost" },
   cmd = { "Twilight", "TwilightEnable", "TwilightEnable" },
   opts = function()
     return {
@@ -26,15 +25,5 @@ return {
   end,
   config = function(_, opts)
     require("twilight").setup(opts)
-
-    local function map(mode, lhs, rhs, key_opts)
-      lhs = "<leader>t" .. lhs
-      rhs = "<cmd>" .. rhs .. "<CR>"
-      key_opts = key_opts or {}
-      key_opts.silent = key_opts.silent ~= false
-      vim.keymap.set(mode, lhs, rhs, key_opts)
-    end
-
-    map("n", "i", "Twilight", { desc = "Twilight 󰖚 " })
   end,
 }

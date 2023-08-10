@@ -1,6 +1,6 @@
 return {
   "akinsho/git-conflict.nvim",
-  event = { "VeryLazy" },
+  event = { "BufRead" },
   opts = function()
     return {
       default_mappings = false, -- disable buffer local mapping created by this plugin

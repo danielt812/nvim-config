@@ -3,7 +3,6 @@ return {
   dependencies = {
     "nvim-tree/nvim-web-devicons",
   },
-  event = { "BufEnter" },
   cmd = { "NvimTreeToggle", "NvimTreeOpen", "NvimTreeFocus", "NvimTreeFindFileToggle" },
   opts = function()
     local function on_attach(bufnr)
@@ -261,15 +260,5 @@ return {
   end,
   config = function(_, opts)
     require("nvim-tree").setup(opts)
-
-    local function map(mode, lhs, rhs, key_opts)
-      lhs = "<leader>t" .. lhs
-      rhs = "<cmd>" .. rhs .. "<CR>"
-      key_opts = key_opts or {}
-      key_opts.silent = key_opts.silent ~= false
-      vim.keymap.set(mode, lhs, rhs, key_opts)
-    end
-
-    map("n", "e", "NvimTreeToggle", { desc = "Explorer 󰙅 " })
   end,
 }

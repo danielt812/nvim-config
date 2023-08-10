@@ -1,7 +1,7 @@
 return {
   "akinsho/bufferline.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons" },
-  event = { "BufEnter" },
+  event = { "BufRead" },
   opts = function()
     local function is_ft(b, ft)
       return vim.bo[b].filetype == ft

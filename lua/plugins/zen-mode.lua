@@ -1,6 +1,5 @@
 return {
   "folke/zen-mode.nvim",
-  event = { "BufReadPost" },
   cmd = { "ZenMode" },
   opts = function()
     return {
@@ -62,15 +61,5 @@ return {
   end,
   config = function(_, opts)
     require("zen-mode").setup(opts)
-
-    local function map(mode, lhs, rhs, key_opts)
-      lhs = "<leader>t" .. lhs
-      rhs = "<cmd>" .. rhs .. "<CR>"
-      key_opts = key_opts or {}
-      key_opts.silent = key_opts.silent ~= false
-      vim.keymap.set(mode, lhs, rhs, key_opts)
-    end
-
-    map("n", "z", "ZenMode", { desc = "Zen Mode 󱅼 " })
   end,
 }
