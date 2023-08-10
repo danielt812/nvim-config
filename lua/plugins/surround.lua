@@ -2,7 +2,6 @@ return {
   "kylechui/nvim-surround",
   event = { "BufEnter" },
   opts = function()
-    local M = require("nvim-surround")
     return {
       keymaps = {
         insert = "<C-g>s",
@@ -29,5 +28,20 @@ return {
   end,
   config = function(_, opts)
     require("nvim-surround").setup(opts)
+
+    local function map(mode, lhs, rhs, key_opts)
+      key_opts = key_opts or {}
+      key_opts.silent = key_opts.silent ~= false
+      vim.keymap.set(mode, lhs, rhs, key_opts)
+    end
+
+    map("n", "ys", "<Plug>(nvim-surround-normal)", { desc = "Add surround" })
+    map("n", "yss", "<Plug>(nvim-surround-normal-cur)", { desc = "Add surround around line" })
+    map("n", "yS", "<Plug>(nvim-surround-normal-line)", { desc = "Add surround vertical" })
+    map("n", "ySS", "<Plug>(nvim-surround-normal-cur-line)", { desc = "Add surround around line on new lines" })
+    map("v", "S", "<Plug>(nvim-surround-visual)", { desc = "Add surround" })
+    map("v", "gS", "<Plug>(nvim-surround-visual-line)", { desc = "Add surround vertical" })
+    map("n", "cs", "<Plug>(nvim-surround-change)", { desc = "Change surround" })
+    map("n", "ds", "<Plug>(nvim-surround-delete)", { desc = "Delete surround" })
   end,
 }

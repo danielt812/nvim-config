@@ -137,5 +137,55 @@ return {
   end,
   config = function(_, opts)
     require("spectre").setup(opts)
+
+    local map = function(mode, lhs, rhs, key_opts)
+      lhs = "<leader>r" .. lhs
+      rhs = "<cmd>lua require('spectre')." .. rhs .. "<CR>"
+      key_opts = key_opts or {}
+      key_opts.silent = true
+      vim.keymap.set(mode, lhs, rhs, key_opts)
+    end
+
+    -- +Search
+    map("n", "f", "open_file_search()", { desc = "File 󰱽  " })
+    map("n", "p", "open_visual()", { desc = "Project   " })
+    -- +Word
+    map("n", "wf", "open_file_search({select_word=true})", { desc = "File 󰱽 " })
+    map("n", "wp", "open_visual({select_word=true})", { desc = "Project   " })
+
+    -- local unmap = function(mode, lhs)
+    --   lhs = "<leader>r" .. lhs
+    --   vim.api.nvim_del_keymap(mode, lhs)
+    -- end
+
+    -- vim.api.nvim_create_autocmd({ "Filetype", "BufEnter" }, {
+    --   group = vim.api.nvim_create_augroup("SpectreBufEnter", { clear = true }),
+    --   pattern = "*",
+    --   callback = function()
+    --     if vim.api.nvim_buf_get_option(vim.api.nvim_get_current_buf(), "filetype") == "spectre_panel" then
+    --       -- +Search
+    --       unmap("n", "f")
+    --       unmap("n", "p")
+    --       -- +Word
+    --       unmap("n", "wf")
+    --       unmap("n", "wp")
+    --     end
+    --   end,
+    -- })
+    --
+    -- vim.api.nvim_create_autocmd("BufLeave", {
+    --   group = vim.api.nvim_create_augroup("SpectreBufLeave", { clear = true }),
+    --   pattern = "*",
+    --   callback = function()
+    --     if vim.api.nvim_buf_get_option(vim.api.nvim_get_current_buf(), "filetype") == "spectre_panel" then
+    --       -- +Search
+    --       map("n", "f", "open_file_search()", { desc = "File 󰱽  " })
+    --       map("n", "p", "open_visual()", { desc = "Project   " })
+    --       -- +Word
+    --       map("n", "wf", "open_file_search({select_word=true})", { desc = "File 󰱽 " })
+    --       map("n", "wp", "open_visual({select_word=true})", { desc = "Project  " })
+    --     end
+    --   end,
+    -- })
   end,
 }

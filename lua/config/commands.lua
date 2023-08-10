@@ -1,4 +1,4 @@
-vim.api.nvim_create_user_command("BufferKill", function()
+vim.api.nvim_create_user_command("BufferClose", function()
   require("utils.buf_kill").buf_kill("bd")
 end, { force = true })
 
@@ -16,4 +16,8 @@ end, {})
 
 vim.api.nvim_create_user_command("ToggleWrap", function()
   require("utils.toggle").toggle_wrap()
+end, {})
+
+vim.api.nvim_create_user_command("ToggleDiagnostic", function()
+  require("utils.toggle").toggle_diagnostic()
 end, {})

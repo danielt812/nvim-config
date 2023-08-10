@@ -7,6 +7,33 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
   end,
 })
 
+local resize_splits_group = vim.api.nvim_create_augroup("resize_splits", { clear = true })
+vim.api.nvim_create_autocmd({ "VimResized" }, {
+  group = resize_splits_group,
+  desc = "Resize Splits",
+  callback = function()
+    vim.cmd("tabdo wincmd =")
+  end,
+})
+
+local last_loc_group = vim.api.nvim_create_augroup("last_loc", { clear = true })
+vim.api.nvim_create_autocmd("BufReadPost", {
+  group = last_loc_group,
+  desc = "Buffer Last Location",
+  callback = function()
+    local exclude = { "gitcommit" }
+    local buf = vim.api.nvim_get_current_buf()
+    if vim.tbl_contains(exclude, vim.bo[buf].filetype) then
+      return
+    end
+    local mark = vim.api.nvim_buf_get_mark(buf, '"')
+    local lcount = vim.api.nvim_buf_line_count(buf)
+    if mark[1] > 0 and mark[1] <= lcount then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
+  end,
+})
+
 local buffer_options_group = vim.api.nvim_create_augroup("buffer_options", { clear = true })
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   group = buffer_options_group,
@@ -41,6 +68,7 @@ vim.api.nvim_create_autocmd({ "ColorScheme" }, {
   group = illuminate_highlight_group,
   desc = "Set Illuminate Highlight on colorscheme change",
   callback = function()
+    vim.api.nvim_set_hl(0, "IlluminatedWord", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "IlluminatedWordText", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "Underlined" })
@@ -62,7 +90,10 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
   group = illuminate_highlight_group,
   desc = "Set Illuminate Highlight on BufEnter",
   callback = function()
-    vim.api.nvim_set_hl(0, "illuminatedWord", { link = "Underlined" })
+    vim.api.nvim_set_hl(0, "IlluminatedWord", { link = "Underlined" })
+    vim.api.nvim_set_hl(0, "IlluminatedWordText", { link = "Underlined" })
+    vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "Underlined" })
+    vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "Underlined" })
   end,
 })
 

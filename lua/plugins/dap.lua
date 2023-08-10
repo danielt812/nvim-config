@@ -112,6 +112,7 @@ return {
     -- require("dap-python").setup("~/.virtualenvs/debugpy/bin/python")
 
     local dapui = require("dapui")
+
     dap.adapters.node2 = {
       type = "executable",
       command = "node-debug2-adapter",
@@ -144,6 +145,7 @@ return {
     end
 
     dapui.setup(opts.ui)
+
     dap.listeners.after.event_initialized["dapui_config"] = function()
       dapui.open({})
     end
@@ -153,5 +155,30 @@ return {
     dap.listeners.before.event_exited["dapui_config"] = function()
       dapui.close({})
     end
+
+    local function map(mode, lhs, rhs, key_opts)
+      lhs = "<leader>d" .. lhs
+      rhs = "<cmd>lua require('dap')." .. rhs .. "<CR>"
+      key_opts = key_opts or {}
+      key_opts.silent = key_opts.silent ~= false
+      vim.keymap.set(mode, lhs, rhs, key_opts)
+    end
+
+    map("n", "sb", "step_back()", { desc = "Back  " })
+    map("n", "si", "step_into()", { desc = "Into  " })
+    map("n", "sv", "step_over()", { desc = "Over  " })
+    map("n", "so", "step_out()", { desc = "Out  " })
+
+    map("n", "rt", "repl.toggle()", { desc = "Toggle Repl  " })
+    map("n", "rr", "repl.toggle()", { desc = "Run Last  " })
+
+    map("n", "b", "toggle_breakpoint()", { desc = "Breakpoint  " })
+    map("n", "c", "continue()", { desc = "Continue  " })
+    map("n", "p", "pause()", { desc = "Pause  " })
+    map("n", "q", "close()", { desc = "Quit  " })
+    map("n", "t", "toggle({reset = true})", { desc = "Toggle DAP  " })
+    -- map("n", "C", "run_to_cursor()", { desc = "Run To Cursor 󰆿 " })
+    -- map("n", "d", "disconnect()", { desc = "Disconnect  " })
+    -- map("n", "s", "session()", { desc = "" })
   end,
 }

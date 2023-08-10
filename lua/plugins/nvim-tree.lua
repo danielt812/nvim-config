@@ -3,11 +3,11 @@ return {
   dependencies = {
     "nvim-tree/nvim-web-devicons",
   },
+  event = { "BufEnter" },
   cmd = { "NvimTreeToggle", "NvimTreeOpen", "NvimTreeFocus", "NvimTreeFindFileToggle" },
   opts = function()
     local function on_attach(bufnr)
       local api = require("nvim-tree.api")
-      local telescope = require("telescope.builtin")
 
       local function keyopts(desc)
         return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
@@ -27,8 +27,6 @@ return {
       map("v", api.node.open.vertical, keyopts("Open: Vertical Split"))
       map("h", api.node.navigate.parent_close, keyopts("Close Directory"))
       map("C", api.tree.change_root_to_node, keyopts("CD"))
-      map("G", telescope.live_grep, keyopts("Telescope Live Grep"))
-      map("F", telescope.find_files, keyopts("Telescope Find File"))
       map("q", "<cmd>NvimTreeClose<CR>", keyopts("Close Explorer"))
     end
 
@@ -263,5 +261,15 @@ return {
   end,
   config = function(_, opts)
     require("nvim-tree").setup(opts)
+
+    local function map(mode, lhs, rhs, key_opts)
+      lhs = "<leader>t" .. lhs
+      rhs = "<cmd>" .. rhs .. "<CR>"
+      key_opts = key_opts or {}
+      key_opts.silent = key_opts.silent ~= false
+      vim.keymap.set(mode, lhs, rhs, key_opts)
+    end
+
+    map("n", "e", "NvimTreeToggle", { desc = "Explorer 󰙅 " })
   end,
 }

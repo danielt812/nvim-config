@@ -15,21 +15,7 @@ return {
   },
   opts = function()
     return {
-      ensure_installed = {
-        "bash",
-        "javascript",
-        "lua",
-        "markdown",
-        "markdown_inline",
-        "python",
-        "regex",
-        "scss",
-        "toml",
-        "tsx",
-        "typescript",
-        "vim",
-      },
-
+      ensure_installed = require("parsers"),
       -- Install parsers synchronously (only applied to `ensure_installed`)
       sync_install = false,
 

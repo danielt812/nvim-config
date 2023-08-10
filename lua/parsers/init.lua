@@ -1,0 +1,15 @@
+return {
+  "bash",
+  "css",
+  "javascript",
+  "lua",
+  "markdown",
+  "markdown_inline",
+  "python",
+  "regex",
+  "scss",
+  "toml",
+  "tsx",
+  "typescript",
+  "vim",
+}

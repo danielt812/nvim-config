@@ -62,8 +62,7 @@ return {
           end
         end
       end
-    else
-      -- Open Alpha if no buffers left
+    elseif #buffers == 1 and #windows > 0 then
       vim.cmd("Alpha")
     end
 

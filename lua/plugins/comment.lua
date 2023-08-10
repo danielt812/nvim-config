@@ -33,7 +33,6 @@ return {
         eol = "gcA",
       },
       ---Enable keybindings
-      ---NOTE: If given `false` then the plugin won't create any mappings
       mappings = {
         ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
         basic = true,
@@ -47,6 +46,17 @@ return {
     }
   end,
   config = function(_, opts)
-    require("Comment").setup(_, opts)
+    require("Comment").setup(opts)
+
+    local map = function(mode, lhs, rhs, key_opts)
+      key_opts = key_opts or {}
+      key_opts.silent = true
+      vim.keymap.set(mode, lhs, rhs, key_opts)
+    end
+
+    map("n", "<leader>/l", "<Plug>(comment_toggle_linewise_current)", { desc = "Linewise" })
+    map("n", "<leader>/b", "<Plug>(comment_toggle_blockwise_current)", { desc = "Blockwise" })
+    map("x", "<leader>/l", "<Plug>(comment_toggle_linewise_visual)", { desc = "Linewise" })
+    map("x", "<leader>/b", "<Plug>(comment_toggle_blockwise_visual)", { desc = "Blockwise" })
   end,
 }

@@ -50,23 +50,32 @@ return {
     capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
     local function lsp_keymaps(bufnr)
-      local function key_opts(desc)
-        return { desc = desc, noremap = true, silent = true }
+      local function map(mode, lhs, rhs, key_opts)
+        rhs = "<cmd>lua vim.lsp.buf." .. rhs .. "<CR>"
+        key_opts = key_opts or {}
+        key_opts.silent = key_opts.silent ~= false
+        key_opts.buffer = bufnr
+        vim.keymap.set(mode, lhs, rhs, key_opts)
       end
 
-      local function map(key, cmd, desc)
-        return vim.api.nvim_buf_set_keymap(bufnr, "n", key, cmd, desc)
-      end
+      map("n", "K", "hover()", { desc = "Show Hover" })
+      map("n", "gA", "code_action()", { desc = "Code Action" })
+      map("n", "gD", "declaration()", { desc = "Go to Declaration" })
+      map("n", "gR", "rename()", { desc = "Rename Definition" })
+      map("n", "gd", "definition()", { desc = "Go to Definition" })
+      map("n", "gi", "implementation()", { desc = "Go to Implementation" })
+      map("n", "gr", "references()", { desc = "Go to References" })
+      map("n", "gt", "type_definition()", { desc = "Go to Type Definition" })
 
-      map("K", "<cmd>lua vim.lsp.buf.hover()<CR>", key_opts("Show Hover"))
-      map("gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", key_opts("Go to Declaration"))
-      map("gd", "<cmd>lua vim.lsp.buf.definition()<CR>", key_opts("Go to Definition"))
-      map("gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", key_opts("Go to Type Definition"))
-      map("gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", key_opts("Go to Implementation"))
-      map("gr", "<cmd>lua vim.lsp.buf.references()<CR>", key_opts("Go to References"))
-      map("gl", "<cmd>lua vim.diagnostic.open_float()<CR>", key_opts("Open Float"))
-      map("gR", "<cmd>lua vim.lsp.buf.rename()<CR>", key_opts("Rename Definition"))
-      map("gA", "<cmd>lua vim.lsp.buf.code_action()<CR>", key_opts("Code Action"))
+      map("n", "<leader>laA", "code_action()", { desc = "Code Action  " })
+      map("n", "<leader>laf", "format()", { desc = "Format 󰘞 " })
+      map("n", "<leader>laD", "declaration()", { desc = "Go to Declaration " })
+      map("n", "<leader>laR", "rename()", { desc = "Rename Definition  " })
+      map("n", "<leader>lad", "definition()", { desc = "Go to Definition 󰊕 " })
+      map("n", "<leader>lah", "hover()", { desc = "Show Hover  " })
+      map("n", "<leader>lai", "implementation()", { desc = "Go to Implementation" })
+      map("n", "<leader>lar", "references()", { desc = "Go to References" })
+      map("n", "<leader>lat", "type_definition()", { desc = "Go to Type Definition  " })
     end
 
     local on_attach = function(_, bufnr)

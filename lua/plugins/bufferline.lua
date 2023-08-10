@@ -100,5 +100,30 @@ return {
   end,
   config = function(_, opts)
     require("bufferline").setup(opts)
+
+    local function map(mode, lhs, rhs, key_opts)
+      lhs = "<leader>b" .. lhs
+      rhs = "<cmd>" .. rhs .. "<CR>"
+      key_opts = key_opts or {}
+      key_opts.silent = key_opts.silent ~= false
+      vim.keymap.set(mode, lhs, rhs, key_opts)
+    end
+
+    map("n", "p", "BufferLineTogglePin", { desc = "Pin  " })
+    -- +Go to
+    map("n", "gl", "BufferLineCycleNext", { desc = "Next 󰮱 " })
+    map("n", "gh", "BufferLineCyclePrev", { desc = "Prev 󰮳 " })
+    map("n", "gp", "BufferLinePick", { desc = "Pick  " })
+    -- +Close
+    map("n", "cc", "BufferClose", { desc = "Current  " })
+    map("n", "ch", "BufferLineCloseLeft", { desc = "Left 󰳞 " })
+    map("n", "cp", "BufferLinePickClose", { desc = "Prev  " })
+    map("n", "cl", "BufferLineCloseRight", { desc = "Right 󰳠 " })
+    map("n", "co", "BufferLineCloseOthers", { desc = "Others  " })
+    map("n", "cp", "BufferLinePickClose pinned", { desc = "Pinned 󰤱 " })
+    map("n", "cu", "BufferLinePickClose ungrouped", { desc = "Unpinned 󰤰 " })
+    -- +Sort
+    map("n", "sd", "BufferLineSortByDirectory", { desc = "Directory   " })
+    map("n", "sl", "BufferLineSortByExtension", { desc = "Language  " })
   end,
 }

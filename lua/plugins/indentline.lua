@@ -11,6 +11,10 @@ return {
       buftype_exclude = { "terminal", "nofile" },
       filetype_exclude = {
         "help",
+        "alpha",
+        "lazy",
+        "mason",
+        "notify",
         "NvimTree",
       },
       space_char_blankline = " ",

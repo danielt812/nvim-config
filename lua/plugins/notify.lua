@@ -27,5 +27,6 @@ return {
   config = function(_, opts)
     require("notify").setup(opts)
     vim.notify = require("notify")
+    require("telescope").load_extension("notify")
   end,
 }

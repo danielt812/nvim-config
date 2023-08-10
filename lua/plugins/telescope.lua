@@ -1,5 +1,6 @@
 return {
   "nvim-telescope/telescope.nvim",
+  event = { "VeryLazy" },
   cmd = { "Telescope" },
   dependencies = {
     "nvim-lua/plenary.nvim",
@@ -11,7 +12,7 @@ return {
         prompt_prefix = " ",
         selection_caret = " ",
         path_display = { "smart" },
-        file_ignore_patterns = { ".git/", ".DS_Store", "node_modules", ".xlsx", ".png" },
+        file_ignore_patterns = { ".git/", ".DS_Store", "node_modules", ".xlsx", ".png", "CHANGELOG.md" },
         mappings = {
           i = {
             ["<C-n>"] = actions.cycle_history_next,
@@ -77,5 +78,41 @@ return {
   end,
   config = function(_, opts)
     require("telescope").setup(opts)
+
+    local map = function(mode, lhs, rhs, key_opts)
+      lhs = "<leader>" .. lhs
+      rhs = "<cmd>Telescope " .. rhs .. "<CR>"
+      key_opts = key_opts or {}
+      key_opts.silent = true
+      vim.keymap.set(mode, lhs, rhs, key_opts)
+    end
+
+    -- +Find
+    map("n", "fb", "git_branches", { desc = "Checkout Branch " })
+    map("n", "fc", "colorscheme", { desc = "Colorscheme " })
+    map("n", "fd", "commands", { desc = "Commands " })
+    map("n", "ff", "find_files", { desc = "File 󰱽" })
+    map("n", "fg", "live_grep", { desc = "Grep " })
+    map("n", "fh", "help_tags", { desc = "Help 󰘥" })
+    map("n", "fH", "highlights", { desc = "Highlight Groups 󰸱" })
+    map("n", "fk", "keymaps", { desc = "Keymaps " })
+    map("n", "fl", "resume", { desc = "Resume Last Search " })
+    map("n", "fm", "man_pages", { desc = "Man Pages 󱗖" })
+    map("n", "fr", "oldfiles", { desc = "Recent File " })
+    map("n", "fR", "registers", { desc = "Registers " })
+    map("n", "fs", "spell_suggest", { desc = "Spelling Suggestions 󰓆" })
+    map("n", "ft", "grep_string", { desc = "Text " })
+
+    -- +LSP -> +Find
+    map("n", "lfb", "diagnostics bufnr=0", { desc = "Buffer Diagnostics  " })
+    map("n", "lfd", "diagnostics", { desc = "Diagnostics  " })
+    map("n", "lfe", "lsp_definitions", { desc = "Definitions  " })
+    map("n", "lfq", "quickfix", { desc = "Quickfix   " })
+    map("n", "lfr", "lsp_references", { desc = "References  " })
+    map("n", "lfu", "lsp_document_symbols", { desc = "Document Symbols 󱪚 " })
+    map("n", "lfw", "lsp_dynamic_workspace_symbols", { desc = "Workspace Symbols 󱈹 " })
+
+    -- +Buffer -> +Find
+    map("n", "bgf", "Telescope buffers previewer=true", { desc = "Find  " })
   end,
 }
