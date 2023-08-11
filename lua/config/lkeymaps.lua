@@ -111,13 +111,13 @@ map("n", "<leader>lfr", "<cmd>Telescope lsp_references<CR>", { desc = "Reference
 map("n", "<leader>lfu", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "Document Symbols 󱪚 " })
 map("n", "<leader>lfw", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", { desc = "Workspace Symbols 󱈹 " })
 
--- Which-Key DAP
 map("n", "<leader>bgf", "<cmd>Telescope buffers previewer=true<CR>", { desc = "Find  " })
 
+-- Which-Key DAP
 map("n", "<leader>dsb", "<cmd>lua require('dap').step_back()<CR>", { desc = "Back  " })
 map("n", "<leader>dsi", "<cmd>lua require('dap').step_into()<CR>", { desc = "Into  " })
-map("n", "<leader>dsv", "<cmd>lua require('dap').step_over()<CR>", { desc = "Over  " })
-map("n", "<leader>dso", "<cmd>lua require('dap').step_out()<CR>", { desc = "Out  " })
+map("n", "<leader>dso", "<cmd>lua require('dap').step_over()<CR>", { desc = "Over  " })
+map("n", "<leader>dst", "<cmd>lua require('dap').step_out()<CR>", { desc = "Out  " })
 
 map("n", "<leader>drt", "<cmd>lua require('dap').repl.toggle()<CR>", { desc = "Toggle Repl  " })
 map("n", "<leader>drr", "<cmd>lua require('dap').repl.toggle()<CR>", { desc = "Run Last  " })
