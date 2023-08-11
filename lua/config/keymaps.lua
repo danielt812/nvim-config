@@ -39,6 +39,9 @@ map("n", "]b", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
 -- Toggle Join/Split
 map("n", "J", "<cmd>TSJToggle<CR>", { desc = "Join/Split" })
 
+-- Toggle Term
+map({ "n", "t" }, "<C-/>", "<cmd>ToggleTerm<CR>", { desc = "Toggle Terminal", remap = true })
+
 -- Clear search with <esc>
 map({ "n", "i" }, "<esc>", "<cmd>nohlsearch<CR><esc>", { desc = "Escape and clear hlsearch" })
 

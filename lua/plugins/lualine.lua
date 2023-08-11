@@ -47,7 +47,7 @@ return {
       padding = 1,
     }
 
-    -- local progress = function()
+    -- local progressbar = function()
     --   local current_line = vim.fn.line(".")
     --   local total_lines = vim.fn.line("$")
     --   local chars = { "__", "▁▁", "▂▂", "▃▃", "▄▄", "▅▅", "▆▆", "▇▇", "██" }
@@ -55,6 +55,15 @@ return {
     --   local index = math.ceil(line_ratio * #chars)
     --   return chars[index]
     -- end
+
+    local progress = {
+      "progress",
+      fmt = function()
+        return "%P"
+        -- return "%P/%L"
+      end,
+      color = {},
+    }
 
     local spaces = function()
       return "󰌒 " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
@@ -81,7 +90,7 @@ return {
         lualine_c = {},
         lualine_x = { diff, spaces, "encoding", filetype },
         lualine_y = { location },
-        lualine_z = { "progress" },
+        lualine_z = { progress },
       },
       -- inactive_sections = {
       --   lualine_a = {},

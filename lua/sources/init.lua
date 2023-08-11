@@ -1,8 +1,9 @@
 -- Formatters/Linters
 return {
+  "beautysh",
   "black",
-  "prettierd",
-  "stylua",
   "flake8",
+  "prettierd",
   "selene",
+  "stylua",
 }

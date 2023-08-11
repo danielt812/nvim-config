@@ -22,9 +22,24 @@ return {
             "--single-attribute-per-line",
           },
         }),
-        formatting.black.with({ extra_args = { "--fast" } }),
+        formatting.beautysh.with({
+          extra_args = {
+            "--indent-size",
+            "2",
+            "--force-function-style",
+            "paronly", -- fnpar: function foo(), fnonly: function foo, paronly: foo()
+          },
+        }),
+        formatting.shellharden,
+        formatting.black.with({
+          extra_args = {
+            "--fast",
+          },
+        }),
         formatting.stylua.with({
-          extra_args = { "--config-path=stylua.toml" },
+          extra_args = {
+            "--config-path=stylua.toml",
+          },
         }),
         diagnostics.flake8,
         diagnostics.selene,

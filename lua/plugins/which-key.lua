@@ -120,8 +120,9 @@ return {
           },
           ["d"] = {
             name = "+Debug  ",
-            ["s"] = { name = "+Step" },
-            ["r"] = { name = "+Repl" },
+            ["a"] = { name = "+Adapters  " },
+            ["s"] = { name = "+Step  " },
+            ["r"] = { name = "+Repl  " },
           },
           ["f"] = {
             name = "+Telescope  ",

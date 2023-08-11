@@ -32,22 +32,22 @@ map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Explorer 󰙅 " })
 map("n", "<leader>/", "<Plug>(comment_toggle_linewise_current)", { desc = "Comment  " })
 
 -- Which-Key Buffers
-map("n", "bp", "<cmd>BufferLineTogglePin<CR>", { desc = "Pin  " })
+map("n", "<leader>bp", "<cmd>BufferLineTogglePin<CR>", { desc = "Pin  " })
 
-map("n", "bgl", "<cmd>BufferLineCycleNext<CR>", { desc = "Next 󰮱 " })
-map("n", "bgh", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev 󰮳 " })
-map("n", "bgp", "<cmd>BufferLinePick<CR>", { desc = "Pick  " })
+map("n", "<leader>bgl", "<cmd>BufferLineCycleNext<CR>", { desc = "Next 󰮱 " })
+map("n", "<leader>bgh", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev 󰮳 " })
+map("n", "<leader>bgp", "<cmd>BufferLinePick<CR>", { desc = "Pick  " })
 
-map("n", "bcc", "<cmd>BufferClose<CR>", { desc = "Current  " })
-map("n", "bch", "<cmd>BufferLineCloseLeft<CR>", { desc = "Left 󰳞 " })
-map("n", "bcp", "<cmd>BufferLinePickClose<CR>", { desc = "Prev  " })
-map("n", "bcl", "<cmd>BufferLineCloseRight<CR>", { desc = "Right 󰳠 " })
-map("n", "bco", "<cmd>BufferLineCloseOthers<CR>", { desc = "Others  " })
-map("n", "bcp", "<cmd>BufferLineGroupClose pinned<CR>", { desc = "Pinned 󰤱 " })
-map("n", "bcu", "<cmd>BufferLineGroupClose ungrouped<CR>", { desc = "Unpinned 󰤰 " })
+map("n", "<leader>bcc", "<cmd>BufferClose<CR>", { desc = "Current  " })
+map("n", "<leader>bch", "<cmd>BufferLineCloseLeft<CR>", { desc = "Left 󰳞 " })
+map("n", "<leader>bcp", "<cmd>BufferLinePickClose<CR>", { desc = "Prev  " })
+map("n", "<leader>bcl", "<cmd>BufferLineCloseRight<CR>", { desc = "Right 󰳠 " })
+map("n", "<leader>bco", "<cmd>BufferLineCloseOthers<CR>", { desc = "Others  " })
+map("n", "<leader>bcp", "<cmd>BufferLineGroupClose pinned<CR>", { desc = "Pinned 󰤱 " })
+map("n", "<leader>bcu", "<cmd>BufferLineGroupClose ungrouped<CR>", { desc = "Unpinned 󰤰 " })
 
-map("n", "bsd", "<cmd>BufferLineSortByDirectory<CR>", { desc = "Directory   " })
-map("n", "bsl", "<cmd>BufferLineSortByExtension<CR>", { desc = "Language  " })
+map("n", "<leader>bsd", "<cmd>BufferLineSortByDirectory<CR>", { desc = "Directory   " })
+map("n", "<leader>bsl", "<cmd>BufferLineSortByExtension<CR>", { desc = "Language  " })
 
 -- Which-Key Windows
 map("n", "<leader>wc", "<C-W>c", { desc = "Close  ", remap = true })
@@ -70,7 +70,7 @@ map("n", "<leader>tm", "<cmd>ToggleTerm<CR>", { desc = "Term  " })
 map("n", "<leader>tr", "<cmd>ToggleRelative<CR>", { desc = "Relative  " })
 map("n", "<leader>ts", "<cmd>ToggleSpell<CR>", { desc = "Spell 󰓆 " })
 map("n", "<leader>tw", "<cmd>ToggleWrap<CR>", { desc = "Wrap 󰖶 " })
-map("n", "<leader>tt", "<cmd>ToggleTrouble<CR>", { desc = "Trouble 󱠪 " })
+map("n", "<leader>tt", "<cmd>TroubleToggle<CR>", { desc = "Trouble 󱠪 " })
 map("n", "<leader>ti", "<cmd>TwilightToggle<CR>", { desc = "Twilight 󰖚 " })
 map("n", "<leader>tz", "<cmd>ZenMode<CR>", { desc = "Zen Mode 󱅼 " })
 
@@ -111,4 +111,23 @@ map("n", "<leader>lfr", "<cmd>Telescope lsp_references<CR>", { desc = "Reference
 map("n", "<leader>lfu", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "Document Symbols 󱪚 " })
 map("n", "<leader>lfw", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", { desc = "Workspace Symbols 󱈹 " })
 
+-- Which-Key DAP
 map("n", "<leader>bgf", "<cmd>Telescope buffers previewer=true<CR>", { desc = "Find  " })
+
+map("n", "<leader>dsb", "<cmd>lua require('dap').step_back()<CR>", { desc = "Back  " })
+map("n", "<leader>dsi", "<cmd>lua require('dap').step_into()<CR>", { desc = "Into  " })
+map("n", "<leader>dsv", "<cmd>lua require('dap').step_over()<CR>", { desc = "Over  " })
+map("n", "<leader>dso", "<cmd>lua require('dap').step_out()<CR>", { desc = "Out  " })
+
+map("n", "<leader>drt", "<cmd>lua require('dap').repl.toggle()<CR>", { desc = "Toggle Repl  " })
+map("n", "<leader>drr", "<cmd>lua require('dap').repl.toggle()<CR>", { desc = "Run Last  " })
+
+map("n", "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<CR>", { desc = "Breakpoint  " })
+map("n", "<leader>dc", "<cmd>lua require('dap').continue()<CR>", { desc = "Continue  " })
+map("n", "<leader>dd", "<cmd>lua require('dap').disconnect()<CR>", { desc = "Disconnect  " })
+map("n", "<leader>dp", "<cmd>lua require('dap').pause()<CR>", { desc = "Pause  " })
+map("n", "<leader>dq", "<cmd>lua require('dap').close()<CR>", { desc = "Quit  " })
+map("n", "<leader>dr", "<cmd>lua require('dap').run_to_cursor()<CR>", { desc = "Run To Cursor 󰆿 " })
+
+map("n", "<leader>du", "<cmd>lua require('dapui').toggle({reset = true})<CR>", { desc = "UI  " })
+-- map("n", "<leader>ds", "<cmd>lua require('dap').session()<CR>", { desc = "" })

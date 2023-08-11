@@ -1,4 +1,5 @@
 return {
-  "node2",
+  "bash",
+  "js",
   "python",
 }
