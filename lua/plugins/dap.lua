@@ -109,8 +109,8 @@ return {
       config = function()
         local dap = require("dap")
 
-        dap.adapters.nlua = function(callback)
-          callback({ type = "server", host = "127.0.0.1", port = 8086 })
+        dap.adapters["nlua"] = function(callback, config)
+          callback({ type = "server", host = config.host or "127.0.0.1", port = config.port or 8086 })
         end
 
         dap.configurations.lua = {
@@ -125,8 +125,6 @@ return {
   },
   opts = function()
     return {
-      active = true,
-      on_config_done = nil,
       breakpoint = {
         text = "",
         texthl = "DiagnosticSignError",
