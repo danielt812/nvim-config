@@ -29,7 +29,25 @@ map("n", "<leader>.", "<cmd>lua vim.lsp.buf.format()<CR>", { desc = "Format 󰘞
 map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Explorer 󰙅 " })
 
 -- Which-Key Comment
-map("n", "<leader>/", "<Plug>(comment_toggle_linewise_current)", { desc = "Comment" })
+map("n", "<leader>/", "<Plug>(comment_toggle_linewise_current)", { desc = "Comment  " })
+
+-- Which-Key Buffers
+map("n", "bp", "<cmd>BufferLineTogglePin<CR>", { desc = "Pin  " })
+
+map("n", "bgl", "<cmd>BufferLineCycleNext<CR>", { desc = "Next 󰮱 " })
+map("n", "bgh", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev 󰮳 " })
+map("n", "bgp", "<cmd>BufferLinePick<CR>", { desc = "Pick  " })
+
+map("n", "bcc", "<cmd>BufferClose<CR>", { desc = "Current  " })
+map("n", "bch", "<cmd>BufferLineCloseLeft<CR>", { desc = "Left 󰳞 " })
+map("n", "bcp", "<cmd>BufferLinePickClose<CR>", { desc = "Prev  " })
+map("n", "bcl", "<cmd>BufferLineCloseRight<CR>", { desc = "Right 󰳠 " })
+map("n", "bco", "<cmd>BufferLineCloseOthers<CR>", { desc = "Others  " })
+map("n", "bcp", "<cmd>BufferLineGroupClose pinned<CR>", { desc = "Pinned 󰤱 " })
+map("n", "bcu", "<cmd>BufferLineGroupClose ungrouped<CR>", { desc = "Unpinned 󰤰 " })
+
+map("n", "bsd", "<cmd>BufferLineSortByDirectory<CR>", { desc = "Directory   " })
+map("n", "bsl", "<cmd>BufferLineSortByExtension<CR>", { desc = "Language  " })
 
 -- Which-Key Windows
 map("n", "<leader>wc", "<C-W>c", { desc = "Close  ", remap = true })

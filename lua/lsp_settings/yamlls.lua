@@ -1,6 +1,8 @@
 return {
   settings = {
     yaml = {
+      keyOrdering = false,
+      format = { enable = true },
       hover = true,
       completion = true,
       validate = true,
@@ -11,7 +13,7 @@ return {
         -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
         url = "",
       },
-      schemas = require('schemastore').yaml.schemas(),
+      schemas = require("schemastore").yaml.schemas(),
     },
   },
 }

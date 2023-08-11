@@ -1,10 +1,9 @@
 return {
-  "rcarriga/nvim-dap-ui",
+  "mfussenegger/nvim-dap",
   dependencies = {
-    "mfussenegger/nvim-dap",
+    "rcarriga/nvim-dap-ui",
     "mfussenegger/nvim-dap-python",
   },
-  event = { "BufRead" },
   opts = function()
     return {
       active = true,
@@ -158,27 +157,27 @@ return {
 
     local function map(mode, lhs, rhs, key_opts)
       lhs = "<leader>d" .. lhs
-      rhs = "<cmd>lua require('dap')." .. rhs .. "<CR>"
+      rhs = "<cmd>" .. rhs .. "<CR>"
       key_opts = key_opts or {}
       key_opts.silent = key_opts.silent ~= false
       vim.keymap.set(mode, lhs, rhs, key_opts)
     end
 
-    map("n", "sb", "step_back()", { desc = "Back  " })
-    map("n", "si", "step_into()", { desc = "Into  " })
-    map("n", "sv", "step_over()", { desc = "Over  " })
-    map("n", "so", "step_out()", { desc = "Out  " })
+    map("n", "sb", "lua require('dap').step_back()", { desc = "Back  " })
+    map("n", "si", "lua require('dap').step_into()", { desc = "Into  " })
+    map("n", "sv", "lua require('dap').step_over()", { desc = "Over  " })
+    map("n", "so", "lua require('dap').step_out()", { desc = "Out  " })
 
-    map("n", "rt", "repl.toggle()", { desc = "Toggle Repl  " })
-    map("n", "rr", "repl.toggle()", { desc = "Run Last  " })
+    map("n", "rt", "lua require('dap').repl.toggle()", { desc = "Toggle Repl  " })
+    map("n", "rr", "lua require('dap').repl.toggle()", { desc = "Run Last  " })
 
-    map("n", "b", "toggle_breakpoint()", { desc = "Breakpoint  " })
-    map("n", "c", "continue()", { desc = "Continue  " })
-    map("n", "p", "pause()", { desc = "Pause  " })
-    map("n", "q", "close()", { desc = "Quit  " })
-    map("n", "t", "toggle({reset = true})", { desc = "Toggle DAP  " })
-    -- map("n", "C", "run_to_cursor()", { desc = "Run To Cursor 󰆿 " })
-    -- map("n", "d", "disconnect()", { desc = "Disconnect  " })
-    -- map("n", "s", "session()", { desc = "" })
+    map("n", "b", "lua require('dap').toggle_breakpoint()", { desc = "Breakpoint  " })
+    map("n", "c", "lua require('dap').continue()", { desc = "Continue  " })
+    map("n", "p", "lua require('dap').pause()", { desc = "Pause  " })
+    map("n", "q", "lua require('dap').close()", { desc = "Quit  " })
+    map("n", "t", "lua require('dapui').toggle({reset = true})", { desc = "Toggle UI  " })
+    -- map("n", "C", "lua require('dap').run_to_cursor()", { desc = "Run To Cursor 󰆿 " })
+    -- map("n", "d", "lua require('dap').disconnect()", { desc = "Disconnect  " })
+    -- map("n", "s", "lua require('dap').session()", { desc = "" })
   end,
 }
