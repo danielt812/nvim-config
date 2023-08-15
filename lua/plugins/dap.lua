@@ -155,6 +155,11 @@ return {
     vim.fn.sign_define("DapBreakpointRejected", opts.breakpoint_rejected)
     vim.fn.sign_define("DapStopped", opts.stopped)
 
+    -- dap.defaults.fallback.external_terminal = {
+    --   command = "/usr/local/bin/kitty",
+    --   args = { "e" },
+    -- }
+
     dap.adapters["pwa-node"] = {
       type = "server",
       host = "localhost",

@@ -1,6 +1,6 @@
 return {
   "kylechui/nvim-surround",
-  event = { "BufReadPost" },
+  event = { "BufRead" },
   opts = function()
     return {
       keymaps = {
