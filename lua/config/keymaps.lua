@@ -77,6 +77,14 @@ map("v", ">", ">gv", { desc = "Indent block to right", silent = true })
 map("n", "gg", "gg0", { desc = "Go to beginning of file" })
 map("n", "G", "G0", { desc = "Go to end of file" })
 
+-- Yanky
+map({ "n", "x" }, "p", "<Plug>(YankyPutAfter)", { desc = "Yanky put after" })
+map({ "n", "x" }, "P", "<Plug>(YankyPutBefore)", { desc = "Yanky put before" })
+map({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)", { desc = "Yanky gput after" })
+map({ "n", "x" }, "gP", "<Plug>(YankyGPutBefore)", { desc = "Yanky gput after" })
+map("n", "]y", "<Plug>(YankyCycleForward)", { desc = "Next yanky" })
+map("n", "[y", "<Plug>(YankyCycleBackward)", { desc = "Previous yanky" })
+
 -- Cycle diagnostics
 map("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { desc = "Prev diagnostic" })
 map("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", { desc = "Next diagnostic" })

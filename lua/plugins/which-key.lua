@@ -114,9 +114,9 @@ return {
           -- ["/"] = { name = "+Comment  " },
           ["b"] = {
             name = "+Buffer  ",
-            g = { name = "+GoTo  " },
-            c = { name = "+Close  " },
-            s = { name = "+Sort 󰒺 " },
+            ["g"] = { name = "+GoTo  " },
+            ["c"] = { name = "+Close  " },
+            ["s"] = { name = "+Sort 󰒺 " },
           },
           ["d"] = {
             name = "+Debug  ",
@@ -129,8 +129,12 @@ return {
           },
           ["g"] = {
             name = "+Git  ",
-            c = { name = "+Conflict  " },
-            s = { name = "+Signs  " },
+            ["c"] = { name = "+Conflict  " },
+            -- ["s"] = { name = "+Signs  " },
+            ["t"] = { name = "+Toggle 󰨚  " },
+          },
+          ["i"] = {
+            name = "+Info  ",
           },
           ["l"] = {
             name = "+LSP  ",

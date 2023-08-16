@@ -51,7 +51,7 @@ map("n", "<leader>bsl", "<cmd>BufferLineSortByExtension<CR>", { desc = "Language
 
 -- Which-Key Windows
 map("n", "<leader>wc", "<C-W>c", { desc = "Close  ", remap = true })
-map("n", "<leader>wo", "<C-W>p", { desc = "Other window", remap = true })
+map("n", "<leader>wo", "<C-W>p", { desc = "Other 󰁁 ", remap = true })
 map("n", "<leader>wr", "<C-W>=", { desc = "Resize 󰙖 " })
 map("n", "<leader>wsh", "<C-W>s", { desc = "Horizontal  ", remap = true })
 map("n", "<leader>wsv", "<C-W>v", { desc = "Vertical  ", remap = true })
@@ -75,10 +75,11 @@ map("n", "<leader>ti", "<cmd>TwilightToggle<CR>", { desc = "Twilight 󰖚 " })
 map("n", "<leader>tz", "<cmd>ZenMode<CR>", { desc = "Zen Mode 󱅼 " })
 
 -- Which-Key Info
-map("n", "<leader>lil", "<cmd>LspInfo<CR>", { desc = "LSP  " })
-map("n", "<leader>lim", "<cmd>Mason<CR>", { desc = "Mason 󰢛 " })
-map("n", "<leader>lit", "<cmd>TSModuleInfo<CR>", { desc = "Treesitter 󱖫 " })
-map("n", "<leader>lin", "<cmd>NullLsInfo<CR>", { desc = "Null-LS 󱆨 " })
+map("n", "<leader>il", "<cmd>LspInfo<CR>", { desc = "LSP  " })
+map("n", "<leader>im", "<cmd>Mason<CR>", { desc = "Mason 󰢛 " })
+map("n", "<leader>in", "<cmd>NullLsInfo<CR>", { desc = "Null-LS 󱆨 " })
+map("n", "<leader>it", "<cmd>TSModuleInfo<CR>", { desc = "Treesitter 󱖫 " })
+map("n", "<leader>iz", "<cmd>Lazy<CR>", { desc = "Lazy 󰒲 " })
 
 -- Which-Key Diagnostics
 map("n", "<leader>ldf", "<cmd>lua vim.diagnostic.open_float()<CR>", { desc = "Float Diagnostic  " })
@@ -94,14 +95,15 @@ map("n", "<leader>fd", "<cmd>Telescope commands<CR>", { desc = "Commands " })
 map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "File 󰱽" })
 map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "Grep " })
 map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Help 󰘥" })
-map("n", "<leader>fH", "<cmd>Telescope highlights<CR>", { desc = "Highlight Groups 󰸱" })
+-- map("n", "<leader>fH", "<cmd>Telescope highlights<CR>", { desc = "Highlight Groups 󰸱" })
 map("n", "<leader>fk", "<cmd>Telescope keymaps<CR>", { desc = "Keymaps " })
 map("n", "<leader>fl", "<cmd>Telescope resume<CR>", { desc = "Resume Last Search " })
 map("n", "<leader>fm", "<cmd>Telescope man_pages<CR>", { desc = "Man Pages 󱗖" })
 map("n", "<leader>fr", "<cmd>Telescope oldfiles<CR>", { desc = "Recent File " })
-map("n", "<leader>fR", "<cmd>Telescope registers<CR>", { desc = "Registers " })
+-- map("n", "<leader>fR", "<cmd>Telescope registers<CR>", { desc = "Registers " })
 map("n", "<leader>fs", "<cmd>Telescope spell_suggest<CR>", { desc = "Spelling Suggestions 󰓆" })
 map("n", "<leader>ft", "<cmd>Telescope grep_string<CR>", { desc = "Text " })
+map("n", "<leader>fy", "<cmd>Telescope yank_history<CR>", { desc = "Yank History 󰆒 " })
 
 map("n", "<leader>lfb", "<cmd>Telescope diagnostics bufnr=0<CR>", { desc = "Buffer Diagnostics  " })
 map("n", "<leader>lfd", "<cmd>Telescope diagnostics<CR>", { desc = "Diagnostics  " })
@@ -112,6 +114,15 @@ map("n", "<leader>lfu", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "Doc
 map("n", "<leader>lfw", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", { desc = "Workspace Symbols 󱈹 " })
 
 map("n", "<leader>bgf", "<cmd>Telescope buffers previewer=true<CR>", { desc = "Find  " })
+
+-- Which-Key Git
+map("n", "<leader>gg", "<cmd>LazyGit<CR>", { desc = "LazyGit 󰒲 " })
+map("n", "<leader>gtb", "<cmd>Gitsigns toggle_current_line_blame<CR>", { desc = "Blame Line 󰋇 " })
+map("n", "<leader>gtd", "<cmd>Gitsigns toggle_deleted<CR>", { desc = "Deleted 󱂦 " })
+map("n", "<leader>gth", "<cmd>Gitsigns toggle_linehl<CR>", { desc = "Line Highlight 󰸱 " })
+map("n", "<leader>gtn", "<cmd>Gitsigns toggle_numhl<CR>", { desc = "Num Highlight 󰎠 " })
+map("n", "<leader>gts", "<cmd>Gitsigns toggle_signs<CR>", { desc = "Signs  " })
+map("n", "<leader>gtw", "<cmd>Gitsigns toggle_word_diff<CR>", { desc = "Word Diff  " })
 
 -- Which-Key DAP
 map("n", "<leader>dsb", "<cmd>lua require('dap').step_back()<CR>", { desc = "Back  " })
@@ -127,7 +138,7 @@ map("n", "<leader>dc", "<cmd>lua require('dap').continue()<CR>", { desc = "Conti
 map("n", "<leader>dd", "<cmd>lua require('dap').disconnect()<CR>", { desc = "Disconnect  " })
 map("n", "<leader>dp", "<cmd>lua require('dap').pause()<CR>", { desc = "Pause  " })
 map("n", "<leader>dq", "<cmd>lua require('dap').close()<CR>", { desc = "Quit  " })
-map("n", "<leader>dr", "<cmd>lua require('dap').run_to_cursor()<CR>", { desc = "Run To Cursor 󰆿 " })
+-- map("n", "<leader>dR", "<cmd>lua require('dap').run_to_cursor()<CR>", { desc = "Run To Cursor 󰆿 " })
 
 map("n", "<leader>du", "<cmd>lua require('dapui').toggle({reset = true})<CR>", { desc = "UI  " })
 -- map("n", "<leader>ds", "<cmd>lua require('dap').session()<CR>", { desc = "" })

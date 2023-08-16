@@ -120,7 +120,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 vim.api.nvim_create_autocmd({ "FileType" }, {
   group = filetype_settings_group,
   desc = "Hide Tabline",
-  pattern = { "oil", "mason", "lazy", "Telescope*" },
+  pattern = { "oil", "mason", "lazy", "Telescope*", "lazygit" },
   callback = function()
     vim.opt_local.showtabline = 0
     vim.opt_local.relativenumber = false
@@ -144,6 +144,17 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   callback = function()
     vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true })
     vim.opt_local.buflisted = true
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  group = filetype_settings_group,
+  desc = "Open help in vertical split",
+  pattern = {
+    "help",
+  },
+  callback = function()
+    vim.cmd("wincmd L")
   end,
 })
 

@@ -51,21 +51,5 @@ return {
   end,
   config = function(_, opts)
     require("gitsigns").setup(opts)
-
-    local map = function(mode, lhs, rhs, key_opts)
-      lhs = "<leader>gs" .. lhs
-      rhs = "<cmd>Gitsigns " .. rhs .. "<CR>"
-      key_opts = key_opts or {}
-      key_opts.silent = key_opts.silent ~= false
-      vim.keymap.set(mode, lhs, rhs, key_opts)
-    end
-
-    -- +Signs
-    map("n", "b", "toggle_current_line_blame", { desc = "Toggle Blame Line 󰋇 " })
-    map("n", "d", "toggle_deleted", { desc = "Toggle Deleted 󱂦 " })
-    map("n", "h", "toggle_linehl", { desc = "Toggle Line Highlight 󰸱 " })
-    map("n", "n", "toggle_numhl", { desc = "Toggle Num Highlight 󰎠 " })
-    map("n", "s", "toggle_signs", { desc = "Toggle Signs  " })
-    map("n", "w", "toggle_word_diff", { desc = "Toggle Word Diff  " })
   end,
 }
