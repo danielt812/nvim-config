@@ -36,8 +36,8 @@ return {
             },
             {
               elements = {
-                { id = "repl", size = 0.55 },
-                { id = "console", size = 0.45 },
+                { id = "repl", size = 0.50 },
+                { id = "console", size = 0.50 },
               },
               size = 9,
               position = "bottom", -- Can be "bottom" or "top"
@@ -154,11 +154,6 @@ return {
     vim.fn.sign_define("DapBreakpoint", opts.breakpoint)
     vim.fn.sign_define("DapBreakpointRejected", opts.breakpoint_rejected)
     vim.fn.sign_define("DapStopped", opts.stopped)
-
-    -- dap.defaults.fallback.external_terminal = {
-    --   command = "/usr/local/bin/kitty",
-    --   args = { "e" },
-    -- }
 
     dap.adapters["pwa-node"] = {
       type = "server",

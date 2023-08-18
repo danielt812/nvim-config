@@ -149,9 +149,11 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
+local winbar_settings_group = vim.api.nvim_create_augroup("winbar_settings", { clear = true })
+
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  group = filetype_settings_group,
-  desc = "Add statusline to dap ui",
+  group = winbar_settings_group,
+  desc = "Winbar settings determined by buffer filetype",
   pattern = { "*" },
   callback = function()
     local win_ids = vim.api.nvim_list_wins()
@@ -173,5 +175,30 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     end
     vim.api.nvim_set_hl(0, "WinBar", { link = "Character" })
     vim.api.nvim_set_hl(0, "WinBarNC", { link = "Character" })
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "WinEnter", "WinResized" }, {
+  group = winbar_settings_group,
+  desc = "Hide lualine winbar when blame is open",
+  callback = function()
+    local win_ids = vim.api.nvim_list_wins()
+
+    for _, win_id in ipairs(win_ids) do
+      local buf_id = vim.api.nvim_win_get_buf(win_id)
+      local buf_ft = vim.api.nvim_buf_get_option(buf_id, "filetype")
+      if buf_ft == "blame" then
+        require("lualine").hide({
+          place = { "winbar" },
+          unhide = false,
+        })
+        break -- Exit the loop since a 'blame' filetype was found
+      else
+        require("lualine").hide({
+          place = { "winbar" },
+          unhide = true,
+        })
+      end
+    end
   end,
 })
