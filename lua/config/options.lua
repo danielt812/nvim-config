@@ -1,6 +1,4 @@
 local opt = vim.opt
-
--- opt.fillchars = "eob: " -- Remove tilde at end of buffer
 opt.autowrite = true -- Enable auto write
 opt.backup = false -- Creates a backup file
 opt.breakindent = true -- Indent wrapped lines
@@ -10,6 +8,11 @@ opt.conceallevel = 0 -- Hide * markup for bold and italic
 opt.confirm = false -- Confirm to save changes before exiting modified buffer
 opt.cursorline = true -- Enable highlighting of the current line
 opt.expandtab = true -- Use spaces instead of tabs
+opt.fillchars = { eob = " ", fold = " ", foldopen = "", foldsep = " ", foldclose = "", lastline = " " } -- disable `~` on nonexistent lines
+-- opt.foldcolumn = "1" -- show fold column
+-- opt.foldenable = true -- enable fold for nvim-ufo
+-- opt.foldlevel = 99 -- set high foldlevel for nvim-ufo
+-- opt.foldlevelstart = 99
 opt.formatoptions = "jcroqlnt" -- tcqj
 opt.grepformat = "%f:%l:%c:%m"
 -- opt.grepprg = "rg --vimgrep"
@@ -37,6 +40,8 @@ opt.smartindent = true -- Insert indents automatically
 opt.spelllang = { "en" }
 opt.splitbelow = true -- Put new windows below current
 opt.splitright = true -- Put new windows right of current
+-- opt.statuscolumn =
+--   '%=%{v:relnum?v:relnum:v:lnum}%s%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? " " : " ") : " ") : " " }'
 opt.swapfile = false -- Create a swapfile
 opt.tabstop = 2 -- Number of spaces tabs count for
 opt.termguicolors = true -- True color support
