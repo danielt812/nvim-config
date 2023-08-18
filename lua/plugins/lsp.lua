@@ -4,9 +4,8 @@ return {
   cmd = { "LspInfo", "LspInstall", "LspUninstall" },
   dependencies = {
     { "hrsh7th/cmp-nvim-lsp" },
-    { "b0o/SchemaStore.nvim" }, -- SchemaStore is for json/yaml config
+    { "b0o/SchemaStore.nvim" },
     { "folke/neodev.nvim" },
-    { "ray-x/lsp_signature.nvim" },
   },
   opts = function()
     return {
@@ -59,6 +58,7 @@ return {
       end
 
       map("n", "K", "hover()", { desc = "Show Hover" })
+      map("n", "gk", "signature_help()", { desc = "Signature Help" })
       map("n", "gA", "code_action()", { desc = "Code Action" })
       map("n", "gD", "declaration()", { desc = "Go to Declaration" })
       map("n", "gR", "rename()", { desc = "Rename Definition" })
@@ -82,7 +82,6 @@ return {
       lsp_keymaps(bufnr)
     end
 
-    require("lsp_signature").setup()
     -- Set up neodev before lua_ls
     require("neodev").setup()
 
