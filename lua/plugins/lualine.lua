@@ -92,6 +92,14 @@ return {
         lualine_y = { location },
         lualine_z = { progress },
       },
+      winbar = {
+        lualine_c = {
+          "navic",
+          color_correction = nil,
+          navic_opts = nil,
+        },
+      },
+
       -- inactive_sections = {
       --   lualine_a = {},
       --   lualine_b = {},
