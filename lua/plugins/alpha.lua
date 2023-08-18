@@ -25,13 +25,13 @@ return {
       type = "group",
       val = {
         dashboard.button("f", " " .. " Find file", ":Telescope find_files <CR>"),
-        -- dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
+        -- dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
         dashboard.button("o", " " .. " Oil", ":Oil <CR>"),
         dashboard.button("r", " " .. " Recent files", ":Telescope oldfiles <CR>"),
         dashboard.button("g", " " .. " Live Grep", ":Telescope live_grep <CR>"),
         dashboard.button("h", " " .. " Check Health", ":checkhealth <CR>"),
         dashboard.button("c", " " .. " Config", ":cd $HOME/.config/nvim | e $MYVIMRC <CR>"),
-        dashboard.button("m", "󰢛 " .. " Mason", ":Mason <CR>"),
+        -- dashboard.button("m", "󰢛 " .. " Mason", ":Mason <CR>"),
         dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy <CR>"),
         dashboard.button("q", " " .. " Quit", ":qa <CR>"),
       },
@@ -56,18 +56,18 @@ return {
         local stats = require("lazy").stats()
         local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
         footer.val = "⚡ Neovim loaded " .. stats.count .. " plugins in " .. ms .. "ms"
-        pcall(vim.cmd.AlphaRedraw)
+        vim.cmd("AlphaRedraw")
       end,
     })
 
     return {
       autostart = true,
       layout = {
-        { type = "padding", val = 2 },
+        { type = "padding", val = 4 },
         header,
-        { type = "padding", val = 2 },
+        { type = "padding", val = 4 },
         buttons,
-        { type = "padding", val = 2 },
+        { type = "padding", val = 4 },
         footer,
       },
     }
