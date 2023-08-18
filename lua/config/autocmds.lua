@@ -191,12 +191,14 @@ vim.api.nvim_create_autocmd({ "WinEnter", "WinResized" }, {
           place = { "winbar" },
           unhide = false,
         })
+        vim.opt_local.wrap = false
         break -- Exit the loop since a 'blame' filetype was found
       else
         require("lualine").hide({
           place = { "winbar" },
           unhide = true,
         })
+        vim.opt_local.wrap = true
       end
     end
   end,
