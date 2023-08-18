@@ -20,7 +20,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     local mark = vim.api.nvim_buf_get_mark(buf, '"')
     local lcount = vim.api.nvim_buf_line_count(buf)
     if mark[1] > 0 and mark[1] <= lcount then
-      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+      vim.api.nvim_win_set_cursor(0, mark)
     end
   end,
 })
@@ -55,9 +55,9 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 })
 
 local illuminate_highlight_group = vim.api.nvim_create_augroup("illuminate_highlight", { clear = true })
-vim.api.nvim_create_autocmd({ "ColorScheme" }, {
+vim.api.nvim_create_autocmd({ "ColorScheme", "BufEnter" }, {
   group = illuminate_highlight_group,
-  desc = "Set Illuminate Highlight on colorscheme change",
+  desc = "Set Illuminate Highlight",
   callback = function()
     vim.api.nvim_set_hl(0, "IlluminatedWord", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "IlluminatedWordText", { link = "Underlined" })
@@ -74,17 +74,6 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
     vim.api.nvim_set_hl(0, "LspReferenceRead", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "LspReferenceWrite", { link = "Underlined" })
     vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "BufEnter" }, {
-  group = illuminate_highlight_group,
-  desc = "Set Illuminate Highlight on BufEnter",
-  callback = function()
-    vim.api.nvim_set_hl(0, "IlluminatedWord", { link = "Underlined" })
-    vim.api.nvim_set_hl(0, "IlluminatedWordText", { link = "Underlined" })
-    vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "Underlined" })
-    vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "Underlined" })
   end,
 })
 
