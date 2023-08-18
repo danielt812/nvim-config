@@ -11,7 +11,14 @@ return {
         prompt_prefix = " ",
         selection_caret = " ",
         path_display = { "smart" },
-        file_ignore_patterns = { ".git/", ".DS_Store", "node_modules", ".xlsx", ".png", "CHANGELOG.md" },
+        file_ignore_patterns = {
+          "%.git/",
+          "%.DS_Store",
+          "node_modules",
+          "%.xlsx",
+          "%.png",
+          "CHANGELOG.md",
+        },
         mappings = {
           i = {
             ["<C-n>"] = actions.cycle_history_next,
