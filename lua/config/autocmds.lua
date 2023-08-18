@@ -89,18 +89,16 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
   group = filetype_settings_group,
-  desc = "Hide Tabline and Number",
-  pattern = { "alpha", "lazy", "checkhealth" },
-  callback = function()
-    vim.opt_local.number = false
-    vim.opt_local.showtabline = 0
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "FileType" }, {
-  group = filetype_settings_group,
-  desc = "Hide Tabline",
-  pattern = { "oil", "mason", "lazy", "Telescope*", "lazygit" },
+  desc = "Hide Tabline and disable relative number",
+  pattern = {
+    "alpha",
+    "oil",
+    "checkhealth",
+    -- "mason",
+    "lazy",
+    "Telescope*",
+    "lazygit",
+  },
   callback = function()
     vim.opt_local.showtabline = 0
     vim.opt_local.relativenumber = false
@@ -109,8 +107,18 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
   group = filetype_settings_group,
+  desc = "Disable cursorline for markdown preview",
+  pattern = { "markdownpreview" },
+  callback = function()
+    vim.opt_local.cursorline = false
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  group = filetype_settings_group,
   desc = "q To Exit Filetype",
   pattern = {
+    "blame",
     "qf",
     "help",
     "man",
@@ -127,8 +135,10 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
+local help_settings_group = vim.api.nvim_create_augroup("help_settings", { clear = true })
+
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  group = filetype_settings_group,
+  group = help_settings_group,
   desc = "Open help in vertical split",
   pattern = {
     "help",
