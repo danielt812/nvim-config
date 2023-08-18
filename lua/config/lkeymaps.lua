@@ -71,15 +71,14 @@ map("n", "<leader>tr", "<cmd>ToggleRelative<CR>", { desc = "Relative  " })
 map("n", "<leader>ts", "<cmd>ToggleSpell<CR>", { desc = "Spell 󰓆 " })
 map("n", "<leader>tw", "<cmd>ToggleWrap<CR>", { desc = "Wrap 󰖶 " })
 map("n", "<leader>tt", "<cmd>TroubleToggle<CR>", { desc = "Trouble 󱠪 " })
-map("n", "<leader>ti", "<cmd>TwilightToggle<CR>", { desc = "Twilight 󰖚 " })
+map("n", "<leader>ti", "<cmd>Twilight<CR>", { desc = "Twilight 󰖚 " })
 map("n", "<leader>tz", "<cmd>ZenMode<CR>", { desc = "Zen Mode 󱅼 " })
 
--- Which-Key Info
-map("n", "<leader>il", "<cmd>LspInfo<CR>", { desc = "LSP  " })
-map("n", "<leader>im", "<cmd>Mason<CR>", { desc = "Mason 󰢛 " })
-map("n", "<leader>in", "<cmd>NullLsInfo<CR>", { desc = "Null-LS 󱆨 " })
-map("n", "<leader>it", "<cmd>TSModuleInfo<CR>", { desc = "Treesitter 󱖫 " })
-map("n", "<leader>iz", "<cmd>Lazy<CR>", { desc = "Lazy 󰒲 " })
+-- Which-Key Lsp Info
+map("n", "<leader>lil", "<cmd>LspInfo<CR>", { desc = "LSP  " })
+map("n", "<leader>lim", "<cmd>Mason<CR>", { desc = "Mason 󰢛 " })
+map("n", "<leader>lin", "<cmd>NullLsInfo<CR>", { desc = "Null-LS 󱆨 " })
+map("n", "<leader>lit", "<cmd>TSModuleInfo<CR>", { desc = "Treesitter 󱖫 " })
 
 -- Which-Key Diagnostics
 map("n", "<leader>ldf", "<cmd>lua vim.diagnostic.open_float()<CR>", { desc = "Float Diagnostic  " })
@@ -117,7 +116,8 @@ map("n", "<leader>bgf", "<cmd>Telescope buffers previewer=true<CR>", { desc = "F
 
 -- Which-Key Git
 map("n", "<leader>gg", "<cmd>LazyGit<CR>", { desc = "LazyGit 󰒲 " })
-map("n", "<leader>gtb", "<cmd>Gitsigns toggle_current_line_blame<CR>", { desc = "Blame Line 󰋇 " })
+map("n", "<leader>gb", "<cmd>Gitsigns toggle_current_line_blame<CR>", { desc = "Blame Line  " })
+map("n", "<leader>gB", "<cmd>ToggleBlame<CR>", { desc = "Blame File  " })
 map("n", "<leader>gtd", "<cmd>Gitsigns toggle_deleted<CR>", { desc = "Deleted 󱂦 " })
 map("n", "<leader>gth", "<cmd>Gitsigns toggle_linehl<CR>", { desc = "Line Highlight 󰸱 " })
 map("n", "<leader>gtn", "<cmd>Gitsigns toggle_numhl<CR>", { desc = "Num Highlight 󰎠 " })
