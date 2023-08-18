@@ -21,3 +21,7 @@ end, {})
 vim.api.nvim_create_user_command("ToggleDiagnostic", function()
   require("utils.toggle").toggle_diagnostic()
 end, {})
+
+vim.api.nvim_create_user_command("ToggleFold", function()
+  require("utils.toggle").toggle_fold()
+end, {})
