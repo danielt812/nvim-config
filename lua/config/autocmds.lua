@@ -1,20 +1,11 @@
-local highlight_yank_group = vim.api.nvim_create_augroup("highlight_yank", { clear = true })
-vim.api.nvim_create_autocmd({ "TextYankPost" }, {
-  group = highlight_yank_group,
-  desc = "Highlight Yank",
-  callback = function()
-    vim.highlight.on_yank({ higroup = "Visual", timeout = 200 })
-  end,
-})
-
-local resize_splits_group = vim.api.nvim_create_augroup("resize_splits", { clear = true })
-vim.api.nvim_create_autocmd({ "VimResized" }, {
-  group = resize_splits_group,
-  desc = "Resize Splits",
-  callback = function()
-    vim.cmd("tabdo wincmd =")
-  end,
-})
+-- local resize_splits_group = vim.api.nvim_create_augroup("resize_splits", { clear = true })
+-- vim.api.nvim_create_autocmd({ "VimResized" }, {
+--   group = resize_splits_group,
+--   desc = "Resize Splits",
+--   callback = function()
+--     vim.cmd("tabdo wincmd =")
+--   end,
+-- })
 
 local last_loc_group = vim.api.nvim_create_augroup("last_loc", { clear = true })
 vim.api.nvim_create_autocmd("BufReadPost", {
