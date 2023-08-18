@@ -133,9 +133,6 @@ return {
             -- ["s"] = { name = "+Signs  " },
             ["t"] = { name = "+Toggle 󰨚  " },
           },
-          ["i"] = {
-            name = "+Info  ",
-          },
           ["l"] = {
             name = "+LSP  ",
             ["a"] = { name = "+Actions 󱐌 " },
