@@ -36,6 +36,16 @@ map("n", "<S-l>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
 map("n", "[b", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer" })
 map("n", "]b", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
 
+-- Surround
+map("n", "ys", "<Plug>(nvim-surround-normal)", { desc = "Add surround" })
+map("n", "yss", "<Plug>(nvim-surround-normal-cur)", { desc = "Add surround around line" })
+map("n", "yS", "<Plug>(nvim-surround-normal-line)", { desc = "Add surround vertical" })
+map("n", "ySS", "<Plug>(nvim-surround-normal-cur-line)", { desc = "Add surround around line on new lines" })
+map("v", "S", "<Plug>(nvim-surround-visual)", { desc = "Add surround" })
+map("v", "gS", "<Plug>(nvim-surround-visual-line)", { desc = "Add surround vertical" })
+map("n", "cs", "<Plug>(nvim-surround-change)", { desc = "Change surround" })
+map("n", "ds", "<Plug>(nvim-surround-delete)", { desc = "Delete surround" })
+
 -- Toggle Join/Split
 map("n", "J", "<cmd>TSJToggle<CR>", { desc = "Join/Split" })
 
@@ -74,8 +84,10 @@ map("v", "<", "<gv", { desc = "Indent block to left", silent = true })
 map("v", ">", ">gv", { desc = "Indent block to right", silent = true })
 
 -- Yanky
-map({ "n", "x" }, "p", "<Plug>(YankyPutAfter)", { desc = "Yanky put after" })
-map({ "n", "x" }, "P", "<Plug>(YankyPutBefore)", { desc = "Yanky put before" })
+vim.keymap.set({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
+vim.keymap.set({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
+-- map({ "n", "x" }, "p", "<Plug>(YankyPutAfter)", { desc = "Yanky put after" })
+-- map({ "n", "x" }, "P", "<Plug>(YankyPutBefore)", { desc = "Yanky put before" })
 map({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)", { desc = "Yanky gput after" })
 map({ "n", "x" }, "gP", "<Plug>(YankyGPutBefore)", { desc = "Yanky gput after" })
 map("n", "]y", "<Plug>(YankyCycleForward)", { desc = "Next yanky" })
