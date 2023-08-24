@@ -50,32 +50,33 @@ return {
 
     local function lsp_keymaps(bufnr)
       local function map(mode, lhs, rhs, key_opts)
-        rhs = "<cmd>lua vim.lsp.buf." .. rhs .. "<CR>"
         key_opts = key_opts or {}
         key_opts.silent = key_opts.silent ~= false
         key_opts.buffer = bufnr
         vim.keymap.set(mode, lhs, rhs, key_opts)
       end
 
-      map("n", "K", "hover()", { desc = "Show Hover" })
-      map("n", "gk", "signature_help()", { desc = "Signature Help" })
-      map("n", "gA", "code_action()", { desc = "Code Action" })
-      map("n", "gD", "declaration()", { desc = "Go to Declaration" })
-      map("n", "gR", "rename()", { desc = "Rename Definition" })
-      map("n", "gd", "definition()", { desc = "Go to Definition" })
-      map("n", "gi", "implementation()", { desc = "Go to Implementation" })
-      map("n", "gr", "references()", { desc = "Go to References" })
-      map("n", "gt", "type_definition()", { desc = "Go to Type Definition" })
-
-      map("n", "<leader>laA", "code_action()", { desc = "Code Action  " })
-      map("n", "<leader>laf", "format()", { desc = "Format 󰘞 " })
-      map("n", "<leader>laD", "declaration()", { desc = "Go to Declaration " })
-      map("n", "<leader>laR", "rename()", { desc = "Rename Definition  " })
-      map("n", "<leader>lad", "definition()", { desc = "Go to Definition 󰊕 " })
-      map("n", "<leader>lah", "hover()", { desc = "Show Hover  " })
-      map("n", "<leader>lai", "implementation()", { desc = "Go to Implementation" })
-      map("n", "<leader>lar", "references()", { desc = "Go to References" })
-      map("n", "<leader>lat", "type_definition()", { desc = "Go to Type Definition  " })
+      map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", { desc = "Show Hover" })
+      map("n", "gk", "<cmd>lua vim.lsp.buf.signature_help()<CR>", { desc = "Signature Help" })
+      map("n", "gA", "<cmd>lua vim.lsp.buf.code_action()<CR>", { desc = "Code Action" })
+      map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", { desc = "Go to Declaration" })
+      map("n", "gR", "<cmd>lua vim.lsp.buf.rename()<CR>", { desc = "Rename Definition" })
+      map("n", "gd", "<cmd>TroubleToggle lsp_definitions<CR>", { desc = "Go to Definition" })
+      -- map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { desc = "Go to Definition" })
+      map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", { desc = "Go to Implementation" })
+      map("n", "gr", "<cmd>TroubleToggle lsp_references<CR>", { desc = "Go to References" })
+      -- map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", { desc = "Go to References" })
+      map("n", "gt", "<cmd>TroubleToggle lsp_type_definitions<CR>", { desc = "Go to Type Definition" })
+      -- map("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", { desc = "Go to Type Definition" })
+      map("n", "<leader>laA", "<cmd>lua vim.lsp.buf.code_action()<CR>", { desc = "Code Action  " })
+      map("n", "<leader>laf", "<cmd>lua vim.lsp.buf.format()<CR>", { desc = "Format 󰘞 " })
+      map("n", "<leader>laD", "<cmd>lua vim.lsp.buf.declaration()<CR>", { desc = "Go to Declaration " })
+      map("n", "<leader>laR", "<cmd>lua vim.lsp.buf.rename()<CR>", { desc = "Rename Definition  " })
+      map("n", "<leader>lad", "<cmd>lua vim.lsp.buf.definition()<CR>", { desc = "Go to Definition 󰊕 " })
+      map("n", "<leader>lah", "<cmd>lua vim.lsp.buf.hover()<CR>", { desc = "Show Hover  " })
+      map("n", "<leader>lai", "<cmd>lua vim.lsp.buf.implementation()<CR>", { desc = "Go to Implementation" })
+      map("n", "<leader>lar", "<cmd>lua vim.lsp.buf.references()<CR>", { desc = "Go to References" })
+      map("n", "<leader>lat", "<cmd>lua vim.lsp.buf.type_definition()<CR>", { desc = "Go to Type Definition  " })
     end
 
     local on_attach = function(_, bufnr)
