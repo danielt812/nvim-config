@@ -2,10 +2,11 @@
 return {
   "bash",
   "c",
+  "comment",
   "css",
+  "html",
   "javascript",
   "jsdoc",
-  "html",
   "json",
   "lua",
   "luadoc",

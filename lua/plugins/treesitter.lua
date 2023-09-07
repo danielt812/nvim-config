@@ -1,6 +1,6 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  event = { "BufReadPost", "BufNewFile" },
+  event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     { "nvim-tree/nvim-web-devicons", event = "VeryLazy" },
   },
