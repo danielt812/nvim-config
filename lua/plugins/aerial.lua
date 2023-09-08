@@ -303,7 +303,7 @@ return {
           winblend = 10,
         },
         -- Jump to symbol in source window when the cursor moves
-        autojump = false,
+        autojump = true,
         -- Show a preview of the code in the right column, when there are no child symbols
         preview = false,
         -- Keymaps in the nav window

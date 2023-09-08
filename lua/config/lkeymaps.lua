@@ -64,14 +64,16 @@ map("n", "<leader>rwf", "<cmd>lua require('spectre').open_file_search({select_wo
 map("n", "<leader>rwp", "<cmd>lua require('spectre').open_visual({select_word=true})<CR>", { desc = "Project   " })
 
 -- Which-Key Togglers
+map("n", "<leader>ta", "<cmd>AerialToggle<CR>", { desc = "Aerial  " })
 map("n", "<leader>td", "<cmd>ToggleDiagnostic<CR>", { desc = "Diagnostic  " })
 map("n", "<leader>th", "<cmd>ToggleHighlight<CR>", { desc = "Highlight 󰌁 " })
+map("n", "<leader>ti", "<cmd>Twilight<CR>", { desc = "Twilight 󰖚 " })
 map("n", "<leader>tm", "<cmd>ToggleTerm<CR>", { desc = "Term  " })
+map("n", "<leader>tn", "<cmd>AerialNavToggle<CR>", { desc = "Navigation 󰆌 " })
 map("n", "<leader>tr", "<cmd>ToggleRelative<CR>", { desc = "Relative  " })
 map("n", "<leader>ts", "<cmd>ToggleSpell<CR>", { desc = "Spell 󰓆 " })
-map("n", "<leader>tw", "<cmd>ToggleWrap<CR>", { desc = "Wrap 󰖶 " })
 map("n", "<leader>tt", "<cmd>TroubleToggle<CR>", { desc = "Trouble 󱠪 " })
-map("n", "<leader>ti", "<cmd>Twilight<CR>", { desc = "Twilight 󰖚 " })
+map("n", "<leader>tw", "<cmd>ToggleWrap<CR>", { desc = "Wrap 󰖶 " })
 map("n", "<leader>tz", "<cmd>ZenMode<CR>", { desc = "Zen Mode 󱅼 " })
 
 -- Which-Key Lsp Info
