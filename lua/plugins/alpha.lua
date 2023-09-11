@@ -31,7 +31,7 @@ return {
         dashboard.button("g", " " .. " Live Grep", ":Telescope live_grep <CR>"),
         dashboard.button("h", " " .. " Check Health", ":checkhealth <CR>"),
         dashboard.button("c", " " .. " Config", ":cd $HOME/.config/nvim | e $MYVIMRC <CR>"),
-        -- dashboard.button("m", "󰢛 " .. " Mason", ":Mason <CR>"),
+        dashboard.button("m", "󰢛 " .. " Mason", ":Mason <CR>"),
         dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy <CR>"),
         dashboard.button("q", " " .. " Quit", ":qa <CR>"),
       },
