@@ -99,6 +99,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     "lazy",
     "Telescope*",
     "lazygit",
+    "notify",
   },
   callback = function()
     vim.opt_local.showtabline = 0
