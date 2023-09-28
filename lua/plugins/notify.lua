@@ -15,6 +15,10 @@ return {
       minimum_width = 50,
       fps = 30,
       top_down = true,
+      time_formats = {
+        notification_history = "%FT%T",
+        notification = "%T",
+      },
       icons = {
         ERROR = "",
         WARN = "",
