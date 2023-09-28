@@ -3,24 +3,68 @@ return {
   event = { "BufReadPre" },
   opts = function()
     return {
-      char = "▏",
-      show_trailing_blankline_indent = true,
-      show_first_indent_level = true,
-      use_treesitter = true,
-      show_current_context = true,
-      buftype_exclude = { "terminal", "nofile" },
-      filetype_exclude = {
-        "help",
-        "alpha",
-        "lazy",
-        "mason",
-        "notify",
-        "NvimTree",
+      indent = {
+        char = "▎",
+        tab_char = nil,
+        highlight = "IblIndent",
+        smart_indent_cap = true,
+        priority = 1,
       },
-      space_char_blankline = " ",
+      whitespace = {
+        highlight = "IblWhitespace",
+        remove_blankline_trail = true,
+      },
+      scope = {
+        enabled = true,
+        char = nil,
+        show_start = true,
+        show_end = true,
+        injected_languages = true,
+        highlight = "IblScope",
+        priority = 1024,
+        include = {
+          node_type = {},
+        },
+        exclude = {
+          language = {},
+          node_type = {
+            ["*"] = {
+              "source_file",
+              "program",
+            },
+            lua = {
+              "chunk",
+            },
+            python = {
+              "module",
+            },
+          },
+        },
+      },
+      exclude = {
+        filetypes = {
+          "lspinfo",
+          "packer",
+          "checkhealth",
+          "help",
+          "man",
+          "gitcommit",
+          "TelescopePrompt",
+          "TelescopeResults",
+          "",
+          "spectre_panel",
+          "mason",
+        },
+        buftypes = {
+          "terminal",
+          "nofile",
+          "quickfix",
+          "prompt",
+        },
+      },
     }
   end,
   config = function(_, opts)
-    require("indent_blankline").setup(opts)
+    require("ibl").setup(opts)
   end,
 }
