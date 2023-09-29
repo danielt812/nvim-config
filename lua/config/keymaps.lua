@@ -84,8 +84,8 @@ map("v", "<", "<gv", { desc = "Indent block to left", silent = true })
 map("v", ">", ">gv", { desc = "Indent block to right", silent = true })
 
 -- Yanky
-vim.keymap.set({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
-vim.keymap.set({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
+map({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
+map({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
 -- map({ "n", "x" }, "p", "<Plug>(YankyPutAfter)", { desc = "Yanky put after" })
 -- map({ "n", "x" }, "P", "<Plug>(YankyPutBefore)", { desc = "Yanky put before" })
 map({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)", { desc = "Yanky gput after" })

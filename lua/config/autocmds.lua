@@ -1,12 +1,4 @@
--- local resize_splits_group = vim.api.nvim_create_augroup("resize_splits", { clear = true })
--- vim.api.nvim_create_autocmd({ "VimResized" }, {
---   group = resize_splits_group,
---   desc = "Resize Splits",
---   callback = function()
---     vim.cmd("tabdo wincmd =")
---   end,
--- })
-
+-- Retrieve last location of buffer
 local last_loc_group = vim.api.nvim_create_augroup("last_loc", { clear = true })
 vim.api.nvim_create_autocmd("BufReadPost", {
   group = last_loc_group,
@@ -25,6 +17,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
+-- Format on save
 local buffer_options_group = vim.api.nvim_create_augroup("buffer_options", { clear = true })
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   group = buffer_options_group,
@@ -35,6 +28,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   end,
 })
 
+-- Prevent comment on new line if pressing <CR> on commented line
 vim.api.nvim_create_autocmd("BufEnter", {
   group = buffer_options_group,
   desc = "Disable New Line Comment",
@@ -43,6 +37,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
   end,
 })
 
+-- Turn on spell check for filetypes
 local spell_check_group = vim.api.nvim_create_augroup("spell_check", { clear = true })
 vim.api.nvim_create_autocmd({ "FileType" }, {
   group = spell_check_group,
@@ -54,6 +49,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
+-- Set illuminate highlight to underline
 local illuminate_highlight_group = vim.api.nvim_create_augroup("illuminate_highlight", { clear = true })
 vim.api.nvim_create_autocmd({ "ColorScheme", "BufEnter" }, {
   group = illuminate_highlight_group,
@@ -66,6 +62,7 @@ vim.api.nvim_create_autocmd({ "ColorScheme", "BufEnter" }, {
   end,
 })
 
+-- Use illuminate instead of lsp highlight
 vim.api.nvim_create_autocmd({ "LspAttach" }, {
   group = illuminate_highlight_group,
   desc = "Set Illuminate Highlight on LspAttach",
@@ -137,8 +134,8 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
+-- Open help in vertical split instead of horizontal
 local help_settings_group = vim.api.nvim_create_augroup("help_settings", { clear = true })
-
 vim.api.nvim_create_autocmd({ "FileType" }, {
   group = help_settings_group,
   desc = "Open help in vertical split",
@@ -150,8 +147,8 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
+-- Set winbar for DAP UI
 local winbar_settings_group = vim.api.nvim_create_augroup("winbar_settings", { clear = true })
-
 vim.api.nvim_create_autocmd({ "FileType" }, {
   group = winbar_settings_group,
   desc = "Winbar settings determined by buffer filetype",
@@ -179,6 +176,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
+-- Hide winbar for blame nvim
 vim.api.nvim_create_autocmd({ "WinEnter", "WinResized" }, {
   group = winbar_settings_group,
   desc = "Hide lualine winbar when blame is open",
@@ -194,7 +192,7 @@ vim.api.nvim_create_autocmd({ "WinEnter", "WinResized" }, {
           unhide = false,
         })
         vim.opt_local.wrap = false
-        break -- Exit the loop since a 'blame' filetype was found
+        break
       else
         require("lualine").hide({
           place = { "winbar" },
