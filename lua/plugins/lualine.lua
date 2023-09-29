@@ -120,7 +120,14 @@ return {
       --   lualine_z = {},
       -- },
       tabline = {},
-      extensions = {},
+      extensions = {
+        "aerial",
+        "lazy",
+        "nerdtree",
+        "quickfix",
+        "toggleterm",
+        "trouble",
+      },
     }
   end,
   config = function(_, opts)
