@@ -1,19 +1,24 @@
 return {
   "stevearc/aerial.nvim",
-  enabled = true, -- Navbuddy
   event = { "LspAttach" },
+  init = function()
+    local icons = require("icons.kind")
+    for key, _ in pairs(icons) do
+      vim.api.nvim_set_hl(0, "Aerial" .. key .. "Icon", { link = "NavicIcons" .. key })
+    end
+  end,
   opts = function()
     return {
       -- Priority list of preferred backends for aerial.
       -- This can be a filetype map (see :help aerial-filetype-map)
-      backends = { "treesitter", "lsp", "markdown", "man" },
+      backends = { "lsp", "treesitter", "markdown", "man" },
 
       layout = {
         -- These control the width of the aerial window.
         -- They can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
         -- min_width and max_width can be a list of mixed types.
         -- max_width = {40, 0.2} means "the lesser of 40 columns or 20% of total"
-        max_width = { 40, 0.2 },
+        max_width = { 40, 0.5 },
         width = nil,
         min_width = 10,
 
@@ -56,7 +61,6 @@ return {
       -- Set to `false` to remove a keymap
       keymaps = {
         ["?"] = "actions.show_help",
-        ["g?"] = "actions.show_help",
         ["<CR>"] = "actions.jump",
         ["<2-LeftMouse>"] = "actions.jump",
         ["<C-v>"] = "actions.jump_vsplit",
@@ -102,17 +106,33 @@ return {
       -- A list of all symbols to display. Set to false to display all symbols.
       -- This can be a filetype map (see :help aerial-filetype-map)
       -- To see all available values, see :help SymbolKind
-      filter_kind = false,
-      -- filter_kind = {
-      --   "Class",
-      --   "Constructor",
-      --   "Enum",
-      --   "Function",
-      --   "Interface",
-      --   "Module",
-      --   "Method",
-      --   "Struct",
-      -- },
+      filter_kind = {
+        "Array",
+        "Boolean",
+        "Class",
+        -- "Constant",
+        "Constructor",
+        "Enum",
+        "EnumMember",
+        "Event",
+        "Field",
+        "File",
+        "Function",
+        "Interface",
+        "Key",
+        "Method",
+        "Module",
+        "Namespace",
+        "Null",
+        -- "Number",
+        "Object",
+        "Operator",
+        "Package",
+        -- "String",
+        "Struct",
+        "TypeParameter",
+        "Variable",
+      },
 
       -- Determines line highlighting mode when multiple splits are visible.
       -- split_width   Each open window will have its cursor location marked in the
@@ -136,7 +156,7 @@ return {
       highlight_on_jump = 300,
 
       -- Jump to symbol in source window when the cursor moves
-      autojump = false,
+      autojump = true,
 
       -- Define symbol icons. You can also specify "<Symbol>Collapsed" to change the
       -- icon when the tree is collapsed at that symbol, or "Collapsed" to specify a
@@ -144,8 +164,7 @@ return {
       -- "nerd_font" option below.
       -- If you have lspkind-nvim installed, it will be the default icon set.
       -- This can be a filetype map (see :help aerial-filetype-map)
-      icons = {},
-
+      icons = require("icons.kind"),
       -- Control which windows and buffers aerial should ignore.
       -- Aerial will not open when these are focused, and existing aerial windows will not be updated
       ignore = {
@@ -246,7 +265,7 @@ return {
       update_events = "TextChanged,InsertLeave",
 
       -- Show box drawing characters for the tree hierarchy
-      show_guides = false,
+      show_guides = true,
 
       -- Customize the characters used when show_guides = true
       guides = {
@@ -297,7 +316,7 @@ return {
         max_height = 0.9,
         min_height = { 10, 0.1 },
         max_width = 0.5,
-        min_width = { 0.2, 20 },
+        min_width = { 0.5, 50 },
         win_opts = {
           cursorline = true,
           winblend = 10,
