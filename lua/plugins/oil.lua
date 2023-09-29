@@ -3,6 +3,9 @@ return {
   lazy = false,
   opts = function()
     return {
+      -- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
+      -- Set to false if you still want to use netrw.
+      default_file_explorer = true,
       -- Id is automatically added at the beginning, and name at the end
       -- See :help oil-columns
       columns = {
@@ -25,16 +28,12 @@ return {
         spell = false,
         list = false,
         conceallevel = 3,
-        concealcursor = "n",
+        concealcursor = "nvic",
       },
-      -- Oil will take over directory buffers (e.g. `vim .` or `:e src/`
-      default_file_explorer = true,
-      -- Restore window options to previous values when leaving an oil buffer
-      restore_win_options = true,
+      -- Send deleted files to the trash instead of permanently deleting them (:help oil-trash)
+      delete_to_trash = true,
       -- Skip the confirmation popup for simple operations
       skip_confirm_for_simple_edits = false,
-      -- Deleted files will be removed with the trash_command (below).
-      delete_to_trash = true,
       -- Change this to customize the command used when deleting to trash
       trash_command = "trash",
       -- Selecting a new/moved/renamed file or directory will prompt you to save changes first
