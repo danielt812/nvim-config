@@ -1,9 +1,7 @@
 return {
   "jose-elias-alvarez/null-ls.nvim",
   event = { "BufReadPre" },
-  dependencies = {
-    { "nvim-lua/plenary.nvim" },
-  },
+  dependencies = { "nvim-lua/plenary.nvim" },
   opts = function()
     local formatting = require("null-ls").builtins.formatting
     local diagnostics = require("null-ls").builtins.diagnostics
@@ -15,7 +13,8 @@ return {
           extra_filetypes = { "toml" },
           extra_args = {
             "--trailing-comma=es5",
-            "--use-tabs",
+            -- "--use-tabs",
+            -- "--tab-width=2",
             -- "--single-quote",
             "--jsx-single-quote",
             "--print-width=120",

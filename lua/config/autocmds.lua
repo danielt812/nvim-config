@@ -106,6 +106,17 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
   group = filetype_settings_group,
+  desc = "Hide line number",
+  pattern = {
+    "checkhealth",
+  },
+  callback = function()
+    vim.opt_local.number = false
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  group = filetype_settings_group,
   desc = "Disable cursorline for markdown preview",
   pattern = { "markdownpreview" },
   callback = function()

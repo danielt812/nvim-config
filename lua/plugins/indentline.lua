@@ -7,7 +7,7 @@ return {
         char = "▎",
         tab_char = nil,
         highlight = "IblIndent",
-        smart_indent_cap = true,
+        smart_indent_cap = false,
         priority = 1,
       },
       whitespace = {
@@ -44,7 +44,7 @@ return {
       exclude = {
         filetypes = {
           "lspinfo",
-          "packer",
+          "lazy",
           "checkhealth",
           "help",
           "man",
