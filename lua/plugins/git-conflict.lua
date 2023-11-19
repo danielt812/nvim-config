@@ -17,7 +17,7 @@ return {
     local function map(mode, lhs, rhs, key_opts)
       key_opts = key_opts or {}
       key_opts.silent = key_opts.silent ~= false
-      vim.api.nvim_set_keymap.set(mode, lhs, rhs, key_opts)
+      vim.api.nvim_set_keymap(mode, lhs, rhs, key_opts)
     end
 
     local function unmap(mode, lhs)
@@ -40,18 +40,18 @@ return {
       end,
     })
 
-    vim.api.nvim_create_autocmd("User", {
-      group = git_conflict_group,
-      desc = "Unbind Git Conflict Keymaps",
-      pattern = { "GitConflictResolved" },
-      callback = function()
-        unmap("n", "<leader>gca")
-        unmap("n", "<leader>gci")
-        unmap("n", "<leader>gcb")
-        unmap("n", "<leader>gcn")
-        unmap("n", "<leader>]x")
-        unmap("n", "<leader>[x")
-      end,
-    })
+    -- vim.api.nvim_create_autocmd("User", {
+    --   group = git_conflict_group,
+    --   desc = "Unbind Git Conflict Keymaps",
+    --   pattern = { "GitConflictResolved" },
+    --   callback = function()
+    --     unmap("n", "<leader>gca")
+    --     unmap("n", "<leader>gci")
+    --     unmap("n", "<leader>gcb")
+    --     unmap("n", "<leader>gcn")
+    --     unmap("n", "<leader>]x")
+    --     unmap("n", "<leader>[x")
+    --   end,
+    -- })
   end,
 }
