@@ -42,6 +42,12 @@ return {
         }),
         diagnostics.flake8,
         diagnostics.selene,
+        diagnostics.shellcheck.with({
+          extra_filetypes = {
+            "zsh",
+            "bash",
+          },
+        }),
       },
     }
   end,

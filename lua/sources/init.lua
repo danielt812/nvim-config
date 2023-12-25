@@ -6,4 +6,5 @@ return {
   "prettierd",
   "selene",
   "stylua",
+  "shellcheck",
 }
