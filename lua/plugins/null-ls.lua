@@ -44,8 +44,10 @@ return {
         diagnostics.selene,
         diagnostics.shellcheck.with({
           extra_filetypes = {
-            "zsh",
             "bash",
+          },
+          extra_args = {
+            "--exclude=2139",
           },
         }),
       },
