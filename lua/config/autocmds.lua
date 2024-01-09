@@ -22,7 +22,7 @@ local buffer_options_group = vim.api.nvim_create_augroup("buffer_options", { cle
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   group = buffer_options_group,
   desc = "Format On Save",
-  pattern = { "*.lua", "*.js", "*.jsx", "*.py", "*.scss", "*.css" },
+  pattern = { "*.lua", "*.js", "*.jsx", "*.json", "*.py", "*.scss", "*.css", "*.zsh", "*.sh" },
   callback = function()
     vim.lsp.buf.format()
   end,
