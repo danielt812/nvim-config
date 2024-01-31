@@ -6,6 +6,8 @@ return {
     local formatting = require("null-ls").builtins.formatting
     local diagnostics = require("null-ls").builtins.diagnostics
 
+    local dotfiles = vim.fn.getenv("DOTFILES")
+
     return {
       debug = false,
       sources = {
@@ -21,6 +23,16 @@ return {
             "--single-attribute-per-line",
           },
         }),
+        -- formatting.biome.with({
+        --   extra_args = {
+        --     "--trailing-comma=es5",
+        --     "--indent-style=space",
+        --     "--indent-width=2",
+        --     "--jsx-quote-style=single",
+        --     "--line-width=120",
+        --     "--semicolons=always",
+        --   },
+        -- }),
         formatting.beautysh.with({
           extra_args = {
             "--indent-size",
@@ -42,6 +54,11 @@ return {
         }),
         diagnostics.flake8,
         diagnostics.selene,
+        -- diagnostics.eslint_d.with({
+        --   extra_args = {
+        --     "--config=" .. dotfiles .. "/.eslintrc.js",
+        --   },
+        -- }),
         diagnostics.shellcheck.with({
           extra_filetypes = {
             "bash",
