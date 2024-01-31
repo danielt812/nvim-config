@@ -1,7 +1,9 @@
+local util = require("lspconfig.util")
+
 return {
   cmd = { "vscode-html-language-server", "--stdio" },
   filetypes = { "html" },
-  root_dir = require("lspconfig.util").root_pattern("package.json", ".git"),
+  root_dir = util.root_pattern("package.json", ".git"),
   single_file_support = true,
   settings = {},
   init_options = {
