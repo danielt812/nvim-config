@@ -1,6 +1,7 @@
 return {
   cmd = { "emmet-language-server", "--stdio" },
   filetypes = {
+    "cf",
     "css",
     "html",
     "javascript",
