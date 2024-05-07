@@ -75,6 +75,15 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
   end,
 })
 
+local env_settings_group = vim.api.nvim_create_augroup("env_settings", { clear = true })
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = ".env",
+  group = env_settings_group,
+  callback = function(args)
+    vim.diagnostic.disable(args.buf)
+  end,
+})
+
 local filetype_settings_group = vim.api.nvim_create_augroup("filetype_settings", { clear = true })
 vim.api.nvim_create_autocmd({ "FileType" }, {
   group = filetype_settings_group,
@@ -128,16 +137,18 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   group = filetype_settings_group,
   desc = "q To Exit Filetype",
   pattern = {
+    "aerial",
+    "aerial-nav",
     "blame",
-    "qf",
-    "help",
-    "man",
-    "lspinfo",
-    "lsp-installer",
-    "null-ls-info",
-    "tsplayground",
     "checkhealth",
+    "help",
+    "lsp-installer",
+    "lspinfo",
+    "man",
+    "null-ls-info",
+    "qf",
     "spectre_panel",
+    "tsplayground",
   },
   callback = function()
     vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true })
@@ -194,7 +205,7 @@ vim.api.nvim_create_autocmd({ "WinEnter", "WinResized" }, {
   callback = function()
     local win_ids = vim.api.nvim_list_wins()
 
-    for _, win_id in ipairs(win_ids) do
+    for _, win_id in pairs(win_ids) do
       local buf_id = vim.api.nvim_win_get_buf(win_id)
       local buf_ft = vim.api.nvim_buf_get_option(buf_id, "filetype")
       if buf_ft == "blame" then

@@ -10,7 +10,6 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 vim.g.mapleader = " "
 vim.g.markdown_recommended_style = 0 -- Fix markdown indentation settings
-vim.g.python3_host_prog = "/usr/local/bin/python3.11"
 
 require("lazy").setup({
   spec = {

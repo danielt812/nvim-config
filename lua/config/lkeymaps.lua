@@ -45,10 +45,15 @@ map("n", "<leader>bcl", "<cmd>BufferLineCloseRight<CR>", { desc = "Right 󰳠 " 
 map("n", "<leader>bco", "<cmd>BufferLineCloseOthers<CR>", { desc = "Others  " })
 map("n", "<leader>bcp", "<cmd>BufferLineGroupClose pinned<CR>", { desc = "Pinned 󰤱 " })
 map("n", "<leader>bcu", "<cmd>BufferLineGroupClose ungrouped<CR>", { desc = "Unpinned 󰤰 " })
-
 map("n", "<leader>bsd", "<cmd>BufferLineSortByDirectory<CR>", { desc = "Directory   " })
 map("n", "<leader>bsl", "<cmd>BufferLineSortByExtension<CR>", { desc = "Language  " })
 
+map("n", "<leader>aa", "<cmd>lua require('copilot.panel').accept()<CR>", { desc = "Accept 󰡕 " })
+map("n", "<leader>ac", "<cmd>lua require('copilot.panel').close()<CR>", { desc = "Close  " })
+map("n", "<leader>al", "<cmd>lua require('copilot.panel').jump_next()<CR>", { desc = "Jump Next 󰳠 " })
+map("n", "<leader>ah", "<cmd>lua require('copilot.panel').jump_prev()<CR>", { desc = "Jump Prev 󰳞 " })
+map("n", "<leader>ao", "<cmd>lua require('copilot.panel').open({position, ratio})<CR>", { desc = "Open 󰏋 " })
+map("n", "<leader>ar", "<cmd>lua require('copilot.panel').refresh()<CR>", { desc = "Refresh  " })
 -- Which-Key Windows
 map("n", "<leader>wc", "<C-W>c", { desc = "Close  ", remap = true })
 map("n", "<leader>wo", "<C-W>p", { desc = "Other 󰁁 ", remap = true })
@@ -75,6 +80,8 @@ map("n", "<leader>ts", "<cmd>ToggleSpell<CR>", { desc = "Spell 󰓆 " })
 map("n", "<leader>tt", "<cmd>TroubleToggle<CR>", { desc = "Trouble 󱠪 " })
 map("n", "<leader>tw", "<cmd>ToggleWrap<CR>", { desc = "Wrap 󰖶 " })
 map("n", "<leader>tz", "<cmd>ZenMode<CR>", { desc = "Zen Mode 󱅼 " })
+
+map("n", "<leader>oo", "<cmd>ChatGPT<CR>", { desc = "ChatGPT 󱜹 " })
 
 -- Which-Key Lsp Info
 map("n", "<leader>lil", "<cmd>LspInfo<CR>", { desc = "LSP  " })
@@ -119,7 +126,7 @@ map("n", "<leader>bgf", "<cmd>Telescope buffers previewer=true<CR>", { desc = "F
 -- Which-Key Git
 map("n", "<leader>gg", "<cmd>LazyGit<CR>", { desc = "LazyGit 󰒲 " })
 map("n", "<leader>gb", "<cmd>Gitsigns toggle_current_line_blame<CR>", { desc = "Blame Line  " })
-map("n", "<leader>gB", "<cmd>ToggleBlame<CR>", { desc = "Blame File  " })
+map("n", "<leader>gB", "<cmd>BlameToggle<CR>", { desc = "Blame File  " })
 map("n", "<leader>gtd", "<cmd>Gitsigns toggle_deleted<CR>", { desc = "Deleted 󱂦 " })
 map("n", "<leader>gth", "<cmd>Gitsigns toggle_linehl<CR>", { desc = "Line Highlight 󰸱 " })
 map("n", "<leader>gtn", "<cmd>Gitsigns toggle_numhl<CR>", { desc = "Num Highlight 󰎠 " })

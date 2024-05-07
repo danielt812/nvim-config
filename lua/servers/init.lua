@@ -2,6 +2,7 @@
 return {
   "angularls",
   "bashls",
+  "tailwindcss",
   -- "biome",
   "cssls",
   "emmet_language_server",
@@ -10,7 +11,6 @@ return {
   "jsonls",
   "lua_ls",
   "pyright",
-  -- "quick_lint_js",
   "tsserver",
   "yamlls",
 }

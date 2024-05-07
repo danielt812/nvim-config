@@ -46,9 +46,6 @@ map("v", "gS", "<Plug>(nvim-surround-visual-line)", { desc = "Add surround verti
 map("n", "cs", "<Plug>(nvim-surround-change)", { desc = "Change surround" })
 map("n", "ds", "<Plug>(nvim-surround-delete)", { desc = "Delete surround" })
 
--- Toggle Join/Split
-map("n", "J", "<cmd>TSJToggle<CR>", { desc = "Join/Split" })
-
 -- Toggle Term
 map({ "n", "t" }, "<C-/>", "<cmd>ToggleTerm<CR>", { desc = "Toggle Terminal", remap = true })
 
@@ -82,12 +79,11 @@ map({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<CR><esc>", { desc = "Save file" })
 -- Better indenting
 map("v", "<", "<gv", { desc = "Indent block to left", silent = true })
 map("v", ">", ">gv", { desc = "Indent block to right", silent = true })
-
 -- Yanky
-map({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
-map({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
--- map({ "n", "x" }, "p", "<Plug>(YankyPutAfter)", { desc = "Yanky put after" })
--- map({ "n", "x" }, "P", "<Plug>(YankyPutBefore)", { desc = "Yanky put before" })
+-- map({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
+-- map({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
+map({ "n", "x" }, "p", "<Plug>(YankyPutAfter)", { desc = "Yanky put after" })
+map({ "n", "x" }, "P", "<Plug>(YankyPutBefore)", { desc = "Yanky put before" })
 map({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)", { desc = "Yanky gput after" })
 map({ "n", "x" }, "gP", "<Plug>(YankyGPutBefore)", { desc = "Yanky gput after" })
 map("n", "]y", "<Plug>(YankyCycleForward)", { desc = "Next yanky" })

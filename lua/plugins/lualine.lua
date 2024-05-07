@@ -1,136 +1,132 @@
-return {
-  "nvim-lualine/lualine.nvim",
-  event = { "BufReadPre" },
-  opts = function()
-    local hide_in_width = function()
-      return vim.fn.winwidth(0) > 80
-    end
+local M = { "nvim-lualine/lualine.nvim" }
 
-    local diagnostics = {
-      "diagnostics",
-      sources = { "nvim_diagnostic" },
-      sections = { "error", "warn", "info", "hint" },
-      symbols = { error = " ", warn = " ", info = " ", hint = " " },
-      colored = false,
-      update_in_insert = false,
-      always_visible = false,
-    }
+M.enabled = true
 
-    local diff = {
-      "diff",
-      colored = false,
-      symbols = { added = " ", modified = " ", removed = " " }, -- changes diff symbols
-      cond = hide_in_width,
-    }
+M.event = { "BufReadPre" }
 
-    local mode = {
-      "mode",
-      fmt = function(str)
-        return str
-      end,
-    }
+M.opts = function()
+  local hide_in_width = function()
+    return vim.fn.winwidth(0) > 80
+  end
 
-    local filetype = {
-      "filetype",
-      icons_enabled = true,
-      icon = nil,
-    }
+  local diagnostics = {
+    "diagnostics",
+    sources = { "nvim_diagnostic" },
+    sections = { "error", "warn", "info", "hint" },
+    symbols = { error = " ", warn = " ", info = " ", hint = " " },
+    colored = false,
+    update_in_insert = false,
+    always_visible = false,
+  }
 
-    local branch = {
-      "branch",
-      icons_enabled = true,
-      icon = "",
-    }
+  local diff = {
+    "diff",
+    colored = false,
+    symbols = { added = " ", modified = " ", removed = " " }, -- changes diff symbols
+    cond = hide_in_width,
+  }
 
-    local location = {
-      "location",
-      padding = 1,
-    }
+  local mode = {
+    "mode",
+    fmt = function(str)
+      return str
+    end,
+  }
 
-    -- local progressbar = function()
-    --   local current_line = vim.fn.line(".")
-    --   local total_lines = vim.fn.line("$")
-    --   local chars = { "__", "▁▁", "▂▂", "▃▃", "▄▄", "▅▅", "▆▆", "▇▇", "██" }
-    --   local line_ratio = current_line / total_lines
-    --   local index = math.ceil(line_ratio * #chars)
-    --   return chars[index]
-    -- end
+  local filetype = {
+    "filetype",
+    icons_enabled = true,
+    icon = nil,
+  }
 
-    local progress = {
-      "progress",
-      fmt = function()
-        return "%P"
-        -- return "%P/%L"
-      end,
-      color = {},
-    }
+  local branch = {
+    "branch",
+    icons_enabled = true,
+    icon = "",
+  }
 
-    local spaces = function()
-      return "󰌒 " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
-    end
+  local location = {
+    "location",
+    padding = 1,
+  }
 
-    return {
-      options = {
-        theme = "auto", -- lualine theme
-        component_separators = {
-          left = "",
-          right = "",
-        },
-        section_separators = {
-          left = "",
-          right = "",
-        },
-        disabled_filetypes = {
-          "alpha",
-          statusline = {},
-          winbar = {
-            "dap-repl",
-            "dapui_breakpoints",
-            "dapui_stacks",
-            "dapui_scopes",
-            "dapui_watches",
-            "dapui_console",
-          },
-        },
-        always_divide_middle = true,
-        globalstatus = true,
+  -- local progressbar = function()
+  --   local current_line = vim.fn.line(".")
+  --   local total_lines = vim.fn.line("$")
+  --   local chars = { "__", "▁▁", "▂▂", "▃▃", "▄▄", "▅▅", "▆▆", "▇▇", "██" }
+  --   local line_ratio = current_line / total_lines
+  --   local index = math.ceil(line_ratio * #chars)
+  --   return chars[index]
+  -- end
+
+  local progress = {
+    "progress",
+    fmt = function()
+      return "%P"
+      -- return "%P/%L"
+    end,
+    color = {},
+  }
+
+  local spaces = function()
+    return "󰌒 " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
+  end
+
+  return {
+    options = {
+      theme = "auto", -- lualine theme
+      component_separators = {
+        left = "",
+        right = "",
       },
-      sections = {
-        lualine_a = { mode },
-        lualine_b = { branch, diagnostics },
-        lualine_c = {},
-        lualine_x = { diff, spaces, "encoding", filetype },
-        lualine_y = { location },
-        lualine_z = { progress },
+      section_separators = {
+        left = "",
+        right = "",
       },
-      winbar = {
-        lualine_c = {
-          "navic",
-          color_correction = nil,
-          navic_opts = nil,
+      disabled_filetypes = {
+        "alpha",
+        statusline = {},
+        winbar = {
+          "dap-repl",
+          "dapui_breakpoints",
+          "dapui_stacks",
+          "dapui_scopes",
+          "dapui_watches",
+          "dapui_console",
         },
       },
-
-      -- inactive_sections = {
-      --   lualine_a = {},
-      --   lualine_b = {},
-      --   lualine_c = { "filename" },
-      --   lualine_x = { "location" },
-      --   lualine_y = {},
-      --   lualine_z = {},
-      -- },
-      tabline = {},
-      extensions = {
-        "aerial",
-        "lazy",
-        "nerdtree",
-        "quickfix",
-        "toggleterm",
-        "trouble",
+      always_divide_middle = true,
+      globalstatus = true,
+    },
+    sections = {
+      lualine_a = { mode },
+      lualine_b = { branch, diagnostics },
+      lualine_c = {},
+      lualine_x = { diff, spaces, "encoding", filetype },
+      lualine_y = { location },
+      lualine_z = { progress },
+    },
+    winbar = {
+      lualine_c = {
+        "navic",
+        color_correction = nil,
+        navic_opts = nil,
       },
-    }
-  end,
-  config = function(_, opts)
-    require("lualine").setup(opts)
-  end,
-}
+    },
+    tabline = {},
+    extensions = {
+      "aerial",
+      "lazy",
+      "nerdtree",
+      "quickfix",
+      "toggleterm",
+      "trouble",
+    },
+  }
+end
+
+M.config = function(_, opts)
+  require("lualine").setup(opts)
+end
+
+return M

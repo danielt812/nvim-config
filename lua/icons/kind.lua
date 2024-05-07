@@ -4,6 +4,7 @@ return {
   Class = "󰌗 ",
   Constant = " ",
   Constructor = " ",
+  Copilot = " ",
   Enum = " ",
   EnumMember = " ",
   Event = " ",
