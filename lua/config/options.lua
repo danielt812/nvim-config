@@ -10,9 +10,9 @@ opt.cursorline = true -- Enable highlighting of the current line
 opt.expandtab = true -- Use spaces instead of tabs
 opt.fillchars = { eob = " ", fold = " ", foldopen = "", foldsep = " ", foldclose = "", lastline = " " } -- disable `~` on nonexistent lines
 -- opt.foldcolumn = "1" -- show fold column
--- opt.foldenable = true -- enable fold for nvim-ufo
--- opt.foldlevel = 99 -- set high foldlevel for nvim-ufo
--- opt.foldlevelstart = 99
+opt.foldenable = true -- enable fold for nvim-ufo
+opt.foldlevel = 99 -- set high foldlevel for nvim-ufo
+opt.foldlevelstart = 99
 opt.formatoptions = "jcroqlnt" -- tcqj
 opt.grepformat = "%f:%l:%c:%m"
 -- opt.grepprg = "rg --vimgrep"
