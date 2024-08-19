@@ -1,6 +1,6 @@
 local M = { "numToStr/Comment.nvim" }
 
-M.enabled = true
+M.enabled = false
 
 M.event = { "BufReadPost" }
 

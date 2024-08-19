@@ -13,16 +13,13 @@ vim.g.markdown_recommended_style = 0 -- Fix markdown indentation settings
 
 require("lazy").setup({
   spec = {
-    { import = "colorschemes" },
+    -- { import = "colorschemes" },
     { import = "plugins" },
     { "mg979/vim-visual-multi", event = { "BufReadPre" } },
   },
   change_detection = {
     enabled = true,
     notify = false,
-  },
-  install = {
-    colorscheme = { "nightfox" },
   },
   defaults = {
     -- If you know what you're doing, you can set this to `true` to have all your custom plugins lazy-loaded by default.

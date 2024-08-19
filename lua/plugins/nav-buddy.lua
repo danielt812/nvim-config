@@ -2,6 +2,8 @@ local M = { "SmiteshP/nvim-navbuddy" }
 
 M.enabled = true
 
+M.event = { "LspAttach" }
+
 M.dependencies = {
   "SmiteshP/nvim-navic",
   "MunifTanjim/nui.nvim",
@@ -56,7 +58,7 @@ M.opts = function()
 end
 
 M.config = function(_, opts)
-  require("nav-buddy").setup(opts)
+  require("nvim-navbuddy").setup(opts)
 end
 
 return M

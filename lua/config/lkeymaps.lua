@@ -4,33 +4,6 @@ local function map(mode, lhs, rhs, opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
--- Which-Key Save
-map("n", "<leader>s", "<cmd>w<CR>", { desc = "Save  " })
-
--- Which-Key Quit
-map("n", "<leader>q", "<cmd>confirm qa<CR>", { desc = "Quit  " })
-
--- Which-Key Alpha
-map("n", "<leader>;", "<cmd>Alpha<CR>", { desc = "Dashboard 󱒉 " })
-
--- Which-Key Format
-map("n", "<leader>.", "<cmd>lua vim.lsp.buf.format()<CR>", { desc = "Format 󰘞 " })
-
--- Which-Key Clear Hl
-map("n", "<leader>h", "<cmd>nohlsearch<CR>", { desc = "Clear Highlight 󰹊 " })
-
--- Which-Key Close-Buffer
-map("n", "<leader>c", "<cmd>BufferClose<CR>", { desc = "Close Buffer   " })
-
--- Which-Key Format
-map("n", "<leader>.", "<cmd>lua vim.lsp.buf.format()<CR>", { desc = "Format 󰘞 " })
-
--- Which-Key Nvim-Tree
-map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Explorer 󰙅 " })
-
--- Which-Key Comment
-map("n", "<leader>/", "<Plug>(comment_toggle_linewise_current)", { desc = "Comment  " })
-
 -- Which-Key Buffers
 map("n", "<leader>bp", "<cmd>BufferLineTogglePin<CR>", { desc = "Pin  " })
 
@@ -48,12 +21,6 @@ map("n", "<leader>bcu", "<cmd>BufferLineGroupClose ungrouped<CR>", { desc = "Unp
 map("n", "<leader>bsd", "<cmd>BufferLineSortByDirectory<CR>", { desc = "Directory   " })
 map("n", "<leader>bsl", "<cmd>BufferLineSortByExtension<CR>", { desc = "Language  " })
 
-map("n", "<leader>aa", "<cmd>lua require('copilot.panel').accept()<CR>", { desc = "Accept 󰡕 " })
-map("n", "<leader>ac", "<cmd>lua require('copilot.panel').close()<CR>", { desc = "Close  " })
-map("n", "<leader>al", "<cmd>lua require('copilot.panel').jump_next()<CR>", { desc = "Jump Next 󰳠 " })
-map("n", "<leader>ah", "<cmd>lua require('copilot.panel').jump_prev()<CR>", { desc = "Jump Prev 󰳞 " })
-map("n", "<leader>ao", "<cmd>lua require('copilot.panel').open({position, ratio})<CR>", { desc = "Open 󰏋 " })
-map("n", "<leader>ar", "<cmd>lua require('copilot.panel').refresh()<CR>", { desc = "Refresh  " })
 -- Which-Key Windows
 map("n", "<leader>wc", "<C-W>c", { desc = "Close  ", remap = true })
 map("n", "<leader>wo", "<C-W>p", { desc = "Other 󰁁 ", remap = true })
@@ -77,11 +44,10 @@ map("n", "<leader>tm", "<cmd>ToggleTerm<CR>", { desc = "Term  " })
 map("n", "<leader>tn", "<cmd>AerialNavToggle<CR>", { desc = "Navigation 󰆌 " })
 map("n", "<leader>tr", "<cmd>ToggleRelative<CR>", { desc = "Relative  " })
 map("n", "<leader>ts", "<cmd>ToggleSpell<CR>", { desc = "Spell 󰓆 " })
-map("n", "<leader>tt", "<cmd>TroubleToggle<CR>", { desc = "Trouble 󱠪 " })
 map("n", "<leader>tw", "<cmd>ToggleWrap<CR>", { desc = "Wrap 󰖶 " })
 map("n", "<leader>tz", "<cmd>ZenMode<CR>", { desc = "Zen Mode 󱅼 " })
 
-map("n", "<leader>oo", "<cmd>ChatGPT<CR>", { desc = "ChatGPT 󱜹 " })
+-- map("n", "<leader>oo", "<cmd>ChatGPT<CR>", { desc = "ChatGPT 󱜹 " })
 
 -- Which-Key Lsp Info
 map("n", "<leader>lil", "<cmd>LspInfo<CR>", { desc = "LSP  " })
@@ -97,41 +63,30 @@ map("n", "<leader>ldl", "<cmd>lua vim.diagnostic.setloclist()<CR>", { desc = "Lo
 map("n", "<leader>lal", "<cmd>lua vim.diagnostic.open_float()<CR>", { desc = "Open Float" })
 
 -- Which-Key Telescope
-map("n", "<leader>fb", "<cmd>Telescope git_branches<CR>", { desc = "Checkout Branch " })
-map("n", "<leader>fc", "<cmd>Telescope colorscheme<CR>", { desc = "Colorscheme " })
-map("n", "<leader>fd", "<cmd>Telescope commands<CR>", { desc = "Commands " })
-map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "File 󰱽" })
-map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "Grep " })
-map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Help 󰘥" })
-map("n", "<leader>fH", "<cmd>Telescope highlights<CR>", { desc = "Highlight Groups 󰸱" })
-map("n", "<leader>fk", "<cmd>Telescope keymaps<CR>", { desc = "Keymaps " })
-map("n", "<leader>fl", "<cmd>Telescope resume<CR>", { desc = "Resume Last Search " })
-map("n", "<leader>fm", "<cmd>Telescope man_pages<CR>", { desc = "Man Pages 󱗖" })
-map("n", "<leader>fr", "<cmd>Telescope oldfiles<CR>", { desc = "Recent File " })
+-- map("n", "<leader>fb", "<cmd>Telescope git_branches<CR>", { desc = "Checkout Branch " })
+-- map("n", "<leader>fc", "<cmd>Telescope colorscheme<CR>", { desc = "Colorscheme " })
+-- map("n", "<leader>fd", "<cmd>Telescope commands<CR>", { desc = "Commands " })
+-- map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "File 󰱽" })
+-- map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "Grep " })
+-- map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Help 󰘥" })
+-- map("n", "<leader>fH", "<cmd>Telescope highlights<CR>", { desc = "Highlight Groups 󰸱" })
+-- map("n", "<leader>fk", "<cmd>Telescope keymaps<CR>", { desc = "Keymaps " })
+-- map("n", "<leader>fl", "<cmd>Telescope resume<CR>", { desc = "Resume Last Search " })
+-- map("n", "<leader>fm", "<cmd>Telescope man_pages<CR>", { desc = "Man Pages 󱗖" })
+-- map("n", "<leader>fr", "<cmd>Telescope oldfiles<CR>", { desc = "Recent File " })
 -- map("n", "<leader>fR", "<cmd>Telescope registers<CR>", { desc = "Registers " })
-map("n", "<leader>fs", "<cmd>Telescope spell_suggest<CR>", { desc = "Spelling Suggestions 󰓆" })
-map("n", "<leader>ft", "<cmd>Telescope grep_string<CR>", { desc = "Text " })
-map("n", "<leader>fy", "<cmd>Telescope yank_history<CR>", { desc = "Yank History 󰆒 " })
-
-map("n", "<leader>lfb", "<cmd>Telescope diagnostics bufnr=0<CR>", { desc = "Buffer Diagnostics  " })
-map("n", "<leader>lfd", "<cmd>Telescope diagnostics<CR>", { desc = "Diagnostics  " })
-map("n", "<leader>lfe", "<cmd>Telescope lsp_definitions<CR>", { desc = "Definitions  " })
-map("n", "<leader>lfq", "<cmd>Telescope quickfix<CR>", { desc = "Quickfix   " })
-map("n", "<leader>lfr", "<cmd>Telescope lsp_references<CR>", { desc = "References  " })
-map("n", "<leader>lfu", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "Document Symbols 󱪚 " })
-map("n", "<leader>lfw", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", { desc = "Workspace Symbols 󱈹 " })
-
-map("n", "<leader>bgf", "<cmd>Telescope buffers previewer=true<CR>", { desc = "Find  " })
-
--- Which-Key Git
-map("n", "<leader>gg", "<cmd>LazyGit<CR>", { desc = "LazyGit 󰒲 " })
-map("n", "<leader>gb", "<cmd>Gitsigns toggle_current_line_blame<CR>", { desc = "Blame Line  " })
-map("n", "<leader>gB", "<cmd>BlameToggle<CR>", { desc = "Blame File  " })
-map("n", "<leader>gtd", "<cmd>Gitsigns toggle_deleted<CR>", { desc = "Deleted 󱂦 " })
-map("n", "<leader>gth", "<cmd>Gitsigns toggle_linehl<CR>", { desc = "Line Highlight 󰸱 " })
-map("n", "<leader>gtn", "<cmd>Gitsigns toggle_numhl<CR>", { desc = "Num Highlight 󰎠 " })
-map("n", "<leader>gts", "<cmd>Gitsigns toggle_signs<CR>", { desc = "Signs  " })
-map("n", "<leader>gtw", "<cmd>Gitsigns toggle_word_diff<CR>", { desc = "Word Diff  " })
+-- map("n", "<leader>fs", "<cmd>Telescope spell_suggest<CR>", { desc = "Spelling Suggestions 󰓆" })
+-- map("n", "<leader>ft", "<cmd>Telescope grep_string<CR>", { desc = "Text " })
+-- map("n", "<leader>fy", "<cmd>Telescope yank_history<CR>", { desc = "Yank History 󰆒 " })
+--
+-- map("n", "<leader>lfb", "<cmd>Telescope diagnostics bufnr=0<CR>", { desc = "Buffer Diagnostics  " })
+-- map("n", "<leader>lfd", "<cmd>Telescope diagnostics<CR>", { desc = "Diagnostics  " })
+-- map("n", "<leader>lfe", "<cmd>Telescope lsp_definitions<CR>", { desc = "Definitions  " })
+-- map("n", "<leader>lfq", "<cmd>Telescope quickfix<CR>", { desc = "Quickfix   " })
+-- map("n", "<leader>lfr", "<cmd>Telescope lsp_references<CR>", { desc = "References  " })
+-- map("n", "<leader>lfu", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "Document Symbols 󱪚 " })
+-- map("n", "<leader>lfw", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", { desc = "Workspace Symbols 󱈹 " })
+-- map("n", "<leader>bgf", "<cmd>Telescope buffers previewer=true<CR>", { desc = "Find  " })
 
 -- Which-Key DAP
 map("n", "<leader>dsb", "<cmd>lua require('dap').step_back()<CR>", { desc = "Back  " })

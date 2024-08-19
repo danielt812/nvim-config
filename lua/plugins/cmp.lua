@@ -28,7 +28,7 @@ M.opts = function()
   local kind_icons = require("icons.kind")
 
   local has_words_before = function()
-    if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
+    if vim.api.nvim_get_option_value("buftype", { buf = 0 }) == "prompt" then
       return false
     end
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -83,6 +83,7 @@ M.opts = function()
         vim_item.kind = kind_icons[vim_item.kind]
         vim_item.menu = ({
           copilot = "COPILOT",
+          lazydev = "LAZYDEV",
           path = "PATH",
           nvim_lsp = "LSP",
           luasnip = "LUASNIP",
@@ -93,10 +94,11 @@ M.opts = function()
     },
     sources = {
       { name = "nvim_lsp" },
+      { name = "lazydev" },
       { name = "copilot" },
+      { name = "luasnip" },
       { name = "path" },
       { name = "nvim_lua" },
-      { name = "luasnip" },
       { name = "buffer" },
     },
     confirm_opts = {

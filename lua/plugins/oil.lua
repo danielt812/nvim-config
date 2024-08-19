@@ -49,7 +49,7 @@ M.opts = function()
 end
 
 M.config = function(_, opts)
-  require("oil").setup(opts)
+  require("oil").setup({})
 end
 
 return M

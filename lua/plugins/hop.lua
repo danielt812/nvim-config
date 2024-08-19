@@ -1,6 +1,6 @@
 local M = { "smoka7/hop.nvim" }
 
-M.enabled = true
+M.enabled = false
 
 M.keys = { "f", "F", "t", "T" }
 

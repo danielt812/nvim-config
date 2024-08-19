@@ -21,12 +21,12 @@ map("n", "<A-Left>", "<cmd>vertical resize -2<CR>", { desc = "Decrease window wi
 map("n", "<A-Right>", "<cmd>vertical resize +2<CR>", { desc = "Increase window width" })
 
 -- Move Lines
-map("n", "<A-j>", "<cmd>m .+1<CR>==", { desc = "Move down" })
-map("n", "<A-k>", "<cmd>m .-2<CR>==", { desc = "Move up" })
-map("i", "<A-j>", "<esc><cmd>m .+1<CR>==gi", { desc = "Move down" })
-map("i", "<A-k>", "<esc><cmd>m .-2<CR>==gi", { desc = "Move up" })
-map("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move down" })
-map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move up" })
+-- map("n", "<A-j>", "<cmd>m .+1<CR>==", { desc = "Move down" })
+-- map("n", "<A-k>", "<cmd>m .-2<CR>==", { desc = "Move up" })
+-- map("i", "<A-j>", "<esc><cmd>m .+1<CR>==gi", { desc = "Move down" })
+-- map("i", "<A-k>", "<esc><cmd>m .-2<CR>==gi", { desc = "Move up" })
+-- map("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move down" })
+-- map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move up" })
 
 -- BufferLine
 map("n", "<A-h>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer" })
@@ -74,20 +74,12 @@ map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
 
 -- Save file with ctrl-s
-map({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<CR><esc>", { desc = "Save file" })
+-- map({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<CR><esc>", { desc = "Save file" })
+map({"n"}, "<C-s>", "<cmd>so %<CR>", { desc = "Source file" })
 
 -- Better indenting
 map("v", "<", "<gv", { desc = "Indent block to left", silent = true })
 map("v", ">", ">gv", { desc = "Indent block to right", silent = true })
--- Yanky
--- map({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
--- map({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
-map({ "n", "x" }, "p", "<Plug>(YankyPutAfter)", { desc = "Yanky put after" })
-map({ "n", "x" }, "P", "<Plug>(YankyPutBefore)", { desc = "Yanky put before" })
-map({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)", { desc = "Yanky gput after" })
-map({ "n", "x" }, "gP", "<Plug>(YankyGPutBefore)", { desc = "Yanky gput after" })
-map("n", "]y", "<Plug>(YankyCycleForward)", { desc = "Next yanky" })
-map("n", "[y", "<Plug>(YankyCycleBackward)", { desc = "Previous yanky" })
 
 -- Cycle diagnostics
 map("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { desc = "Prev diagnostic" })

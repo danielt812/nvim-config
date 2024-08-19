@@ -49,7 +49,7 @@ M.opts = function()
           "--config-path=stylua.toml",
         },
       }),
-      diagnostics.selene,
+      -- diagnostics.selene,
       -- diagnostics.eslint_d.with({
       --   extra_args = {
       --     "--config=" .. dotfiles .. "/.eslintrc.js",

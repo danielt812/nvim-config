@@ -6,6 +6,8 @@ M.dependencies = {
   "nvim-lua/plenary.nvim",
 }
 
+-- M.event = { "VeryLazy" }
+
 M.cmd = {
   "Telescope",
 }
@@ -19,6 +21,12 @@ M.opts = function()
       selection_caret = " ",
       path_display = { "smart" },
       color_devicons = true,
+      layout_config = {
+        vertical = {
+          height = 1,
+          width = 1,
+        },
+      },
       file_ignore_patterns = {
         "%.git/",
         "%.DS_Store",

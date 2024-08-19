@@ -17,6 +17,16 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
+-- Highlight on yank
+local highlight_yank_group = vim.api.nvim_create_augroup("highlight_yank", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = highlight_yank_group,
+  desc = "Highlight on Yank",
+  callback = function()
+    vim.highlight.on_yank({ higroup = "Visual", timeout = 300 })
+  end,
+})
+
 -- Format on save
 local buffer_options_group = vim.api.nvim_create_augroup("buffer_options", { clear = true })
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
@@ -80,7 +90,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
   pattern = ".env",
   group = env_settings_group,
   callback = function(args)
-    vim.diagnostic.disable(args.buf)
+    vim.diagnostic.enable(false, { buf = args.buf })
   end,
 })
 
@@ -101,11 +111,12 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     "alpha",
     "oil",
     "checkhealth",
-    -- "mason",
+    "mason",
     "lazy",
     "Telescope*",
     "lazygit",
     "notify",
+    "fzf",
   },
   callback = function()
     vim.opt_local.showtabline = 0
@@ -160,9 +171,10 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 local help_settings_group = vim.api.nvim_create_augroup("help_settings", { clear = true })
 vim.api.nvim_create_autocmd({ "FileType" }, {
   group = help_settings_group,
-  desc = "Open help in vertical split",
+  desc = "Open filetypes in vertical split",
   pattern = {
     "help",
+    "markdown",
   },
   callback = function()
     vim.cmd("wincmd L")
@@ -180,7 +192,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     -- Iterate through each window ID and check the filetype of its associated buffer
     for _, win_id in ipairs(win_ids) do
       local buf_id = vim.api.nvim_win_get_buf(win_id)
-      local buf_ft = vim.api.nvim_buf_get_option(buf_id, "filetype")
+      local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = buf_id })
       if buf_ft == "dapui_breakpoints" then
         vim.wo[win_id].winbar = "DAP Breakpoints  "
       elseif buf_ft == "dapui_stacks" then
@@ -195,33 +207,5 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     end
     vim.api.nvim_set_hl(0, "WinBar", { link = "Character" })
     vim.api.nvim_set_hl(0, "WinBarNC", { link = "Character" })
-  end,
-})
-
--- Hide winbar for blame nvim
-vim.api.nvim_create_autocmd({ "WinEnter", "WinResized" }, {
-  group = winbar_settings_group,
-  desc = "Hide lualine winbar when blame is open",
-  callback = function()
-    local win_ids = vim.api.nvim_list_wins()
-
-    for _, win_id in pairs(win_ids) do
-      local buf_id = vim.api.nvim_win_get_buf(win_id)
-      local buf_ft = vim.api.nvim_buf_get_option(buf_id, "filetype")
-      if buf_ft == "blame" then
-        require("lualine").hide({
-          place = { "winbar" },
-          unhide = false,
-        })
-        vim.opt_local.wrap = false
-        break
-      else
-        require("lualine").hide({
-          place = { "winbar" },
-          unhide = true,
-        })
-        vim.opt_local.wrap = true
-      end
-    end
   end,
 })

@@ -1,6 +1,6 @@
 local M = { "stevearc/aerial.nvim" }
 
-M.enabled = true
+M.enabled = false
 
 M.event = { "LspAttach" }
 
