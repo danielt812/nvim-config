@@ -17,13 +17,13 @@ M.opts = function()
       lua = "rainbow-blocks",
     },
     highlight = {
-      -- "RainbowDelimiterRed",
-      -- "RainbowDelimiterYellow",
       "RainbowDelimiterBlue",
       "RainbowDelimiterOrange",
       "RainbowDelimiterGreen",
       "RainbowDelimiterViolet",
       "RainbowDelimiterCyan",
+      "RainbowDelimiterRed",
+      "RainbowDelimiterYellow",
     },
   }
 end
@@ -33,3 +33,4 @@ M.config = function(_, opts)
 end
 
 return M
+

@@ -10,6 +10,6 @@ return {
       "typescript.tsx",
     },
     root_dir = require("lspconfig.util").root_pattern("tsconfig.json", "package.json", "jsconfig.json", ".git"),
-    single_file_support = false,
+    single_file_support = true,
   },
 }

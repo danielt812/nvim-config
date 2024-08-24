@@ -1,5 +1,4 @@
 return {
   "bash",
   "js",
-  "python",
 }

@@ -1,4 +1,3 @@
--- https://github.com/LuaLS/lua-language-server/wiki/Settings
 return {
   settings = {
     Lua = {

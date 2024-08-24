@@ -14,41 +14,6 @@ map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })
 map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
 map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
 
--- Resize window using <alt> + arrow keys
-map("n", "<A-Up>", "<cmd>resize +2<CR>", { desc = "Increase window height" })
-map("n", "<A-Down>", "<cmd>resize -2<CR>", { desc = "Decrease window height" })
-map("n", "<A-Left>", "<cmd>vertical resize -2<CR>", { desc = "Decrease window width" })
-map("n", "<A-Right>", "<cmd>vertical resize +2<CR>", { desc = "Increase window width" })
-
--- Move Lines
-map("n", "<A-j>", "<cmd>m .+1<CR>==", { desc = "Move down" })
-map("n", "<A-k>", "<cmd>m .-2<CR>==", { desc = "Move up" })
-map("i", "<A-j>", "<esc><cmd>m .+1<CR>==gi", { desc = "Move down" })
-map("i", "<A-k>", "<esc><cmd>m .-2<CR>==gi", { desc = "Move up" })
-map("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move down" })
-map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move up" })
-
--- BufferLine
-map("n", "<A-h>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer" })
-map("n", "<A-l>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
-map("n", "<S-h>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer" })
-map("n", "<S-l>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
-map("n", "[b", "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer" })
-map("n", "]b", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
-
--- Surround
-map("n", "ys", "<Plug>(nvim-surround-normal)", { desc = "Add surround" })
-map("n", "yss", "<Plug>(nvim-surround-normal-cur)", { desc = "Add surround around line" })
-map("n", "yS", "<Plug>(nvim-surround-normal-line)", { desc = "Add surround vertical" })
-map("n", "ySS", "<Plug>(nvim-surround-normal-cur-line)", { desc = "Add surround around line on new lines" })
-map("v", "S", "<Plug>(nvim-surround-visual)", { desc = "Add surround" })
-map("v", "gS", "<Plug>(nvim-surround-visual-line)", { desc = "Add surround vertical" })
-map("n", "cs", "<Plug>(nvim-surround-change)", { desc = "Change surround" })
-map("n", "ds", "<Plug>(nvim-surround-delete)", { desc = "Delete surround" })
-
--- Toggle Term
-map({ "n", "t" }, "<C-/>", "<cmd>ToggleTerm<CR>", { desc = "Toggle Terminal", remap = true })
-
 -- Clear search with <esc>
 map({ "n", "i" }, "<esc>", "<cmd>nohlsearch<CR><esc>", { desc = "Escape and clear hlsearch" })
 
@@ -66,30 +31,15 @@ map({ "n", "v", "x" }, "X", '"_X', { desc = "Prevent X from yanking to clipboard
 map({ "n", "v", "x" }, "c", '"_c', { desc = "Prevent c from yanking to clipboard" })
 map({ "n", "v", "x" }, "C", '"_C', { desc = "Prevent C from yanking to clipboard" })
 map({ "n", "v", "x" }, "s", '"_s', { desc = "Prevent s from yanking to clipboard" })
-map({ "n", "v", "x" }, "S", '"_S', { desc = "Prevent S from yanking to clipboard" })
+-- map({ "n", "v", "x" }, "S", '"_S', { desc = "Prevent S from yanking to clipboard" })
 
 -- Add undo break-points
 map("i", ",", ",<c-g>u")
 map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
 
--- Save file with ctrl-s
-map({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<CR><esc>", { desc = "Save file" })
-
--- Better indenting
 map("v", "<", "<gv", { desc = "Indent block to left", silent = true })
 map("v", ">", ">gv", { desc = "Indent block to right", silent = true })
--- Yanky
--- map({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
--- map({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
-map({ "n", "x" }, "p", "<Plug>(YankyPutAfter)", { desc = "Yanky put after" })
-map({ "n", "x" }, "P", "<Plug>(YankyPutBefore)", { desc = "Yanky put before" })
-map({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)", { desc = "Yanky gput after" })
-map({ "n", "x" }, "gP", "<Plug>(YankyGPutBefore)", { desc = "Yanky gput after" })
-map("n", "]y", "<Plug>(YankyCycleForward)", { desc = "Next yanky" })
-map("n", "[y", "<Plug>(YankyCycleBackward)", { desc = "Previous yanky" })
 
--- Cycle diagnostics
 map("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { desc = "Prev diagnostic" })
 map("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", { desc = "Next diagnostic" })
-map("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", { desc = "Open Float" })

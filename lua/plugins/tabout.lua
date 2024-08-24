@@ -1,8 +1,8 @@
 local M = { "abecodes/tabout.nvim" }
 
-M.enabled = true
+M.enabled = false
 
-M.event = { "BufReadPre" }
+M.event = { "InsertCharPre" }
 
 M.opts = function()
   return {
@@ -21,6 +21,7 @@ M.opts = function()
       { open = "(", close = ")" },
       { open = "[", close = "]" },
       { open = "{", close = "}" },
+      { open = "<", close = ">" },
     },
     ignore_beginning = true, --[[ if the cursor is at the beginning of a filled element it will rather tab out than shift the content ]]
     exclude = {}, -- tabout will ignore these filetypes

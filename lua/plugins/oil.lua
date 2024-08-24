@@ -2,8 +2,6 @@ local M = { "stevearc/oil.nvim" }
 
 M.enabled = true
 
-M.event = { "VimEnter" }
-
 M.cmd = { "Oil" }
 
 M.opts = function()
@@ -53,3 +51,4 @@ M.config = function(_, opts)
 end
 
 return M
+

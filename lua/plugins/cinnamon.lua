@@ -2,32 +2,46 @@ local M = { "declancm/cinnamon.nvim" }
 
 M.enabled = true
 
-M.event = { "BufRead" }
+M.event = { "BufReadPost" }
 
 M.opts = function()
   return {
-    -- KEYMAPS:
-    default_keymaps = true, -- Create default keymaps.
-    extra_keymaps = false, -- Create extra keymaps.
-    extended_keymaps = false, -- Create extended keymaps.
-    override_keymaps = false, -- The plugin keymaps will override any existing keymaps.
-
-    -- OPTIONS:
-    always_scroll = false, -- Scroll the cursor even when the window hasn't scrolled.
-    centered = true, -- Keep cursor centered in window when using window scrolling.
-    disabled = false, -- Disables the plugin.
-    default_delay = 7, -- The default delay (in ms) between each line when scrolling.
-    hide_cursor = false, -- Hide the cursor while scrolling. Requires enabling termguicolors!
-    horizontal_scroll = true, -- Enable smooth horizontal scrolling when view shifts left or right.
-    max_length = -1, -- Maximum length (in ms) of a command. The line delay will be
-    -- re-calculated. Setting to -1 will disable this option.
-    scroll_limit = 150, -- Max number of lines moved before scrolling is skipped. Setting
-    -- to -1 will disable this option.
+    keymaps = {
+      basic = true, -- Enable the basic keymaps
+      extra = false, -- Enable the extra keymaps
+    },
+    options = {
+      callback = function() -- Post-movement callback
+      end,
+      delay = 7, -- Delay between each movement step (in ms)
+      max_delta = {
+        line = 150, -- Maximum delta for line movements
+        column = 200, -- Maximum delta for column movements
+      },
+    },
   }
 end
 
 M.config = function(_, opts)
   require("cinnamon").setup(opts)
+
+  local cinnamon = require("cinnamon")
+
+  vim.keymap.set("n", "<C-U>", function()
+    cinnamon.scroll("<C-U>zz")
+  end)
+  vim.keymap.set("n", "<C-D>", function()
+    cinnamon.scroll("<C-D>zz")
+  end)
+
+  vim.keymap.set({ "n", "v" }, "<PageUp>", function()
+    cinnamon.scroll("<PageUp>zz")
+  end)
+
+  vim.keymap.set({ "n", "v" }, "<PageDown>", function()
+    cinnamon.scroll("<PageDown>zz")
+  end)
 end
 
 return M
+

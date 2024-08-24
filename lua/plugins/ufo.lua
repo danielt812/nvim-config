@@ -2,16 +2,14 @@ local M = { "kevinhwang91/nvim-ufo" }
 
 M.enabled = true
 
-M.event = { "BufRead" }
+M.event = { "VeryLazy" }
+
+M.keys = {
+  { "zR", "<cmd>lua require('ufo').openAllFolds()<cr>", desc = "Open All Folds" },
+  { "zM", "<cmd>lua require('ufo').closeAllFolds()<cr>", desc = "Close All Folds" },
+}
 
 M.dependencies = { "kevinhwang91/promise-async" }
-
-M.init = function()
-  vim.keymap.set("n", "zR", "<cmd>lua require('ufo').openAllFolds()<CR>")
-  vim.keymap.set("n", "zM", "<cmd>lua require('ufo').closeAllFolds()<CR>")
-  vim.keymap.set("n", "zr", "<cmd>lua require('ufo').openFoldsExceptKinds()<CR>")
-  vim.keymap.set("n", "zm", "<cmd>lua require('ufo').closeFoldsWith()<CR>") -- closeAllFolds == closeFoldsWith(0)
-end
 
 M.opts = function()
   local handler = function(virtText, lnum, endLnum, width, truncate, ctx)

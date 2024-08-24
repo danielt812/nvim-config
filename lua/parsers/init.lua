@@ -1,4 +1,3 @@
--- Syntax Parsers
 return {
   "bash",
   "c",
@@ -9,11 +8,7 @@ return {
   "jsdoc",
   "json",
   "lua",
-  "luadoc",
-  "luap",
   "markdown",
-  "markdown_inline",
-  "python",
   "query",
   "regex",
   "scss",

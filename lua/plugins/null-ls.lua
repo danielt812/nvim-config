@@ -35,12 +35,6 @@ M.opts = function()
       --     "--semicolons=always",
       --   },
       -- }),
-      formatting.shellharden,
-      formatting.black.with({
-        extra_args = {
-          "--fast",
-        },
-      }),
       formatting.shfmt.with({
         filetypes = { "zsh", "bash", "sh" },
       }),
@@ -49,12 +43,6 @@ M.opts = function()
           "--config-path=stylua.toml",
         },
       }),
-      diagnostics.selene,
-      -- diagnostics.eslint_d.with({
-      --   extra_args = {
-      --     "--config=" .. dotfiles .. "/.eslintrc.js",
-      --   },
-      -- }),
     },
   }
 end

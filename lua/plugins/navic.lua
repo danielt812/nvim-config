@@ -5,9 +5,9 @@ M.enabled = true
 M.event = { "LspAttach" }
 
 M.opts = function()
+  local icons = require("icons")
   return {
-
-    icons = require("icons.kind"), -- Indicate the type of symbol captured.
+    icons = icons.kind, -- Indicate the type of symbol captured.
     lsp = {
       auto_attach = true, -- Enable to have nvim-navic automatically attach to every LSP for current buffer
       preference = nil, -- Table ranking lsp_servers. Lower the index, higher the priority of the server.

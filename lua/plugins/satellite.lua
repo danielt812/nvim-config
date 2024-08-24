@@ -2,7 +2,7 @@ local M = { "lewis6991/satellite.nvim" }
 
 M.enabled = true
 
-M.event = { "BufReadPre" }
+M.event = { "BufReadPost" }
 
 M.opts = function()
   return {
@@ -41,7 +41,7 @@ M.opts = function()
         signs = { -- can only be a single character (multibyte is okay)
           add = "│",
           change = "│",
-          delete = "-",
+          delete = "│",
         },
         -- Highlights:
         -- SatelliteGitSignsAdd (default links to GitSignsAdd)

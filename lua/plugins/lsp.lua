@@ -3,9 +3,9 @@ local M = { "neovim/nvim-lspconfig" }
 M.enabled = true
 
 M.dependencies = {
+  { "SmitheshP/nvim-navbuddy" },
   { "hrsh7th/cmp-nvim-lsp" },
   { "b0o/SchemaStore.nvim" },
-  { "folke/neodev.nvim" },
   { "j-hui/fidget.nvim" },
 }
 
@@ -16,16 +16,7 @@ M.cmd = { "LspInfo", "LspInstall", "LspUninstall" }
 M.opts = function()
   return {
     -- disable virtual text
-    virtual_text = false,
-    -- show signs
-    signs = {
-      active = {
-        { name = "DiagnosticSignError", text = " " },
-        { name = "DiagnosticSignWarn", text = " " },
-        { name = "DiagnosticSignHint", text = " " },
-        { name = "DiagnosticSignInfo", text = " " },
-      },
-    },
+    virtual_text = true,
     update_in_insert = true,
     underline = true,
     severity_sort = true,
@@ -59,13 +50,11 @@ M.config = function(_, opts)
     map("n", "gA", "<cmd>lua vim.lsp.buf.code_action()<CR>", { desc = "Code Action" })
     map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", { desc = "Go to Declaration" })
     map("n", "gR", "<cmd>lua vim.lsp.buf.rename()<CR>", { desc = "Rename Definition" })
-    -- map("n", "gd", "<cmd>TroubleToggle lsp_definitions<CR>", { desc = "Go to Definition" })
     map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { desc = "Go to Definition" })
     map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", { desc = "Go to Implementation" })
-    map("n", "gr", "<cmd>TroubleToggle lsp_references<CR>", { desc = "Go to References" })
-    -- map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", { desc = "Go to References" })
-    map("n", "gt", "<cmd>TroubleToggle lsp_type_definitions<CR>", { desc = "Go to Type Definition" })
-    -- map("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", { desc = "Go to Type Definition" })
+    map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", { desc = "Go to References" })
+    -- map("n", "gr", "<cmd>Trouble lsp_references<CR>", { desc = "Go to References" })
+    map("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", { desc = "Go to Type Definition" })
     map("n", "<leader>laA", "<cmd>lua vim.lsp.buf.code_action()<CR>", { desc = "Code Action  " })
     map("n", "<leader>laf", "<cmd>lua vim.lsp.buf.format()<CR>", { desc = "Format 󰘞 " })
     map("n", "<leader>laD", "<cmd>lua vim.lsp.buf.declaration()<CR>", { desc = "Go to Declaration " })
@@ -92,10 +81,6 @@ M.config = function(_, opts)
     local conf_opts = require("lsp_settings." .. server)
 
     lsp_opts = vim.tbl_deep_extend("force", conf_opts, lsp_opts)
-
-    if server == "lua_ls" then
-      require("neodev").setup()
-    end
 
     require("lspconfig")[server].setup(lsp_opts)
   end

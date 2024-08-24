@@ -2,12 +2,15 @@ local M = { "SmiteshP/nvim-navbuddy" }
 
 M.enabled = true
 
+M.event = { "LspAttach" }
+
 M.dependencies = {
   "SmiteshP/nvim-navic",
   "MunifTanjim/nui.nvim",
 }
 
 M.opts = function()
+  local icons = require("icons")
   return {
     window = {
       border = "single", -- "rounded", "double", "solid", "none"
@@ -32,19 +35,10 @@ M.opts = function()
         },
       },
     },
-    node_markers = {
-      enabled = true,
-      icons = {
-        leaf = "  ",
-        leaf_selected = " → ",
-        branch = " ",
-      },
-    },
-    icons = require("icons.kind"),
+    icons = icons.kind,
     use_default_mappings = true,
     lsp = {
       auto_attach = true, -- You don't need to manually use attach function
-      preference = nil, -- List of lsp server names in order of preference
     },
     source_buffer = {
       follow_node = true, -- Keep the current node in focus on the source buffer
@@ -56,7 +50,7 @@ M.opts = function()
 end
 
 M.config = function(_, opts)
-  require("nav-buddy").setup(opts)
+  require("nvim-navbuddy").setup(opts)
 end
 
 return M

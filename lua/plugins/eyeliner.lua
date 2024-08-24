@@ -1,6 +1,6 @@
 local M = { "jinh0/eyeliner.nvim" }
 
-M.enabled = false
+M.enabled = true
 
 M.keys = { "f", "F" }
 

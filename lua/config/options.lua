@@ -1,4 +1,6 @@
 local opt = vim.opt
+
+local opt = vim.opt
 opt.autowrite = true -- Enable auto write
 opt.backup = false -- Creates a backup file
 opt.breakindent = true -- Indent wrapped lines
