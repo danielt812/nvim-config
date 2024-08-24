@@ -8,6 +8,9 @@ M.priority = 1000
 
 M.config = function()
   vim.cmd("colorscheme gruvbox")
+
+  -- Set the highlight with the updated settings
+  vim.api.nvim_set_hl(0, "Comment", { fg = "#665c54", italic = true })
 end
 
 return M
