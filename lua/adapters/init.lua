@@ -1,5 +1,0 @@
-return {
-  "bash",
-  "js",
-  "python",
-}
