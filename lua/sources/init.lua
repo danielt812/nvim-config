@@ -1,0 +1,4 @@
+return {
+  "prettierd",
+  "stylua",
+}
