@@ -1,6 +1,5 @@
 local opt = vim.opt
 
-local opt = vim.opt
 opt.autowrite = true -- Enable auto write
 opt.backup = false -- Creates a backup file
 opt.breakindent = true -- Indent wrapped lines
@@ -11,7 +10,7 @@ opt.confirm = false -- Confirm to save changes before exiting modified buffer
 opt.cursorline = true -- Enable highlighting of the current line
 opt.expandtab = true -- Use spaces instead of tabs
 opt.fillchars = { eob = " ", fold = " ", foldopen = "", foldsep = " ", foldclose = "", lastline = " " } -- disable `~` on nonexistent lines
--- opt.foldcolumn = "1" -- show fold column
+opt.foldcolumn = "0" -- show fold column
 opt.foldenable = true -- enable fold for nvim-ufo
 opt.foldlevel = 99 -- set high foldlevel for nvim-ufo
 opt.foldlevelstart = 99
