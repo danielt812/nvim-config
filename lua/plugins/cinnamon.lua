@@ -10,10 +10,14 @@ M.opts = function()
       basic = true, -- Enable the basic keymaps
       extra = false, -- Enable the extra keymaps
     },
+    -- The scrolling mode
+    -- `cursor`: animate cursor and window scrolling for any movement
+    -- `window`: animate window scrolling ONLY when the cursor moves out of view
+    mode = "cursor",
     options = {
       callback = function() -- Post-movement callback
       end,
-      delay = 7, -- Delay between each movement step (in ms)
+      delay = 5, -- Delay between each movement step (in ms)
       max_delta = {
         line = 150, -- Maximum delta for line movements
         column = 200, -- Maximum delta for column movements
@@ -44,4 +48,3 @@ M.config = function(_, opts)
 end
 
 return M
-
