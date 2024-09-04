@@ -54,6 +54,7 @@ M.opts = function()
         "gitcommit",
         "spectre_panel",
         "mason",
+        "markdown",
       },
       buftypes = {
         "terminal",
