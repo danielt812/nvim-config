@@ -2,12 +2,12 @@ local M = { "declancm/cinnamon.nvim" }
 
 M.enabled = true
 
-M.event = { "BufReadPost" }
+M.event = { "VeryLazy" }
 
 M.opts = function()
   return {
     keymaps = {
-      basic = true, -- Enable the basic keymaps
+      basic = false, -- Enable the basic keymaps
       extra = false, -- Enable the extra keymaps
     },
     -- The scrolling mode
@@ -31,10 +31,10 @@ M.config = function(_, opts)
 
   local cinnamon = require("cinnamon")
 
-  vim.keymap.set("n", "<C-U>", function()
+  vim.keymap.set({ "n" }, "<C-U>", function()
     cinnamon.scroll("<C-U>zz")
   end)
-  vim.keymap.set("n", "<C-D>", function()
+  vim.keymap.set({ "n" }, "<C-D>", function()
     cinnamon.scroll("<C-D>zz")
   end)
 
@@ -44,6 +44,14 @@ M.config = function(_, opts)
 
   vim.keymap.set({ "n", "v" }, "<PageDown>", function()
     cinnamon.scroll("<PageDown>zz")
+  end)
+
+  vim.keymap.set({ "n" }, "n", function()
+    cinnamon.scroll("nzz")
+  end)
+
+  vim.keymap.set({ "n" }, "N", function()
+    cinnamon.scroll("Nzz")
   end)
 end
 
