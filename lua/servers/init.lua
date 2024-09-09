@@ -7,6 +7,6 @@ return {
   "lua_ls",
   "rust_analyzer",
   "tailwindcss",
-  "tsserver",
+  "ts_ls",
   "yamlls",
 }
