@@ -21,6 +21,7 @@ vim.g.markdown_recommended_style = 0
 require("lazy").setup({
   spec = {
     { import = "plugins" },
+    { "mg979/vim-visual-multi", event = { "BufReadPre" } },
   },
   change_detection = {
     enabled = true,
