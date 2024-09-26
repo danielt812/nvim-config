@@ -61,20 +61,14 @@ M.opts = function()
     end,
   })
 
-  local win_height = vim.api.nvim_win_get_height(0)
-
-  local header_pad = math.ceil(win_height / 5)
-  local button_pad = math.ceil(win_height / 3)
-  local footer_pad = math.ceil(win_height / 3)
-
   return {
     autostart = true,
     layout = {
-      { type = "padding", val = header_pad },
+      { type = "padding", val = 2 },
       header,
-      { type = "padding", val = 4 },
+      { type = "padding", val = 2 },
       buttons,
-      { type = "padding", val = 4 },
+      { type = "padding", val = 2 },
       footer,
     },
   }
