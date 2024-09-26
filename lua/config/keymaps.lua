@@ -15,7 +15,7 @@ map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
 map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
 
 -- Clear search with <esc>
-map({ "n", "i" }, "<esc>", "<cmd>nohlsearch<CR><esc>", { desc = "Escape and clear hlsearch" })
+map({ "n", "i" }, "<esc>", "<cmd>nohlsearch<cr><esc>", { desc = "Escape and clear hlsearch" })
 
 -- n always goes forward and N always go backwards regardless of / or ?
 map("n", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
