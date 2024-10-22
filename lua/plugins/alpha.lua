@@ -61,14 +61,30 @@ M.opts = function()
     end,
   })
 
+  local win_height = vim.api.nvim_win_get_height(0)
+
+  -- Define your elements' height or assume a fixed height for them
+  local header_height = 3 -- Adjust based on your actual header size
+  local buttons_height = 5 -- Adjust based on your actual buttons size
+  local footer_height = 2 -- Adjust based on your actual footer size
+
+  -- Calculate the total height of all the fixed elements
+  local total_content_height = header_height + buttons_height + footer_height
+
+  -- Calculate the remaining height for padding
+  local remaining_height = win_height - total_content_height
+
+  -- Ensure there's enough space for padding, otherwise default to minimal padding
+  local padding = math.max(0, math.floor(remaining_height / 7))
+
   return {
     autostart = true,
     layout = {
-      { type = "padding", val = 2 },
+      { type = "padding", val = padding },
       header,
-      { type = "padding", val = 2 },
+      { type = "padding", val = padding },
       buttons,
-      { type = "padding", val = 2 },
+      { type = "padding", val = padding },
       footer,
     },
   }
