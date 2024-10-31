@@ -24,11 +24,16 @@ Homebrew:
 brew install neovim
 ```
 
+DNF:
+```sh
+sudo dnf install neovim -y
+```
+
 ## Installation
 
 1. Clone this repository to your Neovim configuration directory:
    ```sh
-   git clone https://github.com/danielt812/nvim-config ~/.config/nvim
+   git clone git@github.com:danielt812/nvim-config.git ~/.config/nvim
    ```
 2. Open `nvim` and wait for plugins, tree-sitter parsers and language service providers to install.
 3. Exit out of Neovim for the changes to take effect.
