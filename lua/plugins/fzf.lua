@@ -32,7 +32,7 @@ M.opts = function()
     },
     files = {
       cwd_prompt = false,
-      fd_opts = [[--color=never --type f --hidden --follow --exclude .git --exclude node_modules]],
+      fd_opts = [[--color=never --type f --hidden --follow --exclude .git --exclude node_modules --exclude archive]],
       winopts = { height = 1, width = 1 },
       actions = {
         ["ctrl-h"] = { actions.toggle_hidden },
