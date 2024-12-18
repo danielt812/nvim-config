@@ -43,7 +43,11 @@ M.opts = function()
     },
     grep = {
       winopts = { height = 1, width = 1 },
-      rg_opts = "--hidden --column --line-number --no-heading --color=always --smart-case -g '!{.git,node_modules}/*']]",
+      rg_opts = "--hidden --column --line-number --no-heading --color=always --smart-case -g '!{.git,node_modules}/*'",
+    },
+    live_grep = {
+      winopts = { height = 1, width = 1 },
+      rg_opts = "--hidden --column --line-number --no-heading --color=always --smart-case -g '!{.git,node_modules}/*'",
     },
     oldfiles = {
       winopts = { height = 1, width = 1 },
