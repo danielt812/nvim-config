@@ -1,4 +1,4 @@
-local M = { "hiphish/rainbow-delimiters.nvim" }
+local M = { "HiPhish/rainbow-delimiters.nvim" }
 
 M.enabled = true
 
@@ -33,4 +33,3 @@ M.config = function(_, opts)
 end
 
 return M
-
