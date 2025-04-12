@@ -1,6 +1,6 @@
 local M = { "jake-stewart/multicursor.nvim" }
 
-M.enabled = false
+M.enabled = true
 
 M.event = { "BufReadPre" }
 
@@ -85,6 +85,12 @@ M.config = function(_, opts)
   -- end)
 
   -- Customize how cursors look.
+  local hl = vim.api.nvim_set_hl
+  hl(0, "MultiCursorCursor", { reverse = true })
+  hl(0, "MultiCursorVisual", { link = "Visual" })
+  hl(0, "MultiCursorDisabledCursor", { reverse = true })
+  hl(0, "MultiCursorDisabledVisual", { link = "Visual" })
+  hl(0, "MultiCursorMainSign", { link = "CursorLineSign" })
   -- vim.api.nvim_set_hl(0, "MultiCursorCursor", { link = "Cursor" })
   -- vim.api.nvim_set_hl(0, "MultiCursorVisual", { link = "Visual" })
   -- vim.api.nvim_set_hl(0, "MultiCursorDisabledCursor", { link = "Visual" })

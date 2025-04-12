@@ -1,6 +1,6 @@
 local M = { "echasnovski/mini.splitjoin" }
 
-M.enabled = true
+M.enabled = false
 
 M.keys = {
   { "S" },

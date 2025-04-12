@@ -9,14 +9,16 @@ M.cmd = "LazyDev"
 M.opts = function()
   return {
     library = {
+      "lazy.nvim",
       { path = "luvit-meta/library", words = { "vim%.uv" } },
       { path = "LazyVim", words = { "LazyVim" } },
       { path = "lazy.nvim", words = { "LazyVim" } },
     },
+    enabled = true,
   }
 end
 
-M.config = function (_, opts)
+M.config = function(_, opts)
   require("lazydev").setup(opts)
 end
 

@@ -1,4 +1,4 @@
-local M = { "echasnovski/mini.nvim" }
+local M = { "echasnovski/mini.move" }
 
 M.enabled = true
 
