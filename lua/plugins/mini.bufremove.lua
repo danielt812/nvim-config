@@ -2,6 +2,8 @@ local M = { "echasnovski/mini.bufremove" }
 
 M.enabled = true
 
+M.event = { "VeryLazy" }
+
 M.opts = function()
   return {
     -- Whether to set Vim's settings for buffers (allow hidden buffers)

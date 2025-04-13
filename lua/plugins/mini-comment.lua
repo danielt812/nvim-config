@@ -2,6 +2,10 @@ local M = { "echasnovski/mini.comment" }
 
 M.enabled = true
 
+M.dependencies = {
+  { "JoosepAlviste/nvim-ts-context-commentstring" },
+}
+
 M.event = { "BufReadPost" }
 
 M.opts = function()
@@ -9,7 +13,9 @@ M.opts = function()
     -- Options which control module behavior
     options = {
       -- Function to compute custom 'commentstring' (optional)
-      custom_commentstring = nil,
+      custom_commentstring = function()
+        return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
+      end,
 
       -- Whether to ignore blank lines when commenting
       ignore_blank_line = false,

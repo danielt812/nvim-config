@@ -7,48 +7,18 @@ M.dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" }
 M.event = { "BufReadPost" }
 
 M.opts = function()
-  local spec_treesitter = require("mini.ai").gen_spec.treesitter
+  local ai = require("mini.ai")
   return {
-    -- Table with textobject id as fields, textobject specification as values.
-    -- Also use this to disable builtin textobjects. See |MiniAi.config|.
+    n_lines = 500,
     custom_textobjects = {
-      f = spec_treesitter({
-        a = "@function.outer",
-        i = "@function.inner",
-      }),
-      o = spec_treesitter({
+      o = ai.gen_spec.treesitter({ -- code block
         a = { "@block.outer", "@conditional.outer", "@loop.outer" },
         i = { "@block.inner", "@conditional.inner", "@loop.inner" },
       }),
+      f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }), -- function
+      c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }), -- class
+      t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- tags
     },
-
-    -- Module mappings. Use `''` (empty string) to disable one.
-    mappings = {
-      -- Main textobject prefixes
-      around = "a",
-      inside = "i",
-
-      -- Next/last variants
-      around_next = "an",
-      inside_next = "in",
-      around_last = "al",
-      inside_last = "il",
-
-      -- Move cursor to corresponding edge of `a` textobject
-      goto_left = "g[",
-      goto_right = "g]",
-    },
-
-    -- Number of lines within which textobject is searched
-    n_lines = 50,
-
-    -- How to search for object (first inside current line, then inside
-    -- neighborhood). One of 'cover', 'cover_or_next', 'cover_or_prev',
-    -- 'cover_or_nearest', 'next', 'previous', 'nearest'.
-    search_method = "cover_or_next",
-
-    -- Whether to disable showing non-error feedback
-    silent = false,
   }
 end
 

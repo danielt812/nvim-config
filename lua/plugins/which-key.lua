@@ -4,7 +4,7 @@ M.enabled = true
 
 M.event = { "VeryLazy" }
 
-M.dependencies = { "nvim-tree/nvim-web-devicons" }
+M.dependencies = { "echasnovski/mini.icons" }
 
 M.opts = function()
   return {

@@ -4,7 +4,7 @@ M.enabled = true
 
 M.cmd = { "FzfLua", "Fzf" }
 
-M.dependencies = { "nvim-tree/nvim-web-devicons" }
+M.dependencies = { "echasnovski/mini.icons" }
 
 M.keys = {
   { "<leader>ff", "<cmd>FzfLua files<cr>", desc = "Files  " },

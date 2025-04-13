@@ -46,7 +46,7 @@ M.opts = function()
   }
 end
 
-M.setup = function(_, opts)
+M.config = function(_, opts)
   require("mini.surround").setup(opts)
 end
 

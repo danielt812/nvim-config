@@ -2,7 +2,10 @@ local M = { "zbirenbaum/copilot.lua" }
 
 M.enabled = true
 
-M.dependencies = { "zbirenbaum/copilot-cmp" }
+M.dependencies = {
+  -- "zbirenbaum/copilot-cmp",
+  "giuxtaposition/blink-cmp-copilot",
+}
 
 M.cmd = { "Copilot" }
 
@@ -64,8 +67,7 @@ end
 
 M.config = function(_, opts)
   require("copilot").setup(opts.copilot)
-  require("copilot_cmp").setup(opts.cmp)
+  -- require("copilot_cmp").setup(opts.cmp)
 end
 
 return M
-

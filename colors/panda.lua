@@ -1,6 +1,4 @@
-local palette
-
-palette = {
+local palette = {
   base00 = "#242526",
   base01 = "#242526",
   base02 = "#31353a",

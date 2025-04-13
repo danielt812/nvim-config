@@ -8,7 +8,7 @@ M.opts = function()
   return {}
 end
 
-M.setup = function(_, opts)
+M.config = function(_, opts)
   require("grug-far").setup(opts)
 end
 

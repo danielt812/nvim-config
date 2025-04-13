@@ -3,9 +3,10 @@ local M = { "pmizio/typescript-tools.nvim" }
 M.enabled = true
 
 M.dependencies = {
-  "nvim-lua/plenary.nvim",
-  "neovim/nvim-lspconfig",
-  "hrsh7th/cmp-nvim-lsp",
+  { "nvim-lua/plenary.nvim" },
+  { "neovim/nvim-lspconfig" },
+  { "saghen/blink.cmp" },
+  -- {"hrsh7th/cmp-nvim-lsp"},
 }
 
 M.event = { "BufReadPre", "BufNewFile" }
@@ -13,7 +14,8 @@ M.event = { "BufReadPre", "BufNewFile" }
 M.opts = function()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
-  capabilities = require("cmp_nvim_lsp").default_capabilities()
+  capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities({}, false))
+  -- capabilities = require("cmp_nvim_lsp").default_capabilities()
 
   return {
     on_attach = function(_, bufnr)

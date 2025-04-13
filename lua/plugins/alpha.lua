@@ -27,6 +27,7 @@ M.opts = function()
   local buttons = {
     type = "group",
     val = {
+      dashboard.button("n", " " .. " New file", ":enew"),
       dashboard.button("f", " " .. " Find file", ":FzfLua files <CR>"),
       dashboard.button("o", " " .. " Oil", ":Oil <CR>"),
       dashboard.button("g", " " .. " Live Grep", ":FzfLua live_grep <CR>"),
