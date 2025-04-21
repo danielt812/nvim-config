@@ -16,6 +16,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 vim.g.mapleader = " "
+vim.g.maplocalleader = ","
 vim.g.markdown_recommended_style = 0
 
 require("lazy").setup({

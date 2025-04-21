@@ -39,7 +39,6 @@ M.opts = function()
       --     "--semicolons=always",
       --   },
       -- }),
-      formatting.stylua,
       formatting.shfmt.with({
         filetypes = { "zsh", "bash", "sh" },
       }),

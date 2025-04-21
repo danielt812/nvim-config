@@ -1,6 +1,6 @@
 local palette = {
-  base00 = "#282828",
-  base01 = "#282828",
+  base00 = "#3c3836",
+  base01 = "#3c3836",
   base02 = "#504945",
   base03 = "#665c54",
   base04 = "#bdae93",
@@ -21,4 +21,3 @@ if palette then
   require("mini.base16").setup({ palette = palette, use_cterm = nil })
   vim.g.colors_name = "gruvbox"
 end
-

@@ -20,8 +20,25 @@ M.opts = function()
   return {
     keymap = {
       preset = "none",
-
-      ["<Tab>"] = {
+      -- ["<Tab>"] = {
+      --   function(cmp)
+      --     if has_words_before() then
+      --       return cmp.insert_next()
+      --     end
+      --   end,
+      --   "fallback",
+      -- },
+      -- ["<S-Tab>"] = { "insert_prev" },
+      ["<Up>"] = { "select_prev", "fallback" },
+      ["<Down>"] = { "select_next", "fallback" },
+      ["<C-k>"] = { "select_prev", "fallback" },
+      ["<C-j>"] = { "select_next", "fallback" },
+      ["<C-space>"] = {
+        function(cmp)
+          cmp.show({ providers = { "snippets" } })
+        end,
+      },
+      ["<CR>"] = {
         function(cmp)
           if has_words_before() then
             return cmp.insert_next()
@@ -29,35 +46,43 @@ M.opts = function()
         end,
         "fallback",
       },
-      ["<S-Tab>"] = { "insert_prev" },
-      ["<Up>"] = { "select_prev", "fallback" },
-      ["<Down>"] = { "select_next", "fallback" },
-      ["<C-space>"] = {
-        function(cmp)
-          cmp.show({ providers = { "snippets" } })
-        end,
-      },
-      ["<CR>"] = { "accept", "fallback" },
     },
     completion = {
       menu = {
         enabled = true,
         border = "single",
         draw = {
+          treesitter = {
+            "lsp",
+          },
           columns = {
             {
               "label",
               "label_description",
-              gap = 1,
+              gap = 2,
             },
             {
               "kind_icon",
+              gap = 1,
               "kind",
             },
           },
           components = {
             kind_icon = {
               text = function(ctx)
+                -- local icon = ctx.kind_icon
+                -- if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                --   local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
+                --   if dev_icon then
+                --     icon = dev_icon
+                --   end
+                -- else
+                --   icon = require("lspkind").symbolic(ctx.kind, {
+                --     mode = "symbol",
+                --   })
+                -- end
+
+                -- return icon .. ctx.icon_gap
                 local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
                 return kind_icon
               end,
@@ -88,14 +113,16 @@ M.opts = function()
       },
     },
 
-    signature = { window = { border = "single" } },
+    signature = {
+      enabled = true,
+      window = { border = "single" },
+    },
 
     appearance = {
       -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
       -- Adjusts spacing to ensure icons are aligned
       nerd_font_variant = "mono",
     },
-
     -- Default list of enabled providers defined so that you can extend it
     -- elsewhere in your config, without redefining it, due to `opts_extend`
     sources = {
@@ -113,6 +140,8 @@ M.opts = function()
             CompletionItemKind[kind_idx] = "Copilot"
             for _, item in ipairs(items) do
               item.kind = kind_idx
+              item.kind_icon = ""
+              item.kind_name = "Copilot"
             end
             return items
           end,
@@ -125,7 +154,6 @@ M.opts = function()
         },
       },
     },
-
     fuzzy = {
       implementation = "lua",
     },

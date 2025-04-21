@@ -17,14 +17,28 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 -- Highlight on yank
-local highlight_yank_group = vim.api.nvim_create_augroup("highlight_yank", { clear = true })
-vim.api.nvim_create_autocmd("TextYankPost", {
-  group = highlight_yank_group,
-  desc = "Highlight on Yank",
-  callback = function()
-    vim.highlight.on_yank({ higroup = "Visual", timeout = 300 })
-  end,
-})
+-- local highlight_yank_group = vim.api.nvim_create_augroup("highlight_yank", { clear = true })
+-- vim.api.nvim_create_autocmd("TextYankPost", {
+--   group = highlight_yank_group,
+--   desc = "Highlight on Yank",
+--   callback = function()
+--     vim.highlight.on_yank({ higroup = "Visual", timeout = 300 })
+--   end,
+-- })
+
+-- local alpha_on_empty = vim.api.nvim_create_augroup("alpha_on_empty", { clear = true })
+-- vim.api.nvim_create_autocmd("BufLeave", {
+--  group = alpha_on_empty,
+--  callback = function()
+--   vim.notify("HELLO WORLD")
+--   local bufnr = vim.api.nvim_get_current_buf()
+--   local name = vim.api.nvim_buf_get_name(bufnr)
+
+--  if name == "" then
+--   vim.cmd([[:Alpha | bd#]])
+--  end
+--  end,
+--})
 
 -- Format on save
 local format_on_save_group = vim.api.nvim_create_augroup("format_on_save", { clear = true })
@@ -69,7 +83,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     "Telescope*",
     "lazygit",
     "notify",
-    "fzf",
+    -- "fzf",
   },
   callback = function()
     vim.opt_local.showtabline = 0
@@ -98,18 +112,19 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 })
 
 -- Open help in vertical split instead of horizontal
-local help_settings_group = vim.api.nvim_create_augroup("help_settings", { clear = true })
-vim.api.nvim_create_autocmd({ "FileType" }, {
-  group = help_settings_group,
-  desc = "Open filetypes in vertical split",
-  pattern = {
-    "help",
-    "markdown",
-  },
-  callback = function()
-    vim.api.nvim_command("wincmd L")
-  end,
-})
+-- local help_settings_group = vim.api.nvim_create_augroup("help_settings", { clear = true })
+-- vim.api.nvim_create_autocmd({ "FileType" }, {
+--   group = help_settings_group,
+--   desc = "Open filetypes in vertical split",
+--   pattern = {
+--     "help",
+--     "markdown",
+--   },
+--   callback = function()
+--     vim.cmd("wincmd L")
+--     -- vim.api.nvim_command("wincmd L")
+--   end,
+-- })
 
 -- Set illuminate highlight to underline
 local illuminate_highlight_group = vim.api.nvim_create_augroup("illuminate_highlight", { clear = true })

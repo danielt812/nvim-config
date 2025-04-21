@@ -19,5 +19,5 @@ local palette = {
 
 if palette then
   require("mini.base16").setup({ palette = palette, use_cterm = nil })
-  vim.g.colors_name = "oceanic-next"
+  vim.g.colors_name = "oceanicnext"
 end

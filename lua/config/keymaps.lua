@@ -18,12 +18,12 @@ map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
 map({ "n", "i" }, "<esc>", "<cmd>nohlsearch<cr><esc>", { desc = "Escape and clear hlsearch" })
 
 -- n always goes forward and N always go backwards regardless of / or ?
-map("n", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
-map("x", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
-map("o", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
-map("n", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
-map("x", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
-map("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
+-- map("n", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
+-- map("x", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
+-- map("o", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
+-- map("n", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
+-- map("x", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
+-- map("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
 
 -- Prevent some registers from yanking
 map({ "n", "v", "x" }, "x", '"_x', { desc = "Prevent x from yanking to clipboard" })

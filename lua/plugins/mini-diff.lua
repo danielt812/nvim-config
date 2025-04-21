@@ -67,10 +67,6 @@ end
 
 M.config = function(_, opts)
   require("mini.diff").setup(opts)
-
-  vim.api.nvim_set_hl(0, "MiniDiffSignAdd", { fg = "#00ff00" })
-  vim.api.nvim_set_hl(0, "MiniDiffSignChange", { fg = "#00ffff" })
-  vim.api.nvim_set_hl(0, "MiniDiffSignDelete", { fg = "#ff0000" })
 end
 
 return M

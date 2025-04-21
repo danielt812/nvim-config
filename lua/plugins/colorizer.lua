@@ -1,6 +1,6 @@
-local M = { "NvChad/nvim-colorizer.lua" }
+local M = { "atgoose/nvim-colorizer.lua" }
 
-M.enabled = true
+M.enabled = false
 
 M.event = { "BufReadPost" }
 

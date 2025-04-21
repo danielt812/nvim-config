@@ -2,7 +2,10 @@ local M = { "akinsho/bufferline.nvim" }
 
 M.enabled = true
 
-M.dependencies = { "echasnovski/mini.icons" }
+M.dependencies = {
+  "nvim-tree/nvim-web-devicons",
+  -- "echasnovski/mini.icons",
+}
 
 M.event = { "BufRead" }
 

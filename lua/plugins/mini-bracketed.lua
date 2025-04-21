@@ -4,13 +4,6 @@ M.enabled = true
 
 M.event = { "BufReadPost" }
 
-M.init = function()
-  package.preload["nvim-web-devicons"] = function()
-    require("mini.icons").mock_nvim_web_devicons()
-    return package.loaded["nvim-web-devicons"]
-  end
-end
-
 M.opts = function()
   return {
     buffer = { suffix = "b", options = {} },

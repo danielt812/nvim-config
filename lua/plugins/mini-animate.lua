@@ -5,7 +5,6 @@ M.enabled = false
 M.event = { "BufReadPre" }
 
 M.opts = function()
-  local animate = require("mini.animate")
   return {
     -- Cursor path
     cursor = {
@@ -17,7 +16,6 @@ M.opts = function()
     scroll = {
       -- Whether to enable this animation
       enable = true,
-      animate.execute_after("scroll", "normal! zvzz"),
     },
 
     -- Window resize

@@ -98,7 +98,6 @@ M.opts = function()
       { name = "copilot" },
       { name = "luasnip" },
       { name = "path" },
-      -- { name = "nvim_lua" },
       { name = "buffer" },
     },
     confirm_opts = {

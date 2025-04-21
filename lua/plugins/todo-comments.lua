@@ -1,6 +1,6 @@
 local M = { "folke/todo-comments.nvim" }
 
-M.enabled = true
+M.enabled = false
 
 M.dependencies = { "nvim-lua/plenary.nvim" }
 

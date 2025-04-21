@@ -5,7 +5,7 @@ M.enabled = true
 M.ft = { "help" }
 
 M.config = function()
-	require("helpview").setup()
+  require("helpview").setup()
 end
 
 return M

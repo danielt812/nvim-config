@@ -9,21 +9,47 @@ M.opts = function()
     bigfile = { enabled = true },
     dashboard = { enabled = false },
     dim = { enabled = true },
-    explorer = { enabled = false },
+    explorer = { enabled = true },
     lazygit = { enabled = true },
     indent = { enabled = false },
     input = { enabled = false },
-    picker = { enabled = false },
+    picker = {
+      enabled = true,
+      actions = {
+        confirm_and_close = function(picker)
+          picker:action("confirm")
+          picker:action("close")
+        end,
+        confirm_nofocus = function(picker)
+          picker:action("confirm")
+          picker:focus()
+        end,
+      },
+      sources = {
+        explorer = {
+          auto_close = true,
+          layout = {
+            preset = "sidebar",
+            preview = "main",
+          },
+          win = {
+            list = {
+              keys = {
+                ["L"] = "confirm_and_close",
+                ["l"] = "confirm_nofocus",
+              },
+            },
+          },
+        },
+      },
+    },
     notifier = { enabled = false },
     quickfile = { enabled = true },
     scope = { enabled = false },
     scroll = { enabled = false },
     statuscolumn = { enabled = false },
     words = { enabled = false },
-    zen = {
-      enabled = true,
-      fullscreen = true,
-    },
+    zen = { enabled = true },
   }
 end
 
