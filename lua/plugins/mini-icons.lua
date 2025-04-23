@@ -1,6 +1,6 @@
 local M = { "echasnovski/mini.icons" }
 
-M.enabled = true
+M.enabled = false
 
 M.event = { "VimEnter" }
 

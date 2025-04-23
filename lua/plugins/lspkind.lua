@@ -1,6 +1,6 @@
 local M = { "onsails/lspkind.nvim" }
 
-M.enabled = false
+M.enabled = true
 
 M.event = { "VeryLazy" }
 
