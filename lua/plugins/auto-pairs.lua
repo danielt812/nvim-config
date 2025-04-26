@@ -1,6 +1,6 @@
 local M = { "windwp/nvim-autopairs" }
 
-M.enabled = true
+M.enabled = false
 
 M.event = { "InsertEnter" }
 

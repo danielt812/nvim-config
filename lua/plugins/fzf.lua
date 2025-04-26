@@ -19,7 +19,37 @@ M.keys = {
 
 M.opts = function()
   local actions = require("fzf-lua").actions
-  -- Pass in profile here.
+
+  local colorscheme_ignore_patterns = {
+    "^default$",
+    "^delek$",
+    "^desert$",
+    "^elflord$",
+    "^evening$",
+    "^habamax$",
+    "^industry$",
+    "^koehler$",
+    "^lunaperche$",
+    "^mini",
+    "^morning$",
+    "^murphy$",
+    "^pablo$",
+    "^peachpuff$",
+    "^quiet$",
+    "^randomhue$",
+    "^retrobox$",
+    "^ron$",
+    "^shine$",
+    "^slate$",
+    "^sorbet$",
+    "^torte$",
+    "^unokai$",
+    "^vim$",
+    "^wildcharm$",
+    "^zaibatsu$",
+    "^zellner$",
+    "blue$",
+  }
   return {
     "telescope",
     winopts = {
@@ -41,8 +71,9 @@ M.opts = function()
         ["ctrl-h"] = { actions.toggle_hidden },
       },
     },
-    colorscheme = {
+    colorschemes = {
       winopts = { height = 0.55, width = 0.30 },
+      ignore_patterns = colorscheme_ignore_patterns,
     },
     grep = {
       winopts = { height = 1, width = 1 },

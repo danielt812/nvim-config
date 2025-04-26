@@ -14,16 +14,16 @@ M.opts = function()
     },
     query = {
       [""] = "rainbow-delimiters",
-      lua = "rainbow-blocks",
+      -- lua = "rainbow-blocks",
     },
     highlight = {
+      "RainbowDelimiterYellow",
+      "RainbowDelimiterViolet",
       "RainbowDelimiterBlue",
       "RainbowDelimiterOrange",
-      "RainbowDelimiterGreen",
-      "RainbowDelimiterViolet",
-      "RainbowDelimiterCyan",
       "RainbowDelimiterRed",
-      "RainbowDelimiterYellow",
+      "RainbowDelimiterGreen",
+      "RainbowDelimiterCyan",
     },
   }
 end

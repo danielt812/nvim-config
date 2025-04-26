@@ -2,7 +2,7 @@
 
 ![Neovim Logo](https://neovim.io/logos/neovim-logo-300x87.png)
 
-This repository contains my personal Neovim configuration. My goal with this config is to have rich features of a modern text-editor that are tailored to my needs and to write the entire config in `lua`.
+This repository contains my personal Neovim configuration.
 
 ## Table of Contents
 
@@ -28,6 +28,8 @@ DNF:
 ```sh
 sudo dnf install neovim -y
 ```
+
+Recommended version is 11.0 or above
 
 ## Installation
 
@@ -86,4 +88,3 @@ return {
 
 This project is licensed under the [MIT License](LICENSE). You are free to use and modify this configuration to suit your needs.
 
----

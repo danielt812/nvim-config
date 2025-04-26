@@ -1,6 +1,6 @@
 local M = { "folke/trouble.nvim" }
 
-M.enabled = true
+M.enabled = false
 
 M.cmd = { "Trouble" }
 

@@ -41,6 +41,7 @@ opt.smartindent = true -- Insert indents automatically
 opt.spelllang = { "en" }
 opt.splitbelow = true -- Put new windows below current
 opt.splitright = true -- Put new windows right of current
+opt.statuscolumn = "%s%l %r"
 -- opt.statuscolumn =
 --   '%=%{v:relnum?v:relnum:v:lnum}%s%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? " " : " ") : " ") : " " }'
 opt.swapfile = false -- Create a swapfile

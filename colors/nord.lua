@@ -7,14 +7,14 @@ local palette = {
   base05 = "#e5e9f0",
   base06 = "#eceff4",
   base07 = "#8fbcbb",
-  base08 = "#bf616a",
+  base08 = "#5e81ac",
   base09 = "#d08770",
   base0A = "#ebcb8b",
   base0B = "#a3be8c",
   base0C = "#88c0d0",
   base0D = "#81a1c1",
   base0E = "#b48ead",
-  base0F = "#5e81ac",
+  base0F = "#bf616a",
 }
 
 if palette then

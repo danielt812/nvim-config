@@ -104,7 +104,6 @@ M.opts = function()
           highlight = "PanelHeading",
           padding = 0,
         },
-
         {
           filetype = "DiffviewFiles",
           text = "Diff View",

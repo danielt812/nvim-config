@@ -1,11 +1,19 @@
 local M = { "echasnovski/mini.hipatterns" }
 
 M.enabled = true
+
 M.event = { "BufReadPost" }
+
+local apply_custom_highlights = function()
+  vim.api.nvim_set_hl(0, "MiniHipatternsWarn", { fg = "#ff2d00" }) -- WARN example
+  vim.api.nvim_set_hl(0, "MiniHipatternsFixme", { fg = "#ff8c00" }) -- FIX example
+  vim.api.nvim_set_hl(0, "MiniHipatternsTodo", { fg = "#98c379" }) -- TODO example
+  vim.api.nvim_set_hl(0, "MiniHipatternsHack", { fg = "#d699b6" }) -- HACK example
+  vim.api.nvim_set_hl(0, "MiniHipatternsNote", { fg = "#3498db" }) -- NOTE example
+end
 
 M.opts = function()
   local hipatterns = require("mini.hipatterns")
-  local color_icon = "■"
 
   local function highlight_if_ts_capture(capture, hl_group)
     return function(buf_id, _, data)
@@ -56,8 +64,8 @@ M.opts = function()
 
   local function extmark_opts_color(_, _, data)
     return {
-      virt_text = { { color_icon, data.hl_group } },
-      virt_text_pos = "eol", -- places icon immediately after match
+      virt_text = { { "■ ", data.hl_group } },
+      virt_text_pos = "inline", -- eol, eol_right_align, overlay, right_align, inline
       right_gravity = false, -- ensures it stays after the match if text is inserted
     }
   end
@@ -78,23 +86,16 @@ M.opts = function()
     comments[w] = {
       -- Highlights patterns like FOO, @FOO, @FOO: FOO: both upper and lowercase
       pattern = {
-        "%f[%w]()" .. w .. "%f[%W].*",
-        "%f[%w]()" .. w:upper() .. "%f[%W].*",
+        -- "%f[%w]()" .. w .. "%f[%W].*",
+        "%f[%w]()"
+          .. w:upper()
+          .. "%f[%W].*",
       },
       group = highlight_if_ts_capture("comment", string.format("MiniHipatterns%s", hl:sub(1, 1):upper() .. hl:sub(2))),
     }
   end
 
-  -- WARN example
-  -- FIX example
-  -- NOTE example
-  -- HACK example
-  -- TODO example
-  vim.api.nvim_set_hl(0, "MiniHipatternsWarn", { fg = "#ff2d00" })
-  vim.api.nvim_set_hl(0, "MiniHipatternsTodo", { fg = "#ff8c00" })
-  vim.api.nvim_set_hl(0, "MiniHipatternsFixme", { fg = "#98c379" })
-  vim.api.nvim_set_hl(0, "MiniHipatternsHack", { fg = "#d699b6" })
-  vim.api.nvim_set_hl(0, "MiniHipatternsNote", { fg = "#3498db" })
+  apply_custom_highlights()
 
   return {
     highlighters = vim.tbl_extend("force", comments, {
@@ -124,6 +125,13 @@ end
 
 M.config = function(_, opts)
   require("mini.hipatterns").setup(opts)
+  -- NOTE - apply highlights again on colorscheme change
+  vim.api.nvim_create_autocmd("ColorScheme", {
+    group = vim.api.nvim_create_augroup("MiniHipatternsReapplyHighlights", { clear = true }),
+    callback = function()
+      apply_custom_highlights()
+    end,
+  })
 end
 
 return M

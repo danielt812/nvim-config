@@ -1,6 +1,6 @@
 local M = { "echasnovski/mini.pairs" }
 
-M.enabled = false
+M.enabled = true
 
 M.event = { "InsertEnter" }
 
