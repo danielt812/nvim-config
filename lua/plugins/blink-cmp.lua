@@ -66,35 +66,20 @@ M.opts = function()
           components = {
             kind_icon = {
               text = function(ctx)
-                local icon = ctx.kind_icon
-                if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                  local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
-                  if dev_icon then
-                    icon = dev_icon
-                  end
-                else
-                  icon = require("lspkind").symbolic(ctx.kind, {
-                    mode = "symbol",
-                  })
-                end
-
-                return icon .. ctx.icon_gap
-                -- local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
-                -- return kind_icon
+                local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+                return kind_icon
               end,
-              -- (optional) use highlights from mini.icons
-              -- highlight = function(ctx)
-              --   local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-              --   return hl
-              -- end,
+              highlight = function(ctx)
+                local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+                return hl
+              end,
             },
-            -- kind = {
-            --   -- (optional) use highlights from mini.icons
-            --   highlight = function(ctx)
-            --     local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-            --     return hl
-            --   end,
-            -- },
+            kind = {
+              highlight = function(ctx)
+                local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+                return hl
+              end,
+            },
           },
         },
       },
@@ -117,7 +102,7 @@ M.opts = function()
     appearance = {
       -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
       -- Adjusts spacing to ensure icons are aligned
-      nerd_font_variant = "mono",
+      nerd_font_variant = "normal",
     },
     -- Default list of enabled providers defined so that you can extend it
     -- elsewhere in your config, without redefining it, due to `opts_extend`
@@ -131,11 +116,7 @@ M.opts = function()
           async = true,
           enabled = true,
           transform_items = function(_, items)
-            local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
-            local kind_idx = #CompletionItemKind + 1
-            CompletionItemKind[kind_idx] = "Copilot"
-            for _, item in ipairs(items) do
-              item.kind = kind_idx
+            for _, item in pairs(items) do
               item.kind_icon = ""
               item.kind_name = "Copilot"
             end
@@ -158,6 +139,40 @@ end
 
 M.config = function(_, opts)
   require("blink.cmp").setup(opts)
+
+  local kind_links = {
+    Text = "Statement",
+    Method = "Function",
+    Function = "Function",
+    Constructor = "Type",
+    Field = "Structure",
+    Variable = "Identifier",
+    Class = "Type",
+    Interface = "Type",
+    Module = "Include",
+    Property = "Identifier",
+    Unit = "Number",
+    Value = "Number",
+    Enum = "Type",
+    Keyword = "Keyword",
+    Snippet = "Special",
+    Color = "Special",
+    File = "Directory",
+    Reference = "Identifier",
+    Folder = "Directory",
+    EnumMember = "Constant",
+    Constant = "Constant",
+    Struct = "Structure",
+    Event = "Exception",
+    Operator = "Operator",
+    TypeParameter = "Type",
+  }
+
+  for kind, link in pairs(kind_links) do
+    vim.api.nvim_set_hl(0, "BlinkCmpKind" .. kind, { link = link })
+  end
+
+  vim.api.nvim_set_hl(0, "BlinkCmpMenu", { fg = "#ffffff" })
 end
 
 return M

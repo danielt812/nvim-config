@@ -1,6 +1,6 @@
 local M = { "echasnovski/mini.icons" }
 
-M.enabled = false
+M.enabled = true
 
 M.event = { "VimEnter" }
 
@@ -26,6 +26,11 @@ M.opts = function()
     directory = {
       [".git"] = { glyph = "󰊢", hl = "MiniIconsOrange" },
       [".github"] = { glyph = "󰊤", hl = "MiniIconsAzure" },
+      ["config"] = { glyph = "󱁿", hl = "MiniIconsAzure" },
+      ["settings"] = { glyph = "󱁿", hl = "MiniIconsAzure" },
+      ["icons"] = { glyph = "󱞊", hl = "MiniIconsAzure" },
+      ["utils"] = { glyph = "󱧼", hl = "MiniIconsAzure" },
+      ["colors"] = { glyph = "󱁽", hl = "MiniIconsAzure" },
     },
     extension = {
       ["test.js"] = js_table,
@@ -40,10 +45,11 @@ M.opts = function()
     file = {
       ["README"] = { glyph = "󰈙", hl = "MiniIconsYellow" },
       ["README.md"] = { glyph = "󰈙", hl = "MiniIconsYellow" },
+      [".dockerignore"] = { glyph = "󰡨", hl = "MiniIconsAzure" },
     },
     filetype = {},
     lsp = {
-      ["copilot"] = { glyph = "", hl = "MiniIconsGrey" },
+      ["copilot"] = { glyph = "", hl = "MiniIconsWhite" },
       ["snippet"] = { glyph = "", hl = "MiniIconsGreen" },
     },
     os = {},
@@ -52,6 +58,8 @@ end
 
 M.config = function(_, opts)
   require("mini.icons").setup(opts)
+
+  vim.api.nvim_set_hl(0, "MiniIconsWhite", { fg = "#ffffff" })
 end
 
 return M

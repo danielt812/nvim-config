@@ -2,14 +2,12 @@ local M = { "rachartier/tiny-glimmer.nvim" }
 
 M.enabled = true
 
-M.event = { "VeryLazy" }
+M.event = { "BufReadPost" }
 
 M.opts = function()
   return {
-    enabled = true,
-
     -- Disable this if you wants to debug highlighting issues
-    disable_warnings = false,
+    disable_warnings = true,
 
     refresh_interval_ms = 8,
 
@@ -40,13 +38,6 @@ M.opts = function()
       yank = {
         enabled = true,
         default_animation = "fade",
-        -- {
-        --   name = "fade",
-        --   settings = {
-        --     min_duration = 1000,
-        --     max_duration = 1000,
-        --   },
-        -- },
       },
       search = {
         enabled = true,

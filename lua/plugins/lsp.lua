@@ -2,11 +2,9 @@ local M = { "neovim/nvim-lspconfig" }
 
 M.enabled = true
 
--- M.tag = "v1.8.0"
-
 M.dependencies = {
   { "SmitheshP/nvim-navbuddy" },
-  -- { "hrsh7th/cmp-nvim-lsp" },
+  -- { "hrsh7th/cmp-nvim-lsp"},
   { "saghen/blink.cmp" },
   { "b0o/SchemaStore.nvim" },
   { "j-hui/fidget.nvim" },
@@ -17,7 +15,7 @@ M.event = { "BufReadPre", "BufNewFile" }
 M.cmd = { "LspInfo", "LspInstall", "LspUninstall" }
 
 M.keys = {
-  { "<leader>lil", "<cmd>LspInfo<cr>", desc = "LSP " },
+  { "<leader>.", "<cmd>lua vim.lsp.buf.format()<cr>", desc = "Format 󰘞 " },
 }
 
 M.config = function()
@@ -43,23 +41,23 @@ M.config = function()
     end
 
     map("n", "K", "<cmd>lua vim.lsp.buf.hover({border = 'rounded'})<cr>", { desc = "Show Hover" })
-    map("n", "gk", "<cmd>lua vim.lsp.buf.signature_help({border = 'rounded'})<cr>", { desc = "Signature Help" })
-    map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "Go to Definition" })
-    map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", { desc = "Go to Declaration" })
-    map("n", "gA", "<cmd>lua vim.lsp.buf.code_action()<cr>", { desc = "Code Action" })
-    map("n", "gR", "<cmd>lua vim.lsp.buf.rename()<cr>", { desc = "Rename Definition" })
-    map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", { desc = "Go to Implementation" })
-    map("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "Go to References" })
-    map("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { desc = "Go to Type Definition" })
-    map("n", "<leader>laA", "<cmd>lua vim.lsp.buf.code_action()<cr>", { desc = "Code Action  " })
-    map("n", "<leader>laf", "<cmd>lua vim.lsp.buf.format()<cr>", { desc = "Format 󰘞 " })
-    map("n", "<leader>laD", "<cmd>lua vim.lsp.buf.declaration()<cr>", { desc = "Go to Declaration " })
-    map("n", "<leader>laR", "<cmd>lua vim.lsp.buf.rename()<cr>", { desc = "Rename Definition  " })
-    map("n", "<leader>lad", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "Go to Definition 󰊕 " })
-    map("n", "<leader>lah", "<cmd>lua vim.lsp.buf.hover()<cr>", { desc = "Show Hover  " })
-    map("n", "<leader>lai", "<cmd>lua vim.lsp.buf.implementation()<cr>", { desc = "Go to Implementation" })
-    map("n", "<leader>lar", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "Go to References" })
-    map("n", "<leader>lat", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { desc = "Go to Type Definition  " })
+    map("n", "gk", "<cmd>lua vim.lsp.buf.signature_help({border = 'rounded'})<cr>", { desc = "[S]ignature Help" })
+    map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "[D]efinition" })
+    map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", { desc = "[D]eclaration" })
+    map("n", "gA", "<cmd>lua vim.lsp.buf.code_action()<cr>", { desc = "Code [A]ction" })
+    map("n", "gR", "<cmd>lua vim.lsp.buf.rename()<cr>", { desc = "[R]ename Definition" })
+    map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", { desc = "[I]mplementation" })
+    map("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "[R]eferences" })
+    map("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { desc = "[T]ype Definition" })
+    map("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", { desc = "Code [A]Action" })
+    map("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format()<cr>", { desc = "[F]ormat" })
+    map("n", "<leader>lD", "<cmd>lua vim.lsp.buf.declaration()<cr>", { desc = "[D]eclaration " })
+    map("n", "<leader>lR", "<cmd>lua vim.lsp.buf.rename()<cr>", { desc = "[R]ename Definition" })
+    map("n", "<leader>ld", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "[D]efinition" })
+    map("n", "<leader>lh", "<cmd>lua vim.lsp.buf.hover()<cr>", { desc = "Show [H]over" })
+    map("n", "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<cr>", { desc = "[I]mplementation" })
+    map("n", "<leader>lr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "[R]eferences" })
+    map("n", "<leader>lt", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { desc = "Type [D]efinition" })
 
     if client.supports_method("textDocument/inlayHint") then
       vim.lsp.inlay_hint.enable(false)

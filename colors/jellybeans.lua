@@ -1,20 +1,20 @@
-vim.g.colors_name = "everforest"
+vim.g.colors_name = "jellybeans"
 
 -- stylua: ignore start
 local palette = {
-  bg     = "#323d43",
-  bg_alt = "#3c474d",
-  fg     = "#d3c6aa",
-  red    = "#e68183",
-  orange = "#e39b7b",
-  yellow = "#dbbc7f",
-  green  = "#a7c080",
-  aqua   = "#87c095",
-  blue   = "#7fbbb3",
-  purple = "#d39bb6",
-  grey1  = "#868d80",
-  grey2  = "#859289",
-  grey3  = "#9da9a0",
+  bg     = "#151515",
+  bg_alt = "#1c1c1c",
+  fg     = "#e8e8d3",
+  red    = "#cf6a4c",
+  orange = "#cda869",
+  yellow = "#f9ee98",
+  green  = "#99ad6a",
+  aqua   = "#8fbfdc",
+  blue   = "#8197bf",
+  purple = "#c594c5",
+  grey1  = "#666656",
+  grey2  = "#808070",
+  grey3  = "#cccccc",
 }
 -- stylua: ignore end
 
@@ -23,7 +23,7 @@ local highlights = {
   NormalNC = { fg = palette.fg, bg = palette.bg },
   CursorLine = { bg = palette.bg_alt },
   CursorColumn = { bg = palette.bg_alt },
-  LineNr = { fg = palette.grey2 },
+  LineNr = { fg = palette.grey1 },
   CursorLineNr = { fg = palette.yellow },
   VertSplit = { fg = palette.bg_alt },
   StatusLine = { fg = palette.fg, bg = palette.bg_alt },
@@ -31,7 +31,7 @@ local highlights = {
   PmenuSel = { fg = palette.bg, bg = palette.green },
   Visual = { bg = palette.grey1 },
   VisualNOS = { fg = palette.grey1 },
-  Comment = { fg = palette.grey2, italic = true },
+  Comment = { fg = palette.grey1, italic = true },
   Search = { fg = palette.bg_alt, bg = palette.fg, italic = true },
 
   Constant = { fg = palette.aqua },
@@ -41,8 +41,8 @@ local highlights = {
   Boolean = { fg = palette.purple },
   Float = { fg = palette.purple },
 
-  Identifier = { fg = palette.blue },
-  Function = { fg = palette.green },
+  Identifier = { fg = palette.aqua },
+  Function = { fg = palette.aqua },
 
   Statement = { fg = palette.red },
   Conditional = { fg = palette.red },
@@ -51,11 +51,11 @@ local highlights = {
   Operator = { fg = palette.orange },
   Keyword = { fg = palette.red },
 
-  PreProc = { fg = palette.yellow },
+  PreProc = { fg = palette.orange },
   Include = { fg = palette.blue },
   Define = { fg = palette.red },
   Macro = { fg = palette.orange },
-  PreCondit = { fg = palette.yellow },
+  PreCondit = { fg = palette.orange },
 
   Type = { fg = palette.yellow },
   StorageClass = { fg = palette.yellow },
@@ -63,7 +63,7 @@ local highlights = {
   Typedef = { fg = palette.yellow },
 
   Special = { fg = palette.aqua },
-  SpecialComment = { fg = palette.grey2, italic = true },
+  SpecialComment = { fg = palette.grey1, italic = true },
   Underlined = { underline = true },
   Bold = { bold = true },
   Italic = { italic = true },

@@ -1,6 +1,6 @@
 local M = { "MeanderingProgrammer/render-markdown.nvim" }
 
-M.enabled = true
+M.enabled = false
 
 M.ft = { "markdown" }
 

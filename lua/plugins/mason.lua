@@ -19,10 +19,6 @@ M.cmd = {
   "MasonUpdate",
 }
 
-M.keys = {
-  { "<leader>lim", "<cmd>Mason<cr>", desc = "Mason 󰢛 " },
-}
-
 M.opts = function()
   return {
     mason = {

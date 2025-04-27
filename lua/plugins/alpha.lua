@@ -4,6 +4,10 @@ M.enabled = true
 
 M.event = { "VimEnter" }
 
+M.keys = {
+  { "<leader>;", "<cmd>Alpha<cr>", desc = "Dashboard 󰨝" },
+}
+
 M.opts = function()
   local dashboard = require("alpha.themes.dashboard")
 
@@ -29,12 +33,12 @@ M.opts = function()
     val = {
       -- dashboard.button("n", " " .. " New file", ":enew"),
       dashboard.button("f", " " .. " Find file", ":FzfLua files <cr>"),
-      dashboard.button("o", " " .. " Oil", ":Oil <cr>"),
+      dashboard.button("o", "󱏒 " .. " Oil", ":Oil <cr>"),
       dashboard.button("g", " " .. " Live Grep", ":FzfLua live_grep <cr>"),
       dashboard.button("r", " " .. " Grug Far", ":GrugFar <cr>"),
       dashboard.button("h", " " .. " Check Health", ":checkhealth <cr>"),
       dashboard.button("c", " " .. " Config", ":cd $HOME/.config/nvim | e $MYVIMRC <cr>"),
-      dashboard.button("m", "󰢛 " .. " Mason", ":Mason <cr>"),
+      dashboard.button("m", " " .. " Mason", ":Mason <cr>"),
       dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy <cr>"),
       dashboard.button("q", " " .. " Quit", ":qa <cr>"),
     },

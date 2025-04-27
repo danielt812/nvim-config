@@ -1,6 +1,6 @@
 local M = { "nvim-tree/nvim-web-devicons" }
 
-M.enabled = true
+M.enabled = false
 
 M.event = { "VeryLazy" }
 

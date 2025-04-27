@@ -2,12 +2,13 @@ local M = { "SmiteshP/nvim-navic" }
 
 M.enabled = true
 
+M.dependencies = { "onsails/lspkind.nvim" }
+
 M.event = { "LspAttach" }
 
 M.opts = function()
-  local icons = require("icons")
   return {
-    icons = icons.kind, -- Indicate the type of symbol captured.
+    icons = require("lspkind").symbol_map, -- Indicate the type of symbol captured.
     lsp = {
       auto_attach = true, -- Enable to have nvim-navic automatically attach to every LSP for current buffer
       preference = nil, -- Table ranking lsp_servers. Lower the index, higher the priority of the server.

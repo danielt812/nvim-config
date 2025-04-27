@@ -5,8 +5,8 @@ M.enabled = true
 M.event = { "VeryLazy" }
 
 M.dependencies = {
-  "nvim-tree/nvim-web-devicons",
-  -- "echasnovski/mini.icons",
+  -- "nvim-tree/nvim-web-devicons",
+  "echasnovski/mini.icons",
 }
 
 M.opts = function()
@@ -27,15 +27,12 @@ M.opts = function()
       { "<leader>c", "<cmd>BufferClose<cr>", desc = "Close Buffer 󰅚 " },
       { "<leader>b", group = "Buffer  " },
       { "<leader>bc", group = "Close  " },
-      { "<leader>bg", group = "GoTo   " },
-      { "<leader>f", group = "Find  " },
-      { "<leader>g", group = "Git  " },
+      { "<leader>bg", group = "Go To   " },
+      { "<leader>f", group = "Fzf  " },
+      { "<leader>g", group = "Git  " },
       { "<leader>gh", group = "Hunk 󰦨 " },
       { "<leader>gt", group = "Toggle 󰨚 " },
       { "<leader>l", group = "LSP  " },
-      { "<leader>li", group = "Info  " },
-      { "<leader>la", group = "Actions 󰅖 " },
-      { "<leader>x", group = "Trouble 󱠪 " },
     },
   }
 end

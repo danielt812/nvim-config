@@ -4,6 +4,10 @@ M.enabled = true
 
 M.cmd = { "Oil" }
 
+M.keys = {
+  { "<leader>o", "<cmd>Oil<cr>", desc = "Oil 󱏒 " },
+}
+
 M.opts = function()
   return {
     default_file_explorer = true,
@@ -23,7 +27,7 @@ M.opts = function()
     },
     keymaps = {
       ["g?"] = "actions.show_help",
-      ["<CR>"] = "actions.select",
+      ["<cr>"] = "actions.select",
       ["<C-s>"] = "actions.select_vsplit",
       ["<C-h>"] = "actions.select_split",
       ["<C-t>"] = "actions.select_tab",
@@ -51,4 +55,3 @@ M.config = function(_, opts)
 end
 
 return M
-

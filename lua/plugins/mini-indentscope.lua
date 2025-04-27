@@ -1,6 +1,6 @@
 local M = { "echasnovski/mini.indentscope" }
 
-M.enabled = true
+M.enabled = false
 
 M.event = { "BufReadPre" }
 

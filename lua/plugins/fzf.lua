@@ -5,8 +5,7 @@ M.enabled = true
 M.cmd = { "FzfLua", "Fzf" }
 
 M.dependencies = {
-  -- "echasnovski/mini.icons",
-  "nvim-tree/nvim-web-devicons",
+  "echasnovski/mini.icons",
 }
 
 M.keys = {
@@ -30,7 +29,6 @@ M.opts = function()
     "^industry$",
     "^koehler$",
     "^lunaperche$",
-    "^mini",
     "^morning$",
     "^murphy$",
     "^pablo$",
@@ -49,6 +47,7 @@ M.opts = function()
     "^zaibatsu$",
     "^zellner$",
     "blue$",
+    "^mini",
   }
   return {
     "telescope",

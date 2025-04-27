@@ -4,11 +4,7 @@ M.enabled = true
 
 M.dependencies = { "nvim-lua/plenary.nvim" }
 
-M.event = { "BufReadPre" }
-
-M.keys = {
-  { "<leader>lin", "<cmd>NullLsInfo<cr>", "<cmd>Null-LS 󱆨 " },
-}
+M.event = { "VeryLazy" }
 
 M.opts = function()
   local formatting = require("null-ls").builtins.formatting
