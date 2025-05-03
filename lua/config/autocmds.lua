@@ -80,9 +80,9 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     "checkhealth",
     "mason",
     "lazy",
-    "Telescope*",
     "lazygit",
     "notify",
+    "minipick",
     -- "fzf",
   },
   callback = function()

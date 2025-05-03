@@ -23,7 +23,7 @@ M.opts = function()
           border = nil, -- You can set border style for each section individually as well.
         },
         mid = {
-          size = "40%",
+          size = "50%",
           border = nil,
         },
         right = {

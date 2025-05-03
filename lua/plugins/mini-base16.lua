@@ -5,14 +5,12 @@ M.enabled = false
 M.event = { "VimEnter" }
 
 M.config = function()
-  print("HELLO?")
-  -- vim.cmd("colorscheme everforest")
+  local italic = { italic = true }
 
   local comment_hl = vim.api.nvim_get_hl(0, { name = "Comment", link = false })
+  comment_hl = vim.tbl_deep_extend("force", comment_hl, italic)
 
-  -- Reapply it with italic
-  comment_hl.italic = true
-
+  ---@diagnostic disable-next-line: param-type-mismatch
   vim.api.nvim_set_hl(0, "Comment", comment_hl)
 end
 

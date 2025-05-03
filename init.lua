@@ -4,4 +4,4 @@ require("config.commands")
 require("config.keymaps")
 require("config.autocmds")
 
-vim.cmd("colorscheme oceanicnext")
+vim.cmd("colorscheme everforest2")

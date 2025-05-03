@@ -32,10 +32,12 @@ local highlights = {
   Visual = { bg = palette.grey1 },
   VisualNOS = { fg = palette.grey1 },
   Comment = { fg = palette.grey2, italic = true },
-  Search = { fg = palette.bg_alt, bg = palette.fg, italic = true },
+  Search = { fg = palette.bg, bg = palette.green },
+  CurSearch = { fg = palette.bg, bg = palette.green },
+  IncSearch = { fg = palette.bg, bg = palette.green },
 
   Constant = { fg = palette.aqua },
-  String = { fg = palette.green },
+  String = { fg = palette.fg },
   Character = { fg = palette.green },
   Number = { fg = palette.purple },
   Boolean = { fg = palette.purple },
@@ -73,6 +75,8 @@ local highlights = {
 
   Directory = { fg = palette.blue },
 
+  ["@variable"] = { fg = palette.green },
+
   RainbowDelimiterRed = { fg = palette.red },
   RainbowDelimiterYellow = { fg = palette.yellow },
   RainbowDelimiterBlue = { fg = palette.blue },
@@ -90,6 +94,23 @@ local highlights = {
   MiniIconsPurple = { fg = palette.purple },
   MiniIconsRed = { fg = palette.red },
   MiniIconsYellow = { fg = palette.yellow },
+
+  MiniPickBorder = { fg = palette.fg },
+  MiniPickBorderBusy = { fg = palette.fg },
+  MiniPickBorderText = { fg = palette.red },
+  MiniPickCursor = { fg = palette.fg },
+  MiniPickIconDirectory = { fg = palette.blue },
+  MiniPickIconFile = { fg = palette.yellow },
+  MiniPickHeader = { fg = palette.blue },
+  MiniPickMatchCurrent = { fg = palette.green, bg = palette.bg_alt },
+  -- MiniPickMatchMarked = {},
+  -- MiniPickMatchRanges = {},
+  MiniPickNormal = { fg = palette.fg, bg = palette.bg },
+  -- MiniPickPreviewLine = {},
+  -- MiniPickPreviewRegion = {},
+  MiniPickPrompt = { fg = palette.aqua },
+  MiniPickPromptCaret = { fg = palette.red },
+  MiniPickPromptPrefix = { fg = palette.red },
 }
 
 for group, opts in pairs(highlights) do

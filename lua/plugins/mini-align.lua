@@ -2,7 +2,7 @@ local M = { "echasnovski/mini.align" }
 
 M.enabled = true
 
-M.event = { "BufReadPre" }
+M.event = { "VimEnter" }
 
 M.opts = function()
   return {
