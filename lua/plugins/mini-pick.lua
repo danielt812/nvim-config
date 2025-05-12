@@ -8,8 +8,8 @@ M.keys = {
   { "<leader>fe", "<cmd>Pick explorer<cr>", desc = "Explorer" },
   { "<leader>ff", "<cmd>Pick files<cr>", desc = "Files" },
   { "<leader>fg", "<cmd>Pick grep_live<cr>", desc = "Livegrep" },
-  { "<leader>fh", "<cmd>Pick hl_groups<cr>", desc = "Highlights" },
-  { "<leader>fl", "<cmd>Pick help<cr>", desc = "Help" },
+  { "<leader>fl", "<cmd>Pick hl_groups<cr>", desc = "Highlights" },
+  { "<leader>fh", "<cmd>Pick help<cr>", desc = "Help" },
   { "<leader>fk", "<cmd>Pick keymaps<cr>", desc = "Keymaps" },
 }
 
