@@ -20,7 +20,7 @@ M.opts = function()
     -- Notifications about LSP progress
     lsp_progress = {
       -- Whether to enable showing
-      enable = true,
+      enable = false,
     },
 
     -- Window options
