@@ -3,7 +3,6 @@ local M = { "akinsho/bufferline.nvim" }
 M.enabled = true
 
 M.dependencies = {
-  -- "nvim-tree/nvim-web-devicons",
   "echasnovski/mini.icons",
 }
 

@@ -1,6 +1,6 @@
 local M = { "echasnovski/mini-git" }
 
-M.enabled = false
+M.enabled = true
 
 M.event = { "BufReadPost" }
 

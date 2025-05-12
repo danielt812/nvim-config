@@ -4,13 +4,15 @@ M.enabled = true
 
 M.event = { "BufReadPost" }
 
+-- stylua: ignore start
 local apply_custom_highlights = function()
-  vim.api.nvim_set_hl(0, "MiniHipatternsWarn", { fg = "#ff2d00" }) -- WARN example
+  vim.api.nvim_set_hl(0, "MiniHipatternsWarn",  { fg = "#ff2d00" }) -- WARN example
   vim.api.nvim_set_hl(0, "MiniHipatternsFixme", { fg = "#ff8c00" }) -- FIX example
-  vim.api.nvim_set_hl(0, "MiniHipatternsTodo", { fg = "#98c379" }) -- TODO example
-  vim.api.nvim_set_hl(0, "MiniHipatternsHack", { fg = "#d699b6" }) -- HACK example
-  vim.api.nvim_set_hl(0, "MiniHipatternsNote", { fg = "#3498db" }) -- NOTE example
+  vim.api.nvim_set_hl(0, "MiniHipatternsTodo",  { fg = "#98c379" }) -- TODO example
+  vim.api.nvim_set_hl(0, "MiniHipatternsHack",  { fg = "#d699b6" }) -- HACK example
+  vim.api.nvim_set_hl(0, "MiniHipatternsNote",  { fg = "#3498db" }) -- NOTE example
 end
+-- stylua: ignore end
 
 M.opts = function()
   local hipatterns = require("mini.hipatterns")

@@ -25,40 +25,6 @@ end
 
 M.config = function(_, opts)
   require("nvim-navic").setup(opts)
-
-  local kind_hl = {
-    File = "Special",
-    Module = "Special",
-    Namespace = "Special",
-    Package = "Special",
-    Class = "Special",
-    Method = "Special",
-    Property = "Special",
-    Field = "Special",
-    Constructor = "Special",
-    Enum = "Special",
-    Interface = "Special",
-    Function = "Special",
-    Variable = "Special",
-    Constant = "Special",
-    String = "Special",
-    Number = "Special",
-    Boolean = "Special",
-    Array = "Special",
-    Object = "Special",
-    Key = "Special",
-    Null = "Special",
-    EnumMember = "Special",
-    Struct = "Special",
-    Event = "Special",
-    Operator = "Special",
-    TypeParameter = "Special",
-    Macro = "Special",
-  }
-
-  for key, value in pairs(kind_hl) do
-    vim.api.nvim_set_hl(0, "NavicIcons" .. key, { link = value })
-  end
 end
 
 return M

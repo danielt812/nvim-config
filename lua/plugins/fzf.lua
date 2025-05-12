@@ -1,6 +1,6 @@
 local M = { "ibhagwan/fzf-lua" }
 
-M.enabled = true
+M.enabled = false
 
 M.cmd = { "FzfLua", "Fzf" }
 

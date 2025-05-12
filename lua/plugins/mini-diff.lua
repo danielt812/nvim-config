@@ -1,6 +1,6 @@
 local M = { "echasnovski/mini.diff" }
 
-M.enabled = false
+M.enabled = true
 
 M.event = { "BufReadPost" }
 

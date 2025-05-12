@@ -1,6 +1,6 @@
 local M = { "lewis6991/gitsigns.nvim" }
 
-M.enabled = true
+M.enabled = false
 
 M.event = { "BufReadPost" }
 

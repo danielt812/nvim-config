@@ -2,7 +2,7 @@ local M = { "echasnovski/mini.icons" }
 
 M.enabled = true
 
-M.event = { "VimEnter" }
+M.event = { "VeryLazy" }
 
 M.init = function()
   package.preload["nvim-web-devicons"] = function()

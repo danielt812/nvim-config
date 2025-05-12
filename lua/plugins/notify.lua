@@ -1,6 +1,6 @@
 local M = { "rcarriga/nvim-notify" }
 
-M.enabled = true
+M.enabled = false
 
 M.event = { "VimEnter" }
 

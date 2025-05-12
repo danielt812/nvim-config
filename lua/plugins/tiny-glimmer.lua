@@ -7,7 +7,7 @@ M.event = { "BufReadPost" }
 M.opts = function()
   return {
     -- Disable this if you wants to debug highlighting issues
-    disable_warnings = true,
+    disable_warnings = false,
 
     refresh_interval_ms = 8,
 

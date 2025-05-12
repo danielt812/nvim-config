@@ -1,6 +1,6 @@
 local M = { "echasnovski/mini.pick" }
 
-M.enabled = false
+M.enabled = true
 
 M.cmd = { "Pick" }
 

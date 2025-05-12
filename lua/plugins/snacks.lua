@@ -14,7 +14,7 @@ M.opts = function()
     indent = { enabled = false },
     input = { enabled = false },
     picker = {
-      enabled = true,
+      enabled = false,
       actions = {
         confirm_and_close = function(picker)
           picker:action("confirm")

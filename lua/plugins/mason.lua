@@ -1,9 +1,9 @@
-local M = { "williamboman/mason.nvim" }
+local M = { "williamboman/mason.nvim", version = "1.11.0" }
 
 M.enabled = true
 
 M.dependencies = {
-  "williamboman/mason-lspconfig.nvim",
+  { "williamboman/mason-lspconfig.nvim", version = "1.32.0" },
   "jay-babu/mason-null-ls.nvim",
   "jay-babu/mason-nvim-dap.nvim",
 }

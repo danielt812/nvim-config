@@ -1,6 +1,6 @@
 local M = { "lewis6991/satellite.nvim" }
 
-M.enabled = true
+M.enabled = false
 
 M.event = { "BufReadPost" }
 

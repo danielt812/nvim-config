@@ -1,6 +1,6 @@
 local M = { "neanias/everforest-nvim" }
 
-M.enabled = false
+M.enabled = true
 
 M.lazy = false
 
