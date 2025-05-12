@@ -5,7 +5,7 @@ M.enabled = true
 M.cmd = { "Oil" }
 
 M.keys = {
-  { "<leader>o", "<cmd>Oil<cr>", desc = "Oil 󱏒 " },
+  { "<leader>eo", "<cmd>Oil<cr>", desc = "Oil" },
 }
 
 M.opts = function()

@@ -1,6 +1,6 @@
 local M = { "folke/which-key.nvim" }
 
-M.enabled = true
+M.enabled = false
 
 M.event = { "VeryLazy" }
 

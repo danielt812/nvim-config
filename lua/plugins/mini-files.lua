@@ -3,10 +3,10 @@ local M = { "echasnovski/mini.files" }
 M.enabled = true
 
 M.keys = {
-  { "<leader>e", "<cmd>lua MiniFiles.open()<cr>", desc = "Mini Files" },
+  { "<leader>ef", "<cmd>lua MiniFiles.open()<cr>", desc = "Files" },
 }
 
-M.event = { "BufReadPost" }
+M.event = { "VeryLazy" }
 
 M.opts = function()
   return {

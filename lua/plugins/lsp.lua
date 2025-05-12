@@ -15,7 +15,16 @@ M.event = { "BufReadPre", "BufNewFile" }
 M.cmd = { "LspInfo", "LspInstall", "LspUninstall" }
 
 M.keys = {
-  { "<leader>.", "<cmd>lua vim.lsp.buf.format()<cr>", desc = "Format 󰘞 " },
+  { "<leader>l.", "<cmd>lua vim.lsp.buf.format()<cr>", desc = "Format" },
+  { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code Action" },
+  { "<leader>lf", "<cmd>lua vim.lsp.buf.format()<cr>", desc = "Format" },
+  { "<leader>lD", "<cmd>lua vim.lsp.buf.declaration()<cr>", desc = "Declaration" },
+  { "<leader>lR", "<cmd>lua vim.lsp.buf.rename()<cr>", desc = "Rename Definition" },
+  { "<leader>ld", "<cmd>lua vim.lsp.buf.definition()<cr>", desc = "Definition" },
+  { "<leader>lh", "<cmd>lua vim.lsp.buf.hover()<cr>", desc = "Show Hover" },
+  { "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<cr>", desc = "Implementation" },
+  { "<leader>lr", "<cmd>lua vim.lsp.buf.references()<cr>", desc = "References" },
+  { "<leader>lt", "<cmd>lua vim.lsp.buf.type_definition()<cr>", desc = "Type Definition" },
 }
 
 M.config = function()
@@ -41,23 +50,15 @@ M.config = function()
     end
 
     map("n", "K", "<cmd>lua vim.lsp.buf.hover({border = 'rounded'})<cr>", { desc = "Show Hover" })
-    map("n", "gk", "<cmd>lua vim.lsp.buf.signature_help({border = 'rounded'})<cr>", { desc = "[S]ignature Help" })
-    map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "[D]efinition" })
-    map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", { desc = "[D]eclaration" })
-    map("n", "gA", "<cmd>lua vim.lsp.buf.code_action()<cr>", { desc = "Code [A]ction" })
-    map("n", "gR", "<cmd>lua vim.lsp.buf.rename()<cr>", { desc = "[R]ename Definition" })
-    map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", { desc = "[I]mplementation" })
-    map("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "[R]eferences" })
-    map("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { desc = "[T]ype Definition" })
-    map("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", { desc = "Code [A]Action" })
-    map("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format()<cr>", { desc = "[F]ormat" })
-    map("n", "<leader>lD", "<cmd>lua vim.lsp.buf.declaration()<cr>", { desc = "[D]eclaration " })
-    map("n", "<leader>lR", "<cmd>lua vim.lsp.buf.rename()<cr>", { desc = "[R]ename Definition" })
-    map("n", "<leader>ld", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "[D]efinition" })
-    map("n", "<leader>lh", "<cmd>lua vim.lsp.buf.hover()<cr>", { desc = "Show [H]over" })
-    map("n", "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<cr>", { desc = "[I]mplementation" })
-    map("n", "<leader>lr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "[R]eferences" })
-    map("n", "<leader>lt", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { desc = "Type [D]efinition" })
+    map("n", "gk", "<cmd>lua vim.lsp.buf.signature_help({border = 'rounded'})<cr>", { desc = "Signature Help" })
+    map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "Definition" })
+    map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", { desc = "Declaration" })
+    map("n", "gA", "<cmd>lua vim.lsp.buf.code_action()<cr>", { desc = "Code Action" })
+    map("n", "gR", "<cmd>lua vim.lsp.buf.rename()<cr>", { desc = "Rename Definition" })
+    map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", { desc = "Implementation" })
+    map("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "References" })
+    map("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { desc = "Type Definition" })
+    map("n", "g.", "<cmd>lua vim.lsp.buf.format()<cr>", { desc = "Format" })
 
     if client.supports_method("textDocument/inlayHint") then
       vim.lsp.inlay_hint.enable(false)

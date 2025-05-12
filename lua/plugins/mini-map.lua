@@ -2,7 +2,9 @@ local M = { "echasnovski/mini.map" }
 
 M.enabled = true
 
-M.event = { "BufReadPost" }
+M.keys = {
+  { "<leader>em", "<cmd>lua MiniMap.toggle()<cr>", desc = "Map" },
+}
 
 M.opts = function()
   local map = require("mini.map")
@@ -19,11 +21,11 @@ M.opts = function()
       -- Encode symbols. See `:h MiniMap.config` for specification and
       -- `:h MiniMap.gen_encode_symbols` for pre-built ones.
       -- Default: solid blocks with 3x2 resolution.
-      encode = nil,
+      encode = map.gen_encode_symbols.dot("3x2"),
 
       -- Scrollbar parts for view and line. Use empty string to disable any.
-      scroll_line = "█",
-      scroll_view = "┃",
+      scroll_line = "▶ ",
+      scroll_view = "┃ ",
     },
 
     -- Window options
@@ -35,7 +37,7 @@ M.opts = function()
       side = "right",
 
       -- Whether to show count of multiple integration highlights
-      show_integration_count = true,
+      show_integration_count = false,
 
       -- Total width
       width = 10,

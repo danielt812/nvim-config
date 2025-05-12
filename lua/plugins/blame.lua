@@ -5,7 +5,7 @@ M.enabled = true
 M.cmd = { "BlameToggle" }
 
 M.keys = {
-  { "<leader>gB", "<cmd>BlameToggle<cr>", desc = "Blame File  " },
+  { "<leader>gb", "<cmd>BlameToggle<cr>", desc = "Blame File" },
 }
 
 M.opts = function()

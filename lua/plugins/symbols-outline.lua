@@ -7,7 +7,7 @@ M.dependencies = { "onsails/lspkind.nvim" }
 M.cmd = { "Outline", "OutlineOpen" }
 
 M.keys = {
-  { "<leader>s", "<cmd>Outline<CR>", desc = "Symbols Outline 󱔁 " },
+  { "<leader>es", "<cmd>Outline<CR>", desc = "Symbols" },
 }
 
 M.opts = function()

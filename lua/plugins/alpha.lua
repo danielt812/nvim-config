@@ -1,6 +1,6 @@
 local M = { "goolord/alpha-nvim" }
 
-M.enabled = true
+M.enabled = false
 
 M.event = { "VimEnter" }
 

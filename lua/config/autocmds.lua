@@ -16,30 +16,6 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
--- Highlight on yank
--- local highlight_yank_group = vim.api.nvim_create_augroup("highlight_yank", { clear = true })
--- vim.api.nvim_create_autocmd("TextYankPost", {
---   group = highlight_yank_group,
---   desc = "Highlight on Yank",
---   callback = function()
---     vim.highlight.on_yank({ higroup = "Visual", timeout = 300 })
---   end,
--- })
-
--- local alpha_on_empty = vim.api.nvim_create_augroup("alpha_on_empty", { clear = true })
--- vim.api.nvim_create_autocmd("BufLeave", {
---  group = alpha_on_empty,
---  callback = function()
---   vim.notify("HELLO WORLD")
---   local bufnr = vim.api.nvim_get_current_buf()
---   local name = vim.api.nvim_buf_get_name(bufnr)
-
---  if name == "" then
---   vim.cmd([[:Alpha | bd#]])
---  end
---  end,
---})
-
 -- Format on save
 local format_on_save_group = vim.api.nvim_create_augroup("format_on_save", { clear = true })
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
@@ -82,7 +58,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     "lazy",
     "lazygit",
     "notify",
-    "minipick",
+    -- "minipick",
     -- "fzf",
   },
   callback = function()
@@ -125,32 +101,6 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 --     -- vim.api.nvim_command("wincmd L")
 --   end,
 -- })
-
--- Set illuminate highlight to underline
-local illuminate_highlight_group = vim.api.nvim_create_augroup("illuminate_highlight", { clear = true })
-vim.api.nvim_create_autocmd({ "ColorScheme", "BufEnter" }, {
-  group = illuminate_highlight_group,
-  desc = "Set Illuminate Highlight",
-  callback = function()
-    vim.api.nvim_set_hl(0, "IlluminatedWord", { link = "Underlined" })
-    vim.api.nvim_set_hl(0, "IlluminatedWordText", { link = "Underlined" })
-    vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "Underlined" })
-    vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "Underlined" })
-  end,
-})
-
--- Use illuminate instead of lsp highlight
-vim.api.nvim_create_autocmd({ "LspAttach" }, {
-  group = illuminate_highlight_group,
-  desc = "Set Illuminate Highlight on LspAttach",
-  callback = function()
-    vim.api.nvim_set_hl(0, "LspReferenceText", { link = "Underlined" })
-    vim.api.nvim_set_hl(0, "LspReferenceRead", { link = "Underlined" })
-    vim.api.nvim_set_hl(0, "LspReferenceWrite", { link = "Underlined" })
-    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-    vim.api.nvim_set_hl(0, "@lsp.type.comment", {}) -- https://github.com/stsewd/tree-sitter-comment/issues/22
-  end,
-})
 
 -- Set winbar for DAP UI
 local winbar_settings_group = vim.api.nvim_create_augroup("winbar_settings", { clear = true })

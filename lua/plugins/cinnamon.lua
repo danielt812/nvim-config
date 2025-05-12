@@ -1,6 +1,6 @@
 local M = { "declancm/cinnamon.nvim" }
 
-M.enabled = true
+M.enabled = false
 
 M.event = { "BufReadPre", "BufNewFile" }
 

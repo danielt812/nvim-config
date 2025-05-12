@@ -1,6 +1,6 @@
 local M = { "ray-x/lsp_signature.nvim" }
 
-M.enabled = true
+M.enabled = false
 
 M.event = { "LspAttach" }
 

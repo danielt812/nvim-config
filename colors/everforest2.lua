@@ -37,7 +37,7 @@ local options = {
   ---components be transparent (e.g. status line background)
   transparent_background_level = 0,
   ---Whether italics should be used for keywords and more.
-  italics = true,
+  italics = false,
   ---Disable italic fonts for comments. Comments are in italics by default, set
   ---this to `true` to make them _not_ italic!
   disable_italic_comments = false,
@@ -1070,13 +1070,15 @@ local highlights = {
   MiniStatuslineModeOther = syntax_entry(palette.bg0, palette.purple, { styles.bold }),
   MiniStatuslineModeReplace = syntax_entry(palette.bg0, palette.orange, { styles.bold }),
   MiniStatuslineModeVisual = syntax_entry(palette.bg0, palette.statusline3, { styles.bold }),
-  MiniTablineCurrent = syntax_entry(palette.fg, palette.bg4),
+  MiniTablineCurrent = syntax_entry(palette.blue, palette.bg2),
   MiniTablineHidden = syntax_entry(palette.grey1, palette.bg2),
-  MiniTablineModifiedCurrent = syntax_entry(palette.blue, palette.bg4),
+  -- MiniTablineFill = syntax_entry(palette.none, palette.bg2),
+  MiniTablineFill = { link = "TablineFill" },
+  MiniTablineModifiedCurrent = syntax_entry(palette.blue, palette.bg2),
   MiniTablineModifiedHidden = syntax_entry(palette.grey1, palette.bg2),
   MiniTablineModifiedVisible = syntax_entry(palette.blue, palette.bg2),
-  MiniTablineTabpagesection = syntax_entry(palette.bg0, palette.statusline1, { styles.bold }),
-  MiniTablineVisible = syntax_entry(palette.fg, palette.bg2),
+  MiniTablineTabpagesection = syntax_entry(palette.bg2, palette.bg2, { styles.bold }),
+  MiniTablineVisible = syntax_entry(palette.blue, palette.bg2),
   MiniTestEmphasis = syntax_entry(palette.none, palette.none, { styles.bold }),
   MiniTestFail = syntax_entry(palette.red, palette.none, { styles.bold }),
   MiniTestPass = syntax_entry(palette.green, palette.none, { styles.bold }),
@@ -1149,7 +1151,6 @@ local highlights = {
   MiniStatuslineFileinfo = { link = "MiniStatuslineDevinfo" },
   MiniStatuslineInactive = { link = "Grey" },
   MiniSurround = { link = "IncSearch" },
-  MiniTablineFill = { link = "TabLineFill" },
 
   -- https://github.com/simrat39/symbols-outline.nvim
   FocusedSymbol = { link = "NormalFloat" },

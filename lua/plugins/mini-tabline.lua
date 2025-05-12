@@ -1,6 +1,6 @@
 local M = { "echasnovski/mini.tabline" }
 
-M.enabled = false
+M.enabled = true
 
 M.event = { "BufReadPre", "BufNew" }
 
@@ -17,9 +17,9 @@ M.opts = function()
 
       local suffix = ""
       if vim.bo[buf_id].modified then
-        suffix = "●"
+        suffix = "● "
       elseif vim.bo[buf_id].readonly or not vim.bo[buf_id].modifiable then
-        suffix = ""
+        suffix = " "
       end
 
       return require("mini.tabline").default_format(buf_id, label) .. suffix -- .. sep

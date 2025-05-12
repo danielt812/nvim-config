@@ -1,6 +1,6 @@
 local M = { "akinsho/bufferline.nvim" }
 
-M.enabled = true
+M.enabled = false
 
 M.dependencies = {
   "echasnovski/mini.icons",
@@ -9,22 +9,22 @@ M.dependencies = {
 M.event = { "BufRead" }
 
 M.keys = {
-  { "<S-h>", "<cmd>BufferLineCyclePrev<cr>" },
-  { "<S-l>", "<cmd>BufferLineCycleNext<cr>" },
-  -- Pin
-  { "<leader>bp", "<cmd>BufferLineTogglePin<cr>", desc = "Pin  " },
-  -- Go to
-  { "<leader>bgl", "<cmd>BufferLineCycleNext<cr>", desc = "Next 󰮱 " },
-  { "<leader>bgh", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev 󰮳 " },
-  { "<leader>bgp", "<cmd>BufferLinePick<cr>", desc = "Pick  " },
-  -- Close
-  { "<leader>bcc", "<cmd>BufferClose<cr>", desc = "Current  " },
-  { "<leader>bch", "<cmd>BufferLineCloseLeft<cr>", desc = "Left 󰳞 " },
-  { "<leader>bcp", "<cmd>BufferLinePickClose<cr>", desc = "Prev  " },
-  { "<leader>bcl", "<cmd>BufferLineCloseRight<cr>", desc = "Right 󰳠 " },
-  { "<leader>bco", "<cmd>BufferLineCloseOthers<cr>", desc = "Others  " },
-  { "<leader>bcp", "<cmd>BufferLineGroupClose pinned<cr>", desc = "Pinned 󰤱 " },
-  { "<leader>bcu", "<cmd>BufferLineGroupClose ungrouped<cr>", desc = "Unpinned 󰤰 " },
+  -- { "<S-h>", "<cmd>BufferLineCyclePrev<cr>" },
+  -- { "<S-l>", "<cmd>BufferLineCycleNext<cr>" },
+  -- -- Pin
+  -- { "<leader>bp", "<cmd>BufferLineTogglePin<cr>", desc = "Pin  " },
+  -- -- Go to
+  -- { "<leader>bgl", "<cmd>BufferLineCycleNext<cr>", desc = "Next 󰮱 " },
+  -- { "<leader>bgh", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev 󰮳 " },
+  -- { "<leader>bgp", "<cmd>BufferLinePick<cr>", desc = "Pick  " },
+  -- -- Close
+  -- { "<leader>bcc", "<cmd>BufferClose<cr>", desc = "Current  " },
+  -- { "<leader>bch", "<cmd>BufferLineCloseLeft<cr>", desc = "Left 󰳞 " },
+  -- { "<leader>bcp", "<cmd>BufferLinePickClose<cr>", desc = "Prev  " },
+  -- { "<leader>bcl", "<cmd>BufferLineCloseRight<cr>", desc = "Right 󰳠 " },
+  -- { "<leader>bco", "<cmd>BufferLineCloseOthers<cr>", desc = "Others  " },
+  -- { "<leader>bcp", "<cmd>BufferLineGroupClose pinned<cr>", desc = "Pinned 󰤱 " },
+  -- { "<leader>bcu", "<cmd>BufferLineGroupClose ungrouped<cr>", desc = "Unpinned 󰤰 " },
 }
 
 M.opts = function()
