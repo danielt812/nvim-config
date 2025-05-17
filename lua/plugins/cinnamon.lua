@@ -7,7 +7,7 @@ M.event = { "BufReadPre", "BufNewFile" }
 M.opts = function()
   return {
     keymaps = {
-      basic = true,
+      basic = false,
       extra = false,
     },
 
@@ -16,7 +16,7 @@ M.opts = function()
       -- The scrolling mode
       -- `cursor`: animate cursor and window scrolling for any movement
       -- `window`: animate window scrolling ONLY when the cursor moves out of view
-      mode = "cursor",
+      mode = "window",
 
       -- Only animate scrolling if a count is provided
       count_only = false,
@@ -53,6 +53,17 @@ end
 
 M.config = function(_, opts)
   require("cinnamon").setup(opts)
+  local cinnamon = require("cinnamon")
+
+  cinnamon.setup()
+
+  -- Centered scrolling:
+  vim.keymap.set("n", "<C-U>", function()
+    cinnamon.scroll("<C-U>zz")
+  end)
+  vim.keymap.set("n", "<C-D>", function()
+    cinnamon.scroll("<C-D>zz")
+  end)
 end
 
 return M

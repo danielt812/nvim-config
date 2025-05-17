@@ -2,7 +2,7 @@ local M = { "echasnovski/mini.notify" }
 
 M.enabled = true
 
-M.event = { "VeryLazy" }
+M.event = { "VimEnter" }
 
 M.opts = function()
   return {

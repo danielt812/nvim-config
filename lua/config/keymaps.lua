@@ -8,6 +8,9 @@ end
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
 
+map({ "n" }, "<S-h>", "<cmd>bprevious<cr>")
+map({ "n" }, "<S-l>", "<cmd>bnext<cr>")
+
 -- Move to window/tmux pane using ctrl + hjkl keys
 map("n", "<C-h>", "<C-w>h", { desc = "Go to left window", remap = true })
 map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })

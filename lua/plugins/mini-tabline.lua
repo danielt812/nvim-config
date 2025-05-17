@@ -13,7 +13,8 @@ M.opts = function()
 
       -- Determine if current buffer is the last listed one
       local is_last = listed_buffers[#listed_buffers].bufnr == buf_id
-      local sep = (not is_last and #listed_buffers > 1) and "│" or ""
+      -- local sep = (not is_last and #listed_buffers > 1) and "" or ""
+      local sep = (#listed_buffers > 0) and "" or ""
 
       local suffix = ""
       if vim.bo[buf_id].modified then
@@ -22,7 +23,7 @@ M.opts = function()
         suffix = " "
       end
 
-      return require("mini.tabline").default_format(buf_id, label) .. suffix -- .. sep
+      return require("mini.tabline").default_format(buf_id, label) .. suffix .. sep
     end,
 
     tabpage_section = "right",

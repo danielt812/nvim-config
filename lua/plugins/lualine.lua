@@ -50,14 +50,19 @@ M.opts = function()
     padding = 1,
   }
 
-  -- local progressbar = function()
-  --   local current_line = vim.fn.line(".")
-  --   local total_lines = vim.fn.line("$")
-  --   local chars = { "__", "▁▁", "▂▂", "▃▃", "▄▄", "▅▅", "▆▆", "▇▇", "██" }
-  --   local line_ratio = current_line / total_lines
-  --   local index = math.ceil(line_ratio * #chars)
-  --   return chars[index]
-  -- end
+  local searchcount = {
+    "searchcount",
+    padding = 1,
+  }
+
+  local progressbar = function()
+    local current_line = vim.fn.line(".")
+    local total_lines = vim.fn.line("$")
+    local chars = { "__", "▁▁", "▂▂", "▃▃", "▄▄", "▅▅", "▆▆", "▇▇", "██" }
+    local line_ratio = current_line / total_lines
+    local index = math.ceil(line_ratio * #chars)
+    return chars[index]
+  end
 
   local progress = {
     "progress",
@@ -85,6 +90,7 @@ M.opts = function()
       },
       disabled_filetypes = {
         "alpha",
+        "ministarter",
         statusline = {},
         winbar = {
           "dap-repl",
@@ -100,11 +106,11 @@ M.opts = function()
     },
     sections = {
       lualine_a = { mode },
-      lualine_b = { branch, diagnostics },
-      lualine_c = {},
-      lualine_x = { diff, spaces, "encoding", filetype },
-      lualine_y = { location },
-      lualine_z = { progress },
+      lualine_b = { branch },
+      lualine_c = { diff, diagnostics },
+      lualine_x = { spaces, filetype },
+      lualine_y = { searchcount, location },
+      lualine_z = { progress, progressbar },
     },
     winbar = {
       lualine_c = {
@@ -121,6 +127,8 @@ M.opts = function()
       "quickfix",
       "toggleterm",
       "trouble",
+      "symbols-outline",
+      "mason",
     },
   }
 end

@@ -67,6 +67,37 @@ end
 
 M.config = function(_, opts)
   require("mini.diff").setup(opts)
+  -- local minidiff_settings_group = vim.api.nvim_create_augroup("minidiff_settings_group", { clear = true })
+  -- vim.api.nvim_create_autocmd("User", {
+  --   group = minidiff_settings_group,
+  --   pattern = "MiniDiffUpdated",
+  --   desc = "Format Mini Diff summary string with colors for statusline",
+  --   callback = function(data)
+  --     local summary = vim.b[data.buf].minidiff_summary
+  --     -- NOTE these are custom highlight groups that are not part of MiniNvim
+  --     local symbols = {
+  --       add = "%#MiniStatuslineDiffAdd# ",
+  --       change = "%#MiniStatuslineDiffChange# ",
+  --       delete = "%#MiniStatuslineDiffDelete# ",
+  --     }
+  --
+  --     local t = {}
+  --     if summary.add > 0 then
+  --       table.insert(t, symbols.add .. summary.add)
+  --     end
+  --     if summary.change > 0 then
+  --       table.insert(t, symbols.change .. summary.change)
+  --     end
+  --     if summary.delete > 0 then
+  --       table.insert(t, symbols.delete .. summary.delete)
+  --     end
+  --
+  --     -- Reset highlight after diff summary
+  --     table.insert(t, "%*")
+  --
+  --     vim.b[data.buf].minidiff_summary_string = table.concat(t, " ")
+  --   end,
+  -- })
 end
 
 return M

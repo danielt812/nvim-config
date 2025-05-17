@@ -2,7 +2,7 @@ local M = { "jinh0/eyeliner.nvim" }
 
 M.enabled = true
 
-M.keys = { "f", "F" }
+M.keys = { "f", "F", "t", "T" }
 
 M.opts = function()
   return {

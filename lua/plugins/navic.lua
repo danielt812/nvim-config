@@ -25,6 +25,20 @@ end
 
 M.config = function(_, opts)
   require("nvim-navic").setup(opts)
+
+  -- function _G.get_navic_winbar()
+  --   local ok, navic = pcall(require, "nvim-navic")
+  --   if not ok then
+  --     return ""
+  --   end
+  --
+  --   if navic.is_available() then
+  --     return navic.get_location()
+  --   end
+  --   return ""
+  -- end
+
+  -- vim.opt.winbar = "%{%v:lua.get_navic_winbar()%}"
 end
 
 return M

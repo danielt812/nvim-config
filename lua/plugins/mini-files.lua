@@ -3,12 +3,14 @@ local M = { "echasnovski/mini.files" }
 M.enabled = true
 
 M.keys = {
-  { "<leader>ef", "<cmd>lua MiniFiles.open()<cr>", desc = "Files" },
+  { "<leader>ef", "<cmd>lua MiniFiles.open(vim.fn.expand('%:p:h'))<cr>", desc = "Files" },
 }
 
 M.event = { "VeryLazy" }
 
 M.opts = function()
+  local files = require("mini.files")
+
   return {
     -- Customization of shown content
     content = {
@@ -43,7 +45,7 @@ M.opts = function()
       -- Whether to delete permanently or move into module-specific trash
       permanent_delete = true,
       -- Whether to use for editing directories
-      use_as_default_explorer = true,
+      use_as_default_explorer = false,
     },
 
     -- Customization of explorer windows
@@ -64,6 +66,41 @@ end
 
 M.config = function(_, opts)
   require("mini.files").setup(opts)
-end
+  local minifiles_settings_group = vim.api.nvim_create_augroup("minifiles_settings_group", { clear = true })
+  vim.api.nvim_create_autocmd("User", {
+    group = minifiles_settings_group,
+    pattern = "MiniFilesWindowOpen",
+    callback = function(args)
+      local win_id = args.data.win_id
 
+      -- Customize window-local settings
+      vim.wo[win_id].winblend = 10
+    end,
+  })
+
+  local show_dotfiles = true
+
+  local filter_show = function(fs_entry)
+    return true
+  end
+
+  local filter_hide = function(fs_entry)
+    return not vim.startswith(fs_entry.name, ".")
+  end
+
+  local toggle_dotfiles = function()
+    show_dotfiles = not show_dotfiles
+    local new_filter = show_dotfiles and filter_show or filter_hide
+    MiniFiles.refresh({ content = { filter = new_filter } })
+  end
+
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "MiniFilesBufferCreate",
+    callback = function(args)
+      local buf_id = args.data.buf_id
+      -- Tweak left-hand side of mapping to your liking
+      vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = buf_id })
+    end,
+  })
+end
 return M

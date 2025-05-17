@@ -20,6 +20,7 @@ opt.grepformat = "%f:%l:%c:%m"
 opt.ignorecase = true -- Ignore case
 opt.inccommand = "nosplit" -- preview incremental substitute
 opt.laststatus = 0
+opt.shortmess:append("S")
 opt.list = true -- Show some invisible characters (tabs...
 opt.mouse = "a" -- Enable mouse mode
 opt.number = true -- Print line number
@@ -42,6 +43,7 @@ opt.spelllang = { "en" }
 opt.splitbelow = true -- Put new windows below current
 opt.splitright = true -- Put new windows right of current
 opt.statuscolumn = "%s%l %r"
+opt.showtabline = 0
 -- opt.statuscolumn =
 --   '%=%{v:relnum?v:relnum:v:lnum}%s%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? " " : " ") : " ") : " " }'
 opt.swapfile = false -- Create a swapfile

@@ -2,47 +2,62 @@ local M = { "echasnovski/mini.statusline" }
 
 M.enabled = false
 
-M.event = { "BufReadPre" }
+M.event = { "VeryLazy" }
 
 M.opts = function()
-  local function hide_in_width()
-    return vim.fn.winwidth(0) > 80
-  end
-
+  local statusline = require("mini.statusline")
   return {
     content = {
       active = function()
-        local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
-        local git = MiniStatusline.section_git({ trunc_width = 75 })
-        local diagnostics = MiniStatusline.section_diagnostics({ trunc_width = 75 })
-        local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 120 })
-        local location = MiniStatusline.section_location({ trunc_width = 75 })
+        -- NOTE these are custom highlight groups that are not part of MiniNvim
+        local diagnostic_icons = {
+          ERROR = "",
+          WARN = "",
+          INFO = "",
+          HINT = "",
+        }
 
-        local encoding = vim.bo.fenc ~= "" and vim.bo.fenc or vim.o.enc
-        local filetype = vim.bo.filetype ~= "" and vim.bo.filetype or "none"
-        local shiftwidth = vim.api.nvim_get_option_value("shiftwidth", { buf = 0 })
-        local spaces = "󰌒 " .. shiftwidth
+        local diagnostic_symbols = {}
 
-        local diff = ""
-        if hide_in_width() then
-          local symbols = { added = " ", modified = " ", removed = " " }
-          local git_stats = vim.b.gitsigns_status_dict or {}
-          diff = (git_stats.added and git_stats.added > 0) and (symbols.added .. git_stats.added .. " ") or ""
-          diff = diff
-            .. ((git_stats.changed and git_stats.changed > 0) and (symbols.modified .. git_stats.changed .. " ") or "")
-          diff = diff
-            .. ((git_stats.removed and git_stats.removed > 0) and (symbols.removed .. git_stats.removed) or "")
+        for severity, icon in pairs(diagnostic_icons) do
+          diagnostic_symbols[severity] = string.format("%%#MiniStatuslineDiag%s#%s %%*", severity, icon)
         end
 
-        local progress = MiniStatusline.section_searchcount({ trunc_width = 120 }) .. " %P"
+        local function section_fileinfo()
+          local file_name = vim.fn.expand("%:t")
+          local ft = vim.bo.filetype or "none"
+          local icon, hl = require("mini.icons").get("file", file_name, { with_hl = true })
 
-        return MiniStatusline.combine_groups({
+          return string.format("%%#%s#%s %%#MiniStatuslineFileinfo#%s%%*", hl or "", icon, ft)
+        end
+
+        local function section_location()
+          local line = vim.fn.line(".")
+          local col = vim.fn.col(".")
+          return string.format("%d:%d", line, col)
+        end
+
+        local mode, mode_hl = statusline.section_mode({ trunc_width = 75 })
+        local git = statusline.section_git({ trunc_width = 100 })
+        local diff = statusline.section_diff({ trunc_width = 100, icon = "" })
+        local diagnostics = statusline.section_diagnostics({ trunc_width = 75, icon = "", signs = diagnostic_symbols })
+        local filename = statusline.section_filename({ trunc_width = 240 })
+        local shiftwidth = "󰌒 " .. vim.api.nvim_get_option_value("shiftwidth", { buf = 0 }) .. " "
+
+        local searchcount = statusline.section_searchcount({ trunc_width = 120 })
+
+        local fileinfo = section_fileinfo()
+
+        local location = section_location()
+
+        local progress = "%P"
+        return statusline.combine_groups({
           { hl = mode_hl, strings = { mode } },
-          { hl = "MiniStatuslineDevinfo", strings = { git, diagnostics, diff } },
-          { hl = "MiniStatuslineFilename", strings = { fileinfo } },
-          "%<",
-          { hl = "MiniStatuslineFileinfo", strings = { spaces, encoding, filetype } },
-          { hl = "MiniStatuslineLocation", strings = { location, progress } },
+          { hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics } },
+          { hl = "MiniStatuslineFilename", strings = { filename } },
+          "%=", -- End left alignment
+          { hl = "MiniStatuslineFileinfo", strings = { shiftwidth, fileinfo } },
+          { hl = "MiniStatuslineLocation", strings = { searchcount, location, progress } },
         })
       end,
     },

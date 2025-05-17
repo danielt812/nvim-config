@@ -49,7 +49,7 @@ M.opts = function()
     },
     filetype = {},
     lsp = {
-      ["copilot"] = { glyph = "", hl = "MiniIconsWhite" },
+      ["copilot"] = { glyph = "", hl = "MiniIconsOrange" },
       ["snippet"] = { glyph = "", hl = "MiniIconsGreen" },
     },
     os = {},
@@ -58,8 +58,6 @@ end
 
 M.config = function(_, opts)
   require("mini.icons").setup(opts)
-
-  vim.api.nvim_set_hl(0, "MiniIconsWhite", { fg = "#ffffff" })
 end
 
 return M

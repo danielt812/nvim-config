@@ -49,7 +49,7 @@ M.opts = function()
           return tostring(group)
         end,
         overrides = { -- Override options from the default notification config
-          rust_analyzer = { name = "rust-analyzer" },
+          -- rust_analyzer = { name = "rust-analyzer" },
         },
       },
 

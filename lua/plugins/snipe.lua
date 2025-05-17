@@ -8,7 +8,7 @@ M.keys = {
   {
     "<leader>bs",
     "<cmd>lua require('snipe').open_buffer_menu()<cr>",
-    desc = "Snipe",
+    desc = "Select",
   },
 }
 M.opts = function()

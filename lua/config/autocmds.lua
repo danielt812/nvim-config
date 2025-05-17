@@ -37,33 +37,27 @@ vim.api.nvim_create_autocmd("BufEnter", {
   end,
 })
 
-local filetype_settings_group = vim.api.nvim_create_augroup("filetype_settings", { clear = true })
-vim.api.nvim_create_autocmd({ "FileType" }, {
-  group = filetype_settings_group,
-  desc = "Show Tabline",
-  pattern = { "*" },
-  callback = function()
-    vim.opt_local.showtabline = 2
-  end,
-})
+local filetype_settings_group = vim.api.nvim_create_augroup("filetype_settings_group", { clear = true })
 
-vim.api.nvim_create_autocmd({ "FileType" }, {
+local hide_ui_filetypes = {}
+for _, ft in ipairs({ "alpha", "oil", "checkhealth", "mason", "lazy", "lazygit", "ministarter" }) do
+  hide_ui_filetypes[ft] = true
+end
+
+vim.api.nvim_create_autocmd({ "BufEnter", "BufHidden" }, {
   group = filetype_settings_group,
-  desc = "Hide Tabline and disable relative number",
-  pattern = {
-    "alpha",
-    "oil",
-    "checkhealth",
-    "mason",
-    "lazy",
-    "lazygit",
-    "notify",
-    -- "minipick",
-    -- "fzf",
-  },
+  desc = "Hide tabline and disable relative number",
   callback = function()
-    vim.opt_local.showtabline = 0
-    vim.opt_local.relativenumber = false
+    local ft = vim.bo.filetype
+    if hide_ui_filetypes[ft] then
+      vim.opt.showtabline = 0
+      vim.opt.laststatus = 0
+      -- vim.opt.winbar = ""
+    else
+      vim.opt.showtabline = 2
+      vim.opt.laststatus = 2
+      -- vim.opt.winbar = "%{%v:lua.get_navic_winbar()%}"
+    end
   end,
 })
 
@@ -88,19 +82,18 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 })
 
 -- Open help in vertical split instead of horizontal
--- local help_settings_group = vim.api.nvim_create_augroup("help_settings", { clear = true })
--- vim.api.nvim_create_autocmd({ "FileType" }, {
---   group = help_settings_group,
---   desc = "Open filetypes in vertical split",
---   pattern = {
---     "help",
---     "markdown",
---   },
---   callback = function()
---     vim.cmd("wincmd L")
---     -- vim.api.nvim_command("wincmd L")
---   end,
--- })
+local help_settings_group = vim.api.nvim_create_augroup("help_settings", { clear = true })
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  group = help_settings_group,
+  desc = "Open filetypes in vertical split",
+  pattern = {
+    "help",
+  },
+  callback = function()
+    vim.cmd("wincmd L")
+    -- vim.api.nvim_command("wincmd L")
+  end,
+})
 
 -- Set winbar for DAP UI
 local winbar_settings_group = vim.api.nvim_create_augroup("winbar_settings", { clear = true })

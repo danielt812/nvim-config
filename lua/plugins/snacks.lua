@@ -1,6 +1,6 @@
 local M = { "folke/snacks.nvim" }
 
-M.enabled = true
+M.enabled = false
 
 M.event = { "VeryLazy" }
 
