@@ -16,9 +16,9 @@ M.opts = function()
       ["]"] = { action = "close", pair = "[]", neigh_pattern = "[^\\]." },
       ["}"] = { action = "close", pair = "{}", neigh_pattern = "[^\\]." },
 
-      ['"'] = { action = "closeopen", pair = '""', neigh_pattern = "[^%w\\].", register = { cr = false } },
-      ["'"] = { action = "closeopen", pair = "''", neigh_pattern = "[^%w\\].", register = { cr = false } },
-      ["`"] = { action = "closeopen", pair = "``", neigh_pattern = "[^%w\\].", register = { cr = false } },
+      ['"'] = { action = "closeopen", pair = '""', neigh_pattern = "[^%w\\]/?%W", register = { cr = false } },
+      ["'"] = { action = "closeopen", pair = "''", neigh_pattern = "[^%w\\]/?%W", register = { cr = false } },
+      ["`"] = { action = "closeopen", pair = "``", neigh_pattern = "[^%w\\]/?%W", register = { cr = false } },
     },
   }
 end

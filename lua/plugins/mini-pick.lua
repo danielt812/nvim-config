@@ -32,40 +32,6 @@ end
 
 M.config = function(_, opts)
   require("mini.pick").setup(opts)
-
-  local minipick_settings_group = vim.api.nvim_create_augroup("minipick_settings_group", { clear = true })
-
-  vim.api.nvim_create_autocmd("User", {
-    group = minipick_settings_group,
-    pattern = { "MiniPickStart", "MiniPickStop" },
-    desc = "Toggle tabline when opening MiniPick",
-    callback = function()
-      local filetypes = {
-        ministarter = false,
-        oil = false,
-        lazy = false,
-        mason = false,
-      }
-      local hide_tabline = false
-      local win_ids = vim.api.nvim_list_wins()
-
-      for _, win_id in ipairs(win_ids) do
-        local buf_id = vim.api.nvim_win_get_buf(win_id)
-        local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = buf_id })
-
-        if filetypes[buf_ft] ~= nil then
-          hide_tabline = true
-          break
-        end
-      end
-
-      if hide_tabline then
-        vim.opt.showtabline = 0
-      else
-        vim.opt.showtabline = 2
-      end
-    end,
-  })
 end
 
 return M

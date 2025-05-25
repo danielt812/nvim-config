@@ -3,11 +3,9 @@ local M = { "neovim/nvim-lspconfig" }
 M.enabled = true
 
 M.dependencies = {
-  { "SmitheshP/nvim-navbuddy" },
-  -- { "hrsh7th/cmp-nvim-lsp"},
   { "saghen/blink.cmp" },
   { "b0o/SchemaStore.nvim" },
-  { "j-hui/fidget.nvim" },
+  -- { "j-hui/fidget.nvim" },
 }
 
 M.event = { "BufReadPre", "BufNewFile" }
@@ -15,22 +13,23 @@ M.event = { "BufReadPre", "BufNewFile" }
 M.cmd = { "LspInfo", "LspInstall", "LspUninstall" }
 
 M.keys = {
-  { "<leader>l.", "<cmd>lua vim.lsp.buf.format()<cr>", desc = "Format" },
-  { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code Action" },
-  { "<leader>lf", "<cmd>lua vim.lsp.buf.format()<cr>", desc = "Format" },
-  { "<leader>lD", "<cmd>lua vim.lsp.buf.declaration()<cr>", desc = "Declaration" },
-  { "<leader>lR", "<cmd>lua vim.lsp.buf.rename()<cr>", desc = "Rename Definition" },
-  { "<leader>ld", "<cmd>lua vim.lsp.buf.definition()<cr>", desc = "Definition" },
-  { "<leader>lh", "<cmd>lua vim.lsp.buf.hover()<cr>", desc = "Show Hover" },
-  { "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<cr>", desc = "Implementation" },
-  { "<leader>lr", "<cmd>lua vim.lsp.buf.references()<cr>", desc = "References" },
+  -- stylua: ignore start
+  { "<leader>l.", "<cmd>lua vim.lsp.buf.format()<cr>",          desc = "Format" },
+  { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>",     desc = "Code Action" },
+  { "<leader>lf", "<cmd>lua vim.lsp.buf.format()<cr>",          desc = "Format" },
+  { "<leader>lD", "<cmd>lua vim.lsp.buf.declaration()<cr>",     desc = "Declaration" },
+  { "<leader>lR", "<cmd>lua vim.lsp.buf.rename()<cr>",          desc = "Rename Definition" },
+  { "<leader>ld", "<cmd>lua vim.lsp.buf.definition()<cr>",      desc = "Definition" },
+  { "<leader>lh", "<cmd>lua vim.lsp.buf.hover()<cr>",           desc = "Show Hover" },
+  { "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<cr>",  desc = "Implementation" },
+  { "<leader>lr", "<cmd>lua vim.lsp.buf.references()<cr>",      desc = "References" },
   { "<leader>lt", "<cmd>lua vim.lsp.buf.type_definition()<cr>", desc = "Type Definition" },
+  -- stylua: ignore end
 }
 
 M.config = function()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities({}, false))
-  -- capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
   capabilities = vim.tbl_deep_extend("force", capabilities, {
     textDocument = {
@@ -49,6 +48,7 @@ M.config = function()
       vim.keymap.set(mode, lhs, rhs, key_opts)
     end
 
+    -- stylua: ignore start
     map("n", "K", "<cmd>lua vim.lsp.buf.hover({border = 'rounded'})<cr>", { desc = "Show Hover" })
     map("n", "gk", "<cmd>lua vim.lsp.buf.signature_help({border = 'rounded'})<cr>", { desc = "Signature Help" })
     map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "Definition" })
@@ -59,6 +59,7 @@ M.config = function()
     map("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "References" })
     map("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { desc = "Type Definition" })
     map("n", "g.", "<cmd>lua vim.lsp.buf.format()<cr>", { desc = "Format" })
+    -- stylua: ignore end
 
     if client.supports_method("textDocument/inlayHint") then
       vim.lsp.inlay_hint.enable(false)
@@ -88,7 +89,7 @@ M.config = function()
         [vim.diagnostic.severity.ERROR] = "",
         [vim.diagnostic.severity.WARN] = "",
         [vim.diagnostic.severity.HINT] = "",
-        [vim.diagnostic.severity.INFO] = "",
+        [vim.diagnostic.severity.INFO] = "",
       },
     },
     virtual_text = true,

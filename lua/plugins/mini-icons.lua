@@ -13,24 +13,25 @@ end
 
 M.opts = function()
   local test_icon = ""
-  local js_table = { glyph = test_icon, hl = "MiniIconsYellow" }
+  -- stylua: ignore start
+  local js_table  = { glyph = test_icon, hl = "MiniIconsYellow" }
   local jsx_table = { glyph = test_icon, hl = "MiniIconsAzure" }
-  local ts_table = { glyph = test_icon, hl = "MiniIconsAzure" }
+  local ts_table  = { glyph = test_icon, hl = "MiniIconsAzure" }
   local tsx_table = { glyph = test_icon, hl = "MiniIconsBlue" }
+  -- stylua: ignore end
   return {
-    -- Icon style: 'glyph' or 'ascii'
     style = "glyph",
-
-    -- Customize per category. See `:h MiniIcons.config` for details.
     default = {},
     directory = {
-      [".git"] = { glyph = "󰊢", hl = "MiniIconsOrange" },
-      [".github"] = { glyph = "󰊤", hl = "MiniIconsAzure" },
-      ["config"] = { glyph = "󱁿", hl = "MiniIconsAzure" },
+      -- stylua: ignore start
+      [".git"]     = { glyph = "󰊢", hl = "MiniIconsOrange" },
+      [".github"]  = { glyph = "󰊤", hl = "MiniIconsAzure" },
+      ["config"]   = { glyph = "󱁿", hl = "MiniIconsAzure" },
       ["settings"] = { glyph = "󱁿", hl = "MiniIconsAzure" },
-      ["icons"] = { glyph = "󱞊", hl = "MiniIconsAzure" },
-      ["utils"] = { glyph = "󱧼", hl = "MiniIconsAzure" },
-      ["colors"] = { glyph = "󱁽", hl = "MiniIconsAzure" },
+      ["icons"]    = { glyph = "󱞊", hl = "MiniIconsAzure" },
+      ["utils"]    = { glyph = "󱧼", hl = "MiniIconsAzure" },
+      ["colors"]   = { glyph = "󱁽", hl = "MiniIconsAzure" },
+      -- stylua: ignore end
     },
     extension = {
       ["test.js"] = js_table,
@@ -57,7 +58,12 @@ M.opts = function()
 end
 
 M.config = function(_, opts)
-  require("mini.icons").setup(opts)
+  local icons = require("mini.icons")
+
+  icons.mock_nvim_web_devicons()
+  icons.tweak_lsp_kind()
+
+  icons.setup(opts)
 end
 
 return M

@@ -161,10 +161,9 @@ M.opts = function()
         min_duration = 350,
         chars_for_max_duration = 20,
       },
-      hijack_ft_disabled = {
-        "alpha",
-        "snacks_dashboard",
-      },
+    },
+    hijack_ft_disabled = {
+      "ministarter",
     },
   }
 end

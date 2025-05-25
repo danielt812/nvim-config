@@ -66,7 +66,7 @@ M.opts = function()
 
   local function extmark_opts_color(_, _, data)
     return {
-      virt_text = { { "■ ", data.hl_group } },
+      virt_text = { { "■", data.hl_group } },
       virt_text_pos = "inline", -- eol, eol_right_align, overlay, right_align, inline
       right_gravity = false, -- ensures it stays after the match if text is inserted
     }

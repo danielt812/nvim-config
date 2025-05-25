@@ -5,14 +5,16 @@ M.enabled = true
 M.event = { "BufReadPost" }
 
 M.keys = {
-  {
-    "<leader>bs",
-    "<cmd>lua require('snipe').open_buffer_menu()<cr>",
-    desc = "Select",
-  },
+  { "<leader>bs", "<cmd>lua require('snipe').open_buffer_menu()<cr>", desc = "Select" },
 }
 M.opts = function()
-  return {}
+  return {
+    ui = {
+      open_win_override = {
+        title = " Snipe ",
+      },
+    },
+  }
 end
 
 M.config = function(_, opts)

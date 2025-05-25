@@ -5,6 +5,8 @@ M.enabled = true
 M.event = { "BufReadPost" }
 
 M.opts = function()
+  local diff = require("mini.diff")
+
   return {
     -- Options for how hunks are visualized
     view = {
@@ -21,7 +23,7 @@ M.opts = function()
 
     -- Source(s) for how reference text is computed/updated/etc
     -- Uses content from Git index by default
-    source = nil,
+    source = { diff.gen_source.git(), diff.gen_source.save() },
 
     -- Delays (in ms) defining asynchronous processes
     delay = {
@@ -67,37 +69,39 @@ end
 
 M.config = function(_, opts)
   require("mini.diff").setup(opts)
-  -- local minidiff_settings_group = vim.api.nvim_create_augroup("minidiff_settings_group", { clear = true })
-  -- vim.api.nvim_create_autocmd("User", {
-  --   group = minidiff_settings_group,
-  --   pattern = "MiniDiffUpdated",
-  --   desc = "Format Mini Diff summary string with colors for statusline",
-  --   callback = function(data)
-  --     local summary = vim.b[data.buf].minidiff_summary
-  --     -- NOTE these are custom highlight groups that are not part of MiniNvim
-  --     local symbols = {
-  --       add = "%#MiniStatuslineDiffAdd# ",
-  --       change = "%#MiniStatuslineDiffChange# ",
-  --       delete = "%#MiniStatuslineDiffDelete# ",
-  --     }
-  --
-  --     local t = {}
-  --     if summary.add > 0 then
-  --       table.insert(t, symbols.add .. summary.add)
-  --     end
-  --     if summary.change > 0 then
-  --       table.insert(t, symbols.change .. summary.change)
-  --     end
-  --     if summary.delete > 0 then
-  --       table.insert(t, symbols.delete .. summary.delete)
-  --     end
-  --
-  --     -- Reset highlight after diff summary
-  --     table.insert(t, "%*")
-  --
-  --     vim.b[data.buf].minidiff_summary_string = table.concat(t, " ")
-  --   end,
-  -- })
+
+  local mini_diff_augroup = vim.api.nvim_create_augroup("mini_diff_augroup", { clear = true })
+  vim.api.nvim_create_autocmd("User", {
+    group = mini_diff_augroup,
+    pattern = "MiniDiffUpdated",
+    desc = "Format Mini Diff summary string with colors for statusline",
+    callback = function(data)
+      local summary = vim.b[data.buf] and vim.b[data.buf].minidiff_summary
+
+      if type(summary) ~= "table" then
+        return
+      end
+
+      local symbols = {
+        add = "%#MiniStatuslineDiffAdd#",
+        change = "%#MiniStatuslineDiffChange#",
+        delete = "%#MiniStatuslineDiffDelete#",
+      }
+
+      local t = {}
+      for key, icon in pairs(symbols) do
+        local count = summary[key]
+        if type(count) == "number" and count > 0 then
+          table.insert(t, icon .. " " .. count)
+        end
+      end
+
+      -- Reset highlight after diff summary
+      table.insert(t, "%*")
+
+      vim.b[data.buf].minidiff_summary_string = table.concat(t, " ")
+    end,
+  })
 end
 
 return M

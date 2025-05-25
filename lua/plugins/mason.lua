@@ -1,23 +1,16 @@
-local M = { "williamboman/mason.nvim", version = "1.11.0" }
+local M = { "mason-org/mason.nvim", version = "1.11.0" }
 
 M.enabled = true
 
 M.dependencies = {
-  { "williamboman/mason-lspconfig.nvim", version = "1.32.0" },
+  { "mason-org/mason-lspconfig.nvim", version = "1.32.0" },
   "jay-babu/mason-null-ls.nvim",
   "jay-babu/mason-nvim-dap.nvim",
 }
 
 M.event = { "VeryLazy" }
 
-M.cmd = {
-  "Mason",
-  "MasonInstall",
-  "MasonUninstall",
-  "MasonUninstallAll",
-  "MasonLog",
-  "MasonUpdate",
-}
+M.cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog", "MasonUpdate" }
 
 M.opts = function()
   return {
@@ -39,7 +32,7 @@ M.opts = function()
       ensure_installed = require("adapters"),
       automatic_installation = true,
     },
-    null = {
+    null_ls = {
       ensure_installed = require("sources"),
       automatic_installation = true,
     },
@@ -53,7 +46,7 @@ M.config = function(_, opts)
 
   require("mason-nvim-dap").setup(opts.dap)
 
-  require("mason-null-ls").setup(opts.null)
+  require("mason-null-ls").setup(opts.null_ls)
 end
 
 return M

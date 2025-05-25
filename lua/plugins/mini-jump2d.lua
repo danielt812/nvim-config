@@ -1,6 +1,6 @@
 local M = { "echasnovski/mini.jump2d" }
 
-M.enabled = false
+M.enabled = true
 
 M.event = { "VeryLazy" }
 
@@ -12,12 +12,12 @@ M.opts = function()
     spotter = nil,
 
     -- Characters used for labels of jump spots (in supplied order)
-    labels = "abcdefghijklmnopqrstuvwxyz",
+    labels = "abcdefghijklmnopqrstuvwxyj",
 
     -- Options for visual effects
     view = {
       -- Whether to dim lines with at least one jump spot
-      dim = false,
+      dim = true,
 
       -- How many steps ahead to show. Set to big number to show all steps.
       n_steps_ahead = 0,
@@ -46,7 +46,7 @@ M.opts = function()
 
     -- Module mappings. Use `''` (empty string) to disable one.
     mappings = {
-      start_jumping = "<CR>",
+      start_jumping = "",
     },
 
     -- Whether to disable showing non-error feedback
@@ -57,7 +57,17 @@ M.opts = function()
 end
 
 M.config = function(_, opts)
-  require("mini.jump2d").setup(opts)
+  local jump2d = require("mini.jump2d")
+
+  jump2d.setup(opts)
+
+  local jump = function()
+    local builtin = jump2d.builtin_opts.word_start
+    builtin.view = { n_steps_ahead = 10 }
+    jump2d.start(builtin)
+  end
+
+  vim.keymap.set({ "n", "x", "o" }, "sj", jump, { desc = "Jump" })
 end
 
 return M

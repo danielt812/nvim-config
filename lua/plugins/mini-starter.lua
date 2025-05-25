@@ -11,29 +11,47 @@ M.event = { "VimEnter" }
 M.opts = function()
   local starter = require("mini.starter")
 
+  local isometric = table.concat({
+    [[                               __                ]],
+    [[  ___     ___    ___   __  __ /\_\    ___ ___    ]],
+    [[ / _ `\  / __`\ / __`\/\ \/\ \\/\ \  / __` __`\  ]],
+    [[/\ \/\ \/\  __//\ \_\ \ \ \_/ |\ \ \/\ \/\ \/\ \ ]],
+    [[\ \_\ \_\ \____\ \____/\ \___/  \ \_\ \_\ \_\ \_\]],
+    [[ \/_/\/_/\/____/\/___/  \/__/    \/_/\/_/\/_/\/_/]],
+  }, "\n")
+
+  local ogre = table.concat({
+    [[     __                _           ]],
+    [[  /\ \ \___  _____   _(_)_ __ ___  ]],
+    [[ /  \/ / _ \/ _ \ \ / / | '_ ` _ \ ]],
+    [[/ /\  /  __/ (_) \ V /| | | | | | |]],
+    [[\_\ \/ \___|\___/ \_/ |_|_| |_| |_|]],
+  }, "\n")
+
+  local slant = table.concat({
+    [[    _   __                _         ]],
+    [[   / | / /__  ____ _   __(_)___ ___ ]],
+    [[  /  |/ / _ \/ __ \ | / / / __ `__ \]],
+    [[ / /|  /  __/ /_/ / |/ / / / / / / /]],
+    [[/_/ |_/\___/\____/|___/_/_/ /_/ /_/ ]],
+  }, "\n")
+
+  math.randomseed(os.time())
+  local headers = { isometric, ogre, slant }
+  local header = headers[math.random(#headers)]
+
   return {
     evaluate_single = true,
-    header = table.concat({
-      [[                                  __                   ]],
-      [[     ___     ___    ___   __  __ /\_\    ___ ___       ]],
-      [[    / _ `\  / __`\ / __`\/\ \/\ \\/\ \  / __` __`\     ]],
-      [[   /\ \/\ \/\  __//\ \_\ \ \ \_/ |\ \ \/\ \/\ \/\ \    ]],
-      [[   \ \_\ \_\ \____\ \____/\ \___/  \ \_\ \_\ \_\ \_\   ]],
-      [[    \/_/\/_/\/____/\/___/  \/__/    \/_/\/_/\/_/\/_/   ]],
-      [[                                                       ]],
-    }, "\n"),
+    header = slant,
     items = {
       -- stylua: ignore start
-      { name = "Files",             action = "Pick files",                         section = "Actions" },
-      { name = "Grep live",         action = "Pick grep_live",                     section = "Actions" },
-      { name = "Oil",               action = "Oil",                     section = "Actions" },
-      -- { name = "Search/Replace", action = "GrugFar",                            section = "Actions" },
-      { name = "Health",            action = "checkhealth",                        section = "Actions" },
-      { name = "Config",            action = "cd $HOME/.config/nvim | e $MYVIMRC", section = "Actions" },
-      { name = "Visited files",     action = "Pick visit_paths",                   section = "Actions" },
-      { name = "Mason",             action = "Mason",                              section = "Actions" },
-      { name = "Lazy",              action = "Lazy",                               section = "Actions" },
-      { name = "Quit",              action = "qa!",                                section = "Actions" },
+      { name = "Files",         action = "Pick files",       section = "Actions" },
+      { name = "Grep live",     action = "Pick grep_live",   section = "Actions" },
+      { name = "Visited files", action = "Pick visit_paths", section = "Actions" },
+      { name = "Help",          action = "Pick help",        section = "Actions" },
+      { name = "Mason",         action = "Mason",            section = "Actions" },
+      { name = "Lazy",          action = "Lazy",             section = "Actions" },
+      { name = "Quit",          action = "qa!",              section = "Actions" },
       -- stylua: ignore end
       -- starter.sections.pick(),
       starter.sections.recent_files(5, true, false),
@@ -46,22 +64,6 @@ M.opts = function()
     },
     footer = "",
   }
-end
-
-M.config = function(_, opts)
-  require("mini.starter").setup(opts)
-
-  local ministarter_settings_group = vim.api.nvim_create_augroup("ministarter_settings_group", { clear = true })
-  vim.api.nvim_create_autocmd("User", {
-    group = ministarter_settings_group,
-    pattern = { "MiniStarterOpened" },
-    desc = "Hide tabline when opening MiniStarter",
-    callback = function()
-      vim.opt_local.showtabline = 0
-      vim.opt_local.laststatus = 0
-      vim.opt_local.winbar = ""
-    end,
-  })
 end
 
 return M

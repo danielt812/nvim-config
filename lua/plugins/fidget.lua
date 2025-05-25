@@ -1,6 +1,6 @@
 local M = { "j-hui/fidget.nvim" }
 
-M.enabled = true
+M.enabled = false
 
 M.event = { "LspAttach" }
 

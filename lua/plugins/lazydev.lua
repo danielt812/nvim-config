@@ -2,7 +2,7 @@ local M = { "folke/lazydev.nvim" }
 
 M.enabled = true
 
-M.ft = "lua"
+M.ft = { "lua" }
 
 M.cmd = "LazyDev"
 
@@ -16,7 +16,7 @@ M.opts = function()
   }
 end
 
-M.config = function (_, opts)
+M.config = function(_, opts)
   require("lazydev").setup(opts)
 end
 

@@ -4,14 +4,19 @@ M.enabled = true
 
 M.dependencies = { "onsails/lspkind.nvim" }
 
+M.event = { "VeryLazy" }
+
 M.cmd = { "Outline", "OutlineOpen" }
 
 M.keys = {
-  { "<leader>es", "<cmd>Outline<CR>", desc = "Symbols" },
+  { "<leader>es", "<cmd>Outline<cr>", desc = "Symbols" },
 }
 
 M.opts = function()
   return {
+    outline_window = {
+      auto_jump = true,
+    },
     symbols = {
       icon_source = "lspkind",
     },

@@ -4,6 +4,10 @@ M.enabled = true
 
 M.event = { "VeryLazy" }
 
+M.keys = {
+  { "<leader>gs", "<cmd>lua MiniGit.show_at_cursor()<cr>", desc = "Show" },
+}
+
 M.opts = function()
   return {
     -- General CLI execution
@@ -26,15 +30,16 @@ end
 M.config = function(_, opts)
   require("mini.git").setup(opts)
 
-  -- local minigit_settings_group = vim.api.nvim_create_augroup("minigit_settings_group", { clear = true })
-  -- vim.api.nvim_create_autocmd("User", {
-  --   group = minigit_settings_group,
-  --   pattern = "MiniGitUpdated",
-  --   callback = function(data)
-  --     local summary = vim.b[data.buf].minigit_summary
-  --     vim.b[data.buf].minigit_summary_string = summary.head_name or ""
-  --   end,
-  -- })
+  local minigit_settings_group = vim.api.nvim_create_augroup("minigit_settings_group", { clear = true })
+  vim.api.nvim_create_autocmd("User", {
+    group = minigit_settings_group,
+    pattern = "MiniGitUpdated",
+    callback = function(data)
+      local summary = vim.b[data.buf].minigit_summary
+
+      vim.b[data.buf].minigit_summary_string = summary.head_name or nil
+    end,
+  })
 end
 
 return M

@@ -2,6 +2,10 @@ local M = { "echasnovski/mini.misc" }
 
 M.enabled = true
 
+M.keys = {
+  { "<leader>ez", "<cmd>lua MiniMisc.zoom()<cr>", desc = "Zoom" },
+}
+
 M.event = { "VeryLazy" }
 
 M.opts = function()

@@ -12,10 +12,10 @@ map({ "n" }, "<S-h>", "<cmd>bprevious<cr>")
 map({ "n" }, "<S-l>", "<cmd>bnext<cr>")
 
 -- Move to window/tmux pane using ctrl + hjkl keys
-map("n", "<C-h>", "<C-w>h", { desc = "Go to left window", remap = true })
-map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })
-map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
-map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
+-- map("n", "<C-h>", "<C-w>h", { desc = "Go to left window", remap = true })
+-- map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })
+-- map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
+-- map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
 
 -- Clear search with <esc>
 map({ "n", "i" }, "<esc>", "<cmd>nohlsearch<cr><esc>", { desc = "Escape and clear hlsearch" })
@@ -33,8 +33,20 @@ map("i", ",", ",<c-g>u")
 map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
 
-map("v", "<", "<gv", { desc = "Indent block to left", silent = true })
+-- stylua: ignore start
+map("n", "<", "<<",  { desc = "Indent line to left",   silent = true })
+map("n", ">", ">>",  { desc = "Indent line to right",  silent = true })
+map("v", "<", "<gv", { desc = "Indent block to left",  silent = true })
 map("v", ">", ">gv", { desc = "Indent block to right", silent = true })
+-- stylua: ignore end
 
-map("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { desc = "Prev diagnostic" })
-map("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", { desc = "Next diagnostic" })
+-- stylua: ignore start
+-- Page up and center
+map("n", "<C-b>", "<C-b>zz", { desc = "Page up",        silent = true })
+-- Page down and center
+map("n", "<C-f>", "<C-f>zz", { desc = "Page down",      silent = true })
+-- Scroll down and center
+map("n", "<C-d>", "<C-d>zz", { desc = "Half page down", silent = true })
+-- Scroll up and center
+map("n", "<C-u>", "<C-u>zz", { desc = "Half page down", silent = true })
+-- stylua: ignore end

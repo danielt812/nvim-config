@@ -8,6 +8,6 @@ return {
   "jsonls",
   "lua_ls",
   "tailwindcss",
-  -- "ts_ls",
+  "ts_ls",
   "yamlls",
 }

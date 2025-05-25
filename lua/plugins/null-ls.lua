@@ -25,16 +25,6 @@ M.opts = function()
           "--single-attribute-per-line",
         },
       }),
-      -- formatting.biome.with({
-      --   extra_args = {
-      --     "--trailing-comma=es5",
-      --     "--indent-style=space",
-      --     "--indent-width=2",
-      --     "--jsx-quote-style=single",
-      --     "--line-width=120",
-      --     "--semicolons=always",
-      --   },
-      -- }),
       formatting.shfmt.with({
         filetypes = { "zsh", "bash", "sh" },
       }),

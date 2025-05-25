@@ -5,20 +5,8 @@ M.enabled = true
 M.event = { "VeryLazy" }
 
 M.keys = {
-  {
-    "<leader>bd",
-    function()
-      _G.bufdelete(0, false)
-    end,
-    desc = "Delete",
-  },
-  {
-    "<leader>bw",
-    function()
-      _G.bufwipeout(0, false)
-    end,
-    desc = "Wipeout",
-  },
+  { "<leader>bd", "<cmd>lua bufdelete()<cr>", desc = "Delete" },
+  { "<leader>bw", "<cmd>lua bufwipeout()<cr>", desc = "Wipeout" },
 }
 
 M.opts = function()

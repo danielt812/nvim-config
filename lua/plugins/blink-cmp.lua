@@ -8,31 +8,14 @@ M.dependencies = {
 }
 
 M.opts = function()
-  local has_words_before = function()
-    local col = vim.api.nvim_win_get_cursor(0)[2]
-    if col == 0 then
-      return false
-    end
-    local line = vim.api.nvim_get_current_line()
-    return line:sub(col, col):match("%s") == nil
-  end
-
   return {
     keymap = {
       preset = "none",
-      -- ["<Tab>"] = {
-      --   function(cmp)
-      --     if has_words_before() then
-      --       return cmp.insert_next()
-      --     end
-      --   end,
-      --   "fallback",
-      -- },
-      -- ["<S-Tab>"] = { "insert_prev" },
-      ["<Up>"] = { "select_prev", "fallback" },
+      -- stylua: ignore start
+      ["<Up>"]   = { "select_prev", "fallback" },
       ["<Down>"] = { "select_next", "fallback" },
-      ["<C-k>"] = { "select_prev", "fallback" },
-      ["<C-j>"] = { "select_next", "fallback" },
+      ["<C-k>"]  = { "select_prev", "fallback" },
+      ["<C-j>"]  = { "select_next", "fallback" },
       ["<C-space>"] = {
         function(cmp)
           cmp.show({ providers = { "snippets" } })
@@ -42,6 +25,7 @@ M.opts = function()
         "accept",
         "fallback",
       },
+      -- stylua: ignore end
     },
     completion = {
       menu = {
@@ -66,8 +50,14 @@ M.opts = function()
           components = {
             kind_icon = {
               text = function(ctx)
-                local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
-                return kind_icon
+                local icon = ctx.kind_icon
+                icon = require("lspkind").symbolic(ctx.kind, {
+                  mode = "symbol",
+                })
+
+                return icon .. ctx.icon_gap
+                -- local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+                -- return kind_icon
               end,
               highlight = function(ctx)
                 local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)

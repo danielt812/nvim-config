@@ -1,54 +1,46 @@
 local M = { "echasnovski/mini.splitjoin" }
 
-M.enabled = false
+M.enabled = true
 
 M.event = { "VeryLazy" }
 
 M.keys = {
-  {
-    "J",
-    function()
-      require("mini.splitjoin").toggle()
-    end,
-    desc = "Split/Join",
-  },
+  { "J", "<cmd>lua MiniSplitjoin.toggle()<cr>", desc = "Split/Join" },
 }
 
 M.opts = function()
+  local splitjoin = require("mini.splitjoin")
+
+  local gen_hook = splitjoin.gen_hook
+  local curly = { brackets = { "%b{}" } }
+
+  -- Add trailing comma when splitting inside curly brackets
+  local add_comma_curly = gen_hook.add_trailing_separator(curly)
+
+  -- Delete trailing comma when joining inside curly brackets
+  local del_comma_curly = gen_hook.del_trailing_separator(curly)
+
+  -- Pad curly brackets with single space after join
+  local pad_curly = gen_hook.pad_brackets(curly)
+
   return {
-    -- Module mappings. Use `''` (empty string) to disable one.
-    -- Created for both Normal and Visual modes.
     mappings = {
       toggle = "gS",
       split = "",
       join = "",
     },
-
-    -- Detection options: where split/join should be done
     detect = {
-      -- Array of Lua patterns to detect region with arguments.
-      -- Default: { '%b()', '%b[]', '%b{}' }
-      brackets = nil,
-
-      -- String Lua pattern defining argument separator
+      brackets = { "%b()", "%b[]", "%b{}" },
       separator = ",",
-
-      -- Array of Lua patterns for sub-regions to exclude separators from.
-      -- Enables correct detection in presence of nested brackets and quotes.
-      -- Default: { '%b()', '%b[]', '%b{}', '%b""', "%b''" }
       exclude_regions = nil,
     },
-
-    -- Split options
     split = {
-      hooks_pre = {},
+      hooks_pre = { add_comma_curly },
       hooks_post = {},
     },
-
-    -- Join options
     join = {
       hooks_pre = {},
-      hooks_post = {},
+      hooks_post = { del_comma_curly, pad_curly },
     },
   }
 end

@@ -1,7 +1,7 @@
-local last_loc_group = vim.api.nvim_create_augroup("last_loc", { clear = true })
+local last_location_au_group = vim.api.nvim_create_augroup("last_location_au_group", { clear = true })
 vim.api.nvim_create_autocmd("BufReadPost", {
-  group = last_loc_group,
-  desc = "Buffer Last Location",
+  group = last_location_au_group,
+  desc = "Buffer last location",
   callback = function()
     local exclude = { "gitcommit" }
     local buf = vim.api.nvim_get_current_buf()
@@ -16,23 +16,22 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
--- Format on save
-local format_on_save_group = vim.api.nvim_create_augroup("format_on_save", { clear = true })
+local format_au_group = vim.api.nvim_create_augroup("format_au_group", { clear = true })
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  group = format_on_save_group,
-  desc = "Format On Save",
-  pattern = { "*.lua", "*.js", "*.jsx", "*.json", "*.py", "*.scss", "*.css", "*.zsh", "*.sh" },
+  group = format_au_group,
+  desc = "Format on save",
+  pattern = { "*.lua", "*.js", "*.jsx", "*.scss", "*.css", "*.zsh", "*.sh" },
   callback = function()
     vim.lsp.buf.format()
   end,
 })
 
--- Prevent comment on new line if pressing <CR> on commented line
 local buffer_options_group = vim.api.nvim_create_augroup("buffer_options", { clear = true })
-vim.api.nvim_create_autocmd("BufEnter", {
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
   group = buffer_options_group,
-  desc = "Disable New Line Comment",
+  desc = "Disable new line comment",
   callback = function()
+    -- NOTE - :h fo-table
     vim.opt.formatoptions:remove({ "c", "r", "o" })
   end,
 })
@@ -44,19 +43,17 @@ for _, ft in ipairs({ "alpha", "oil", "checkhealth", "mason", "lazy", "lazygit",
   hide_ui_filetypes[ft] = true
 end
 
-vim.api.nvim_create_autocmd({ "BufEnter", "BufHidden" }, {
+vim.api.nvim_create_autocmd("FileType", {
   group = filetype_settings_group,
-  desc = "Hide tabline and disable relative number",
-  callback = function()
-    local ft = vim.bo.filetype
+  desc = "Hide tabline and statusline for minimal UI filetypes",
+  callback = function(args)
+    local ft = vim.bo[args.buf].filetype
     if hide_ui_filetypes[ft] then
-      vim.opt.showtabline = 0
-      vim.opt.laststatus = 0
-      -- vim.opt.winbar = ""
+      vim.opt_local.laststatus = 0
+      vim.opt_local.showtabline = 0
     else
-      vim.opt.showtabline = 2
-      vim.opt.laststatus = 2
-      -- vim.opt.winbar = "%{%v:lua.get_navic_winbar()%}"
+      vim.opt_local.laststatus = 2
+      vim.opt_local.showtabline = 2
     end
   end,
 })
@@ -81,17 +78,22 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
--- Open help in vertical split instead of horizontal
 local help_settings_group = vim.api.nvim_create_augroup("help_settings", { clear = true })
 vim.api.nvim_create_autocmd({ "FileType" }, {
   group = help_settings_group,
   desc = "Open filetypes in vertical split",
-  pattern = {
-    "help",
-  },
+  pattern = { "help" },
   callback = function()
     vim.cmd("wincmd L")
-    -- vim.api.nvim_command("wincmd L")
+  end,
+})
+
+local window_settings_group = vim.api.nvim_create_augroup("window_settings", { clear = true })
+vim.api.nvim_create_autocmd("VimResized", {
+  group = window_settings_group,
+  desc = "Resize windows evenly on screen resize",
+  callback = function()
+    vim.cmd("wincmd =")
   end,
 })
 
@@ -123,3 +125,81 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     vim.api.nvim_set_hl(0, "WinBarNC", { link = "Character" })
   end,
 })
+
+local mini_au_group = vim.api.nvim_create_augroup("mini_au_group", { clear = true })
+vim.api.nvim_create_autocmd("User", {
+  group = mini_au_group,
+  pattern = { "MiniStarterOpened" },
+  desc = "Hide tabline when opening MiniStarter",
+  callback = function()
+    vim.opt_local.showtabline = 0
+    vim.opt_local.laststatus = 0
+    vim.opt_local.winbar = nil
+  end,
+})
+
+vim.api.nvim_create_autocmd("User", {
+  group = mini_au_group,
+  pattern = { "MiniPickStart", "MiniPickStop" },
+  desc = "Toggle tabline when opening MiniPick",
+  callback = function()
+    local filetypes = {
+      ministarter = false,
+      oil = false,
+      lazy = false,
+      mason = false,
+    }
+    local hide_ui = false
+    local win_ids = vim.api.nvim_list_wins()
+
+    for _, win_id in ipairs(win_ids) do
+      local buf_id = vim.api.nvim_win_get_buf(win_id)
+      local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = buf_id })
+
+      if filetypes[buf_ft] ~= nil then
+        hide_ui = true
+        break
+      end
+    end
+
+    if hide_ui then
+      vim.opt_local.showtabline = 0
+      vim.opt_local.winbar = nil
+      vim.opt_local.laststatus = 0
+    else
+      vim.opt_local.showtabline = 2
+      vim.opt_local.laststatus = 2
+    end
+  end,
+})
+
+-- vim.api.nvim_create_autocmd("CursorMovedI", {
+--   group = mini_au_group,
+--   callback = function()
+--     local ts_parsers = require("nvim-treesitter.parsers")
+--     local ts_utils = require("nvim-treesitter.ts_utils")
+--
+--     -- Only proceed if the buffer has a valid Tree-sitter parser
+--     if not ts_parsers.has_parser() then
+--       return
+--     end
+--
+--     local node = ts_utils.get_node_at_cursor()
+--     if not node then
+--       return
+--     end
+--
+--     -- Traverse up to find a parent string node
+--     while node do
+--       local type = node:type()
+--       if type == "string" or type == "string_fragment" or type == "template_string" then
+--         vim.b.minipairs_disable = true
+--         return
+--       end
+--       node = node:parent()
+--     end
+--
+--     -- If not inside a string, re-enable MiniPairs
+--     vim.b.minipairs_disable = false
+--   end,
+-- })

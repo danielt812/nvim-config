@@ -29,16 +29,18 @@ M.config = function(_, opts)
   require("blame").setup(opts)
 
   local blame_au_group = vim.api.nvim_create_augroup("Blame group", { clear = true })
+
   vim.api.nvim_create_autocmd("User", {
     group = blame_au_group,
     pattern = "BlameViewOpened",
     callback = function(event)
       local blame_type = event.data
       if blame_type == "window" then
-        require("lualine").hide({
-          place = { "winbar" },
-          unhide = false,
-        })
+        vim.opt_local.winbar = nil
+        -- require("lualine").hide({
+        --   place = { "winbar" },
+        --   unhide = false,
+        -- })
         vim.opt_local.wrap = false
       end
     end,
@@ -50,10 +52,10 @@ M.config = function(_, opts)
     callback = function(event)
       local blame_type = event.data
       if blame_type == "window" then
-        require("lualine").hide({
-          place = { "winbar" },
-          unhide = true,
-        })
+        -- require("lualine").hide({
+        --   place = { "winbar" },
+        --   unhide = true,
+        -- })
         vim.opt_local.wrap = true
       end
     end,
