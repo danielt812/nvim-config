@@ -45,7 +45,19 @@ end
 
 lazydev.setup()
 
-local servers = { "lua_ls" }
+local servers = {
+  "angularls",
+  "bashls",
+  "cssls",
+  "emmet_language_server",
+  "eslint",
+  "html",
+  "jsonls",
+  "lua_ls",
+  "tailwindcss",
+  "ts_ls",
+  "yamlls",
+}
 
 for _, server in pairs(servers) do
   local lsp_opts = {

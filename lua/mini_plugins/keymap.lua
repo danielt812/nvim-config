@@ -41,15 +41,15 @@ end
 map_combo({ "n", "i", "x", "c" }, "<Esc><Esc>", no_hlsearch)
 
 -- Less intrusive hardtime?
-local notify_many_keys = function(key)
-  local lhs = string.rep(key, 10)
-  local action = function()
-    vim.notify("Too many " .. key)
-  end
-  map_combo({ "n", "x" }, lhs, action)
-end
+-- local notify_many_keys = function(key)
+--   local lhs = string.rep(key, 10)
+--   local action = function()
+--     vim.notify("Too many " .. key)
+--   end
+--   map_combo({ "n", "x" }, lhs, action)
+-- end
 
-notify_many_keys("h")
-notify_many_keys("j")
-notify_many_keys("k")
-notify_many_keys("l")
+-- notify_many_keys("h")
+-- notify_many_keys("j")
+-- notify_many_keys("k")
+-- notify_many_keys("l")

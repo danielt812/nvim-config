@@ -154,7 +154,11 @@ end)
 later(function()
   add({
     source = "neovim/nvim-lspconfig",
-    depends = { "folke/lazydev.nvim" },
+    depends = {
+      "folke/lazydev.nvim",
+      "b0o/SchemaStore.nvim",
+      "mason-org/mason.nvim",
+    },
   })
   plug("lspconfig")
 
@@ -176,10 +180,10 @@ later(function()
 end)
 
 later(function()
-  add({ source = "FabijanZulj/blame.nvim" })
-  add({ source = "f-person/git-blame.nvim" })
+  -- add({ source = "FabijanZulj/blame.nvim" })
+  -- add({ source = "f-person/git-blame.nvim" })
 
-  plug("blame")
+  -- plug("blame")
 end)
 
 later(function()
@@ -188,7 +192,6 @@ later(function()
     source = "mason-org/mason.nvim",
     depends = {
       "mason-org/mason-lspconfig.nvim",
-      "mason-org/mason-registry",
       "jay-babu/mason-null-ls.nvim",
       "jay-babu/mason-nvim-dap.nvim",
     },

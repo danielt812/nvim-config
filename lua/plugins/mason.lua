@@ -38,15 +38,34 @@ local dap        = require("mason-nvim-dap")
 lsp_config.setup({
   automatic_enable = false,
   automatic_installation = true,
-  ensure_installed = { "bashls", "cssls", "eslint", "html", "lua_ls", "tailwindcss", "ts_ls" },
+  ensure_installed = {
+    "angularls",
+    "bashls",
+    "cssls",
+    "emmet_language_server",
+    "eslint",
+    "html",
+    "jsonls",
+    "lua_ls",
+    "tailwindcss",
+    "ts_ls",
+    "yamlls",
+  },
 })
 
 null_ls.setup({
-  ensure_installed = { "stylua", "prettierd", "shfmt" },
+  ensure_installed = {
+    "stylua",
+    "prettierd",
+    "shfmt",
+  },
   automatic_installation = true,
 })
 
 dap.setup({
-  ensure_installed = { "node2", "lua" },
+  ensure_installed = {
+    "node2",
+    "lua",
+  },
   automatic_installation = true,
 })
