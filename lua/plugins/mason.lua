@@ -1,52 +1,52 @@
-local M = { "mason-org/mason.nvim", version = "1.11.0" }
+local mason = require("mason")
 
-M.enabled = true
-
-M.dependencies = {
-  { "mason-org/mason-lspconfig.nvim", version = "1.32.0" },
-  "jay-babu/mason-null-ls.nvim",
-  "jay-babu/mason-nvim-dap.nvim",
-}
-
-M.event = { "VeryLazy" }
-
-M.cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll", "MasonLog", "MasonUpdate" }
-
-M.opts = function()
-  return {
-    mason = {
-      ui = {
-        border = "rounded",
-        icons = {
-          package_installed = "✓",
-          package_pending = "➜",
-          package_uninstalled = "✗",
-        },
-      },
+mason.setup({
+  install_root_dir = vim.fs.joinpath(vim.fn.stdpath("data"), "mason"),
+  PATH = "prepend",
+  log_level = vim.log.levels.INFO,
+  max_concurrent_installers = 4,
+  registries = {
+    "github:mason-org/mason-registry",
+  },
+  providers = {
+    "mason.providers.registry-api",
+    "mason.providers.client",
+  },
+  github = {
+    download_url_template = "https://github.com/%s/releases/download/%s/%s",
+  },
+  pip = {
+    upgrade_pip = false,
+    install_args = {},
+  },
+  ui = {
+    border = "rounded",
+    icons = {
+      package_installed = "✓",
+      package_pending = "➜",
+      package_uninstalled = "✗",
     },
-    lsp = {
-      ensure_installed = require("servers"),
-      automatic_installation = true,
-    },
-    dap = {
-      ensure_installed = require("adapters"),
-      automatic_installation = true,
-    },
-    null_ls = {
-      ensure_installed = require("sources"),
-      automatic_installation = true,
-    },
-  }
-end
+  },
+})
 
-M.config = function(_, opts)
-  require("mason").setup(opts.mason)
+-- stylua: ignore start
+local lsp_config = require("mason-lspconfig")
+local null_ls    = require("mason-null-ls")
+local dap        = require("mason-nvim-dap")
+-- stylua: ignore end
 
-  require("mason-lspconfig").setup(opts.lsp)
+lsp_config.setup({
+  automatic_enable = false,
+  automatic_installation = true,
+  ensure_installed = { "bashls", "cssls", "eslint", "html", "lua_ls", "tailwindcss", "ts_ls" },
+})
 
-  require("mason-nvim-dap").setup(opts.dap)
+null_ls.setup({
+  ensure_installed = { "stylua", "prettierd", "shfmt" },
+  automatic_installation = true,
+})
 
-  require("mason-null-ls").setup(opts.null_ls)
-end
-
-return M
+dap.setup({
+  ensure_installed = { "node2", "lua" },
+  automatic_installation = true,
+})

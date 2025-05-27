@@ -23,7 +23,9 @@ return {
       workspace = {
         -- Make the server aware of Neovim runtime files
         library = {
-          [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+          vim.fn.expand("$VIMRUNTIME/lua"),
+          vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
+          "${3rd}/luv/library",
         },
         checkThirdParty = false,
       },

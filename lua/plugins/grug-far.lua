@@ -1,19 +1,7 @@
-local M = { "MagicDuck/grug-far.nvim" }
+local grugfar = require("grug-far")
 
-M.enabled = true
+grugfar.setup()
 
-M.keys = {
-  { "<leader>eg", "<cmd>GrugFar<cr>", desc = "GrugFar" },
-}
+local utils = require("utils")
 
-M.cmd = { "GrugFar" }
-
-M.opts = function()
-  return {}
-end
-
-M.config = function(_, opts)
-  require("grug-far").setup(opts)
-end
-
-return M
+utils.map("n", "<leader>eg", "<cmd>GrugFar<cr>", { desc = "GrugFar" })

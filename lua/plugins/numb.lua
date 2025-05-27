@@ -1,21 +1,9 @@
-local M = { "nacro90/numb.nvim" }
+local numb = require("numb")
 
-M.enabled = true
-
-M.event = { "CmdlineEnter" }
-
-M.opts = function()
-  return {
-    show_numbers = true, -- Enable 'number' for the window while peeking
-    show_cursorline = true, -- Enable 'cursorline' for the window while peeking
-    hide_relativenumbers = true, -- Enable turning off 'relativenumber' for the window while peeking
-    number_only = false, -- Peek only when the command is only a number instead of when it starts with a number
-    centered_peeking = true, -- Peeked line will be centered relative to window
-  }
-end
-
-M.config = function(_, opts)
-  require("numb").setup(opts)
-end
-
-return M
+numb.setup({
+  show_numbers = true,
+  show_cursorline = true,
+  hide_relativenumbers = true,
+  number_only = false,
+  centered_peeking = true,
+})

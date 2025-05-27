@@ -64,27 +64,6 @@ Keymaps, options and autocmds can be found in `lua/config`:
 
 ## Plugins
 
-Plugins specs and their configurations can be found in `lua/plugins`:
-
-Configuring new plugins can be found at [LazyNvim :zzz:](https://github.com/folke/lazy.nvim)
-
-```lua
-return {
-  lazy = false,
-  priority = 1000,
-  opts = function()
-    return {
-      ...
-    }
-  end,
-  config = function(_, opts)
-    require("COLORSCHEME").setup(opts)
-    vim.cmd("colorscheme COLORSCHEME")
-  end
-}
-```
-
 ## License
 
 This project is licensed under the [MIT License](LICENSE). You are free to use and modify this configuration to suit your needs.
-

@@ -1,43 +1,28 @@
-local M = { "jinh0/eyeliner.nvim" }
+local demicolon = require("demicolon")
+local eyeliner = require("eyeliner")
 
-M.dependencies = { "mawkler/demicolon.nvim" }
+demicolon.setup({
+  horizontal_motions = false,
+})
 
-M.enabled = true
+eyeliner.setup({
+  highlight_on_key = true,
+  dim = true,
+  default_keymaps = false,
+  disabled_filetypes = { "ministarter", "minifiles", "minipick" },
+})
 
-M.keys = { "f", "F", "t", "T" }
-
-M.opts = function()
-  return {
-    highlight_on_key = true,
-    dim = true,
-    default_keymaps = false,
-    disable_filetypes = { "ministarter" },
-    disable_buftypes = { "nofile" },
-  }
-end
-
-M.config = function(_, opts)
-  local eyeliner = require("eyeliner")
-
-  eyeliner.setup(opts)
-
-  local jump = function(key)
-    local forward = vim.list_contains({ "t", "f" }, key)
-    return function()
-      eyeliner.highlight({ forward = forward })
-      return require("demicolon.jump").horizontal_jump(key)()
-    end
-  end
-
-  local map = function(key)
-    vim.keymap.set({ "n", "x", "o" }, key, jump(key), { expr = true })
-  end
-
-  local keys = { "f", "F", "t", "T" }
-
-  for _, key in pairs(keys) do
-    map(key)
+local function eyeliner_jump(key)
+  local forward = vim.list_contains({ "t", "f" }, key)
+  return function()
+    require("eyeliner").highlight({ forward = forward })
+    return require("demicolon.jump").horizontal_jump(key)()
   end
 end
 
-return M
+local map, nxo, opts = vim.keymap.set, { "n", "x", "o" }, { expr = true }
+
+map(nxo, "f", eyeliner_jump("f"), opts)
+map(nxo, "F", eyeliner_jump("F"), opts)
+map(nxo, "t", eyeliner_jump("t"), opts)
+map(nxo, "T", eyeliner_jump("T"), opts)
