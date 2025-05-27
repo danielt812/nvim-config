@@ -27,20 +27,37 @@ end
 vim.api.nvim_set_hl(0, "notifyLspProgress", { link = "Comment" })
 
 local window_config = function()
-  -- Notifyications in top right
+  local has_winbar = vim.o.winbar ~= "" and 1 or 0
+  local has_tabline = vim.o.tabline ~= "" and 1 or 0
+  local has_status = vim.o.laststatus > 0 and 1 or 0
+
+  local notify_pad = 0 + has_winbar + has_tabline
+
+  -- Notifications in top right
   if not in_lsp_progress() then
-    return {}
+    return {
+      anchor = "NE",
+      row = notify_pad,
+    }
   end
 
   -- Lsp progress in bottom right
-  local pad = vim.o.cmdheight + (vim.o.laststatus > 0 and 1 or 0)
-  return { anchor = "SE", col = vim.o.columns - 2, row = vim.o.lines - pad, border = "none" }
+  local lsp_pad = vim.o.cmdheight + has_status
+  return {
+    anchor = "SE",
+    col = vim.o.columns - 2,
+    row = vim.o.lines - lsp_pad,
+    border = "none",
+  }
 end
 
 notify.setup({
   lsp_progress = { duration_last = 500 }, -- default duration: 1000
   content = { format = format }, -- sort = H.filterout_lua_diagnosing
-  window = { winblend = 95, config = window_config },
+  window = {
+    winblend = 95,
+    config = window_config,
+  },
 })
 
 vim.notify = notify.make_notify()
