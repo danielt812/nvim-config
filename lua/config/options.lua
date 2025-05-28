@@ -1,7 +1,9 @@
 vim.o.autoindent = true
-vim.o.clipboard = "unnamedplus"
 vim.o.expandtab = true
-vim.o.laststatus = 3
+vim.o.clipboard = "unnamedplus"
+vim.o.completeopt = "menuone,noselect,fuzzy"
+vim.o.expandtab = true
+vim.o.laststatus = 2
 vim.o.list = true
 vim.o.relativenumber = true
 vim.o.scrolloff = 10

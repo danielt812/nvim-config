@@ -3,10 +3,12 @@ local hipatterns = require("mini.hipatterns")
 -- stylua: ignore start
 local apply_custom_highlights = function()
   vim.api.nvim_set_hl(0, "MiniHipatternsWarn",  { fg = "#ff2d00" }) -- WARN example
-  vim.api.nvim_set_hl(0, "MiniHipatternsFixme", { fg = "#98c379" }) -- FIX  example
+  vim.api.nvim_set_hl(0, "MiniHipatternsFixme", { fg = "#fce94f" }) -- FIX  example
   vim.api.nvim_set_hl(0, "MiniHipatternsTodo",  { fg = "#ff8c00" }) -- TODO example
   vim.api.nvim_set_hl(0, "MiniHipatternsHack",  { fg = "#d699b6" }) -- HACK example
   vim.api.nvim_set_hl(0, "MiniHipatternsNote",  { fg = "#3498db" }) -- NOTE example
+  vim.api.nvim_set_hl(0, "MiniHipatternsInfo",  { fg = "#98c379" }) -- INFO example
+  vim.api.nvim_set_hl(0, "MiniHipatternsLink",  { fg = "#8be9fd" }) -- INFO example
 end
 -- stylua: ignore end
 
@@ -72,6 +74,8 @@ for _, word in ipairs({
   "hack",
   "fixme",
   "warn",
+  "info",
+  "link",
   { "bug", "warn" },
   { "fix", "fixme" },
   { "link", "hack" },

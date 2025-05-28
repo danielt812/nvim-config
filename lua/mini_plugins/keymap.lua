@@ -26,19 +26,21 @@ local shifttab_steps = {
 -- Smart shift-tab
 map_multistep("i", "<S-Tab>", shifttab_steps)
 -- Use same keybinds as fzf
-map_multistep("i", "<C-k>", { "pmenu_prev" })
-map_multistep("i", "<C-j>", { "pmenu_next" })
+-- i for regular completion, c for wildmenu
+map_multistep({ "i", "c" }, "<C-j>", { "pmenu_next" })
+map_multistep({ "i", "c" }, "<C-k>", { "pmenu_prev" })
+map_multistep({ "i", "c" }, "<C-CR>", { "pmenu_accept" })
 
 -- Handle pair plugins (trying both, need to learn how neigh patterns work)
-map_multistep("i", "<CR>", { "pmenu_accept", "nvimautopairs_cr", "minipairs_cr" })
+map_multistep("i", "<CR>", { "nvimautopairs_cr", "minipairs_cr" })
 map_multistep("i", "<BS>", { "nvimautopairs_bs", "minipairs_bs" })
 
 -- Clear hl search on double esc
-local no_hlsearch = function()
-  vim.cmd("nohlsearch")
-end
+-- local no_hlsearch = function()
+--   vim.cmd("nohlsearch")
+-- end
 
-map_combo({ "n", "i", "x", "c" }, "<Esc><Esc>", no_hlsearch)
+-- map_combo({ "n", "i", "x", "c" }, "<Esc><Esc>", no_hlsearch)
 
 -- Less intrusive hardtime?
 -- local notify_many_keys = function(key)

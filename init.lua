@@ -83,6 +83,7 @@ now(function()
   mplug("starter")
   mplug("sessions")
   mplug("sessions")
+  mplug("snippets")
 end)
 
 -- Mini modules later
@@ -110,7 +111,6 @@ later(function()
   mplug("operators")
   -- mplug("pairs") -- Going to try this again, can't get it to behave how I am wanting yet
   mplug("pick")
-  mplug("snippets")
   mplug("splitjoin")
   mplug("statusline")
   mplug("surround")
@@ -180,10 +180,9 @@ later(function()
 end)
 
 later(function()
-  -- add({ source = "FabijanZulj/blame.nvim" })
+  add({ source = "FabijanZulj/blame.nvim" })
   -- add({ source = "f-person/git-blame.nvim" })
-
-  -- plug("blame")
+  plug("blame")
 end)
 
 later(function()
@@ -209,7 +208,6 @@ later(function()
   add({ source = "nvim-treesitter/nvim-treesitter" })
   add({ source = "nvim-treesitter/nvim-treesitter-textobjects" })
   add({ source = "JoosepAlviste/nvim-ts-context-commentstring" })
-
   plug("treesitter")
 end)
 
@@ -239,7 +237,6 @@ end)
 later(function()
   add({ source = "leath-dub/snipe.nvim" })
   add({ source = "Chaitanyabsprip/fastaction.nvim" })
-
   plug("fastaction")
   plug("snipe")
 end)
@@ -273,6 +270,7 @@ later(function()
   plug("ufo")
 end)
 
+-- LSP extras
 later(function()
   -- Winbar breadcrumbs
   add({ source = "SmiteshP/nvim-navic" })
@@ -286,7 +284,9 @@ end)
 
 -- For fun
 later(function()
-  add({ source = "Eandrju/cellular-automaton.nvim" })
+  add({
+    source = "Eandrju/cellular-automaton.nvim",
+  })
   plug("cellular-automaton")
 end)
 

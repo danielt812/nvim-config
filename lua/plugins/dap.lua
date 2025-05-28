@@ -25,9 +25,6 @@ utils.map("n", "<leader>db", require("dap").toggle_breakpoint, { desc = "Breakpo
 utils.map("n", "<leader>dc", require("dap").continue, { desc = "Continue" })
 utils.map("n", "<leader>do", require("dap").step_over, { desc = "Step over" })
 utils.map("n", "<leader>di", require("dap").step_into, { desc = "Step into" })
-utils.map("n", "<leader>dl", function()
-  require("osv").launch({ port = 8086 })
-end, { desc = "Launch", noremap = true })
 utils.map("n", "<leader>dv", require("dap-view").toggle, { desc = "View" })
 
 dap.adapters.node2 = {
@@ -37,18 +34,6 @@ dap.adapters.node2 = {
     vim.fn.stdpath("data") .. "/mason/packages/node-debug2-adapter/out/src/nodeDebug.js",
   },
 }
-
-dap.configurations.lua = {
-  {
-    type = "nlua",
-    request = "attach",
-    name = "Attach to running Neovim instance",
-  },
-}
-
-dap.adapters.nlua = function(callback, config)
-  callback({ type = "server", host = config.host or "127.0.0.1", port = config.port or 8086 })
-end
 
 dap.configurations.javascript = {
   {

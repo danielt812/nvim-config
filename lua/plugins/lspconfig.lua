@@ -43,7 +43,7 @@ local on_attach = function(client, bufnr)
   end
 end
 
-lazydev.setup()
+-- lazydev.setup()
 
 local servers = {
   "angularls",
@@ -55,7 +55,7 @@ local servers = {
   "jsonls",
   "lua_ls",
   "tailwindcss",
-  "ts_ls",
+  "vtsls",
   "yamlls",
 }
 
@@ -76,6 +76,8 @@ end
 
 local diagnostic_opts = {
   signs = {
+    priority = 9999,
+    severity = { min = "WARN", max = "ERROR" },
     text = {
       [vim.diagnostic.severity.ERROR] = "",
       [vim.diagnostic.severity.WARN] = "",
@@ -83,8 +85,10 @@ local diagnostic_opts = {
       [vim.diagnostic.severity.INFO] = "",
     },
   },
-  -- virtual_text = true,
-  virtual_lines = true,
+  virtual_text = false,
+  virtual_lines = {
+    current_line = true,
+  },
   update_in_insert = false,
   underline = true,
   severity_sort = true,

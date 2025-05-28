@@ -50,15 +50,23 @@ au("User", {
     }
 
     local t = {}
+    local has_diff = false
+
     for key, icon in pairs(symbols) do
       local count = summary[key]
       if type(count) == "number" and count > 0 then
         table.insert(t, icon .. " " .. count)
+        has_diff = true
       end
     end
 
+    if not has_diff then
+      vim.b[data.buf].minidiff_summary_string = nil
+      return
+    end
+
     -- Reset highlight after diff summary
-    table.insert(t, "%*")
+    -- table.insert(t, "%*")
 
     vim.b[data.buf].minidiff_summary_string = table.concat(t, " ")
   end,

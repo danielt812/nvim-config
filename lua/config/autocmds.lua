@@ -43,3 +43,11 @@ au("FileType", {
     vim.cmd("wincmd L")
   end,
 })
+
+au("VimResized", {
+  group = augroup("resize_window", { clear = true }),
+  desc = "Resize windows evenly on screen resize",
+  callback = function()
+    vim.cmd("wincmd =")
+  end,
+})

@@ -1,10 +1,25 @@
 local completion = require("mini.completion")
 
+local kind_priority = { Text = -1, Snippet = 99 }
+local opts = { filtersort = "fuzzy", kind_priority = kind_priority }
+local process_items = function(items, base)
+  local processed = completion.default_process_items(items, base, opts)
+
+  for _, item in ipairs(processed) do
+    print(item.menu)
+    if item.menu and item.menu:sub(-2) == " S" then
+      item.menu = item.menu:sub(1, -3) -- strip trailing " S"
+    end
+  end
+
+  return processed
+end
+
 completion.setup({
   lsp_completion = {
     source_func = "completefunc",
     auto_setup = true,
-    process_items = nil,
+    process_items = process_items,
     snippet_insert = nil,
   },
   fallback_action = "<C-n>",
@@ -30,8 +45,8 @@ vim.opt.wildoptions = "pum,fuzzy"
 vim.opt.wildmode = "noselect:lastused,full"
 vim.opt.wildcharm = vim.fn.char2nr(term)
 
-vim.keymap.set("c", "<Up>", "<End><C-U><Up>", { silent = true })
-vim.keymap.set("c", "<Down>", "<End><C-U><Down>", { silent = true })
+-- vim.keymap.set("c", "<Up>", "<End><C-U><Up>", { silent = true })
+-- vim.keymap.set("c", "<Down>", "<End><C-U><Down>", { silent = true })
 
 au("CmdlineChanged", {
   group = augroup("wildmenu_group", { clear = true }),
