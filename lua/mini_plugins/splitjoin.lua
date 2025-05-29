@@ -10,7 +10,7 @@ local pad_curly       = splitjoin.gen_hook.pad_brackets(curly)
 
 splitjoin.setup({
   mappings = {
-    toggle = "J",
+    toggle = "",
     split = "",
     join = "",
   },

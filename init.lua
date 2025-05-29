@@ -158,6 +158,8 @@ later(function()
       "folke/lazydev.nvim",
       "b0o/SchemaStore.nvim",
       "mason-org/mason.nvim",
+      "pmizio/typescript-tools.nvim",
+      "nvim-lua/plenary.nvim",
     },
   })
   plug("lspconfig")
@@ -208,7 +210,9 @@ later(function()
   add({ source = "nvim-treesitter/nvim-treesitter" })
   add({ source = "nvim-treesitter/nvim-treesitter-textobjects" })
   add({ source = "JoosepAlviste/nvim-ts-context-commentstring" })
+  add({ source = "Wansmer/treesj" })
   plug("treesitter")
+  plug("treesj")
 end)
 
 -- UI
@@ -220,6 +224,9 @@ later(function()
   -- Extra animations
   add({ source = "rachartier/tiny-glimmer.nvim" })
   plug("tiny-glimmer")
+
+  add({ source = "sethen/line-number-change-mode.nvim" })
+  plug("line-number-change-mode")
 
   -- Trailing cursor
   add({ source = "sphamba/smear-cursor.nvim" })
@@ -282,6 +289,12 @@ later(function()
   plug("nav")
 end)
 
+-- Oil for lots file manipulation
+later(function()
+  add({ source = "stevearc/oil.nvim" })
+  plug("oil")
+end)
+
 -- For fun
 later(function()
   add({
@@ -290,8 +303,22 @@ later(function()
   plug("cellular-automaton")
 end)
 
--- Oil for lots file manipulation
+-- AI
 later(function()
-  add({ source = "stevearc/oil.nvim" })
-  plug("oil")
+  add({
+    source = "CopilotC-Nvim/CopilotChat.nvim",
+    depends = {
+      "zbirenbaum/copilot.lua",
+      "nvim-lua/plenary.nvim",
+    },
+    hooks = {
+      post_install = function(spec)
+        vim.fn.system({ "make", "tiktoken" }, spec.path)
+      end,
+      post_checkout = function(spec)
+        vim.fn.system({ "make", "tiktoken" }, spec.path)
+      end,
+    },
+  })
+  plug("copilot-chat")
 end)

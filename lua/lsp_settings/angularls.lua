@@ -1,5 +1,4 @@
 local lspconfig = require("lspconfig")
-
 local angularls_path = vim.fn.expand("$MASON/packages/angular-language-server")
 
 -- https://github.com/mason-org/mason-registry/blob/2025-02-25-lame-hole/packages/angular-language-server/package.yaml
@@ -22,8 +21,6 @@ local cmd = {
 
 return {
   cmd = cmd,
-  root_dir = lspconfig.util.root_pattern("angular.json", ".git"),
-  on_new_config = function(new_config, _)
-    new_config.cmd = cmd
-  end,
+  filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx", "htmlangular" },
+  root_markers = lspconfig.util.root_pattern("angular.json", ".git"),
 }

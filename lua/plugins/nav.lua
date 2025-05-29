@@ -1,6 +1,8 @@
 local navic = require("nvim-navic")
 local navbuddy = require("nvim-navbuddy")
 
+local utils = require("utils")
+
 navic.setup({
   lsp = {
     auto_attach = true, -- Enable to have nvim-navic automatically attach to every LSP for current buffer
@@ -46,3 +48,5 @@ vim.api.nvim_create_autocmd("CursorHold", {
     end
   end,
 })
+
+utils.map("n", "<leader>en", "<cmd>Navbuddy<cr>", { desc = "Navigate" })

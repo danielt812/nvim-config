@@ -8,6 +8,7 @@ animate.setup({
     enable = false,
   },
   scroll = {
+    enable = false,
     timing = animate.gen_timing.linear({ duration = duration, unit = "total" }),
   },
   resize = {

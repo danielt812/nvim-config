@@ -2,6 +2,7 @@
 local blame = require("blame")
 
 local utils = require("utils")
+
 -- Inline
 -- gitblame.setup({
 --   enabled = true, -- if you want to enable the plugin
@@ -26,10 +27,7 @@ blame.setup({
   },
 })
 
--- stylua: ignore start
-utils.map("n", "<leader>gb", "<cmd>GitBlameToggle<cr>", { desc = "Blame line" })
-utils.map("n", "<leader>gB", "<cmd>BlameToggle<cr>",    { desc = "Blame file" })
--- stylua: ignore end
+utils.map("n", "<leader>gB", "<cmd>BlameToggle<cr>", { desc = "Blame file" })
 
 local blame_au_group = vim.api.nvim_create_augroup("Blame group", { clear = true })
 

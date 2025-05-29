@@ -158,10 +158,10 @@ local highlights = {
   DiagnosticVirtualTextWarn = { link = "VirtualTextWarning" },
   DiagnosticVirtualTextInfo = { link = "VirtualTextInfo" },
   DiagnosticVirtualTextHint = { link = "VirtualTextHint" },
-  DiagnosticUnderlineError = { fg = palette.red, bg = palette.none, undercurl = true },
-  DiagnosticUnderlineWarn = { fg = palette.yellow, bg = palette.none, undercurl = true },
-  DiagnosticUnderlineInfo = { fg = palette.blue, bg = palette.none, undercurl = true },
-  DiagnosticUnderlineHint = { fg = palette.green, bg = palette.none, undercurl = true },
+  -- DiagnosticUnderlineError = { fg = palette.red, bg = palette.none, undercurl = true },
+  -- DiagnosticUnderlineWarn = { fg = palette.yellow, bg = palette.none, undercurl = true },
+  -- DiagnosticUnderlineInfo = { fg = palette.blue, bg = palette.none, undercurl = true },
+  -- DiagnosticUnderlineHint = { fg = palette.green, bg = palette.none, undercurl = true },
   DiagnosticSignError = { link = "Red" },
   DiagnosticSignWarn = { link = "Yellow" },
   DiagnosticSignInfo = { link = "Blue" },
@@ -762,6 +762,7 @@ local highlights = {
   MiniStatuslineLocation    = { fg = palette.grey2,  bg = palette.bg1 },
   -- stylua: ignore end
 
+
   -- stylua: ignore start
   MiniTablineCurrent         = { fg = palette.blue,  bg = palette.bg1 },
   MiniTablineHidden          = { fg = palette.grey1, bg = palette.bg1 },
@@ -892,6 +893,14 @@ local highlights = {
   -- nullchilly/fsread.nvim
   FSPrefix = { fg = palette.fg, bg = palette.bg0, bold = true },
   FSSuffix = { fg = palette.grey1, bg = palette.none },
+
+  -- sethen/line-number-change-mode.nvim
+  -- stylua: ignore start
+  NumberColumnModeVisual  = { fg = palette.red,    bg = palette.bg0 },
+  NumberColumnModeInsert  = { fg = palette.fg,     bg = palette.bg0 },
+  NumberColumnModeNormal  = { fg = palette.green,  bg = palette.bg0 },
+  NumberColumnModeReplace = { fg = palette.orange, bg = palette.bg0 },
+  -- stylua: ignore end
 }
 
 for group, opts in pairs(highlights) do

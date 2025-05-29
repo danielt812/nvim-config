@@ -1,3 +1,3 @@
 local marks = require("marks")
 
-marks.setup()
+marks.setup({})

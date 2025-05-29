@@ -41,12 +41,28 @@ clue.setup({
   clues = {
     -- stylua: ignore start
     { mode = "n", keys = "<leader>b",  desc = "+Buffer" },
+    { mode = "v", keys = "<leader>b",  desc = "+Buffer" },
+
+    { mode = "n", keys = "<leader>c",  desc = "+Copilot" },
+    { mode = "v", keys = "<leader>c",  desc = "+Copilot" },
+
     { mode = "n", keys = "<leader>d",  desc = "+Debug" },
+    { mode = "v", keys = "<leader>d",  desc = "+Debug" },
+
     { mode = "n", keys = "<leader>e",  desc = "+Editor" },
+    { mode = "v", keys = "<leader>e",  desc = "+Editor" },
+
     { mode = "n", keys = "<leader>f",  desc = "+Find" },
+    { mode = "v", keys = "<leader>f",  desc = "+Find" },
+
     { mode = "n", keys = "<leader>g",  desc = "+Git" },
+    { mode = "v", keys = "<leader>g",  desc = "+Git" },
+
     { mode = "n", keys = "<leader>n",  desc = "+Notify" },
+    { mode = "v", keys = "<leader>n",  desc = "+Notify" },
+
     { mode = "n", keys = "<leader>s",  desc = "+Snipe" },
+    { mode = "v", keys = "<leader>s",  desc = "+Snipe" },
     -- stylua: ignore end
     clue.gen_clues.builtin_completion(),
     clue.gen_clues.g(),

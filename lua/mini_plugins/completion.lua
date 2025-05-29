@@ -17,7 +17,7 @@ end
 
 completion.setup({
   lsp_completion = {
-    source_func = "completefunc",
+    source_func = "omnifunc",
     auto_setup = true,
     process_items = process_items,
     snippet_insert = nil,
@@ -39,34 +39,34 @@ local au = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
 -- LINK - https://github.com/echasnovski/mini.nvim/issues/690
-local term = vim.api.nvim_replace_termcodes("<C-z>", true, true, true)
-vim.opt.wildmenu = true
-vim.opt.wildoptions = "pum,fuzzy"
-vim.opt.wildmode = "noselect:lastused,full"
-vim.opt.wildcharm = vim.fn.char2nr(term)
+-- local term = vim.api.nvim_replace_termcodes("<C-z>", true, true, true)
+-- vim.opt.wildmenu = true
+-- vim.opt.wildoptions = "pum,fuzzy"
+-- vim.opt.wildmode = "noselect:lastused,full"
+-- vim.opt.wildcharm = vim.fn.char2nr(term)
 
--- vim.keymap.set("c", "<Up>", "<End><C-U><Up>", { silent = true })
--- vim.keymap.set("c", "<Down>", "<End><C-U><Down>", { silent = true })
+-- -- vim.keymap.set("c", "<Up>", "<End><C-U><Up>", { silent = true })
+-- -- vim.keymap.set("c", "<Down>", "<End><C-U><Down>", { silent = true })
 
-au("CmdlineChanged", {
-  group = augroup("wildmenu_group", { clear = true }),
-  pattern = ":",
-  callback = function()
-    local cmdline = vim.fn.getcmdline()
-    local curpos = vim.fn.getcmdpos()
-    local last_char = cmdline:sub(-1)
+-- au("CmdlineChanged", {
+--   group = augroup("wildmenu_group", { clear = true }),
+--   pattern = ":",
+--   callback = function()
+--     local cmdline = vim.fn.getcmdline()
+--     local curpos = vim.fn.getcmdpos()
+--     local last_char = cmdline:sub(-1)
 
-    if
-      curpos == #cmdline + 1
-      and vim.fn.pumvisible() == 0
-      and last_char:match("[%w%/%: ]")
-      and not cmdline:match("^%d+$")
-    then
-      vim.opt.eventignore:append("CmdlineChanged")
-      vim.api.nvim_feedkeys(term, "ti", false)
-      vim.schedule(function()
-        vim.opt.eventignore:remove("CmdlineChanged")
-      end)
-    end
-  end,
-})
+--     if
+--       curpos == #cmdline + 1
+--       and vim.fn.pumvisible() == 0
+--       and last_char:match("[%w%/%: ]")
+--       and not cmdline:match("^%d+$")
+--     then
+--       vim.opt.eventignore:append("CmdlineChanged")
+--       vim.api.nvim_feedkeys(term, "ti", false)
+--       vim.schedule(function()
+--         vim.opt.eventignore:remove("CmdlineChanged")
+--       end)
+--     end
+--   end,
+-- })

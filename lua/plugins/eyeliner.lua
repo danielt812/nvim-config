@@ -1,6 +1,8 @@
 local demicolon = require("demicolon")
 local eyeliner = require("eyeliner")
 
+local utils = require("utils")
+
 demicolon.setup({
   horizontal_motions = false,
 })
@@ -15,14 +17,12 @@ eyeliner.setup({
 local function eyeliner_jump(key)
   local forward = vim.list_contains({ "t", "f" }, key)
   return function()
-    require("eyeliner").highlight({ forward = forward })
+    eyeliner.highlight({ forward = forward })
     return require("demicolon.jump").horizontal_jump(key)()
   end
 end
 
-local map, nxo, opts = vim.keymap.set, { "n", "x", "o" }, { expr = true }
-
-map(nxo, "f", eyeliner_jump("f"), opts)
-map(nxo, "F", eyeliner_jump("F"), opts)
-map(nxo, "t", eyeliner_jump("t"), opts)
-map(nxo, "T", eyeliner_jump("T"), opts)
+utils.map({ "n", "x", "o" }, "f", eyeliner_jump("f"), { expr = true })
+utils.map({ "n", "x", "o" }, "F", eyeliner_jump("F"), { expr = true })
+utils.map({ "n", "x", "o" }, "t", eyeliner_jump("t"), { expr = true })
+utils.map({ "n", "x", "o" }, "T", eyeliner_jump("T"), { expr = true })

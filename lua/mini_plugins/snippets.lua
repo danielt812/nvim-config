@@ -39,6 +39,4 @@ snippets.setup({
   },
 })
 
-snippets.start_lsp_server({
-  match = false, -- Let the completion engine handle matching
-})
+snippets.start_lsp_server()

@@ -7,9 +7,9 @@ local map_combo     = keymap.map_combo
 
 local tab_steps = {
   "minisnippets_next",
-  "minisnippets_expand",
   "pmenu_next",
   "increase_indent",
+  "minisnippets_expand",
   "jump_after_tsnode",
   "jump_after_close",
 }
@@ -36,11 +36,11 @@ map_multistep("i", "<CR>", { "nvimautopairs_cr", "minipairs_cr" })
 map_multistep("i", "<BS>", { "nvimautopairs_bs", "minipairs_bs" })
 
 -- Clear hl search on double esc
--- local no_hlsearch = function()
---   vim.cmd("nohlsearch")
--- end
+local no_hlsearch = function()
+  vim.cmd("nohlsearch")
+end
 
--- map_combo({ "n", "i", "x", "c" }, "<Esc><Esc>", no_hlsearch)
+map_combo({ "n", "i", "x", "c" }, "<Esc><Esc>", no_hlsearch)
 
 -- Less intrusive hardtime?
 -- local notify_many_keys = function(key)
