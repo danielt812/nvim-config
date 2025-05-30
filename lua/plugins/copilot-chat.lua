@@ -11,7 +11,7 @@ copilot_chat.setup({
     height = 0.5, -- fractional height of parent, or absolute height in rows when > 1
     -- Options below only apply to floating windows
     relative = "editor", -- 'editor', 'win', 'cursor', 'mouse'
-    border = "rounded", -- 'none', single', 'double', 'rounded', 'solid', 'shadow'
+    border = "single", -- 'none', single', 'double', 'rounded', 'solid', 'shadow'
     row = nil, -- row position of the window, default is centered
     col = nil, -- column position of the window, default is centered
     title = " Copilot Chat ", -- title of chat window

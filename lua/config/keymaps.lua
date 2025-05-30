@@ -16,12 +16,12 @@ utils.map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
 -- Clear search with <esc>
 -- utils.map({ "n", "i" }, "<esc>", "<cmd>nohlsearch<cr><esc>", { desc = "Escape and clear hlsearch" })
 
-utils.map("n", "<C-u>", "<C-u>zz", { desc = "Center cursor line on scroll up" })
-utils.map("n", "<C-d>", "<C-d>zz", { desc = "Center cursor line on scroll down" })
-utils.map("n", "<C-b>", "<C-b>zz", { desc = "Center cursor line on page up" })
-utils.map("n", "<C-f>", "<C-f>zz", { desc = "Center cursor line on page down" })
-utils.map("n", "<PageUp>", "<PageUp>zz", { desc = "Center cursor line on page up" })
-utils.map("n", "<PageDown>", "<PageDown>zz", { desc = "Center cursor line on page down" })
+-- utils.map("n", "<C-u>", "<C-u>zz", { desc = "Center cursor line on scroll up" })
+-- utils.map("n", "<C-d>", "<C-d>zz", { desc = "Center cursor line on scroll down" })
+-- utils.map("n", "<C-b>", "<C-b>zz", { desc = "Center cursor line on page up" })
+-- utils.map("n", "<C-f>", "<C-f>zz", { desc = "Center cursor line on page down" })
+-- utils.map("n", "<PageUp>", "<PageUp>zz", { desc = "Center cursor line on page up" })
+-- utils.map("n", "<PageDown>", "<PageDown>zz", { desc = "Center cursor line on page down" })
 
 -- Prevent some registers from yanking
 utils.map({ "n", "v", "x" }, "x", '"_x', { desc = "Prevent x from yanking to clipboard" })

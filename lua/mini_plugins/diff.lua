@@ -55,7 +55,7 @@ au("User", {
     for key, icon in pairs(symbols) do
       local count = summary[key]
       if type(count) == "number" and count > 0 then
-        table.insert(t, icon .. " " .. count)
+        table.insert(t, icon .. "%#MiniStatuslineDevinfo#" .. " " .. count)
         has_diff = true
       end
     end

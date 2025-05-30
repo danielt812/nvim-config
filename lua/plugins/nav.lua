@@ -49,4 +49,4 @@ vim.api.nvim_create_autocmd("CursorHold", {
   end,
 })
 
-utils.map("n", "<leader>en", "<cmd>Navbuddy<cr>", { desc = "Navigate" })
+utils.map("n", "<leader>en", "<cmd>Navbuddy<cr>", { desc = "Navbuddy" })

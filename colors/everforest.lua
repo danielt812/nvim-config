@@ -901,6 +901,9 @@ local highlights = {
   NumberColumnModeNormal  = { fg = palette.green,  bg = palette.bg0 },
   NumberColumnModeReplace = { fg = palette.orange, bg = palette.bg0 },
   -- stylua: ignore end
+
+  LazyGitFloat = { fg = palette.fg, bg = palette.bg_dim },
+  LazyGitBorder = { fg = palette.fg, bg = palette.bg_dim },
 }
 
 for group, opts in pairs(highlights) do

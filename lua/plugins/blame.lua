@@ -27,12 +27,11 @@ blame.setup({
   },
 })
 
-utils.map("n", "<leader>gB", "<cmd>BlameToggle<cr>", { desc = "Blame file" })
+local au = vim.api.nvim_create_autocmd
+local augroup = vim.api.nvim_create_augroup
 
-local blame_au_group = vim.api.nvim_create_augroup("Blame group", { clear = true })
-
-vim.api.nvim_create_autocmd("User", {
-  group = blame_au_group,
+au("User", {
+  group = augroup("git-blame", { clear = true }),
   pattern = "BlameViewOpened",
   callback = function(event)
     local blame_type = event.data
@@ -43,8 +42,8 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
-vim.api.nvim_create_autocmd("User", {
-  group = blame_au_group,
+au("User", {
+  group = augroup("git-blame", { clear = true }),
   pattern = "BlameViewClosed",
   callback = function(event)
     local blame_type = event.data
@@ -53,3 +52,5 @@ vim.api.nvim_create_autocmd("User", {
     end
   end,
 })
+
+utils.map("n", "<leader>gb", "<cmd>BlameToggle<cr>", { desc = "Blame file" })

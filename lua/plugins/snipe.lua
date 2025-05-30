@@ -57,7 +57,7 @@ utils.map("n", "<leader>so", function()
   end, function(item)
     return item.name
   end)
-end, { desc = "Select" })
+end, { desc = "Open" })
 
 utils.map("n", "<leader>sd", function()
   items = require("snipe.buffer").get_buffers()

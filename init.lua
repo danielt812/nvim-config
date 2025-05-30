@@ -118,6 +118,11 @@ later(function()
   mplug("trailspace")
 end)
 
+-- Plenary dependency
+now(function()
+  add({ source = "nvim-lua/plenary.nvim" })
+end)
+
 -- Autopair/Autotag
 later(function()
   add({ source = "windwp/nvim-autopairs" })
@@ -159,14 +164,12 @@ later(function()
       "b0o/SchemaStore.nvim",
       "mason-org/mason.nvim",
       "pmizio/typescript-tools.nvim",
-      "nvim-lua/plenary.nvim",
     },
   })
   plug("lspconfig")
 
   add({
     source = "nvimtools/none-ls.nvim",
-    depends = { "nvim-lua/plenary.nvim" },
   })
   plug("null-ls")
 
@@ -183,8 +186,10 @@ end)
 
 later(function()
   add({ source = "FabijanZulj/blame.nvim" })
-  -- add({ source = "f-person/git-blame.nvim" })
   plug("blame")
+
+  add({ source = "kdheepak/lazygit.nvim" })
+  plug("lazygit")
 end)
 
 later(function()
@@ -303,22 +308,21 @@ later(function()
   plug("cellular-automaton")
 end)
 
--- AI
+-- Co-pilot
 later(function()
   add({
     source = "CopilotC-Nvim/CopilotChat.nvim",
     depends = {
       "zbirenbaum/copilot.lua",
-      "nvim-lua/plenary.nvim",
     },
-    hooks = {
-      post_install = function(spec)
-        vim.fn.system({ "make", "tiktoken" }, spec.path)
-      end,
-      post_checkout = function(spec)
-        vim.fn.system({ "make", "tiktoken" }, spec.path)
-      end,
-    },
+    -- hooks = {
+    --   post_install = function(spec)
+    --     vim.fn.system({ "make", "tiktoken" }, spec.path)
+    --   end,
+    --   post_checkout = function(spec)
+    --     vim.fn.system({ "make", "tiktoken" }, spec.path)
+    --   end,
+    -- },
   })
   plug("copilot-chat")
 end)
