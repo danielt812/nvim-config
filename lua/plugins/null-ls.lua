@@ -10,7 +10,9 @@ null_ls.setup({
       extra_args = {
         "--trailing-comma=es5",
         "--tab-width=2",
-        "--jsx-single-quote",
+        "--single-quote=false",
+        -- "--jsx-single-quote",
+        "--prose-wrap=preserve",
         "--print-width=120",
         "--single-attribute-per-line",
       },
