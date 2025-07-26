@@ -188,6 +188,9 @@ later(function()
   add({ source = "FabijanZulj/blame.nvim" })
   plug("blame")
 
+  add({ source = "braxtons12/blame_line.nvim" })
+  plug("blame-line")
+
   add({ source = "kdheepak/lazygit.nvim" })
   plug("lazygit")
 end)
