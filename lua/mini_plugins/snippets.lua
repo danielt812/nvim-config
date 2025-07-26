@@ -8,6 +8,10 @@ snippets.setup({
     snippets.gen_loader.from_lang({
       lang_patterns = {
         lua = { "lua.json" },
+        javascript = { "javascript.json" },
+        sh = { "shell.json" },
+        zsh = { "shell.json" },
+        bash = { "shell.json" },
       },
     }),
   },

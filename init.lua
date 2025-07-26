@@ -83,7 +83,6 @@ now(function()
   mplug("starter")
   mplug("sessions")
   mplug("sessions")
-  mplug("snippets")
 end)
 
 -- Mini modules later
@@ -111,6 +110,7 @@ later(function()
   mplug("operators")
   -- mplug("pairs") -- Going to try this again, can't get it to behave how I am wanting yet
   mplug("pick")
+  mplug("snippets")
   mplug("splitjoin")
   mplug("statusline")
   mplug("surround")
