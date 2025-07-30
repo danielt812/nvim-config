@@ -327,6 +327,12 @@ later(function()
   plug("cellular-automaton")
 end)
 
+-- Terminal
+later(function()
+  add({ source = "akinsho/toggleterm.nvim" })
+  plug("toggleterm")
+end)
+
 -- Co-pilot
 later(function()
   add({
