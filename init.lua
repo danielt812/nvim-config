@@ -82,7 +82,7 @@ now(function()
   mplug("notify")
   mplug("starter")
   mplug("sessions")
-  mplug("sessions")
+  mplug("snippets")
 end)
 
 -- Mini modules later
