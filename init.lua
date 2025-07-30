@@ -283,6 +283,8 @@ later(function()
     depends = { "kevinhwang91/promise-async" },
   })
   plug("ufo")
+
+  add({ source = "mg979/vim-visual-multi" })
 end)
 
 -- LSP extras
