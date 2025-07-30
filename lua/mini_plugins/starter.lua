@@ -18,7 +18,7 @@ starter.setup({
       -- stylua: ignore start
       { name = "Files",   action  = "Pick files",       section = "Actions" },
       { name = "Grep",    action  = "Pick grep_live",   section = "Actions" },
-      { name = "Oil",     action  = "Oil",             section = "Actions" },
+      { name = "Oil",     action  = "Oil",              section = "Actions" },
       { name = "Mason",   action  = "Mason",            section = "Actions" },
       { name = "Visited", action  = "Pick visit_paths", section = "Actions" },
       { name = "Quit",    action  = "qa!",              section = "Actions" },
