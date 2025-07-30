@@ -351,3 +351,9 @@ later(function()
   })
   plug("copilot-chat")
 end)
+
+later(function()
+  add({
+    source = "mg979/vim-visual-multi",
+  })
+end)
