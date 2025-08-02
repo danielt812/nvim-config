@@ -16,6 +16,7 @@ local palette = {
   bg_yellow   = "#55544a",
 
   fg          = "#d3c6aa",
+  white       = "#ffffff",
   red         = "#e67e80",
   orange      = "#e69875",
   yellow      = "#dbbc7f",
@@ -133,7 +134,7 @@ local highlights = {
   Whitespace = { fg = palette.bg4, bg = palette.none },
   WinBar = { fg = palette.grey1, bg = palette.bg2, bold = true },
   WinBarNC = { fg = palette.grey1, bg = palette.bg1 },
-  Terminal = { fg = palette.fg, bg = palette.bg0 },
+  Terminal = { fg = palette.white, bg = palette.bg_dim },
   ToolbarLine = { fg = palette.fg, bg = palette.bg2 },
 
   StatusLineTerm = { fg = palette.grey1, bg = palette.bg1 },
@@ -901,9 +902,6 @@ local highlights = {
   NumberColumnModeNormal  = { fg = palette.green,  bg = palette.bg0 },
   NumberColumnModeReplace = { fg = palette.orange, bg = palette.bg0 },
   -- stylua: ignore end
-
-  LazyGitFloat = { fg = palette.fg, bg = palette.bg_dim },
-  LazyGitBorder = { fg = palette.fg, bg = palette.bg_dim },
 }
 
 for group, opts in pairs(highlights) do

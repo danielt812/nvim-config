@@ -118,6 +118,12 @@ later(function()
   mplug("trailspace")
 end)
 
+-- Filetype rendering
+now(function()
+  add({ source = "OXY2DEV/markview.nvim" })
+  add({ source = "OXY2DEV/helpview.nvim" })
+end)
+
 -- Plenary dependency
 now(function()
   add({ source = "nvim-lua/plenary.nvim" })
@@ -130,12 +136,6 @@ later(function()
 
   plug("autopairs")
   plug("autotag")
-end)
-
--- Filetype rendering
-later(function()
-  add({ source = "OXY2DEV/markview.nvim" })
-  add({ source = "OXY2DEV/helpview.nvim" })
 end)
 
 later(function()
@@ -184,15 +184,13 @@ later(function()
   -- plug("blink")
 end)
 
+-- Git
 later(function()
   add({ source = "FabijanZulj/blame.nvim" })
   plug("blame")
 
   add({ source = "braxtons12/blame_line.nvim" })
   plug("blame-line")
-
-  add({ source = "kdheepak/lazygit.nvim" })
-  plug("lazygit")
 end)
 
 later(function()
@@ -305,11 +303,27 @@ later(function()
   plug("oil")
 end)
 
--- For fun
+-- Terminal
+later(function()
+  add({ source = "akinsho/toggleterm.nvim" })
+  plug("toggleterm")
+end)
+
+-- Markdown preview
 later(function()
   add({
-    source = "Eandrju/cellular-automaton.nvim",
+    source = "iamcco/markdown-preview.nvim",
+    hooks = {
+      pre_install = function()
+        vim.fn["mkdp#util#install"]()
+      end,
+    },
   })
+end)
+
+-- For fun
+later(function()
+  add({ source = "Eandrju/cellular-automaton.nvim" })
   plug("cellular-automaton")
 end)
 
