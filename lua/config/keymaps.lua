@@ -37,3 +37,13 @@ utils.map("v", ">", ">gv", { desc = "Indent block to right", silent = true })
 utils.map("n", "<", "<<",  { desc = "Indent line to left",   silent = true })
 utils.map("n", ">", ">>",  { desc = "Indent line to right",  silent = true })
 -- stylua: ignore end
+
+utils.map({ "n", "x" }, "y", function()
+  vim.b.cursor_pre_yank = vim.api.nvim_win_get_cursor(0)
+  return "y"
+end, { expr = true })
+
+utils.map("n", "Y", function()
+  vim.b.cursor_pre_yank = vim.api.nvim_win_get_cursor(0)
+  return "y$"
+end, { expr = true })
