@@ -63,6 +63,10 @@ clue.setup({
 
     { mode = "n", keys = "<leader>s",  desc = "+Snipe" },
     { mode = "v", keys = "<leader>s",  desc = "+Snipe" },
+
+    { mode = "n", keys = "<leader>t",  desc = "+Terminal" },
+    { mode = "v", keys = "<leader>t",  desc = "+Terminal" },
+
     -- stylua: ignore end
     clue.gen_clues.builtin_completion(),
     clue.gen_clues.g(),
