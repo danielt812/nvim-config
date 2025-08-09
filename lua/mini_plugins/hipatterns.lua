@@ -8,9 +8,14 @@ local apply_custom_highlights = function()
   vim.api.nvim_set_hl(0, "MiniHipatternsHack",  { fg = "#d699b6" }) -- HACK example
   vim.api.nvim_set_hl(0, "MiniHipatternsNote",  { fg = "#3498db" }) -- NOTE example
   vim.api.nvim_set_hl(0, "MiniHipatternsInfo",  { fg = "#98c379" }) -- INFO example
-  vim.api.nvim_set_hl(0, "MiniHipatternsLink",  { fg = "#8be9fd" }) -- INFO example
+  vim.api.nvim_set_hl(0, "MiniHipatternsLink",  { fg = "#8be9fd" }) -- LINK example
 end
 -- stylua: ignore end
+
+-- LINK examples...
+-- https://www.google.com
+-- www.google.com
+-- http://localhost:3000
 
 local function highlight_if_ts_capture(capture, hl_group)
   return function(buf_id, _, data)
@@ -27,6 +32,19 @@ local function highlight_if_ts_capture(capture, hl_group)
     end
 
     return hl_group
+  end
+end
+
+local function not_in_ts_capture(capture, group_fn)
+  return function(buf_id, match, data)
+    local caps = vim.treesitter.get_captures_at_pos(buf_id, data.line - 1, data.from_col - 1)
+    for _, c in ipairs(caps) do
+      if c.capture == capture then
+        return nil
+      end
+    end
+
+    return group_fn(buf_id, match, data)
   end
 end
 
@@ -78,7 +96,6 @@ for _, word in ipairs({
   "link",
   { "bug", "warn" },
   { "fix", "fixme" },
-  { "link", "hack" },
 }) do
   local w = type(word) == "table" and word[1] or word
   local hl = type(word) == "table" and word[2] or word
@@ -118,6 +135,13 @@ hipatterns.setup({
       pattern = "rgba%(%d+, ?%d+, ?%d+, ?%d*%.?%d*%)",
       group = get_highlight(rgba_color),
       extmark_opts = extmark_opts_color,
+    },
+    url = {
+      pattern = {
+        "%f[%S]()https?://[%w%-%._~:/%?#%[%]@!$&'()*+,;=%%]+",
+        "%f[%S]()www%.[%w%-%._~:/%?#%[%]@!$&'()*+,;=%%]+",
+      },
+      group = "MiniHipatternsLink",
     },
   }),
 })
