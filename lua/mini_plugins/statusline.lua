@@ -22,32 +22,36 @@ statusline.setup({
       end
 
       local function section_fileinfo(trunc_width)
-        local shiftwidth = "󰌒 " .. vim.api.nvim_get_option_value("shiftwidth", { buf = 0 })
         local ft = vim.bo.filetype or "none"
+        local shiftwidth = "󰌒 " .. vim.api.nvim_get_option_value("shiftwidth", { buf = 0 })
         local icon, hl = icons.get("filetype", ft, { with_hl = true })
         local fileinfo = string.format("%%#%s#%s %%#MiniStatuslineFileinfo#%s%%*", hl or "", icon, ft)
+        local truncate = statusline.is_truncated(trunc_width)
 
-        if statusline.is_truncated(trunc_width) then
-          return fileinfo
+        if ft == "toggleterm" then
+          return nil
         else
-          return shiftwidth .. " " .. fileinfo
+          return truncate and fileinfo or shiftwidth .. " " .. fileinfo
         end
       end
 
       local function section_location(trunc_width)
+        local ft = vim.bo.filetype or "none"
         local line = vim.fn.line(".")
         local col = vim.fn.col(".")
-
         local truncate = statusline.is_truncated(trunc_width)
 
-        return truncate and "" or string.format("%d:%d", line, col)
+        if ft == "toggleterm" then
+          return nil
+        else
+          return truncate and "" or string.format("%d:%d", line, col)
+        end
       end
 
       local mode, mode_hl = statusline.section_mode({ trunc_width = 80 })
       local git = statusline.section_git({ trunc_width = 100 })
       local diff = statusline.section_diff({ trunc_width = 100, icon = "" })
       local diagnostics = statusline.section_diagnostics({ trunc_width = 75, icon = "", signs = diagnostic_symbols })
-      -- local diagnostics = statusline.section_diagnostics({ trunc_width = 75 })
       local filename = statusline.section_filename({ trunc_width = 240 })
       local searchcount = statusline.section_searchcount({ trunc_width = 120 })
       local fileinfo = section_fileinfo(80)
@@ -62,7 +66,15 @@ statusline.setup({
         return chars[index]
       end
 
-      local progress = "%P" .. " " .. progressbar()
+      local progress = function()
+        local ft = vim.bo.filetype or "none"
+
+        if ft == "toggleterm" then
+          return nil
+        else
+          return "%P" .. " " .. progressbar()
+        end
+      end
 
       return statusline.combine_groups({
         { hl = mode_hl, strings = { mode } },
