@@ -2,7 +2,9 @@ local line_number_change_mode = require("line-number-change-mode")
 
 line_number_change_mode.setup({
   mode = {
-    i = { link = "NumberColumnModeInsert" },
+    i = {
+      link = "NumberColumnModeInsert",
+    },
     n = {
       link = "NumberColumnModeNormal",
     },
