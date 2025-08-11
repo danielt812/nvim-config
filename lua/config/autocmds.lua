@@ -21,7 +21,7 @@ au("BufReadPost", {
 au("BufWritePre", {
   group = augroup("format_on_save", { clear = true }),
   desc = "Format on save",
-  pattern = { "*.lua", "*.js", "*.jsx", "*.json", "*.py", "*.scss", "*.css", "*.zsh", "*.sh" },
+  pattern = { "*.lua", "*.js", "*.jsx", "*.json", "*.jsonc", "*.py", "*.scss", "*.css", "*.zsh", "*.sh" },
   callback = function()
     vim.lsp.buf.format()
   end,
