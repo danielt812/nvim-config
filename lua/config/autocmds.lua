@@ -44,6 +44,15 @@ au("FileType", {
   end,
 })
 
+au("BufReadPre", {
+  group = augroup("coldfusion", { clear = true }),
+  desc = "Set coldfusion filetype",
+  pattern = { "*.cfml", "*.inc" },
+  callback = function()
+    vim.cmd("set filetype=cf")
+  end,
+})
+
 au("VimResized", {
   group = augroup("resize_window", { clear = true }),
   desc = "Resize windows evenly on screen resize",
