@@ -8,10 +8,10 @@ utils.map({ "n" }, "<S-h>", "<cmd>bprevious<cr>")
 utils.map({ "n" }, "<S-l>", "<cmd>bnext<cr>")
 
 -- Move to window/tmux pane using ctrl + hjkl keys
-utils.map("n", "<C-h>", "<C-w>h", { desc = "Go to left window", remap = true })
-utils.map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })
-utils.map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
-utils.map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
+utils.map({ "n", "t" }, "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to left window", remap = true })
+utils.map({ "n", "t" }, "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go to lower window", remap = true })
+utils.map({ "n", "t" }, "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to upper window", remap = true })
+utils.map({ "n", "t" }, "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to right window", remap = true })
 
 -- Clear search with <esc>
 -- utils.map({ "n", "i" }, "<esc>", "<cmd>nohlsearch<cr><esc>", { desc = "Escape and clear hlsearch" })
