@@ -1,26 +1,29 @@
+local uv = vim.uv or vim.loop
 local lspconfig = require("lspconfig")
-local angularls_path = vim.fn.expand("$MASON/packages/angular-language-server")
+local util = lspconfig.util
 
--- https://github.com/mason-org/mason-registry/blob/2025-02-25-lame-hole/packages/angular-language-server/package.yaml
--- MasonInstall angular-language-server@{@angular/cli version}
+-- Recursively look up to find a folder with angular.json
+local function find_angular_root(start)
+  return util.search_ancestors(start, function(path)
+    local angular_json = util.path.join(path, "angular.json")
+    return uv.fs_stat(angular_json) and path or nil
+  end)
+end
+
+local project_root = uv.cwd()
+local angular_root = find_angular_root(project_root) or project_root
 
 local cmd = {
   "ngserver",
   "--stdio",
   "--tsProbeLocations",
-  table.concat({
-    angularls_path,
-    vim.uv.cwd(),
-  }, ","),
+  angular_root,
   "--ngProbeLocations",
-  table.concat({
-    angularls_path .. "/node_modules/@angular/language-server",
-    vim.uv.cwd(),
-  }, ","),
+  angular_root,
 }
 
 return {
   cmd = cmd,
-  filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx", "htmlangular" },
+  filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx" },
   root_markers = lspconfig.util.root_pattern("angular.json", ".git"),
 }
