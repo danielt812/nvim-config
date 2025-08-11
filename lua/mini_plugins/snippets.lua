@@ -15,7 +15,6 @@ snippets.setup({
       },
     }),
   },
-
   -- Module mappings. Use `''` (empty string) to disable one.
   mappings = {
     -- Expand snippet at cursor position. Created globally in Insert mode.

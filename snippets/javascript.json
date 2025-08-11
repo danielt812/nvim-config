@@ -365,7 +365,7 @@
   },
   "try/catch": {
     "prefix": "tc",
-    "body": "try {\n\t${0}\n} catch (${1:err}) {\n\t\n}"
+    "body": "try {\n\t${0}\n} catch (error) {\n\tthrow error;\n}"
   },
   "try/finally": {
     "prefix": "tf",
@@ -373,7 +373,7 @@
   },
   "try/catch/finally": {
     "prefix": "tcf",
-    "body": "try {\n\t${0}\n} catch (${1:err}) {\n\t\n} finally {\n\t\n}"
+    "body": "try {\n\t${0}\n} catch (error) {\n\tthrow error;\n} finally {\n\t\n}"
   },
   "anonymous function": {
     "prefix": "fan",
