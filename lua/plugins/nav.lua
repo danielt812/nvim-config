@@ -36,12 +36,12 @@ vim.api.nvim_create_autocmd("CursorHold", {
     local bufnr = vim.api.nvim_get_current_buf()
     local ft = vim.bo[bufnr].filetype
 
-    -- Don't touch winbar in DAP UI buffers
-    if ft:match("^dap") then
+    -- Don't touch winbar in DAP UI buffers or Kulala buffers
+    if ft:match("^dap") or ft:match("kulala") or ft == "http" then
       return
     end
 
-    if require("nvim-navic").is_available(bufnr) then
+    if navic.is_available(bufnr) then
       vim.wo.winbar = "%{%v:lua.get_navic_winbar()%}"
     else
       vim.wo.winbar = ""

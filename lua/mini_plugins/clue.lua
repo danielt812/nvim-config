@@ -61,6 +61,9 @@ clue.setup({
     { mode = "n", keys = "<leader>n",  desc = "+Notify" },
     { mode = "v", keys = "<leader>n",  desc = "+Notify" },
 
+    { mode = "n", keys = "<leader>r",  desc = "+Rest" },
+    { mode = "v", keys = "<leader>r",  desc = "+Rest" },
+
     { mode = "n", keys = "<leader>s",  desc = "+Snipe" },
     { mode = "v", keys = "<leader>s",  desc = "+Snipe" },
 
