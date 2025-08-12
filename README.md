@@ -9,10 +9,8 @@ This repository contains my personal Neovim configuration.
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configurations](#configurations)
-- [Plugins](#plugins)
 - [Colorschemes](#colorschemes)
 - [License](#license)
-- [Acknowledgements](#Acknowledgments)
 
 ## Prerequisites
 
@@ -61,8 +59,6 @@ Keymaps, options and autocmds can be found in `lua/config`:
 - [Options](https://github.com/danielt812/nvim-config/tree/main/lua/config/options.lua)
 - [Keymaps](https://github.com/danielt812/nvim-config/tree/main/lua/config/keymaps.lua)
 - [Autocmds](https://github.com/danielt812/nvim-config/tree/main/lua/config/autocmds.lua)
-
-## Plugins
 
 ## License
 
