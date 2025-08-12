@@ -1,13 +1,20 @@
 local misc = require("mini.misc")
-
-misc.setup({})
-
 local utils = require("utils")
 
-local function map(mode, lhs, rhs, opts)
-  opts = opts or {}
-  opts.silent = opts.silent ~= false
-  vim.keymap.set(mode, lhs, rhs, opts)
+misc.setup()
+
+-- https://github.com/echasnovski/mini.nvim/issues/1911
+-- NOTE - Zoom without changing background color
+_G.zoom = function()
+  misc.zoom()
+  if vim.api.nvim_win_get_config(0).relative == "" then
+    return
+  end
+
+  vim.wo.winhighlight = "NormalFloat:Normal"
 end
 
-utils.map("n", "<leader>ez", "<cmd>lua MiniMisc.zoom()<cr>", { desc = "Zoom" })
+misc.setup_restore_cursor()
+
+-- utils.map("n", "<leader>ez", "<cmd>lua MiniMisc.zoom()<cr>", { desc = "Zoom" })
+utils.map("n", "<leader>ez", "<cmd>lua zoom()<cr>", { desc = "Zoom" })
