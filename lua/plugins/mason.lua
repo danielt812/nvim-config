@@ -64,8 +64,8 @@ null_ls.setup({
 
 dap.setup({
   ensure_installed = {
-    "node2",
     "lua",
+    "js",
   },
   automatic_installation = true,
 })
