@@ -19,6 +19,7 @@ null_ls.setup({
     }),
     formatting.shfmt.with({
       filetypes = { "zsh", "bash", "sh" },
+      extra_args = { "--indent", "2" },
     }),
     formatting.stylua.with({
       extra_args = { "--config-path=stylua.toml" },
