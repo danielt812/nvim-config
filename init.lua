@@ -149,9 +149,10 @@ later(function()
     source = "mfussenegger/nvim-dap",
     depends = {
       "jbyuki/one-small-step-for-vimkind",
+      "igorlfs/nvim-dap-view",
+      "theHamsta/nvim-dap-virtual-text",
     },
   })
-  add({ source = "igorlfs/nvim-dap-view" })
   plug("dap")
 end)
 

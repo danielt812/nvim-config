@@ -1,23 +1,6 @@
 local au = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
--- au("BufReadPost", {
---   group = augroup("last_location", { clear = true }),
---   desc = "Buffer last location",
---   callback = function()
---     local exclude = { "gitcommit" }
---     local buf = vim.api.nvim_get_current_buf()
---     if vim.tbl_contains(exclude, vim.bo[buf].filetype) then
---       return
---     end
---     local mark = vim.api.nvim_buf_get_mark(buf, '"')
---     local lcount = vim.api.nvim_buf_line_count(buf)
---     if mark[1] > 0 and mark[1] <= lcount then
---       vim.api.nvim_win_set_cursor(0, mark)
---     end
---   end,
--- })
-
 au("BufWritePre", {
   group = augroup("format_on_save", { clear = true }),
   desc = "Format on save",
@@ -68,6 +51,22 @@ au("TextYankPost", {
     if vim.v.event.operator == "y" and vim.b.cursor_pre_yank then
       vim.api.nvim_win_set_cursor(0, vim.b.cursor_pre_yank)
       vim.b.cursor_pre_yank = nil
+    end
+  end,
+})
+
+au("QuitPre", {
+  group = augroup("auto_close_windows_on_quit", { clear = true }),
+  desc = "Auto close plugin windows on quit",
+  callback = function()
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      local buf = vim.api.nvim_win_get_buf(win)
+      local ft = vim.bo[buf].filetype
+
+      -- match by filetype
+      if ft == "dap-view" or ft == "grug-far" then
+        pcall(vim.api.nvim_win_close, win, true)
+      end
     end
   end,
 })
