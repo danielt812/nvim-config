@@ -13,4 +13,11 @@ surround.setup({
     suffix_last = "",
     suffix_next = "",
   },
+  -- Number of lines within which surrounding is searched
+  n_lines = 100,
+
+  -- Whether to respect selection type:
+  -- - Place surroundings on separate lines in linewise mode.
+  -- - Place surroundings on each line in blockwise mode.
+  respect_selection_type = false,
 })
