@@ -21,4 +21,4 @@ jump2d.setup({
   },
 })
 
-map({ "n", "x", "o" }, "<leader>ej", jump, { desc = "Jump" })
+map({ "n", "x", "o" }, "<cr>", jump, { desc = "Jump" })
