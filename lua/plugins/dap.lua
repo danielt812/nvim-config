@@ -1,6 +1,5 @@
 -- https://github.com/mfussenegger/nvim-dap
 local dap = require("dap")
-local dap_utils = require("dap.utils")
 -- https://github.com/igorlfs/nvim-dap-view
 local dap_view = require("dap-view")
 -- https://github.com/theHamsta/nvim-dap-virtual-text
@@ -13,28 +12,28 @@ vim.fn.sign_define("DapBreakpoint", {
   texthl = "DiagnosticSignError",
   linehl = "",
   numhl = "DiagnosticSignError",
-  priority = 200,
+  priority = 11,
 })
 vim.fn.sign_define("DapBreakpointRejected", {
   text = "",
   texthl = "DiagnosticSignError",
   linehl = "",
   numhl = "DiagnosticSignError",
-  priority = 200,
+  priority = 11,
 })
 vim.fn.sign_define("DapStopped", {
   text = "",
   texthl = "DiagnosticSignOk",
   linehl = "Visual",
   numhl = "DiagnosticSignOk",
-  priority = 200,
+  priority = 11,
 })
 
 -- stylua: ignore start
 utils.map("n", "<leader>db", dap.toggle_breakpoint, { desc = "Breakpoint" })
 utils.map("n", "<leader>dc", dap.continue,          { desc = "Continue"   })
 utils.map("n", "<leader>do", dap.step_over,         { desc = "Step over"  })
-utils.map("n", "<leader>dO", dap.step_out,          { desc = "Step out"  })
+utils.map("n", "<leader>dO", dap.step_out,          { desc = "Step out"   })
 utils.map("n", "<leader>di", dap.step_into,         { desc = "Step into"  })
 utils.map("n", "<leader>dv", dap_view.toggle,       { desc = "View"       })
 -- stylua: ignore end
@@ -75,7 +74,6 @@ dap_view.setup({
       start_hidden = true,
     },
   },
-  auto_toggle = false,
 })
 
 dap_virtual_text.setup({
@@ -86,37 +84,54 @@ local mason_packages = vim.fn.stdpath("data") .. "/mason/packages"
 local js_debug = mason_packages .. "/js-debug-adapter/js-debug/src/dapDebugServer.js"
 local lua_debug = mason_packages .. "/local-lua-debugger-vscode/extension/extension/debugAdapter.js"
 
+local osv = require("osv")
+
+utils.map("n", "<leader>dl", function()
+  osv.launch({ port = 8086 })
+end, { desc = "Launch Nvim debugger" })
 -- Lua
-dap.adapters["local-lua"] = {
-  type = "executable",
-  command = "node",
-  args = {
-    lua_debug,
-  },
-  enrich_config = function(config, on_config)
-    if not config["extensionPath"] then
-      local c = vim.deepcopy(config)
-      c.extensionPath = mason_packages .. "/local-lua-debugger-vscode/extension"
-      on_config(c)
-    else
-      on_config(config)
-    end
-  end,
+dap.configurations.lua = {
+  { type = "nlua", request = "attach", name = "Attach to running Neovim instance" },
 }
 
-dap.configurations.lua = {
-  {
-    name = "Current file (local-lua-dbg, lua)",
-    type = "local-lua",
-    request = "launch",
-    cwd = "${workspaceFolder}",
-    repl_lang = "lua",
-    program = {
-      lua = "luajit",
-      file = "${file}",
-    },
-  },
-}
+dap.adapters.nlua = function(callback)
+  callback({
+    type = "server",
+    host = "127.0.0.1",
+    port = 8086,
+  })
+end
+
+-- dap.adapters["local-lua"] = {
+--   type = "executable",
+--   command = "node",
+--   args = {
+--     lua_debug,
+--   },
+--   enrich_config = function(config, on_config)
+--     if not config["extensionPath"] then
+--       local c = vim.deepcopy(config)
+--       c.extensionPath = mason_packages .. "/local-lua-debugger-vscode/extension"
+--       on_config(c)
+--     else
+--       on_config(config)
+--     end
+--   end,
+-- }
+
+-- dap.configurations.lua = {
+--   {
+--     name = "Current file (local-lua-dbg, lua)",
+--     type = "local-lua",
+--     request = "launch",
+--     cwd = "${workspaceFolder}",
+--     repl_lang = "lua",
+--     program = {
+--       lua = "luajit",
+--       file = "${file}",
+--     },
+--   },
+-- }
 
 -- Javascript
 dap.adapters["pwa-node"] = {
