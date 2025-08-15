@@ -3,7 +3,7 @@ local basics = require("mini.basics")
 basics.setup({
   options = {
     basic = true,
-    extra_ui = true,
+    extra_ui = false,
     win_borders = "bold",
   },
   mappings = {
