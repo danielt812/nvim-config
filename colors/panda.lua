@@ -15,10 +15,12 @@ local palette = {
   bg_blue     = "#3f5865",
   bg_yellow   = "#55544a",
 
+  white       = "#ffffff",
   fg          = "#e6e6e6",
   red         = "#ff2c6d",
-  orange      = "#ffcc95",
-  yellow      = "#ff9ac1",
+  orange      = "#ffb86c",
+  -- yellow      = "#ff9ac1",
+  yellow      = "#ff75b5",
   green       = "#19f9d8",
   aqua        = "#6fe7d2",
   blue        = "#6fc1ff",
@@ -27,8 +29,8 @@ local palette = {
   grey1       = "#859289",
   grey2       = "#9da9a0",
   statusline1 = "#6fe7d2",
-  statusline2 = "#ffcc95",
-  statusline3 = "#ff9ac1",
+  statusline2 = "#ffb86c",
+  statusline3 = "#ff75b5",
   none        = "none",
 }
 -- stylua: ignore end
@@ -133,7 +135,7 @@ local highlights = {
   Whitespace = { fg = palette.bg4, bg = palette.none },
   WinBar = { fg = palette.grey1, bg = palette.bg2, bold = true },
   WinBarNC = { fg = palette.grey1, bg = palette.bg1 },
-  Terminal = { fg = palette.fg, bg = palette.bg0 },
+  Terminal = { fg = palette.white, bg = palette.bg_dim },
   ToolbarLine = { fg = palette.fg, bg = palette.bg2 },
 
   StatusLineTerm = { fg = palette.grey1, bg = palette.bg1 },
@@ -158,10 +160,10 @@ local highlights = {
   DiagnosticVirtualTextWarn = { link = "VirtualTextWarning" },
   DiagnosticVirtualTextInfo = { link = "VirtualTextInfo" },
   DiagnosticVirtualTextHint = { link = "VirtualTextHint" },
-  DiagnosticUnderlineError = { fg = palette.red, bg = palette.none, undercurl = true },
-  DiagnosticUnderlineWarn = { fg = palette.yellow, bg = palette.none, undercurl = true },
-  DiagnosticUnderlineInfo = { fg = palette.blue, bg = palette.none, undercurl = true },
-  DiagnosticUnderlineHint = { fg = palette.green, bg = palette.none, undercurl = true },
+  -- DiagnosticUnderlineError = { fg = palette.red, bg = palette.none, undercurl = true },
+  -- DiagnosticUnderlineWarn = { fg = palette.yellow, bg = palette.none, undercurl = true },
+  -- DiagnosticUnderlineInfo = { fg = palette.blue, bg = palette.none, undercurl = true },
+  -- DiagnosticUnderlineHint = { fg = palette.green, bg = palette.none, undercurl = true },
   DiagnosticSignError = { link = "Red" },
   DiagnosticSignWarn = { link = "Yellow" },
   DiagnosticSignInfo = { link = "Blue" },
@@ -214,7 +216,7 @@ local highlights = {
   Define       = { fg = palette.purple, bg = palette.none },
   Conditional  = { fg = palette.red,    bg = palette.none },
   Repeat       = { fg = palette.red,    bg = palette.none },
-  Keyword      = { fg = palette.yellow, bg = palette.none },
+  Keyword      = { fg = palette.red,    bg = palette.none },
   Typedef      = { fg = palette.red,    bg = palette.none },
   Exception    = { fg = palette.red,    bg = palette.none },
   Statement    = { fg = palette.red,    bg = palette.none },
@@ -248,6 +250,7 @@ local highlights = {
   -- Predefined highlight groups
   -- stylua: ignore start
   Fg     = { fg = palette.fg,     bg = palette.none },
+  White  = { fg = palette.white,  bg = palette.none },
   Grey   = { fg = palette.grey1,  bg = palette.none },
   Red    = { fg = palette.red,    bg = palette.none },
   Orange = { fg = palette.orange, bg = palette.none },
@@ -309,7 +312,7 @@ local highlights = {
   TSCharacter = { link = "Aqua" },
   TSCharacterSpecial = { link = "SpecialChar" },
   TSComment = { link = "Comment" },
-  TSConditional = { link = "Red" },
+  TSConditional = { link = "Yellow" },
   TSConstBuiltin = { link = "Purple" },
   TSConstMacro = { link = "Purple" },
   TSConstant = { link = "Constant" },
@@ -322,19 +325,19 @@ local highlights = {
   TSException = { link = "Red" },
   TSField = { link = "Blue" },
   TSFloat = { link = "Purple" },
-  TSFuncBuiltin = { link = "Blue" },
+  TSFuncBuiltin = { link = "Green" },
   TSFuncMacro = { link = "Green" },
   TSFunction = { link = "Blue" },
   TSFunctionCall = { link = "Blue" },
   TSInclude = { link = "Red" },
   TSKeyword = { link = "Red" },
-  TSKeywordFunction = { link = "Red" },
+  TSKeywordFunction = { link = "Yellow" },
   TSKeywordOperator = { link = "Orange" },
   TSKeywordReturn = { link = "Red" },
   TSLabel = { link = "Orange" },
   TSLiteral = { link = "String" },
   TSMath = { link = "Blue" },
-  TSMethod = { link = "Blue" },
+  TSMethod = { link = "Green" },
   TSMethodCall = { link = "Green" },
   TSModuleInfoGood = { link = "Green" },
   TSModuleInfoBad = { link = "Red" },
@@ -345,7 +348,7 @@ local highlights = {
   TSParameter = { link = "Fg" },
   TSParameterReference = { link = "Fg" },
   TSPreProc = { link = "PreProc" },
-  TSProperty = { link = "Fg" },
+  TSProperty = { link = "White" },
   TSPunctBracket = { link = "Fg" },
   TSPunctDelimiter = { link = "Grey" },
   TSPunctSpecial = { link = "Blue" },
@@ -762,6 +765,7 @@ local highlights = {
   MiniStatuslineLocation    = { fg = palette.grey2,  bg = palette.bg1 },
   -- stylua: ignore end
 
+
   -- stylua: ignore start
   MiniTablineCurrent         = { fg = palette.blue,  bg = palette.bg1 },
   MiniTablineHidden          = { fg = palette.grey1, bg = palette.bg1 },
@@ -892,6 +896,14 @@ local highlights = {
   -- nullchilly/fsread.nvim
   FSPrefix = { fg = palette.fg, bg = palette.bg0, bold = true },
   FSSuffix = { fg = palette.grey1, bg = palette.none },
+
+  -- sethen/line-number-change-mode.nvim
+  -- stylua: ignore start
+  NumberColumnModeVisual  = { fg = palette.red,    bg = palette.bg0 },
+  NumberColumnModeInsert  = { fg = palette.fg,     bg = palette.bg0 },
+  NumberColumnModeNormal  = { fg = palette.green,  bg = palette.bg0 },
+  NumberColumnModeReplace = { fg = palette.orange, bg = palette.bg0 },
+  -- stylua: ignore end
 }
 
 for group, opts in pairs(highlights) do

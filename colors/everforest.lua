@@ -249,6 +249,7 @@ local highlights = {
   -- Predefined highlight groups
   -- stylua: ignore start
   Fg     = { fg = palette.fg,     bg = palette.none },
+  White  = { fg = palette.white,  bg = palette.none },
   Grey   = { fg = palette.grey1,  bg = palette.none },
   Red    = { fg = palette.red,    bg = palette.none },
   Orange = { fg = palette.orange, bg = palette.none },
