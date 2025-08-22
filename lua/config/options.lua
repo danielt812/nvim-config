@@ -11,6 +11,7 @@ vim.opt.shiftwidth = 2
 vim.opt.swapfile = false
 vim.opt.tabstop = 2
 vim.opt.updatetime = 1000
+vim.opt.winborder = "rounded"
 
 vim.opt.foldcolumn = "0"
 vim.opt.foldenable = true

@@ -161,9 +161,7 @@ later(function()
   add({
     source = "neovim/nvim-lspconfig",
     depends = {
-      "folke/lazydev.nvim",
       "b0o/SchemaStore.nvim",
-      "mason-org/mason.nvim",
       "pmizio/typescript-tools.nvim",
     },
   })

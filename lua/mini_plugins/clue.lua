@@ -58,6 +58,9 @@ clue.setup({
     { mode = "n", keys = "<leader>g",  desc = "+Git" },
     { mode = "v", keys = "<leader>g",  desc = "+Git" },
 
+    { mode = "n", keys = "<leader>l",  desc = "+Lsp" },
+    { mode = "v", keys = "<leader>l",  desc = "+Lsp" },
+
     { mode = "n", keys = "<leader>n",  desc = "+Notify" },
     { mode = "v", keys = "<leader>n",  desc = "+Notify" },
 

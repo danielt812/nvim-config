@@ -1,4 +1,3 @@
-local lazydev = require("lazydev")
 local typescript_tools = require("typescript-tools")
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -20,6 +19,10 @@ capabilities = vim.tbl_deep_extend("force", capabilities, {
 })
 
 local on_attach = function(client, bufnr)
+  if client.server_capabilities.semanticTokensProvider then
+    client.server_capabilities.semanticTokensProvider = nil
+  end
+
   local function map(mode, lhs, rhs, key_opts)
     key_opts = key_opts or {}
     key_opts.silent = key_opts.silent ~= false
@@ -28,16 +31,17 @@ local on_attach = function(client, bufnr)
   end
 
   -- stylua: ignore start
-  map("n", "K", "<cmd>lua vim.lsp.buf.hover({border = 'rounded'})<cr>", { desc = "Show Hover" })
-  map("n", "gk", "<cmd>lua vim.lsp.buf.signature_help({border = 'rounded'})<cr>", { desc = "Signature Help" })
-  map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "Definition" })
-  map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", { desc = "Declaration" })
-  map("n", "gA", "<cmd>lua vim.lsp.buf.code_action()<cr>", { desc = "Code Action" })
-  map("n", "gR", "<cmd>lua vim.lsp.buf.rename()<cr>", { desc = "Rename Definition" })
-  map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", { desc = "Implementation" })
-  map("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "References" })
-  map("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { desc = "Type Definition" })
-  map("n", "g.", "<cmd>lua vim.lsp.buf.format()<cr>", { desc = "Format" })
+  map("n", "K",          "<cmd>lua vim.lsp.buf.hover()<cr>",           { desc = "Show Hover" })
+  map("n", "g.",         "<cmd>lua vim.lsp.buf.format()<cr>",          { desc = "Format" })
+  map("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>",     { desc = "Code Action" })
+  map("n", "<leader>lc", "<cmd>lua vim.lsp.buf.declaration()<cr>",     { desc = "Declaration" })
+  map("n", "<leader>ld", "<cmd>lua vim.lsp.buf.definition()<cr>",      { desc = "Definition" })
+  map("n", "<leader>le", "<cmd>lua vim.lsp.buf.references()<cr>",      { desc = "References" })
+  map("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format()<cr>",          { desc = "Format" })
+  map("n", "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<cr>",  { desc = "Implementation" })
+  map("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<cr>",          { desc = "Rename Definition" })
+  map("n", "<leader>ls", "<cmd>lua vim.lsp.buf.signature_help()<cr>",  { desc = "Signature Help" })
+  map("n", "<leader>lt", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { desc = "Type Definition" })
   -- stylua: ignore end
 
   if client.supports_method("textDocument/inlayHint") then
@@ -92,8 +96,6 @@ typescript_tools.setup({
   },
 })
 
--- lazydev.setup()
-
 local servers = {
   "angularls",
   "bashls",
@@ -104,7 +106,7 @@ local servers = {
   "jsonls",
   "lua_ls",
   "tailwindcss",
-  -- "vtsls",
+  -- "ts_ls",
   "yamlls",
 }
 
