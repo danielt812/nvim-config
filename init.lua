@@ -122,6 +122,15 @@ end)
 now(function()
   add({ source = "OXY2DEV/markview.nvim" })
   add({ source = "OXY2DEV/helpview.nvim" })
+
+  add({
+    source = "iamcco/markdown-preview.nvim",
+    hooks = {
+      post_checkout = function()
+        vim.fn["mkdp#util#install"]()
+      end,
+    },
+  })
 end)
 
 -- Plenary dependency
@@ -248,9 +257,10 @@ end)
 -- Fast selection menus
 later(function()
   add({ source = "leath-dub/snipe.nvim" })
+  plug("snipe")
+
   add({ source = "Chaitanyabsprip/fastaction.nvim" })
   plug("fastaction")
-  plug("snipe")
 end)
 
 -- Editor
@@ -308,18 +318,6 @@ later(function()
   plug("toggleterm")
 end)
 
--- Markdown preview
-later(function()
-  add({
-    source = "iamcco/markdown-preview.nvim",
-    hooks = {
-      pre_install = function()
-        vim.fn["mkdp#util#install"]()
-      end,
-    },
-  })
-end)
-
 -- Rest client
 later(function()
   add({ source = "mistweaverco/kulala.nvim" })
@@ -345,20 +343,11 @@ later(function()
     depends = {
       "zbirenbaum/copilot.lua",
     },
-    -- hooks = {
-    --   post_install = function(spec)
-    --     vim.fn.system({ "make", "tiktoken" }, spec.path)
-    --   end,
-    --   post_checkout = function(spec)
-    --     vim.fn.system({ "make", "tiktoken" }, spec.path)
-    --   end,
-    -- },
+    hooks = {
+      post_install = function(spec)
+        vim.fn.system({ "make", "tiktoken" }, spec.path)
+      end,
+    },
   })
   plug("copilot-chat")
-end)
-
-later(function()
-  add({
-    source = "mg979/vim-visual-multi",
-  })
 end)
