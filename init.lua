@@ -167,29 +167,15 @@ end)
 
 -- LSP
 later(function()
-  add({
-    source = "neovim/nvim-lspconfig",
-    depends = {
-      "b0o/SchemaStore.nvim",
-      "pmizio/typescript-tools.nvim",
-    },
-  })
-  plug("lspconfig")
+  add({ source = "b0o/SchemaStore.nvim" })
+
+  conf("lsp")
+  conf("diagnostics")
 
   add({
     source = "nvimtools/none-ls.nvim",
   })
   plug("null-ls")
-
-  -- NOTE - trying completion, but keeping this here incase I want additional sources
-  -- add({
-  --   source = "saghen/blink.cmp",
-  --   depends = {
-  --     "zbirenbaum/copilot.lua",
-  --     "giuxtaposition/blink-cmp-copilot",
-  --   },
-  -- })
-  -- plug("blink")
 end)
 
 -- Git
