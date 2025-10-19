@@ -21,27 +21,30 @@ blame.setup({
 local au = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
-au("User", {
-  group = augroup("git-blame", { clear = true }),
-  pattern = "BlameViewOpened",
-  callback = function(event)
-    local blame_type = event.data
-    if blame_type == "window" then
-      vim.opt_local.winbar = nil
-      vim.opt_local.wrap = false
-    end
-  end,
-})
+-- au("User", {
+--   group = augroup("git-blame", { clear = true }),
+--   pattern = "BlameViewOpened",
+--   callback = function(event)
+--     local blame_type = event.data
+--     if blame_type == "window" then
+--       for _, win in ipairs(vim.api.nvim_list_wins()) do
+--         pcall(vim.api.nvim_set_option_value, "winbar", "", { win = win })
+--       end
+--       vim.opt_local.winbar = nil
+--       vim.opt_local.wrap = false
+--     end
+--   end,
+-- })
 
-au("User", {
-  group = augroup("git-blame", { clear = true }),
-  pattern = "BlameViewClosed",
-  callback = function(event)
-    local blame_type = event.data
-    if blame_type == "window" then
-      vim.opt_local.wrap = true
-    end
-  end,
-})
+-- au("User", {
+--   group = augroup("git-blame", { clear = true }),
+--   pattern = "BlameViewClosed",
+--   callback = function(event)
+--     local blame_type = event.data
+--     if blame_type == "window" then
+--       vim.opt_local.wrap = true
+--     end
+--   end,
+-- })
 
 utils.map("n", "<leader>gf", "<cmd>BlameToggle<cr>", { desc = "Blame file" })
