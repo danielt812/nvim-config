@@ -2,7 +2,7 @@
 local capabilities = vim.tbl_deep_extend(
   "force",
   vim.lsp.protocol.make_client_capabilities(),
-  (pcall(require, "blink.cmp") and require("blink.cmp") or require("mini.completion")).get_lsp_capabilities(),
+  require("mini.completion").get_lsp_capabilities(),
   {
     textDocument = {
       foldingRange = {
@@ -85,3 +85,7 @@ vim.lsp.enable(servers)
 vim.api.nvim_create_user_command("LspInfo", function()
   vim.cmd("checkhealth lsp")
 end, {})
+
+vim.api.nvim_create_user_command("LspLog", function()
+  vim.cmd("edit " .. vim.lsp.get_log_path())
+end, { desc = "Open Neovim LSP log file" })

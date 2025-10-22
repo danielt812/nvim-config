@@ -99,6 +99,20 @@ return {
       config.cmd = vim.list_extend({ "yarn", "exec" }, config.cmd)
     end
   end,
+  on_attach = function(client, bufnr)
+    -- Recreate the `LspEslintFixAll` command
+    vim.api.nvim_buf_create_user_command(bufnr, "EslintFixAll", function()
+      client.request_sync("workspace/executeCommand", {
+        command = "eslint.applyAllFixes",
+        arguments = {
+          {
+            uri = vim.uri_from_bufnr(bufnr),
+            version = vim.lsp.util.buf_versions[bufnr],
+          },
+        },
+      }, nil, bufnr)
+    end, { desc = "Apply all available ESLint fixes in current buffer" })
+  end,
   handlers = {
     ["eslint/openDoc"] = function(_, result)
       if result then
