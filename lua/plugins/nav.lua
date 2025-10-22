@@ -75,7 +75,7 @@ au({ "WinEnter", "WinResized" }, {
       for _, win_id in ipairs(vim.api.nvim_list_wins()) do
         local buf_id = vim.api.nvim_win_get_buf(win_id)
         local ft = vim.api.nvim_get_option_value("filetype", { buf = buf_id })
-        if ft == "blame" or ft == "gitblame" then
+        if ft == "blame" or ft == "gitblame" or ft == "git" then
           has_blame = true
           break
         end
