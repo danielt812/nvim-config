@@ -53,6 +53,7 @@ local servers = {
   "dockerls",
   "emmet_language_server",
   "eslint",
+  "graphql",
   "html",
   "jsonls",
   "lua_ls",
@@ -66,11 +67,8 @@ local servers = {
 for _, name in ipairs(servers) do
   local ok, conf = pcall(require, "lsp." .. name)
   if not ok then
+    vim.notify("Failed to load LSP config: lsp." .. name, vim.log.levels.WARN)
     conf = {}
-  end
-
-  if name == "jsonls" then
-    require("lsp.jsonls")
   end
 
   vim.lsp.config[name] = vim.tbl_deep_extend("force", {
