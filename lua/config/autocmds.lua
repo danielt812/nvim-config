@@ -27,12 +27,21 @@ au("FileType", {
   end,
 })
 
-au("BufReadPre", {
-  group = augroup("coldfusion", { clear = true }),
+au("BufReadPost", {
+  group = augroup("coldfusion_filetype", { clear = true }),
   desc = "Set coldfusion filetype",
   pattern = { "*.cfml", "*.inc" },
   callback = function()
     vim.cmd("set filetype=cf")
+  end,
+})
+
+au("BufReadPost", {
+  group = augroup("env_filetype", { clear = true }),
+  desc = "Set env filetype",
+  pattern = { "*.env*" },
+  callback = function()
+    vim.cmd("set filetype=sh")
   end,
 })
 
