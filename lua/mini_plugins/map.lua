@@ -13,6 +13,7 @@ map.setup({
   },
 })
 
-local utils = require("utils")
+-- stylua: ignore
+local toggle = function() map.toggle() end
 
-utils.map("n", "<leader>em", "<cmd>lua MiniMap.toggle()<cr>", { desc = "Map" })
+vim.keymap.set("n", "<leader>em", toggle, { desc = "Map" })

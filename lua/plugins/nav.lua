@@ -1,8 +1,6 @@
 local navic = require("nvim-navic")
 local navbuddy = require("nvim-navbuddy")
 
-local utils = require("utils")
-
 navic.setup({
   lsp = {
     auto_attach = false, -- Enable to have nvim-navic automatically attach to every LSP for current buffer
@@ -31,11 +29,8 @@ function _G.get_navic_winbar()
   return ""
 end
 
-local au = vim.api.nvim_create_autocmd
-local augroup = vim.api.nvim_create_augroup
-
-au("LspAttach", {
-  group = augroup("navic_attach", { clear = true }),
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("navic_attach", { clear = true }),
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
     if client and client.server_capabilities.documentSymbolProvider then
@@ -45,8 +40,8 @@ au("LspAttach", {
   end,
 })
 
-au("CursorMoved", {
-  group = augroup("navic_winbar", { clear = true }),
+vim.api.nvim_create_autocmd("CursorMoved", {
+  group = vim.api.nvim_create_augroup("navic_winbar", { clear = true }),
   desc = "Toggle winbar based on buffer filetype",
   callback = function(args)
     local ft = vim.bo[args.buf].filetype
@@ -64,8 +59,8 @@ au("CursorMoved", {
   end,
 })
 
-au({ "WinEnter", "WinResized" }, {
-  group = augroup("navic_winbar_toggle", { clear = true }),
+vim.api.nvim_create_autocmd({ "WinEnter", "WinResized" }, {
+  group = vim.api.nvim_create_augroup("navic_winbar_toggle", { clear = true }),
   desc = "Hide winbar when any blame window is open",
   callback = function()
     vim.schedule(function()
@@ -99,4 +94,7 @@ au({ "WinEnter", "WinResized" }, {
   end,
 })
 
-utils.map("n", "<leader>en", "<cmd>Navbuddy<cr>", { desc = "Navbuddy" })
+-- stylua: ignore
+local open = function() navbuddy.open() end
+
+vim.keymap.set("n", "<leader>en", open, { desc = "Navbuddy" })

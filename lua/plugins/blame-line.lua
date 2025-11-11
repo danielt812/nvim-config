@@ -1,7 +1,5 @@
 local blame_line = require("blame_line")
 
-local utils = require("utils")
-
 blame_line.setup({
   -- whether the blame line should be shown in visual modes
   show_in_visual = false,
@@ -45,4 +43,4 @@ blame_line.setup({
   delay = 0,
 })
 
-utils.map("n", "<leader>gb", "<cmd>BlameLineToggle<cr>", { desc = "Blame line" })
+vim.keymap.set("n", "<leader>gb", "<cmd>BlameLineToggle<cr>", { desc = "Blame line" })

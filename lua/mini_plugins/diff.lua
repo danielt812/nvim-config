@@ -29,11 +29,8 @@ diff.setup({
   },
 })
 
-local au = vim.api.nvim_create_autocmd
-local augroup = vim.api.nvim_create_augroup
-
-au("User", {
-  group = augroup("minidiff_summary", { clear = true }),
+vim.api.nvim_create_autocmd("User", {
+  group = vim.api.nvim_create_augroup("minidiff_summary", { clear = true }),
   pattern = "MiniDiffUpdated",
   desc = "Format Mini Diff summary string with colors for statusline",
   callback = function(data)

@@ -14,14 +14,12 @@ pick.setup({
   },
 })
 
-local utils = require("utils")
-
 -- stylua: ignore start
-utils.map("n", "<leader>fc", "<cmd>Pick colorschemes<cr>", { desc = "Colorschemes" })
-utils.map("n", "<leader>fe", "<cmd>Pick explorer<cr>",     { desc = "Explorer" })
-utils.map("n", "<leader>ff", "<cmd>Pick files<cr>",        { desc = "Files" })
-utils.map("n", "<leader>fg", "<cmd>Pick grep_live<cr>",    { desc = "Livegrep" })
-utils.map("n", "<leader>fl", "<cmd>Pick hl_groups<cr>",    { desc = "Highlights" })
-utils.map("n", "<leader>fh", "<cmd>Pick help<cr>",         { desc = "Help" })
-utils.map("n", "<leader>fk", "<cmd>Pick keymaps<cr>",      { desc = "Keymaps" })
+vim.keymap.set("n", "<leader>fc", "<cmd>Pick colorschemes<cr>", { desc = "Colorschemes" })
+vim.keymap.set("n", "<leader>fe", "<cmd>Pick explorer<cr>",     { desc = "Explorer" })
+vim.keymap.set("n", "<leader>ff", "<cmd>Pick files<cr>",        { desc = "Files" })
+vim.keymap.set("n", "<leader>fg", "<cmd>Pick grep_live<cr>",    { desc = "Livegrep" })
+vim.keymap.set("n", "<leader>fl", "<cmd>Pick hl_groups<cr>",    { desc = "Highlights" })
+vim.keymap.set("n", "<leader>fh", "<cmd>Pick help<cr>",         { desc = "Help" })
+vim.keymap.set("n", "<leader>fk", "<cmd>Pick keymaps<cr>",      { desc = "Keymaps" })
 -- stylua: ignore end

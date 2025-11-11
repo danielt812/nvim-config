@@ -1,7 +1,5 @@
 local blame = require("blame")
 
-local utils = require("utils")
-
 -- Fugitive style
 blame.setup({
   date_format = "%Y/%m/%d %H:%M", -- string - Pattern for the date
@@ -47,4 +45,4 @@ local augroup = vim.api.nvim_create_augroup
 --   end,
 -- })
 
-utils.map("n", "<leader>gf", "<cmd>BlameToggle<cr>", { desc = "Blame file" })
+vim.keymap.set("n", "<leader>gb", "<cmd>BlameToggle<cr>", { desc = "Blame" })

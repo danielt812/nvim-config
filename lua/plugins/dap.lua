@@ -5,8 +5,6 @@ local dap_view = require("dap-view")
 -- https://github.com/theHamsta/nvim-dap-virtual-text
 local dap_virtual_text = require("nvim-dap-virtual-text")
 
-local utils = require("utils")
-
 vim.fn.sign_define("DapBreakpoint", {
   text = "",
   texthl = "DiagnosticSignError",
@@ -30,23 +28,19 @@ vim.fn.sign_define("DapStopped", {
 })
 
 -- stylua: ignore start
-utils.map("n", "<leader>db", dap.toggle_breakpoint, { desc = "Breakpoint" })
-utils.map("n", "<leader>dc", dap.continue,          { desc = "Continue"   })
-utils.map("n", "<leader>do", dap.step_over,         { desc = "Step over"  })
-utils.map("n", "<leader>dO", dap.step_out,          { desc = "Step out"   })
-utils.map("n", "<leader>di", dap.step_into,         { desc = "Step into"  })
-utils.map("n", "<leader>dv", dap_view.toggle,       { desc = "View"       })
+vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Breakpoint" })
+vim.keymap.set("n", "<leader>dc", dap.continue,          { desc = "Continue"   })
+vim.keymap.set("n", "<leader>do", dap.step_over,         { desc = "Step over"  })
+vim.keymap.set("n", "<leader>dO", dap.step_out,          { desc = "Step out"   })
+vim.keymap.set("n", "<leader>di", dap.step_into,         { desc = "Step into"  })
+vim.keymap.set("n", "<leader>dv", dap_view.toggle,       { desc = "View"       })
 -- stylua: ignore end
 
-dap.listeners.after.event_initialized["dapview"] = function()
-  dap_view.open()
-end
-dap.listeners.before.event_terminated["dapview"] = function()
-  dap_view.close()
-end
-dap.listeners.before.event_exited["dapview"] = function()
-  dap_view.close()
-end
+-- stylua: ignore start
+dap.listeners.after.event_initialized["dapview"] = function() dap_view.open()  end
+dap.listeners.before.event_terminated["dapview"] = function() dap_view.close() end
+dap.listeners.before.event_exited["dapview"]     = function() dap_view.close() end
+-- stylua: ignore end
 
 dap_view.setup({
   winbar = {
@@ -86,7 +80,7 @@ local lua_debug = mason_packages .. "/local-lua-debugger-vscode/extension/extens
 
 local osv = require("osv")
 
-utils.map("n", "<leader>dl", function()
+vim.keymap.set("n", "<leader>dl", function()
   osv.launch({ port = 8086 })
 end, { desc = "Launch Nvim debugger" })
 -- Lua

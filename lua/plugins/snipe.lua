@@ -1,5 +1,4 @@
 local snipe = require("snipe")
-local utils = require("utils")
 
 -- Setup Snipe
 snipe.setup({
@@ -48,7 +47,7 @@ local get_local_marks = function()
   return items
 end
 
-utils.map("n", "<leader>so", function()
+vim.keymap.set("n", "<leader>so", function()
   items = require("snipe.buffer").get_buffers()
   menu.config.open_win_override.title = " Open "
   menu:open(items, function(m, i)
@@ -59,7 +58,7 @@ utils.map("n", "<leader>so", function()
   end)
 end, { desc = "Open" })
 
-utils.map("n", "<leader>sd", function()
+vim.keymap.set("n", "<leader>sd", function()
   items = require("snipe.buffer").get_buffers()
   menu.config.open_win_override.title = " Delete "
   menu:open(items, function(m, i)
@@ -71,7 +70,7 @@ utils.map("n", "<leader>sd", function()
   end)
 end, { desc = "Delete" })
 
-utils.map("n", "<leader>sm", function()
+vim.keymap.set("n", "<leader>sm", function()
   items = get_local_marks()
   if vim.tbl_isempty(items) then
     vim.notify("No marks found", vim.log.levels.INFO)

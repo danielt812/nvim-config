@@ -1,8 +1,6 @@
 local treesj = require("treesj")
 local splitjoin = require("mini.splitjoin")
 
-local utils = require("utils")
-
 local langs = require("treesj.langs").presets
 
 -- Add fallback to all language
@@ -30,4 +28,7 @@ treesj.setup({
   dot_repeat = true,
 })
 
-utils.map("n", "J", "<cmd>TSJToggle<cr>", { desc = "Split/Join" })
+-- stylua: ignore
+local toggle = function() treesj.toggle() end
+
+vim.keymap.set("n", "J", toggle, { desc = "Split/Join" })

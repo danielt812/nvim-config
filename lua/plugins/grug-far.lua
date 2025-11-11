@@ -2,6 +2,7 @@ local grugfar = require("grug-far")
 
 grugfar.setup()
 
-local utils = require("utils")
+-- stylua: ignore
+local open = function() grugfar.open() end
 
-utils.map("n", "<leader>eg", "<cmd>GrugFar<cr>", { desc = "GrugFar" })
+vim.keymap.set("n", "<leader>eg", open, { desc = "GrugFar" })

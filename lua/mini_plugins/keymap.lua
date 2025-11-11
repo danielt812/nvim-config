@@ -6,24 +6,22 @@ local map_combo     = keymap.map_combo
 -- stylua: ignore end
 
 local tab_steps = {
-  "minisnippets_next",
-  "pmenu_next",
+  -- "minisnippets_next",
+  -- "pmenu_next",
   "increase_indent",
   "minisnippets_expand",
   "jump_after_tsnode",
   "jump_after_close",
 }
--- Smart tab
 map_multistep("i", "<Tab>", tab_steps)
 
 local shifttab_steps = {
-  "minisnippets_prev",
-  "pmenu_prev",
+  -- "minisnippets_prev",
+  -- "pmenu_prev",
   "decrease_indent",
   "jump_before_tsnode",
   "jump_before_open",
 }
--- Smart shift-tab
 map_multistep("i", "<S-Tab>", shifttab_steps)
 -- Use same keybinds as fzf
 -- i for regular completion, c for wildmenu
@@ -35,10 +33,8 @@ map_multistep({ "i", "c" }, "<C-CR>", { "pmenu_accept" })
 map_multistep("i", "<CR>", { "nvimautopairs_cr", "minipairs_cr" })
 map_multistep("i", "<BS>", { "nvimautopairs_bs", "minipairs_bs" })
 
--- Clear hl search on double esc
-local no_hlsearch = function()
-  vim.cmd("nohlsearch")
-end
+-- stylua: ignore
+local no_hlsearch = function() vim.cmd("nohlsearch") end
 
 map_combo({ "n", "i", "x", "c" }, "<Esc><Esc>", no_hlsearch)
 

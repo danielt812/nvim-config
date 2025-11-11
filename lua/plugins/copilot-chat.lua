@@ -1,6 +1,5 @@
 local copilot_chat = require("CopilotChat")
 local copilot = require("copilot")
-local utils = require("utils")
 
 copilot.setup({})
 
@@ -32,11 +31,11 @@ copilot_chat.setup({
 })
 
 -- stylua: ignore start
-utils.map("n", "<leader>cc", "<cmd>CopilotChatToggle<cr>",  { desc = "Chat" })
-utils.map("v", "<leader>ce", "<cmd>CopilotChatExplain<cr>", { desc = "Explain" })
-utils.map("v", "<leader>cr", "<cmd>CopilotChatReview<cr>",  { desc = "Review" })
-utils.map("v", "<leader>cf", "<cmd>CopilotChatFix<cr>",     { desc = "Fix" })
-utils.map("v", "<leader>ct", "<cmd>CopilotChatTests<cr>",   { desc = "Generate Tests" })
-utils.map("v", "<leader>cx", "<cmd>CopilotChatRefactor<cr>",{ desc = "Refactor" })
-utils.map("v", "<leader>cc", "<cmd>CopilotChatToggle<cr>",  { desc = "Toggle Chat" })
+vim.keymap.set("n", "<leader>cc", "<cmd>CopilotChatToggle<cr>",  { desc = "Chat" })
+vim.keymap.set("v", "<leader>ce", "<cmd>CopilotChatExplain<cr>", { desc = "Explain" })
+vim.keymap.set("v", "<leader>cr", "<cmd>CopilotChatReview<cr>",  { desc = "Review" })
+vim.keymap.set("v", "<leader>cf", "<cmd>CopilotChatFix<cr>",     { desc = "Fix" })
+vim.keymap.set("v", "<leader>ct", "<cmd>CopilotChatTests<cr>",   { desc = "Generate Tests" })
+vim.keymap.set("v", "<leader>cx", "<cmd>CopilotChatRefactor<cr>",{ desc = "Refactor" })
+vim.keymap.set("v", "<leader>cc", "<cmd>CopilotChatToggle<cr>",  { desc = "Toggle Chat" })
 -- stylua: ignore end

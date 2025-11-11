@@ -10,14 +10,14 @@ git.setup({
   },
 })
 
-local au = vim.api.nvim_create_autocmd
-local augroup = vim.api.nvim_create_augroup
-
-au("User", {
-  group = augroup("minigit_summary", { clear = true }),
+vim.api.nvim_create_autocmd("User", {
+  group = vim.api.nvim_create_augroup("minigit_summary", { clear = true }),
   pattern = "MiniGitUpdated",
   callback = function(data)
     local summary = vim.b[data.buf].minigit_summary
     vim.b[data.buf].minigit_summary_string = summary.head_name or nil
   end,
 })
+
+require("utils.git-conflict")
+require("utils.git-blame")

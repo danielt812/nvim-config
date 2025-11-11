@@ -10,6 +10,12 @@ animate.setup({
   scroll = {
     enable = true,
     timing = animate.gen_timing.linear({ duration = duration, unit = "total" }),
+    subscroll = animate.gen_subscroll.equal({
+      predicate = function(total_scroll)
+        -- Skip animation if only 1 line up/down
+        return math.abs(total_scroll) > 1
+      end,
+    }),
   },
   resize = {
     timing = animate.gen_timing.linear({ duration = duration, unit = "total" }),
@@ -22,13 +28,8 @@ animate.setup({
   },
 })
 
-local au = vim.api.nvim_create_autocmd
-local au_group = vim.api.nvim_create_augroup
-
-local group = au_group("mini_animate", { clear = true })
-
-au("User", {
-  group = group,
+vim.api.nvim_create_autocmd("User", {
+  group = vim.api.nvim_create_augroup("mini_animate", { clear = true }),
   pattern = "MiniAnimateDoneScroll",
   desc = "Center after scroll",
   callback = function()

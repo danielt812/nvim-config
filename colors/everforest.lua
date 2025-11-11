@@ -735,6 +735,8 @@ local highlights = {
   MiniIconsRed = { fg = palette.red, bg = palette.none },
   MiniIconsYellow = { fg = palette.yellow, bg = palette.none },
 
+  MiniIndentScopeSymbol = { fg = palette.white },
+  MiniIndentScopeSymbolOff = { fg = palette.red },
   MiniIndentscopePrefix = { fg = palette.none, bg = palette.none, nocombine = true },
 
   MiniJump2dSpot = { fg = palette.orange, bg = palette.none, bold = true, nocombine = true },

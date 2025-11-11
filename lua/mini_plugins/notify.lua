@@ -16,10 +16,8 @@ local lsp_progress_minus = function()
   end, notify.config.lsp_progress.duration_last + 1)
 end
 
-local au = vim.api.nvim_create_autocmd
-
-au("LspProgress", { pattern = "begin", callback = lsp_progress_plus })
-au("LspProgress", { pattern = "end", callback = lsp_progress_minus })
+vim.api.nvim_create_autocmd("LspProgress", { pattern = "begin", callback = lsp_progress_plus })
+vim.api.nvim_create_autocmd("LspProgress", { pattern = "end", callback = lsp_progress_minus })
 
 local format = function(notif)
   return notif.data.source == "lsp_progress" and notif.msg or notify.default_format(notif)
@@ -62,10 +60,12 @@ notify.setup({
 
 vim.notify = notify.make_notify()
 
-local map = function(mode, lhs, rhs, opts)
-  opts = vim.tbl_deep_extend("force", { silent = true }, opts or {})
-  vim.keymap.set(mode, lhs, rhs, opts)
-end
+-- stylua: ignore start
+local clear = function() notify.clear() end
+local history = function() notify.show_history() end
+-- stylua: ignore end
 
-map("n", "<leader>nc", "<cmd>lua MiniNotify.clear()<cr>", { desc = "Clear" })
-map("n", "<leader>nh", "<cmd>lua MiniNotify.history()<cr>", { desc = "History" })
+-- stylua: ignore start
+vim.keymap.set("n", "<leader>nc", clear,   { desc = "Clear" })
+vim.keymap.set("n", "<leader>nh", history, { desc = "History" })
+-- stylua: ignore end

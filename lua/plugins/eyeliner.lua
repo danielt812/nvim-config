@@ -1,8 +1,6 @@
 local demicolon = require("demicolon")
 local eyeliner = require("eyeliner")
 
-local utils = require("utils")
-
 demicolon.setup({
   horizontal_motions = false,
 })
@@ -22,7 +20,7 @@ local function eyeliner_jump(key)
   end
 end
 
-utils.map({ "n", "x", "o" }, "f", eyeliner_jump("f"), { expr = true })
-utils.map({ "n", "x", "o" }, "F", eyeliner_jump("F"), { expr = true })
-utils.map({ "n", "x", "o" }, "t", eyeliner_jump("t"), { expr = true })
-utils.map({ "n", "x", "o" }, "T", eyeliner_jump("T"), { expr = true })
+vim.keymap.set({ "n", "x", "o" }, "f", eyeliner_jump("f"), { expr = true })
+vim.keymap.set({ "n", "x", "o" }, "F", eyeliner_jump("F"), { expr = true })
+vim.keymap.set({ "n", "x", "o" }, "t", eyeliner_jump("t"), { expr = true })
+vim.keymap.set({ "n", "x", "o" }, "T", eyeliner_jump("T"), { expr = true })

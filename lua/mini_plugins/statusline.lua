@@ -5,14 +5,8 @@ statusline.setup({
   content = {
     active = function()
       -- NOTE these are custom highlight groups that are not part of MiniNvim
-      -- stylua: ignore start
-      local diagnostic_icons = {
-        ERROR = "",
-        WARN  = "",
-        INFO  = "",
-        HINT  = "",
-      }
-      -- stylua: ignore end
+      -- stylua: ignore
+      local diagnostic_icons = { ERROR = "", WARN  = "", INFO  = "", HINT  = "", }
 
       local diagnostic_symbols = {}
 

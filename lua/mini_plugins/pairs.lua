@@ -1,32 +1,21 @@
 local pairs = require("mini.pairs")
 
--- local word_pattern = "[^%w][^%w]"
-local word_pattern = [=[[%w%%%'%[%"%.%`%$]]=]
-
 pairs.setup({
   modes = { insert = true, command = true, terminal = false },
   mappings = {
-    ["("] = { action = "open", pair = "()", neigh_pattern = "[^\\]." },
-    ["["] = { action = "open", pair = "[]", neigh_pattern = "[^\\]." },
-    ["{"] = { action = "open", pair = "{}", neigh_pattern = "[^\\]." },
-
-    [")"] = { action = "close", pair = "()", neigh_pattern = "[^\\]." },
-    ["]"] = { action = "close", pair = "[]", neigh_pattern = "[^\\]." },
-    ["}"] = { action = "close", pair = "{}", neigh_pattern = "[^\\]." },
-
-    ['"'] = { action = "closeopen", pair = '""', neigh_pattern = word_pattern, register = { cr = false } },
-    ["'"] = { action = "closeopen", pair = "''", neigh_pattern = word_pattern, register = { cr = false } },
-    ["`"] = { action = "closeopen", pair = "``", neigh_pattern = word_pattern, register = { cr = false } },
+    ["("] = { neigh_pattern = "[^\\][%s>)%]},:]" },
+    ["["] = { neigh_pattern = "[^\\][%s>)%]},:]" },
+    ["{"] = { neigh_pattern = "[^\\][%s>)%]},:]" },
+    ['"'] = { neigh_pattern = "[%s<(%[{][%s>)%]},:]" },
+    ["'"] = { neigh_pattern = "[%s<(%[{][%s>)%]},:]" },
+    ["`"] = { neigh_pattern = "[%s<(%[{][%s>)%]},:]" },
+    ["<"] = { action = "open", pair = "<>", neigh_pattern = "[\r%w\"'`].", register = { cr = false } },
+    [">"] = { action = "close", pair = "<>", register = { cr = false } },
   },
 })
 
-local au = vim.api.nvim_create_autocmd
-local augroup = vim.api.nvim_create_augroup
-
-local group = augroup("mini_pairs", { clear = true })
-
-au({ "InsertEnter", "InsertCharPre" }, {
-  group = group,
+vim.api.nvim_create_autocmd({ "InsertEnter", "InsertCharPre" }, {
+  group = vim.api.nvim_create_augroup("mini_pairs", { clear = true }),
   desc = "Disable mini.pairs inside Tree-sitter string nodes",
   callback = function()
     local ts_utils = require("nvim-treesitter.ts_utils")

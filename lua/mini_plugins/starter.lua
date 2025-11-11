@@ -16,12 +16,12 @@ starter.setup({
   header = header,
   items = {
       -- stylua: ignore start
-      { name = "Files",   action  = "Pick files",       section = "Actions" },
-      { name = "Grep",    action  = "Pick grep_live",   section = "Actions" },
-      { name = "Oil",     action  = "Oil",              section = "Actions" },
-      { name = "Mason",   action  = "Mason",            section = "Actions" },
-      { name = "Visited", action  = "Pick visit_paths", section = "Actions" },
-      { name = "Quit",    action  = "qa!",              section = "Actions" },
+      { name = "Files",    action  = "Pick files",           section = "Actions" },
+      { name = "Grep",     action  = "Pick grep_live",       section = "Actions" },
+      { name = "Explorer", action  = "lua MiniFiles.open()", section = "Actions" },
+      { name = "Mason",    action  = "Mason",                section = "Actions" },
+      { name = "Visited",  action  = "Pick visit_paths",     section = "Actions" },
+      { name = "Quit",     action  = "qa!",                  section = "Actions" },
     --stylua: ignore end
     starter.sections.recent_files(5, true, false),
     starter.sections.sessions(5, true),
@@ -33,3 +33,8 @@ starter.setup({
   },
   footer = nvim_version,
 })
+
+-- stylua: ignore
+local open = function() starter.open() end
+
+vim.keymap.set("n", "<leader>es", open, { desc = "Starter" })

@@ -1,8 +1,6 @@
 local toggleterm = require("toggleterm")
 local Terminal = require("toggleterm.terminal").Terminal
 
-local utils = require("utils")
-
 toggleterm.setup({
   size = function(term)
     if term.direction == "horizontal" then
@@ -69,8 +67,8 @@ _G.terminal_float = function()
 end
 
 -- stylua: ignore start
-utils.map("n", "<leader>gg", "<cmd>lua lazygit()<cr>",             { desc = "Lazygit" })
-utils.map("n", "<leader>tv", "<cmd>lua terminal_vertical()<cr>",   { desc = "Vertical" })
-utils.map("n", "<leader>th", "<cmd>lua terminal_horizontal()<cr>", { desc = "Horizontal" })
-utils.map("n", "<leader>tf", "<cmd>lua terminal_float()<cr>",      { desc = "Float" })
+vim.keymap.set("n", "<leader>gg", "<cmd>lua lazygit()<cr>",             { desc = "Lazygit" })
+vim.keymap.set("n", "<leader>tv", "<cmd>lua terminal_vertical()<cr>",   { desc = "Vertical" })
+vim.keymap.set("n", "<leader>th", "<cmd>lua terminal_horizontal()<cr>", { desc = "Horizontal" })
+vim.keymap.set("n", "<leader>tf", "<cmd>lua terminal_float()<cr>",      { desc = "Float" })
 -- stylua: ignore end
