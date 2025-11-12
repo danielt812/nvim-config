@@ -10,10 +10,17 @@ vim.api.nvim_create_autocmd("User", {
     local win_src = e.data.win_source
     local buf = e.buf
     local win = e.data.win_stdout
+
+    if e.data.cmd_input.mods:match("vertical") then
+      vim.cmd("wincmd H")
+    end
     -- Opts
     vim.bo[buf].modifiable = false
     vim.wo[win].wrap = false
     vim.wo[win].cursorline = true
+    vim.wo[win].number = false
+    vim.wo[win].relativenumber = false
+
     -- View
     vim.fn.winrestview({ topline = vim.fn.line("w0", win_src) })
     vim.api.nvim_win_set_cursor(0, { vim.fn.line(".", win_src), 0 })
