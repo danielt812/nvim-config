@@ -40,37 +40,43 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-vim.api.nvim_create_autocmd("CursorMoved", {
-  group = vim.api.nvim_create_augroup("navic_winbar", { clear = true }),
-  desc = "Toggle winbar based on buffer filetype",
-  callback = function(args)
-    local ft = vim.bo[args.buf].filetype
+-- vim.api.nvim_create_autocmd("CursorMoved", {
+--   group = vim.api.nvim_create_augroup("navic_winbar", { clear = true }),
+--   desc = "Toggle winbar based on buffer filetype",
+--   callback = function(args)
+--     local ft = vim.bo[args.buf].filetype
 
-    -- Don't touch winbar in DAP UI buffers or Kulala buffers
-    if ft:match("^dap") or ft:match("kulala") or ft == "http" then
-      return
-    end
+--     -- Don't touch winbar in DAP UI buffers or Kulala buffers
+--     if ft:match("^dap") or ft:match("kulala") or ft == "http" then
+--       return
+--     end
 
-    if navic.is_available(args.buf) then
-      vim.wo.winbar = "%{%v:lua.get_navic_winbar()%}"
-    else
-      vim.wo.winbar = ""
-    end
-  end,
-})
+--     if navic.is_available(args.buf) then
+--       vim.wo.winbar = "%{%v:lua.get_navic_winbar()%}"
+--     else
+--       vim.wo.winbar = ""
+--     end
+--   end,
+-- })
 
-vim.api.nvim_create_autocmd({ "WinEnter", "WinResized" }, {
+vim.api.nvim_create_autocmd({ "CursorMoved", "WinEnter", "WinResized" }, {
   group = vim.api.nvim_create_augroup("navic_winbar_toggle", { clear = true }),
-  desc = "Hide winbar when any blame window is open",
-  callback = function()
+  desc = "Conditionally toggle winbar",
+  callback = function(args)
     vim.schedule(function()
+      local ft = vim.bo[args.buf].filetype
+      -- Don't override winbar on these filetypes
+      if ft:match("^dap") or ft:match("kulala") or ft == "http" then
+        return
+      end
+
       local has_blame = false
 
       -- Check if any window has a blame buffer
       for _, win_id in ipairs(vim.api.nvim_list_wins()) do
         local buf_id = vim.api.nvim_win_get_buf(win_id)
-        local ft = vim.api.nvim_get_option_value("filetype", { buf = buf_id })
-        if ft == "blame" or ft == "gitblame" or ft == "git" then
+        local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = buf_id })
+        if buf_ft == "blame" or buf_ft == "gitblame" or buf_ft == "git" then
           has_blame = true
           break
         end
