@@ -69,9 +69,13 @@ now(function()
     vim.g["loaded_" .. plugin] = 1
   end
 
+  add({ source = "b0o/SchemaStore.nvim" })
+
   conf("options")
   conf("keymaps")
   conf("autocmds")
+  conf("lsp")
+  conf("diagnostics")
 
   vim.cmd("colorscheme everforest")
 end)
@@ -167,13 +171,8 @@ later(function()
   plug("dap")
 end)
 
--- LSP
+-- Formatting/Linting
 later(function()
-  add({ source = "b0o/SchemaStore.nvim" })
-
-  conf("lsp")
-  conf("diagnostics")
-
   add({
     source = "nvimtools/none-ls.nvim",
   })
