@@ -70,9 +70,44 @@ vim.api.nvim_create_autocmd("QuitPre", {
       local ft = vim.bo[buf].filetype
 
       -- match by filetype
-      if ft == "dap-view" or ft == "grug-far" then
+      if ft == "dap-view" or ft == "grug-far" or ft == "qf" then
         pcall(vim.api.nvim_win_close, win, true)
       end
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufReadPre", {
+  callback = function(args)
+    local file = args.file
+    local max_filesize = 1024 * 200 -- 200 KB threshold, adjust as needed
+    local ok, stats = pcall(vim.loop.fs_stat, file)
+    if ok and stats and stats.size > max_filesize then
+      vim.schedule(function()
+        -- Disable features known to slow down large files
+        -- vim.cmd("syntax off")
+        -- vim.cmd("filetype off")
+        -- vim.opt_local.foldmethod = "manual"
+
+        if vim.treesitter.highlighter then
+          vim.treesitter.stop(args.buf)
+        end
+
+        -- Optional: disable LSP
+        -- for _, client in pairs(vim.lsp.get_clients({ bufnr = args.buf })) do
+        --   vim.lsp.buf_detach_client(args.buf, client.id)
+        -- end
+
+        vim.bo.swapfile = false
+        vim.bo.undofile = false
+        vim.bo.bufhidden = "unload"
+
+        vim.notify("Large file detected — disabling Tree-sitter", vim.log.levels.WARN)
+      end)
+
+      vim.defer_fn(function()
+        vim.treesitter.start(args.buf)
+      end, 3000)
     end
   end,
 })

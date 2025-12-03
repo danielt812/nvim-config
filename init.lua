@@ -114,7 +114,7 @@ later(function()
   mplug("misc")
   mplug("move")
   mplug("operators")
-  mplug("pairs") -- Going to try this again, can't get it to behave how I am wanting yet
+  -- mplug("pairs") -- Going to try this again, can't get it to behave how I am wanting yet
   mplug("pick")
   mplug("snippets")
   mplug("splitjoin")
@@ -146,10 +146,9 @@ end)
 
 -- Autopair/Autotag
 later(function()
-  -- add({ source = "windwp/nvim-autopairs" })
+  add({ source = "windwp/nvim-autopairs" })
   add({ source = "windwp/nvim-ts-autotag" })
-
-  -- plug("autopairs")
+  plug("autopairs")
   plug("autotag")
 end)
 
@@ -231,6 +230,9 @@ later(function()
 
   add({ source = "sethen/line-number-change-mode.nvim" })
   plug("line-number-change-mode")
+
+  add({ source = "stevearc/quicker.nvim" })
+  plug("quicker")
 
   -- Trailing cursor
   add({ source = "sphamba/smear-cursor.nvim" })

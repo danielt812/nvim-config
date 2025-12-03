@@ -1,4 +1,5 @@
 local bufremove = require("mini.bufremove")
+local starter = require("mini.starter")
 
 bufremove.setup({
   use_vim_settings = true,
@@ -11,21 +12,22 @@ local open_starter_if_empty_buffer = function()
   -- stylua: ignore
   if not is_empty then return end
 
-  require("mini.starter").open()
+  starter.open()
   vim.cmd(buf_id .. "bwipeout")
 end
 
-_G.bufdelete = function(...)
+local bufdelete = function(...)
+  print(vim.inspect(...))
   bufremove.delete(...)
   open_starter_if_empty_buffer()
 end
 
-_G.bufwipeout = function(...)
+local bufwipeout = function(...)
   bufremove.wipeout(...)
   open_starter_if_empty_buffer()
 end
 
-_G.bufdelete_others = function(opts)
+local bufdelete_others = function(opts)
   opts = opts or {}
   local force = opts.force or false
 
@@ -54,6 +56,6 @@ _G.bufdelete_others = function(opts)
   open_starter_if_empty_buffer()
 end
 
-vim.keymap.set("n", "<leader>bd", "<cmd>lua bufdelete()<cr>", { desc = "Delete Current" })
-vim.keymap.set("n", "<leader>bw", "<cmd>lua bufwipeout()<cr>", { desc = "Wipeout Current" })
-vim.keymap.set("n", "<leader>bo", "<cmd>lua bufdelete_others()<cr>", { desc = "Delete Others" })
+vim.keymap.set("n", "<leader>bd", bufdelete, { desc = "Delete Current" })
+vim.keymap.set("n", "<leader>bw", bufwipeout, { desc = "Wipeout Current" })
+vim.keymap.set("n", "<leader>bo", bufdelete_others, { desc = "Delete Others" })

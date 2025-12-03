@@ -39,6 +39,7 @@ return {
   -- https://github.com/Microsoft/vscode-eslint#settings-options
   settings = {
     validate = "on",
+    ---@diagnostic disable-next-line: assign-type-mismatch
     packageManager = nil,
     useESLintClass = false,
     experimental = {

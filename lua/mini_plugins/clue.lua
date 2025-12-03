@@ -46,8 +46,8 @@ clue.setup({
     { mode = "n", keys = "<leader>c",  desc = "+Copilot" },
     { mode = "v", keys = "<leader>c",  desc = "+Copilot" },
 
-    { mode = "n", keys = "<leader>d",  desc = "+Debug" },
-    { mode = "v", keys = "<leader>d",  desc = "+Debug" },
+    { mode = "n", keys = "<leader>d",  desc = "+Debugger" },
+    { mode = "v", keys = "<leader>d",  desc = "+Debugger" },
 
     { mode = "n", keys = "<leader>e",  desc = "+Editor" },
     { mode = "v", keys = "<leader>e",  desc = "+Editor" },
@@ -63,6 +63,9 @@ clue.setup({
 
     { mode = "n", keys = "<leader>n",  desc = "+Notify" },
     { mode = "v", keys = "<leader>n",  desc = "+Notify" },
+
+    { mode = "n", keys = "<leader>q",  desc = "+Quick Fix" },
+    { mode = "v", keys = "<leader>q",  desc = "+Quick Fix" },
 
     { mode = "n", keys = "<leader>r",  desc = "+Rest" },
     { mode = "v", keys = "<leader>r",  desc = "+Rest" },
