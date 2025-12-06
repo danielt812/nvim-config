@@ -40,25 +40,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
--- vim.api.nvim_create_autocmd("CursorMoved", {
---   group = vim.api.nvim_create_augroup("navic_winbar", { clear = true }),
---   desc = "Toggle winbar based on buffer filetype",
---   callback = function(args)
---     local ft = vim.bo[args.buf].filetype
-
---     -- Don't touch winbar in DAP UI buffers or Kulala buffers
---     if ft:match("^dap") or ft:match("kulala") or ft == "http" then
---       return
---     end
-
---     if navic.is_available(args.buf) then
---       vim.wo.winbar = "%{%v:lua.get_navic_winbar()%}"
---     else
---       vim.wo.winbar = ""
---     end
---   end,
--- })
-
 vim.api.nvim_create_autocmd({ "CursorMoved", "WinEnter", "WinResized" }, {
   group = vim.api.nvim_create_augroup("navic_winbar_toggle", { clear = true }),
   desc = "Conditionally toggle winbar",
