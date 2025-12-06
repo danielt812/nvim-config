@@ -1,10 +1,13 @@
 -- Clone 'mini.nvim' manually in a way that it gets managed by 'mini.deps'
-local path_package = vim.fn.stdpath("data") .. "/site/"
-local mini_path = path_package .. "pack/deps/start/mini.nvim"
+-- Put this at the top of 'init.lua'
+local path_package = vim.fn.stdpath("data") .. "/site"
+local mini_path = path_package .. "/pack/deps/start/mini.nvim"
 if not vim.loop.fs_stat(mini_path) then
+  vim.cmd('echo "Installing `mini.nvim`" | redraw')
   local clone_cmd = { "git", "clone", "--filter=blob:none", "https://github.com/nvim-mini/mini.nvim", mini_path }
   vim.fn.system(clone_cmd)
   vim.cmd("packadd mini.nvim | helptags ALL")
+  vim.cmd('echo "Installed `mini.nvim`" | redraw')
 end
 
 local deps = require("mini.deps")
@@ -172,9 +175,7 @@ end)
 
 -- Formatting/Linting
 later(function()
-  add({
-    source = "nvimtools/none-ls.nvim",
-  })
+  add({ source = "nvimtools/none-ls.nvim" })
   plug("null-ls")
 end)
 
@@ -229,6 +230,7 @@ later(function()
   add({ source = "sethen/line-number-change-mode.nvim" })
   plug("line-number-change-mode")
 
+  -- Quickfix qol
   add({ source = "stevearc/quicker.nvim" })
   plug("quicker")
 
@@ -282,6 +284,8 @@ later(function()
   plug("ufo")
 
   add({ source = "mg979/vim-visual-multi" })
+
+  plug("live-server")
 end)
 
 -- LSP extras
@@ -328,8 +332,4 @@ later(function()
     },
   })
   plug("copilot-chat")
-end)
-
-later(function()
-  require("utils.live-server")
 end)
