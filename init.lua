@@ -304,12 +304,6 @@ later(function()
   plug("toggleterm")
 end)
 
--- Rest client
-later(function()
-  add({ source = "mistweaverco/kulala.nvim" })
-  plug("kulala")
-end)
-
 -- For fun
 later(function()
   add({ source = "Eandrju/cellular-automaton.nvim" })
