@@ -14,7 +14,6 @@ return {
     "package.json",
     "tsconfig.json",
   },
-
   init_options = { hostInfo = "neovim" },
   single_file_support = true,
   settings = {

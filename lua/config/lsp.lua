@@ -53,13 +53,11 @@ local servers = {
   "dockerls",
   "emmet_language_server",
   "eslint",
-  "graphql",
   "html",
   "jsonls",
   "lua_ls",
   "tailwindcss",
-  "texlab",
-  "ts_ls",
+  "tsgo",
   "yamlls",
 }
 

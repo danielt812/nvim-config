@@ -1,8 +1,5 @@
 return {
-  cmd = { "vtsls", "--stdio" },
-  init_options = {
-    hostInfo = "neovim",
-  },
+  cmd = { "tsgo", "--lsp", "--stdio" },
   filetypes = {
     "javascript",
     "javascriptreact",
@@ -13,8 +10,14 @@ return {
   },
   root_markers = {
     "tsconfig.json",
-    "package.json",
     "jsconfig.json",
+    "package.json",
     ".git",
+    "tsconfig.base.json",
+  },
+  settings = {
+    diagnostics = {
+      ignoredCodes = { 80001 },
+    },
   },
 }
