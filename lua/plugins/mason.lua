@@ -48,7 +48,7 @@ lsp_config.setup({
     "jsonls",
     "lua_ls",
     "tailwindcss",
-    "vtsls",
+    "tsgo",
     "yamlls",
   },
 })
