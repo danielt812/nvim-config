@@ -69,6 +69,11 @@ for _, name in ipairs(servers) do
     conf = {}
   end
 
+  if name == "emmet_language_server" then
+    local kinds = vim.lsp.protocol.CompletionItemKind
+    kinds.Emmet = "󰅴 Emmet Abbreviation"
+  end
+
   vim.lsp.config[name] = vim.tbl_deep_extend("force", {
     on_attach = on_attach,
     capabilities = capabilities,

@@ -19,4 +19,7 @@ return {
   },
   root_markers = { ".git" },
   single_file_support = true,
+  init_options = {
+    showSuggestionsAsSnippets = true,
+  },
 }

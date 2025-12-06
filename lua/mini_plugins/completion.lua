@@ -1,14 +1,19 @@
 local completion = require("mini.completion")
 
-local kind_priority = { Text = -1, Snippet = 99 }
-local opts = { filtersort = "fuzzy", kind_priority = kind_priority }
+local opts = {
+  filtersort = "fuzzy",
+  kind_priority = {
+    Text = -1,
+    Snippet = 99,
+  },
+}
+
 local process_items = function(items, base)
   local processed = completion.default_process_items(items, base, opts)
 
   for _, item in ipairs(processed) do
-    print(item.menu)
-    if item.menu and item.menu:sub(-2) == " S" then
-      item.menu = item.menu:sub(1, -3) -- strip trailing " S"
+    if item.detail == "Emmet Abbreviation" then
+      item.kind = "Emmet"
     end
   end
 
