@@ -217,11 +217,9 @@ end)
 
 -- UI
 later(function()
-  -- Indention guides and scope
   add({ source = "shellRaining/hlchunk.nvim" })
   plug("hlchunk")
 
-  -- Extra animations
   add({ source = "rachartier/tiny-glimmer.nvim" })
   plug("tiny-glimmer")
 
@@ -330,4 +328,8 @@ later(function()
     },
   })
   plug("copilot-chat")
+end)
+
+later(function()
+  require("utils.live-server")
 end)
