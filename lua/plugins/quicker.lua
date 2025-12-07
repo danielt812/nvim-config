@@ -1,5 +1,13 @@
 local quicker = require("quicker")
 
+local expand = function()
+  quicker.expand()
+end
+
+local collapse = function()
+  quicker.collapse()
+end
+
 quicker.setup({
   -- Local options to set for quickfix
   opts = {
@@ -14,10 +22,10 @@ quicker.setup({
   use_default_opts = true,
   -- Keymaps to set for the quickfix buffer
   keys = {
-    -- { ">", "<cmd>lua require('quicker').expand()<CR>", desc = "Expand quickfix content" },
+    { "<cr>", "<cr>", desc = "Jump to position" },
+    { ">", expand, desc = "Expand quickfix content" },
+    { "<", collapse, desc = "Expand quickfix content" },
   },
-  -- Callback function to run any custom logic or keymaps for the quickfix buffer
-  on_qf = function(bufnr) end,
   edit = {
     -- Enable editing the quickfix like a normal buffer
     enabled = true,
@@ -47,18 +55,6 @@ quicker.setup({
     N = " ",
     H = " ",
   },
-  -- Border characters
-  borders = {
-    vert = "┃",
-    -- Strong headers separate results from different files
-    strong_header = "━",
-    strong_cross = "╋",
-    strong_end = "┫",
-    -- Soft headers separate results within the same file
-    soft_header = "╌",
-    soft_cross = "╂",
-    soft_end = "┨",
-  },
   -- How to trim the leading whitespace from results. Can be 'all', 'common', or false
   trim_leading_whitespace = "common",
   -- Maximum width of the filename column
@@ -72,7 +68,7 @@ quicker.setup({
 })
 
 local open_diagnostics = function()
-  vim.diagnostic.setqflist()
+  vim.diagnostic.setqflist({ bufnr = 0 })
 end
 
 vim.keymap.set("n", "<leader>qd", open_diagnostics, { desc = "Diagnostics" })
