@@ -127,6 +127,11 @@ later(function()
   mplug("trailspace")
 end)
 
+-- Plenary dependency
+now(function()
+  add({ source = "nvim-lua/plenary.nvim" })
+end)
+
 -- Filetype rendering
 now(function()
   add({ source = "OXY2DEV/markview.nvim" })
@@ -142,9 +147,10 @@ now(function()
   })
 end)
 
--- Plenary dependency
-now(function()
-  add({ source = "nvim-lua/plenary.nvim" })
+-- Formatting/Linting
+later(function()
+  add({ source = "nvimtools/none-ls.nvim" })
+  plug("null-ls")
 end)
 
 -- Autopair/Autotag
@@ -155,6 +161,7 @@ later(function()
   plug("autotag")
 end)
 
+-- Window movement
 later(function()
   add({ source = "aserowy/tmux.nvim" })
   plug("tmux")
@@ -166,17 +173,10 @@ later(function()
     source = "igorlfs/nvim-dap-view",
     depends = {
       "mfussenegger/nvim-dap",
-      "jbyuki/one-small-step-for-vimkind",
       "theHamsta/nvim-dap-virtual-text",
     },
   })
   plug("dap")
-end)
-
--- Formatting/Linting
-later(function()
-  add({ source = "nvimtools/none-ls.nvim" })
-  plug("null-ls")
 end)
 
 -- Git
@@ -188,15 +188,11 @@ later(function()
   -- plug("blame-line")
 end)
 
+-- Executables package manager
 later(function()
   -- Mason
   add({
     source = "mason-org/mason.nvim",
-    depends = {
-      "mason-org/mason-lspconfig.nvim",
-      "jay-babu/mason-null-ls.nvim",
-      "jay-babu/mason-nvim-dap.nvim",
-    },
     hooks = {
       post_checkout = function()
         vim.cmd("MasonUpdate")
@@ -298,12 +294,6 @@ later(function()
     depends = { "MunifTanjim/nui.nvim" },
   })
   plug("nav")
-end)
-
--- Terminal
-later(function()
-  add({ source = "akinsho/toggleterm.nvim" })
-  plug("toggleterm")
 end)
 
 -- For fun

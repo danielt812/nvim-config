@@ -29,43 +29,31 @@ mason.setup({
   },
 })
 
--- stylua: ignore start
-local lsp_config = require("mason-lspconfig")
-local null_ls    = require("mason-null-ls")
-local dap        = require("mason-nvim-dap")
--- stylua: ignore end
+local ensure_installed = {
+  -- LSP
+  "angular-language-server",
+  "bash-language-server",
+  "css-lsp",
+  "emmet-language-server",
+  "eslint-lsp",
+  "html-lsp",
+  "json-lsp",
+  "lua-language-server",
+  "tailwindcss-language-server",
+  "tsgo",
+  "yaml-language-server",
+  -- Formatters/Linters
+  "prettierd",
+  "shfmt",
+  "stylua",
+  -- DAP
+  "js-debug-adapter",
+}
 
-lsp_config.setup({
-  automatic_enable = false,
-  automatic_installation = true,
-  ensure_installed = {
-    "angularls",
-    "bashls",
-    "cssls",
-    "emmet_language_server",
-    "eslint",
-    "html",
-    "jsonls",
-    "lua_ls",
-    "tailwindcss",
-    "tsgo",
-    "yamlls",
-  },
-})
+local installed_package_names = require("mason-registry").get_installed_package_names()
 
-null_ls.setup({
-  ensure_installed = {
-    "stylua",
-    "prettierd",
-    "shfmt",
-  },
-  automatic_installation = true,
-})
-
-dap.setup({
-  ensure_installed = {
-    "lua",
-    "js",
-  },
-  automatic_installation = true,
-})
+for _, pkg in pairs(ensure_installed) do
+  if not vim.tbl_contains(installed_package_names, pkg) then
+    vim.cmd("MasonInstall " .. pkg)
+  end
+end

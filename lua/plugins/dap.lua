@@ -76,13 +76,7 @@ dap_virtual_text.setup({
 
 local mason_packages = vim.fn.stdpath("data") .. "/mason/packages"
 local js_debug = mason_packages .. "/js-debug-adapter/js-debug/src/dapDebugServer.js"
-local lua_debug = mason_packages .. "/local-lua-debugger-vscode/extension/extension/debugAdapter.js"
 
-local osv = require("osv")
-
-vim.keymap.set("n", "<leader>dl", function()
-  osv.launch({ port = 8086 })
-end, { desc = "Launch Nvim debugger" })
 -- Lua
 dap.configurations.lua = {
   { type = "nlua", request = "attach", name = "Attach to running Neovim instance" },
