@@ -66,9 +66,3 @@ quicker.setup({
     return vim.o.columns - start_col
   end,
 })
-
-local open_diagnostics = function()
-  vim.diagnostic.setqflist({ bufnr = 0 })
-end
-
-vim.keymap.set("n", "<leader>qd", open_diagnostics, { desc = "Diagnostics" })

@@ -28,3 +28,9 @@ local diagnostic_opts = {
 }
 
 vim.diagnostic.config(diagnostic_opts)
+
+local set_qf_list = function()
+  vim.diagnostic.setqflist({ bufnr = 0 })
+end
+
+vim.keymap.set("n", "<leader>qd", set_qf_list, { desc = "Diagnostics" })
