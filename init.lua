@@ -99,6 +99,7 @@ later(function()
   mplug("animate")
   mplug("bufremove")
   mplug("clue")
+  mplug("cmdline")
   mplug("colors")
   mplug("comment")
   mplug("completion")
@@ -259,10 +260,6 @@ later(function()
     depends = { "mawkler/demicolon.nvim" },
   })
   plug("eyeliner")
-
-  -- Line peek
-  add({ source = "nacro90/numb.nvim" })
-  plug("numb")
 
   -- Search and replace
   add({ source = "MagicDuck/grug-far.nvim" })
