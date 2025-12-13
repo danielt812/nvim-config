@@ -77,50 +77,6 @@ dap_virtual_text.setup({
 local mason_packages = vim.fn.stdpath("data") .. "/mason/packages"
 local js_debug = mason_packages .. "/js-debug-adapter/js-debug/src/dapDebugServer.js"
 
--- Lua
-dap.configurations.lua = {
-  { type = "nlua", request = "attach", name = "Attach to running Neovim instance" },
-}
-
-dap.adapters.nlua = function(callback)
-  callback({
-    type = "server",
-    host = "127.0.0.1",
-    port = 8086,
-  })
-end
-
--- dap.adapters["local-lua"] = {
---   type = "executable",
---   command = "node",
---   args = {
---     lua_debug,
---   },
---   enrich_config = function(config, on_config)
---     if not config["extensionPath"] then
---       local c = vim.deepcopy(config)
---       c.extensionPath = mason_packages .. "/local-lua-debugger-vscode/extension"
---       on_config(c)
---     else
---       on_config(config)
---     end
---   end,
--- }
-
--- dap.configurations.lua = {
---   {
---     name = "Current file (local-lua-dbg, lua)",
---     type = "local-lua",
---     request = "launch",
---     cwd = "${workspaceFolder}",
---     repl_lang = "lua",
---     program = {
---       lua = "luajit",
---       file = "${file}",
---     },
---   },
--- }
-
 -- Javascript
 dap.adapters["pwa-node"] = {
   type = "server",

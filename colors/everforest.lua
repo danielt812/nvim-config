@@ -82,7 +82,7 @@ local highlights = {
 -- stylua: ignore start
   Cursor       = { fg   = palette.none,  bg = palette.none, reverse = true },
   lCursor      = { fg   = palette.none,  bg = palette.none, reverse = true },
-  CursorLineNr = { fg   = palette.grey1, bg = palette.bg0 },
+  CursorLineNr = { fg   = palette.green, bg = palette.bg0 },
   CursorLine   = { fg   = palette.none,  bg = palette.bg1 },
   CursorIM     = { link = "Cursor" },
   TermCursor   = { link = "Cursor" },
@@ -91,6 +91,12 @@ local highlights = {
   LineNr       = { fg = palette.bg5, bg = palette.none },
   LineNrAbove  = { link = "LineNr" },
   LineNrBelow  = { link = "LineNr" },
+  -- stylua: ignore end
+
+  -- stylua: ignore start
+  CursorLineNrNormal  = { fg = palette.statusline1, bg = palette.bg0 },
+  CursorLineNrInsert  = { fg = palette.statusline2, bg = palette.bg0 },
+  CursorLineNrVisual  = { fg = palette.statusline3, bg = palette.bg0 },
   -- stylua: ignore end
 
   -- stylua: ignore start
@@ -898,12 +904,13 @@ local highlights = {
   FSPrefix = { fg = palette.fg, bg = palette.bg0, bold = true },
   FSSuffix = { fg = palette.grey1, bg = palette.none },
 
-  -- sethen/line-number-change-mode.nvim
   -- stylua: ignore start
-  NumberColumnModeVisual  = { fg = palette.red,    bg = palette.bg0 },
+
+
   NumberColumnModeInsert  = { fg = palette.fg,     bg = palette.bg0 },
   NumberColumnModeNormal  = { fg = palette.green,  bg = palette.bg0 },
   NumberColumnModeReplace = { fg = palette.orange, bg = palette.bg0 },
+  NumberColumnModeVisual  = { fg = palette.red,    bg = palette.bg0 },
   -- stylua: ignore end
 }
 

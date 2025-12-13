@@ -64,11 +64,11 @@ clue.setup({
     { mode = "n", keys = "<leader>n",  desc = "+Notify" },
     { mode = "v", keys = "<leader>n",  desc = "+Notify" },
 
+    { mode = "n", keys = "<leader>o",  desc = "+Overseer" },
+    { mode = "v", keys = "<leader>o",  desc = "+Overseer" },
+
     { mode = "n", keys = "<leader>q",  desc = "+Quick Fix" },
     { mode = "v", keys = "<leader>q",  desc = "+Quick Fix" },
-
-    { mode = "n", keys = "<leader>s",  desc = "+Snipe" },
-    { mode = "v", keys = "<leader>s",  desc = "+Snipe" },
 
     { mode = "n", keys = "<leader>t",  desc = "+Terminal" },
     { mode = "v", keys = "<leader>t",  desc = "+Terminal" },

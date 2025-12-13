@@ -31,6 +31,9 @@ cmdline.setup({
     -- Number of lines to show above and below range lines
     n_context = 5,
 
+    -- Custom rule of when to show peek window
+    predicate = nil,
+
     -- Window options
     window = {
       -- Floating window config

@@ -28,7 +28,7 @@ local function on_attach(client, bufnr)
 
   -- stylua: ignore start
   map("n", "K",          "<cmd>lua vim.lsp.buf.hover()<cr>",           { desc = "Hover" })
-  map("n", "g.",         "<cmd>lua vim.lsp.buf.format()<cr>",          { desc = "Format" })
+  map("n", "gd",         "<cmd>lua vim.lsp.buf.definition()<cr>",      { desc = "Go to Definition" })
   map("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>",     { desc = "Code Action" })
   map("n", "<leader>ld", "<cmd>lua vim.lsp.buf.definition()<cr>",      { desc = "Definition" })
   map("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<cr>",          { desc = "Rename" })
@@ -57,7 +57,8 @@ local servers = {
   "jsonls",
   "lua_ls",
   "tailwindcss",
-  "tsgo",
+  "ts_ls",
+  -- "tsgo",
   "yamlls",
 }
 

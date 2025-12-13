@@ -4,8 +4,13 @@ local duration = 100
 
 animate.setup({
   cursor = {
-    -- Using smear Cursor
     enable = false,
+    -- Animate for 200 milliseconds with linear easing
+    timing = animate.gen_timing.linear({ duration = 200, unit = "total" }),
+
+    -- Animate with shortest line for any cursor move
+    -- stylua: ignore
+    path = animate.gen_path.line({ predicate = function() return true end }),
   },
   scroll = {
     enable = true,

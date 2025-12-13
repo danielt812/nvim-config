@@ -40,6 +40,7 @@ local ensure_installed = {
   "json-lsp",
   "lua-language-server",
   "tailwindcss-language-server",
+  "typescript-language-server",
   "tsgo",
   "yaml-language-server",
   -- Formatters/Linters

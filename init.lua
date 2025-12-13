@@ -137,21 +137,15 @@ end)
 now(function()
   add({ source = "OXY2DEV/markview.nvim" })
   add({ source = "OXY2DEV/helpview.nvim" })
-
-  add({
-    source = "iamcco/markdown-preview.nvim",
-    hooks = {
-      post_checkout = function()
-        vim.fn["mkdp#util#install"]()
-      end,
-    },
-  })
 end)
 
 -- Formatting/Linting
 later(function()
-  add({ source = "nvimtools/none-ls.nvim" })
-  plug("null-ls")
+  -- add({ source = "nvimtools/none-ls.nvim" })
+  -- plug("null-ls")
+
+  add({ source = "stevearc/conform.nvim" })
+  plug("conform")
 end)
 
 -- Autopair/Autotag
@@ -184,22 +178,12 @@ end)
 later(function()
   add({ source = "FabijanZulj/blame.nvim" })
   plug("blame")
-
-  -- add({ source = "braxtons12/blame_line.nvim" })
-  -- plug("blame-line")
 end)
 
 -- Executables package manager
 later(function()
   -- Mason
-  add({
-    source = "mason-org/mason.nvim",
-    hooks = {
-      post_checkout = function()
-        vim.cmd("MasonUpdate")
-      end,
-    },
-  })
+  add({ source = "mason-org/mason.nvim" })
   plug("mason")
 end)
 
@@ -215,41 +199,33 @@ end)
 
 -- UI
 later(function()
+  -- Indentation
   add({ source = "shellRaining/hlchunk.nvim" })
   plug("hlchunk")
-
-  add({ source = "rachartier/tiny-glimmer.nvim" })
-  plug("tiny-glimmer")
-
-  add({ source = "rachartier/tiny-inline-diagnostic.nvim" })
-  plug("tiny-inline-diagnostic")
-
-  add({ source = "sethen/line-number-change-mode.nvim" })
-  plug("line-number-change-mode")
-
-  -- Quickfix qol
-  add({ source = "stevearc/quicker.nvim" })
-  plug("quicker")
 
   -- Trailing cursor
   add({ source = "sphamba/smear-cursor.nvim" })
   plug("smear-cursor")
 
-  -- Rainbow parenthesis, brackets, curly
+  -- Animated highlights
+  add({ source = "rachartier/tiny-glimmer.nvim" })
+  plug("tiny-glimmer")
+
+  -- Diagnostics
+  add({ source = "rachartier/tiny-inline-diagnostic.nvim" })
+  plug("tiny-inline-diagnostic")
+
+  -- Quickfix
+  add({ source = "stevearc/quicker.nvim" })
+  plug("quicker")
+
+  -- Task runner
+  add({ source = "stevearc/overseer.nvim" })
+  plug("overseer")
+
+  -- Rainbow delimeters
   add({ source = "HiPhish/rainbow-delimiters.nvim" })
   plug("rainbow-delimeters")
-
-  -- Rainbow csv
-  add({ source = "cameron-wags/rainbow_csv.nvim" })
-end)
-
--- Fast selection menus
-later(function()
-  add({ source = "leath-dub/snipe.nvim" })
-  plug("snipe")
-
-  add({ source = "Chaitanyabsprip/fastaction.nvim" })
-  plug("fastaction")
 end)
 
 -- Editor
@@ -277,26 +253,18 @@ later(function()
   plug("ufo")
 
   add({ source = "mg979/vim-visual-multi" })
-
-  plug("live-server")
 end)
 
 -- LSP extras
 later(function()
   -- Winbar breadcrumbs
   add({ source = "SmiteshP/nvim-navic" })
-  -- Fast symbol navigation
+  -- Symbol navigation
   add({
     source = "SmiteshP/nvim-navbuddy",
     depends = { "MunifTanjim/nui.nvim" },
   })
   plug("nav")
-end)
-
--- For fun
-later(function()
-  add({ source = "Eandrju/cellular-automaton.nvim" })
-  plug("cellular-automaton")
 end)
 
 -- Terminal

@@ -11,8 +11,8 @@ local pad_curly       = splitjoin.gen_hook.pad_brackets(curly)
 splitjoin.setup({
   mappings = {
     toggle = "",
-    split = "",
-    join = "",
+    split = "<leader>es",
+    join = "<leader>ej",
   },
   detect = {
     brackets = { "%b()", "%b[]", "%b{}" },

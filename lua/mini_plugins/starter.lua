@@ -9,7 +9,7 @@ local header = table.concat({
 }, "\n")
 
 local v = vim.version()
-local nvim_version = string.format("Neovim v%d.%d.%d", v.major, v.minor, v.patch)
+local nvim_version = string.format("Version %d.%d.%d", v.major, v.minor, v.patch)
 
 starter.setup({
   evaluate_single = true,
@@ -37,4 +37,4 @@ starter.setup({
 -- stylua: ignore
 local open = function() starter.open() end
 
-vim.keymap.set("n", "<leader>es", open, { desc = "Starter" })
+vim.keymap.set("n", "<leader>e;", open, { desc = "Starter" })
