@@ -110,7 +110,7 @@ end
 -- local bufwipeout_right  = function(opts) return delete_buffers("wipeout", "right", opts) end
 
 -- stylua: ignore start
-vim.keymap.set("n", "<leader>bc", bufdelete,        { desc = "Delete Current" })
+vim.keymap.set("n", "<leader>bd", bufdelete,        { desc = "Delete Current" })
 vim.keymap.set("n", "<leader>bo", bufdelete_others, { desc = "Delete Others" })
 vim.keymap.set("n", "<leader>bh", bufdelete_left,   { desc = "Delete Left" })
 vim.keymap.set("n", "<leader>bl", bufdelete_right,  { desc = "Delete Right" })
