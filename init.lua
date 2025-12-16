@@ -111,7 +111,7 @@ later(function()
   mplug("hipatterns")
   mplug("icons")
   -- mplug("indentscope")
-  -- mplug("jump")
+  mplug("jump")
   mplug("jump2d")
   mplug("keymap")
   mplug("map")
@@ -231,11 +231,11 @@ end)
 -- Editor
 later(function()
   -- Highlight unique f and t targets
-  add({
-    source = "jinh0/eyeliner.nvim",
-    depends = { "mawkler/demicolon.nvim" },
-  })
-  plug("eyeliner")
+  -- add({
+  --   source = "jinh0/eyeliner.nvim",
+  --   depends = { "mawkler/demicolon.nvim" },
+  -- })
+  -- plug("eyeliner")
 
   -- Search and replace
   add({ source = "MagicDuck/grug-far.nvim" })
