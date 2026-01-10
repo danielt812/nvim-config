@@ -3,8 +3,8 @@ local clue = require("mini.clue")
 clue.setup({
   triggers = {
     -- Leader triggers
-    { mode = "n", keys = "<leader>" },
-    { mode = "x", keys = "<leader>" },
+    { mode = { "n", "x" }, keys = "<leader>" },
+
     -- Bracketed triggers
     { mode = "n", keys = "]" },
     { mode = "n", keys = "[" },
@@ -20,6 +20,8 @@ clue.setup({
     { mode = "n", keys = "`" },
     { mode = "x", keys = "'" },
     { mode = "x", keys = "`" },
+    { mode = "n", keys = "m" },
+    { mode = "x", keys = "m" },
 
     -- Registers
     { mode = "n", keys = '"' },
@@ -33,10 +35,6 @@ clue.setup({
     -- `z` key
     { mode = "n", keys = "z" },
     { mode = "x", keys = "z" },
-
-    -- `m` key
-    { mode = "n", keys = "m" },
-    { mode = "x", keys = "m" },
   },
   clues = {
     -- stylua: ignore start
@@ -74,6 +72,7 @@ clue.setup({
     { mode = "v", keys = "<leader>t",  desc = "+Terminal" },
 
     -- stylua: ignore end
+    clue.gen_clues.square_brackets(),
     clue.gen_clues.builtin_completion(),
     clue.gen_clues.g(),
     clue.gen_clues.marks(),
