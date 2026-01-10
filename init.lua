@@ -79,6 +79,7 @@ now(function()
   conf("autocmds")
   conf("lsp")
   conf("diagnostics")
+  conf("quickfix")
 
   vim.cmd("colorscheme everforest")
 end)
@@ -128,9 +129,10 @@ later(function()
   mplug("trailspace")
 end)
 
--- Plenary dependency
-now(function()
+-- Shared dependencies
+later(function()
   add({ source = "nvim-lua/plenary.nvim" })
+  add({ source = "MunifTanjim/nui.nvim" })
 end)
 
 -- Filetype rendering
@@ -237,6 +239,8 @@ later(function()
   -- })
   -- plug("eyeliner")
 
+  add({ source = "esmuellert/codediff.nvim" })
+
   -- Search and replace
   add({ source = "MagicDuck/grug-far.nvim" })
   plug("grug-far")
@@ -260,10 +264,7 @@ later(function()
   -- Winbar breadcrumbs
   add({ source = "SmiteshP/nvim-navic" })
   -- Symbol navigation
-  add({
-    source = "SmiteshP/nvim-navbuddy",
-    depends = { "MunifTanjim/nui.nvim" },
-  })
+  add({ source = "SmiteshP/nvim-navbuddy" })
   plug("nav")
 end)
 

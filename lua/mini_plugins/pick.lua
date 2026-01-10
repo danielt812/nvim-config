@@ -2,6 +2,8 @@ local pick = require("mini.pick")
 
 pick.setup({
   mappings = {
+    mark = "<C-x>",
+    mark_all = "<C-a>",
     move_down = "<C-j>",
     move_start = "<C-g>",
     move_up = "<C-k>",
