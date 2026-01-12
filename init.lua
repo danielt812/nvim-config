@@ -143,9 +143,6 @@ end)
 
 -- Formatting/Linting
 later(function()
-  -- add({ source = "nvimtools/none-ls.nvim" })
-  -- plug("null-ls")
-
   add({ source = "stevearc/conform.nvim" })
   plug("conform")
 end)
