@@ -65,7 +65,6 @@ dap_view.setup({
   windows = {
     terminal = {
       hide = { "pwa-node", "local-lua" },
-      start_hidden = true,
     },
   },
 })
