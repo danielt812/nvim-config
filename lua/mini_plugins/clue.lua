@@ -12,64 +12,36 @@ clue.setup({
     { mode = "i", keys = "<C-x>" },
 
     -- `g` key
-    { mode = "n", keys = "g" },
-    { mode = "x", keys = "g" },
+    { mode = { "n", "x" }, keys = "g" },
 
     -- Marks
-    { mode = "n", keys = "'" },
-    { mode = "n", keys = "`" },
-    { mode = "x", keys = "'" },
-    { mode = "x", keys = "`" },
-    { mode = "n", keys = "m" },
-    { mode = "x", keys = "m" },
+    { mode = { "n", "x" }, keys = "'" },
+    { mode = { "n", "x" }, keys = "`" },
+    { mode = { "n", "x" }, keys = "m" },
 
     -- Registers
-    { mode = "n", keys = '"' },
-    { mode = "x", keys = '"' },
-    { mode = "i", keys = "<C-r>" },
-    { mode = "c", keys = "<C-r>" },
+    { mode = { "n", "x" }, keys = '"' },
+    { mode = { "i", "c" }, keys = "<C-r>" },
 
     -- Window commands
     { mode = "n", keys = "<C-w>" },
 
     -- `z` key
-    { mode = "n", keys = "z" },
-    { mode = "x", keys = "z" },
+    { mode = { "n", "x" }, keys = "z" },
   },
   clues = {
     -- stylua: ignore start
-    { mode = "n", keys = "<leader>b",  desc = "+Buffer" },
-    { mode = "v", keys = "<leader>b",  desc = "+Buffer" },
-
-    { mode = "n", keys = "<leader>c",  desc = "+Copilot" },
-    { mode = "v", keys = "<leader>c",  desc = "+Copilot" },
-
-    { mode = "n", keys = "<leader>d",  desc = "+Debugger" },
-    { mode = "v", keys = "<leader>d",  desc = "+Debugger" },
-
-    { mode = "n", keys = "<leader>e",  desc = "+Editor" },
-    { mode = "v", keys = "<leader>e",  desc = "+Editor" },
-
-    { mode = "n", keys = "<leader>f",  desc = "+Find" },
-    { mode = "v", keys = "<leader>f",  desc = "+Find" },
-
-    { mode = "n", keys = "<leader>g",  desc = "+Git" },
-    { mode = "v", keys = "<leader>g",  desc = "+Git" },
-
-    { mode = "n", keys = "<leader>l",  desc = "+Lsp" },
-    { mode = "v", keys = "<leader>l",  desc = "+Lsp" },
-
-    { mode = "n", keys = "<leader>n",  desc = "+Notify" },
-    { mode = "v", keys = "<leader>n",  desc = "+Notify" },
-
-    { mode = "n", keys = "<leader>o",  desc = "+Overseer" },
-    { mode = "v", keys = "<leader>o",  desc = "+Overseer" },
-
-    { mode = "n", keys = "<leader>q",  desc = "+Quick Fix" },
-    { mode = "v", keys = "<leader>q",  desc = "+Quick Fix" },
-
-    { mode = "n", keys = "<leader>t",  desc = "+Terminal" },
-    { mode = "v", keys = "<leader>t",  desc = "+Terminal" },
+    { mode = {"n", "v"}, keys = "<leader>b",  desc = "+Buffer" },
+    { mode = {"n", "v"}, keys = "<leader>c",  desc = "+Copilot" },
+    { mode = {"n", "v"}, keys = "<leader>d",  desc = "+Debugger" },
+    { mode = {"n", "v"}, keys = "<leader>e",  desc = "+Editor" },
+    { mode = {"n", "v"}, keys = "<leader>f",  desc = "+Find" },
+    { mode = {"n", "v"}, keys = "<leader>g",  desc = "+Git" },
+    { mode = {"n", "v"}, keys = "<leader>l",  desc = "+Lsp" },
+    { mode = {"n", "v"}, keys = "<leader>n",  desc = "+Notify" },
+    { mode = {"n", "v"}, keys = "<leader>o",  desc = "+Overseer" },
+    { mode = {"n", "v"}, keys = "<leader>q",  desc = "+Quick Fix" },
+    { mode = {"n", "v"}, keys = "<leader>t",  desc = "+Terminal" },
 
     -- stylua: ignore end
     clue.gen_clues.square_brackets(),
