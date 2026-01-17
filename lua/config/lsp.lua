@@ -27,15 +27,28 @@ local function on_attach(client, bufnr)
   end
 
   -- stylua: ignore start
-  map("n", "K",          "<cmd>lua vim.lsp.buf.hover()<cr>",           { desc = "Hover" })
-  map("n", "gd",         "<cmd>lua vim.lsp.buf.definition()<cr>",      { desc = "Go to Definition" })
-  map("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>",     { desc = "Code Action" })
-  map("n", "<leader>ld", "<cmd>lua vim.lsp.buf.definition()<cr>",      { desc = "Definition" })
-  map("n", "<leader>ln", "<cmd>lua vim.lsp.buf.rename()<cr>",          { desc = "Rename" })
-  map("n", "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<cr>",  { desc = "Implementation" })
-  map("n", "<leader>ls", "<cmd>lua vim.lsp.buf.signature_help()<cr>",  { desc = "Signature Help" })
-  map("n", "<leader>lt", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { desc = "Type Definition" })
-  map("n", "<leader>lr", "<cmd>lua vim.lsp.buf.references()<cr>",      { desc = "References" })
+  map("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
+
+  -- g mappings
+  map("n", "gd",  vim.lsp.buf.definition,      { desc = "Go to Definition" })
+  map("n", "gla", vim.lsp.buf.code_action,     { desc = "Code Action" })
+  map("n", "gld", vim.lsp.buf.definition,      { desc = "Definition" })
+  map("n", "glh", vim.lsp.buf.hover,           { desc = "Hover" })
+  map("n", "gli", vim.lsp.buf.implementation,  { desc = "Implementation" })
+  map("n", "gln", vim.lsp.buf.rename,          { desc = "Rename" })
+  map("n", "glr", vim.lsp.buf.references,      { desc = "References" })
+  map("n", "gls", vim.lsp.buf.signature_help,  { desc = "Signature Help" })
+  map("n", "glt", vim.lsp.buf.type_definition, { desc = "Type Definition" })
+
+  -- leader mappings
+  map("n", "<leader>la", vim.lsp.buf.code_action,     { desc = "Code Action" })
+  map("n", "<leader>ld", vim.lsp.buf.definition,      { desc = "Definition" })
+  map("n", "<leader>lh", vim.lsp.buf.hover,           { desc = "Hover" })
+  map("n", "<leader>li", vim.lsp.buf.implementation,  { desc = "Implementation" })
+  map("n", "<leader>ln", vim.lsp.buf.rename,          { desc = "Rename" })
+  map("n", "<leader>lr", vim.lsp.buf.references,      { desc = "References" })
+  map("n", "<leader>ls", vim.lsp.buf.signature_help,  { desc = "Signature Help" })
+  map("n", "<leader>lt", vim.lsp.buf.type_definition, { desc = "Type Definition" })
   -- stylua: ignore end
 
   if client.supports_method("textDocument/inlayHint") then
@@ -47,12 +60,13 @@ end
 local servers = {
   "angularls",
   "bashls",
-  "cssls",
   "css_variables",
+  "cssls",
   "cssmodules_ls",
   "dockerls",
   "emmet_language_server",
   "eslint",
+  "gopls",
   "html",
   "jsonls",
   "lua_ls",

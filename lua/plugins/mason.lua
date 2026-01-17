@@ -37,6 +37,7 @@ local ensure_installed = {
   "cssmodules-language-server",
   "emmet-language-server",
   "eslint-lsp",
+  "gopls",
   "html-lsp",
   "json-lsp",
   "lua-language-server",

@@ -18,7 +18,7 @@ indentscope.setup({
     predicate = function(scope) return not scope.body.is_incomplete end,
 
     -- Symbol priority. Increase to display on top of more symbols.
-    priority = 2,
+    priority = 1000,
   },
 
   -- Module mappings. Use `''` (empty string) to disable one.

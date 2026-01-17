@@ -1,22 +1,36 @@
 local treesj = require("treesj")
 local splitjoin = require("mini.splitjoin")
 
-local langs = require("treesj.langs").presets
+local function in_arrow_function()
+  local ok, node = pcall(vim.treesitter.get_node)
+  if not ok or not node then
+    return false
+  end
 
--- Add fallback to all language
-for _, nodes in pairs(langs) do
-  nodes.comment = {
-    both = {
-      fallback = function(tsn)
-        -- mini.splitjoin returns `nil` if nothing to toggle
-        local res = splitjoin.toggle()
+  while node do
+    if node:type() == "arrow_function" then
+      return true
+    end
+    node = node:parent()
+  end
 
-        if not res then
-          vim.cmd("normal! gww")
-        end
-      end,
-    },
-  }
+  return false
+end
+
+local function split_join_toggle()
+  -- Prefer treesj in arrow functions
+  if in_arrow_function() then
+    treesj.toggle()
+    return
+  end
+
+  -- Prefer mini for bracket-based constructs
+  if splitjoin.toggle() then
+    return
+  end
+
+  -- Otherwise, let treesj try (keywords, params, JSX, etc.)
+  treesj.toggle()
 end
 
 treesj.setup({
@@ -28,7 +42,7 @@ treesj.setup({
   dot_repeat = true,
 })
 
--- stylua: ignore
-local toggle = function() treesj.toggle() end
-
-vim.keymap.set("n", "J", toggle, { desc = "Split/Join" })
+-- stylua: ignore start
+vim.keymap.set({ "n" }, "J", split_join_toggle, { desc = "Split/Join" })
+vim.keymap.set({ "x" }, "J", treesj.toggle,     { desc = "Split/Join" })
+-- stylua: ignore end

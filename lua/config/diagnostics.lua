@@ -11,7 +11,7 @@ local diagnostic_opts = {
   },
   -- virtual_text = false,
   -- virtual_lines = {
-  --   current_line = false,
+  --   current_line = true,
   -- },
   -- update_in_insert = false,
   -- underline = true,
@@ -28,9 +28,3 @@ local diagnostic_opts = {
 }
 
 vim.diagnostic.config(diagnostic_opts)
-
-local set_qf_list = function()
-  vim.diagnostic.setqflist({ bufnr = 0 })
-end
-
-vim.keymap.set("n", "<leader>qd", set_qf_list, { desc = "Diagnostics" })

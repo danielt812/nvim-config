@@ -1,13 +1,5 @@
 local quicker = require("quicker")
 
-local expand = function()
-  quicker.expand()
-end
-
-local collapse = function()
-  quicker.collapse()
-end
-
 quicker.setup({
   -- Local options to set for quickfix
   opts = {
@@ -23,8 +15,8 @@ quicker.setup({
   -- Keymaps to set for the quickfix buffer
   keys = {
     { "<cr>", "<cr>", desc = "Jump to position" },
-    { ">", expand, desc = "Expand quickfix content" },
-    { "<", collapse, desc = "Expand quickfix content" },
+    { ">", quicker.expand, desc = "Expand quickfix content" },
+    { "<", quicker.collapse, desc = "Expand quickfix content" },
   },
   edit = {
     -- Enable editing the quickfix like a normal buffer

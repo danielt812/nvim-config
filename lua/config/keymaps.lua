@@ -27,11 +27,13 @@ vim.keymap.set({ "n", "v", "x" }, "s", '"_s', { desc = "Prevent s from yanking t
 vim.keymap.set({ "n", "v", "x" }, "S", '"_S', { desc = "Prevent S from yanking to clipboard" })
 
 -- stylua: ignore start
-vim.keymap.set("v", "<", "<gv", { desc = "Indent block to left",  silent = true })
-vim.keymap.set("v", ">", ">gv", { desc = "Indent block to right", silent = true })
+vim.keymap.set("x", "<", "<gv", { desc = "Indent block to left",  silent = true })
+vim.keymap.set("x", ">", ">gv", { desc = "Indent block to right", silent = true })
 vim.keymap.set("n", "<", "<<",  { desc = "Indent line to left",   silent = true })
 vim.keymap.set("n", ">", ">>",  { desc = "Indent line to right",  silent = true })
 -- stylua: ignore end
+
+vim.keymap.set("n", "U", "<c-r>", { desc = "Redo", silent = true })
 
 -- Keep cursor placement after yanking
 vim.keymap.set({ "n", "x" }, "y", function()

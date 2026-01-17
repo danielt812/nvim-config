@@ -20,8 +20,8 @@ overseer.setup({
     max_width = { 100, 0.2 },
     -- min_width = {40, 0.1} means "the greater of 40 columns or 10% of total"
     min_width = { 40, 0.1 },
-    max_height = { 30, 0.3 },
-    min_height = 8,
+    max_height = { 20, 0.3 },
+    min_height = { 10, 0.2 },
     -- You can add custom keymaps here as well (anything vim.keymap.set accepts)
     keymaps = {
       ["?"] = "keymap.show_help",
@@ -124,10 +124,56 @@ overseer.register_template({
   },
 })
 
--- stylua: ignore start
-local open = function() overseer.open() end
-local run  = function() overseer.run_task()  end
+overseer.register_template({
+  name = "run script",
+  builder = function()
+    local file = vim.fn.expand("%:p")
+    local cmd = { file }
+    if vim.bo.filetype == "go" then
+      cmd = { "go", "run", file }
+    elseif vim.bo.filetype == "python" then
+      cmd = { "python", file }
+    end
+    return {
+      cmd = cmd,
+      -- add some components that will pipe the output to quickfix,
+      -- parse it using errorformat, and display any matching lines as diagnostics.
+      components = {
+        { "on_output_quickfix", set_diagnostics = true },
+        "on_result_diagnostics",
+        "default",
+      },
+    }
+  end,
+  condition = {
+    filetype = { "sh", "python", "go" },
+  },
+})
 
-vim.keymap.set("n", "<leader>oo", open, { desc = "Open" })
-vim.keymap.set("n", "<leader>or", run,  { desc = "Run" })
+-- stylua: ignore start
+local open        = function() overseer.open() end
+-- local close       = function() overseer.close() end
+-- local toggle      = function() overseer.toggle() end
+local run         = function() overseer.run_task() end
+local task_action = function() overseer.run_action() end
 -- stylua: ignore end
+
+-- stylua: ignore start
+vim.keymap.set("n", "<leader>oo", open,        { desc = "Open" })
+-- vim.keymap.set("n", "<leader>oc", close,       { desc = "Close" })
+-- vim.keymap.set("n", "<leader>ot", toggle,      { desc = "Toggle" })
+vim.keymap.set("n", "<leader>or", run,         { desc = "Run" })
+vim.keymap.set("n", "<leader>oa", task_action, { desc = "Action" })
+-- stylua: ignore end
+
+vim.api.nvim_create_user_command("OverseerWatch", function()
+  overseer.run_task({ name = "run script", autostart = false }, function(task)
+    if task then
+      task:add_component({ "restart_on_save", paths = { vim.fn.expand("%:p") } })
+      task:start()
+      task:open_output("vertical")
+    else
+      vim.notify("WatchRun not supported for filetype " .. vim.bo.filetype, vim.log.levels.ERROR)
+    end
+  end)
+end, {})

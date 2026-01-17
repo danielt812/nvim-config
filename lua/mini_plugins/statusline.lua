@@ -43,7 +43,7 @@ statusline.setup({
         return truncate and "" or string.format("%d:%d", line, col)
       end
 
-      local section_progress = function(trunc_width)
+      local function section_progress(trunc_width)
         local progressbar = function()
           local current_line = vim.fn.line(".")
           local total_lines = vim.fn.line("$")

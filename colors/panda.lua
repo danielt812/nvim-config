@@ -904,6 +904,10 @@ local highlights = {
   NumberColumnModeNormal  = { fg = palette.green,  bg = palette.bg0 },
   NumberColumnModeReplace = { fg = palette.orange, bg = palette.bg0 },
   -- stylua: ignore end
+
+  -- nvimdev/indentmini.nvim
+  IndentLine = { fg = palette.bg3 },
+  IndentLineCurrent = { fg = palette.white },
 }
 
 for group, opts in pairs(highlights) do

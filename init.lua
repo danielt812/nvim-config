@@ -21,7 +21,7 @@ local add, now, later = deps.add, deps.now, deps.later
 
 --- Safely notifies an error message after a short delay to allow notify plugin to initialize.
 -- @param msg string: The error message to display.
-local delayed_notify = function(msg)
+local function delayed_notify(msg)
   vim.schedule(function()
     vim.defer_fn(function()
       vim.notify(msg, vim.log.levels.ERROR)
@@ -31,7 +31,7 @@ end
 
 --- Loads a module from the `plugins` namespace with error handling.
 -- @param plugin string: Name of the plugin module (without the "plugins." prefix).
-local plug = function(plugin)
+local function plug(plugin)
   local ok, err = pcall(require, "plugins." .. plugin)
   if not ok then
     delayed_notify("Failed to load plugin module: plugins." .. plugin .. "\n" .. err)
@@ -40,7 +40,7 @@ end
 
 --- Loads a module from the `mini_plugins` namespace with error handling.
 -- @param plugin string: Name of the plugin module (without the "mini_plugins." prefix).
-local mplug = function(plugin)
+local function mplug(plugin)
   local ok, err = pcall(require, "mini_plugins." .. plugin)
   if not ok then
     delayed_notify("Failed to load plugin module: mini_plugins." .. plugin .. "\n" .. err)
@@ -49,7 +49,7 @@ end
 
 --- Loads a configuration module from the `config` namespace with error handling.
 -- @param config string: Name of the config module (without the "config." prefix).
-local conf = function(config)
+local function conf(config)
   local ok, err = pcall(require, "config." .. config)
   if not ok then
     delayed_notify("Failed to load config file: config." .. config .. "\n" .. err)
@@ -119,7 +119,7 @@ later(function()
   mplug("misc")
   mplug("move")
   mplug("operators")
-  -- mplug("pairs") -- Going to try this again, can't get it to behave how I am wanting yet
+  mplug("pairs") -- Going to try this again, can't get it to behave how I am wanting yet
   mplug("pick")
   mplug("snippets")
   mplug("splitjoin")
@@ -141,17 +141,11 @@ now(function()
   add({ source = "OXY2DEV/helpview.nvim" })
 end)
 
--- Formatting/Linting
-later(function()
-  add({ source = "stevearc/conform.nvim" })
-  plug("conform")
-end)
-
 -- Autopair/Autotag
 later(function()
-  add({ source = "windwp/nvim-autopairs" })
+  -- add({ source = "windwp/nvim-autopairs" })
   add({ source = "windwp/nvim-ts-autotag" })
-  plug("autopairs")
+  -- plug("autopairs")
   plug("autotag")
 end)
 
@@ -191,8 +185,9 @@ later(function()
   add({ source = "nvim-treesitter/nvim-treesitter" })
   add({ source = "nvim-treesitter/nvim-treesitter-textobjects" })
   add({ source = "JoosepAlviste/nvim-ts-context-commentstring" })
-  add({ source = "Wansmer/treesj" })
   plug("treesitter")
+
+  add({ source = "Wansmer/treesj" })
   plug("treesj")
 end)
 
@@ -201,6 +196,9 @@ later(function()
   -- Indentation
   add({ source = "shellRaining/hlchunk.nvim" })
   plug("hlchunk")
+
+  -- add({ source = "nvimdev/indentmini.nvim" })
+  -- plug("indentmini")
 
   -- Trailing cursor
   add({ source = "sphamba/smear-cursor.nvim" })
@@ -214,6 +212,17 @@ later(function()
   add({ source = "rachartier/tiny-inline-diagnostic.nvim" })
   plug("tiny-inline-diagnostic")
 
+  -- Rainbow delimeters
+  add({ source = "HiPhish/rainbow-delimiters.nvim" })
+  plug("rainbow-delimeters")
+end)
+
+-- Stevearc suite
+later(function()
+  -- Formatter
+  add({ source = "stevearc/conform.nvim" })
+  plug("conform")
+
   -- Quickfix
   add({ source = "stevearc/quicker.nvim" })
   plug("quicker")
@@ -221,38 +230,26 @@ later(function()
   -- Task runner
   add({ source = "stevearc/overseer.nvim" })
   plug("overseer")
-
-  -- Rainbow delimeters
-  add({ source = "HiPhish/rainbow-delimiters.nvim" })
-  plug("rainbow-delimeters")
 end)
 
 -- Editor
 later(function()
-  -- Highlight unique f and t targets
-  -- add({
-  --   source = "jinh0/eyeliner.nvim",
-  --   depends = { "mawkler/demicolon.nvim" },
-  -- })
-  -- plug("eyeliner")
-
-  add({ source = "esmuellert/codediff.nvim" })
-
-  -- Search and replace
+  -- Search and replace UI
   add({ source = "MagicDuck/grug-far.nvim" })
   plug("grug-far")
 
-  -- Buffer marks
+  -- Marks
   add({ source = "chentoast/marks.nvim" })
   plug("marks")
 
-  -- Prettier folds
+  -- Folds
   add({
     source = "kevinhwang91/nvim-ufo",
     depends = { "kevinhwang91/promise-async" },
   })
   plug("ufo")
 
+  -- Multicursor
   add({ source = "mg979/vim-visual-multi" })
 end)
 

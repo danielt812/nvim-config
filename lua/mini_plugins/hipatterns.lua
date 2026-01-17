@@ -1,7 +1,7 @@
 local hipatterns = require("mini.hipatterns")
 
 -- stylua: ignore start
-local apply_custom_highlights = function()
+local function apply_custom_highlights()
   vim.api.nvim_set_hl(0, "MiniHipatternsWarn",  { fg = "#ff2d00" }) -- WARN example
   vim.api.nvim_set_hl(0, "MiniHipatternsFixme", { fg = "#fce94f" }) -- FIX  example
   vim.api.nvim_set_hl(0, "MiniHipatternsTodo",  { fg = "#ff8c00" }) -- TODO example
@@ -101,12 +101,8 @@ for _, word in ipairs({
   local hl = type(word) == "table" and word[2] or word
 
   comments[w] = {
-    -- Highlights patterns like FOO, @FOO, @FOO: FOO: both upper and lowercase
     pattern = {
-      -- "%f[%w]()" .. w .. "%f[%W].*",
-      "%f[%w]()"
-        .. w:upper()
-        .. "%f[%W].*",
+      "%f[%w]()" .. w:upper() .. "%f[%W].*",
     },
     group = highlight_if_ts_capture("comment", string.format("MiniHipatterns%s", hl:sub(1, 1):upper() .. hl:sub(2))),
   }

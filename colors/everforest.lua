@@ -100,7 +100,7 @@ local highlights = {
   -- stylua: ignore end
 
   -- stylua: ignore start
-  NormalFloat = { fg = palette.fg,    bg = palette.bg2 },
+  NormalFloat = { fg = palette.white, bg = palette.bg2 },
   FloatBorder = { fg = palette.grey1, bg = palette.bg2 },
   FloatTitle  = { fg = palette.grey1, bg = palette.bg2, bold = true },
   -- stylua: ignore end
@@ -749,7 +749,6 @@ local highlights = {
   MiniJump2dSpotAhead = { fg = palette.aqua, bg = palette.none, nocombine = true },
   MiniJump2dSpotUnique = { fg = palette.yellow, bg = palette.none, bold = true, nocombine = true },
 
-  MiniPickPrompt = { fg = palette.blue, bg = palette.bg2 },
   MiniStarterCurrent = { fg = palette.none, bg = palette.none, nocombine = true },
 
   -- stylua: ignore start
@@ -795,7 +794,7 @@ local highlights = {
   -- stylua: ignore start
   MiniClueBorder              = { link = "FloatBorder" },
   MiniClueDescGroup           = { link = "DiagnosticFloatingWarn" },
-  MiniClueDescSingle          = { link = "NormalFloat" },
+  MiniClueDescSingle          = { fg = palette.fg },
   MiniClueNextKey             = { link = "DiagnosticFloatingHint" },
   MiniClueNextKeyWithPostkeys = { link = "DiagnosticFloatingError" },
   MiniClueSeparator           = { link = "DiagnosticFloatingInfo" },
@@ -848,7 +847,10 @@ local highlights = {
   MiniNotifyTitle = { link = "FloatTitle" },
 
   MiniNotifyLspProgress = { fg = palette.blue, bg = palette.none, italic = true },
+
   MiniOperatorsExchangeFrom = { link = "IncSearch" },
+
+  MiniPickPrompt = { fg = palette.blue, bg = palette.bg2 },
   MiniPickBorder = { link = "FloatBorder" },
   MiniPickBorderBusy = { link = "DiagnosticFloatingWarn" },
   MiniPickBorderText = { link = "FloatTitle" },
@@ -858,9 +860,10 @@ local highlights = {
   MiniPickMatchCurrent = { link = "CursorLine" },
   MiniPickMatchMarked = { link = "Visual" },
   MiniPickMatchRanges = { link = "DiagnosticFloatingHint" },
-  MiniPickNormal = { link = "NormalFloat" },
+  MiniPickNormal = { fg = palette.fg, bg = palette.bg2 },
   MiniPickPreviewLine = { link = "CursorLine" },
   MiniPickPreviewRegion = { link = "IncSearch" },
+
   MiniStarterFooter = { link = "Orange" },
   MiniStarterHeader = { link = "Yellow" },
   MiniStarterInactive = { link = "Comment" },
@@ -905,13 +908,15 @@ local highlights = {
   FSSuffix = { fg = palette.grey1, bg = palette.none },
 
   -- stylua: ignore start
-
-
   NumberColumnModeInsert  = { fg = palette.fg,     bg = palette.bg0 },
   NumberColumnModeNormal  = { fg = palette.green,  bg = palette.bg0 },
   NumberColumnModeReplace = { fg = palette.orange, bg = palette.bg0 },
   NumberColumnModeVisual  = { fg = palette.red,    bg = palette.bg0 },
   -- stylua: ignore end
+
+  -- nvimdev/indentmini.nvim
+  IndentLine = { fg = palette.bg3 },
+  IndentLineCurrent = { fg = palette.white },
 }
 
 for group, opts in pairs(highlights) do

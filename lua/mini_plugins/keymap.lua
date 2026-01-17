@@ -34,35 +34,8 @@ map_multistep({ "i", "c" }, "<C-CR>", { "pmenu_accept" })
 map_multistep("i", "<CR>", { "nvimautopairs_cr", "minipairs_cr" })
 map_multistep("i", "<BS>", { "nvimautopairs_bs", "minipairs_bs" })
 
--- stylua: ignore
-local no_hlsearch = function() vim.cmd("nohlsearch") end
+local function no_hlsearch()
+  vim.cmd("nohlsearch")
+end
 
-map_combo({ "n", "i", "x", "c" }, "<Esc><Esc>", no_hlsearch)
-
-map_combo("i", "<", function()
-  local line = vim.api.nvim_get_current_line()
-  local col = vim.fn.col(".")
-  -- stylua: ignore
-  if line:sub(col - 2, col) == "<<>" then return "<Del>" end
-end)
-
-map_combo("i", "=", function()
-  local line = vim.api.nvim_get_current_line()
-  local col = vim.fn.col(".")
-  -- stylua: ignore
-  if line:sub(col - 2, col) == "<=>" then return "<Del>" end
-end)
-
--- Less intrusive hardtime?
--- local notify_many_keys = function(key)
---   local lhs = string.rep(key, 10)
---   local action = function()
---     vim.notify("Too many " .. key)
---   end
---   map_combo({ "n", "x" }, lhs, action)
--- end
-
--- notify_many_keys("h")
--- notify_many_keys("j")
--- notify_many_keys("k")
--- notify_many_keys("l")
+map_combo({ "n", "i", "x", "c" }, "<Esc>", no_hlsearch)

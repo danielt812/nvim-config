@@ -1,5 +1,4 @@
 vim.opt.autoindent = true
-vim.opt.expandtab = true
 vim.opt.clipboard = "unnamedplus"
 vim.opt.completeopt = "menuone,noselect,fuzzy"
 vim.opt.expandtab = true

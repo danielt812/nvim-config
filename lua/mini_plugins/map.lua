@@ -13,7 +13,10 @@ map.setup({
   },
 })
 
--- stylua: ignore
-local toggle = function() map.toggle() end
+vim.keymap.set("n", "<leader>em", map.toggle, { desc = "Map" })
 
-vim.keymap.set("n", "<leader>em", toggle, { desc = "Map" })
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = vim.api.nvim_create_augroup("mini_map", { clear = true }),
+  desc = "Auto open mini map",
+  callback = function(args) end,
+})

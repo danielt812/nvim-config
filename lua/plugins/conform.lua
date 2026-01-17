@@ -16,6 +16,9 @@ conform.formatters.stylua = {
   },
 }
 
+-- GOFMT
+conform.formatters_by_ft.go = { "gofmt" }
+
 conform.formatters_by_ft.lua = { "stylua" }
 
 -- PRETTIER
@@ -83,6 +86,6 @@ end, { desc = "Open Conform log file" })
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = vim.api.nvim_create_augroup("format_on_save", { clear = true }),
   desc = "Format on save",
-  pattern = { "*.css", "*.js", "*.json", "*.jsonc", "*.jsx", "*.lua", "*.py", "*.scss", "*.sh", "*.zsh" },
+  pattern = { "*.css", "*.go", "*.js", "*.json", "*.jsonc", "*.jsx", "*.lua", "*.py", "*.scss", "*.sh", "*.zsh" },
   callback = format,
 })

@@ -2,15 +2,15 @@ local notify = require("mini.notify")
 
 local n_progress = 0
 
-local in_lsp_progress = function()
+local function in_lsp_progress()
   return n_progress > 0
 end
 
-local lsp_progress_plus = function()
+local function lsp_progress_plus()
   n_progress = n_progress + 1
 end
 
-local lsp_progress_minus = function()
+local function lsp_progress_minus()
   vim.defer_fn(function()
     n_progress = n_progress - 1
   end, notify.config.lsp_progress.duration_last + 1)
@@ -19,12 +19,12 @@ end
 vim.api.nvim_create_autocmd("LspProgress", { pattern = "begin", callback = lsp_progress_plus })
 vim.api.nvim_create_autocmd("LspProgress", { pattern = "end", callback = lsp_progress_minus })
 
-local format = function(notif)
+local function format(notif)
   return notif.data.source == "lsp_progress" and notif.msg or notify.default_format(notif)
 end
 vim.api.nvim_set_hl(0, "notifyLspProgress", { link = "Comment" })
 
-local window_config = function()
+local function window_config()
   local has_winbar = vim.o.winbar ~= "" and 1 or 0
   local has_tabline = vim.o.tabline ~= "" and 1 or 0
   local has_status = vim.o.laststatus > 0 and 1 or 0
@@ -61,7 +61,7 @@ notify.setup({
 vim.notify = notify.make_notify()
 
 -- stylua: ignore start
-local clear = function() notify.clear() end
+local clear   = function() notify.clear() end
 local history = function() notify.show_history() end
 -- stylua: ignore end
 

@@ -1,37 +1,41 @@
 local bufremove = require("mini.bufremove")
-local starter = require("mini.starter")
 
 bufremove.setup({
   use_vim_settings = true,
   silent = false,
 })
 
-local open_starter_if_empty_buffer = function()
+local function open_starter_if_empty_buffer()
   local buf_id = vim.api.nvim_get_current_buf()
   local is_empty = vim.api.nvim_buf_get_name(buf_id) == "" and vim.bo[buf_id].filetype == ""
-  -- stylua: ignore
-  if not is_empty then return end
 
-  starter.open()
-  vim.cmd(buf_id .. "bwipeout")
+  if not is_empty then
+    return
+  end
+
+  local ok, starter = pcall(require, "mini.starter")
+  if ok then
+    starter.open()
+    vim.cmd(buf_id .. "bwipeout")
+  end
 end
 
-local bufdelete = function(...)
+local function bufdelete(...)
   bufremove.delete(...)
   open_starter_if_empty_buffer()
 end
 
-local bufwipeout = function(...)
+local function bufwipeout(...)
   bufremove.wipeout(...)
   open_starter_if_empty_buffer()
 end
 
-local delete_buffers = function(action, mode, opts)
+local function remove_buffers(action, mode, opts)
   opts = opts or {}
   local force = opts.force or false
 
   if mode ~= "others" and mode ~= "left" and mode ~= "right" then
-    vim.notify("Invalid mode for delete_buffers: " .. tostring(mode), vim.log.levels.ERROR)
+    vim.notify("Invalid mode for remove_buffers: " .. tostring(mode), vim.log.levels.ERROR)
     return
   end
 
@@ -95,28 +99,16 @@ local delete_buffers = function(action, mode, opts)
   end
 end
 
-local bufdelete_others = function(opts)
-  return delete_buffers("delete", "others", opts)
-end
-local bufdelete_left = function(opts)
-  return delete_buffers("delete", "left", opts)
-end
-local bufdelete_right = function(opts)
-  return delete_buffers("delete", "right", opts)
-end
-
--- local bufwipeout_others = function(opts) return delete_buffers("wipeout", "others", opts) end
--- local bufwipeout_left   = function(opts) return delete_buffers("wipeout", "left", opts) end
--- local bufwipeout_right  = function(opts) return delete_buffers("wipeout", "right", opts) end
+-- stylua: ignore start
+local function bufdelete_others(opts) remove_buffers("delete", "others", opts) end
+local function bufdelete_left(opts) remove_buffers("delete", "left", opts) end
+local function bufdelete_right(opts) remove_buffers("delete", "right", opts) end
+-- stylua: ignore end
 
 -- stylua: ignore start
-vim.keymap.set("n", "<leader>bd", bufdelete,        { desc = "Delete Current" })
+vim.keymap.set("n", "<leader>bd", bufdelete, { desc = "Delete Current" })
 vim.keymap.set("n", "<leader>bo", bufdelete_others, { desc = "Delete Others" })
-vim.keymap.set("n", "<leader>bh", bufdelete_left,   { desc = "Delete Left" })
-vim.keymap.set("n", "<leader>bl", bufdelete_right,  { desc = "Delete Right" })
-
--- vim.keymap.set("n", "<leader>bwc", bufwipeout,        { desc = "Current" })
--- vim.keymap.set("n", "<leader>bwo", bufwipeout_others, { desc = "Others" })
--- vim.keymap.set("n", "<leader>bwh", bufwipeout_left,   { desc = "Left" })
--- vim.keymap.set("n", "<leader>bwl", bufwipeout_right,  { desc = "Right" })
+vim.keymap.set("n", "<leader>bh", bufdelete_left, { desc = "Delete Left" })
+vim.keymap.set("n", "<leader>bl", bufdelete_right, { desc = "Delete Right" })
+vim.keymap.set("n", "<leader>bw", bufwipeout, { desc = "Wipeout" })
 -- stylua: ignore end

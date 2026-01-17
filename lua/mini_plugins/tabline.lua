@@ -7,6 +7,7 @@ tabline.setup({
     local sep = (#listed_buffers > 0) and "" or ""
 
     local suffix = ""
+
     if vim.bo[buf_id].modified then
       suffix = "● "
     elseif vim.bo[buf_id].readonly or not vim.bo[buf_id].modifiable then

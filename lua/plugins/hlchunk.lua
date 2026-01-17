@@ -11,4 +11,7 @@ hlchunk.setup({
   indent = {
     enable = true,
   },
+  exclude_filetypes = {
+    nofile = false,
+  },
 })

@@ -23,21 +23,27 @@ files.setup({
   },
   options = {
     permanent_delete = true,
-    use_as_default_explorer = false,
+    use_as_default_explorer = true,
   },
 })
 
 local show_dotfiles = true
 
--- stylua: ignore start
-local filter_show = function() return true end
-local filter_hide = function(fs_entry) return not vim.startswith(fs_entry.name, ".") end
--- stylua: ignore end
-
-local toggle_dotfiles = function()
+local function toggle_dotfiles()
   show_dotfiles = not show_dotfiles
-  local new_filter = show_dotfiles and filter_show or filter_hide
-  files.refresh({ content = { filter = new_filter } })
+
+  local function filter(fs_entry)
+    if show_dotfiles then
+      return true
+    end
+    return not vim.startswith(fs_entry.name, ".")
+  end
+
+  files.refresh({ content = { filter = filter } })
+end
+
+local function open_current()
+  files.open(vim.api.nvim_buf_get_name(0))
 end
 
 vim.api.nvim_create_autocmd("User", {
@@ -49,8 +55,4 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
-local open = function()
-  files.open(vim.api.nvim_buf_get_name(0))
-end
-
-vim.keymap.set("n", "<leader>ef", open, { desc = "Files" })
+vim.keymap.set("n", "<leader>ef", open_current, { desc = "Files" })

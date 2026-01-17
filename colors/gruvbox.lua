@@ -3,13 +3,13 @@ vim.g.colors_name = "gruvbox"
 
 -- stylua: ignore start
 local palette = {
-  bg_dim      = "#1d2021",
-  bg0         = "#32302f",
-  bg1         = "#3c3836",
-  bg2         = "#504945",
-  bg3         = "#665c54",
-  bg4         = "#7c6f64",
-  bg5         = "#928374",
+  bg_dim = "#252423",
+  bg0    = "#32302f",
+  bg1    = "#3c3836",
+  bg2    = "#45403d",
+  bg3    = "#504945",
+  bg4    = "#5b534d",
+  bg5    = "#665c54",
   bg_red      = "#4c3743",
   bg_green    = "#48584e",
   bg_blue     = "#3f5865",
@@ -82,7 +82,7 @@ local highlights = {
 -- stylua: ignore start
   Cursor       = { fg   = palette.none,  bg = palette.none, reverse = true },
   lCursor      = { fg   = palette.none,  bg = palette.none, reverse = true },
-  CursorLineNr = { fg   = palette.grey1, bg = palette.bg0 },
+  CursorLineNr = { fg   = palette.green, bg = palette.bg0 },
   CursorLine   = { fg   = palette.none,  bg = palette.bg1 },
   CursorIM     = { link = "Cursor" },
   TermCursor   = { link = "Cursor" },
@@ -94,7 +94,13 @@ local highlights = {
   -- stylua: ignore end
 
   -- stylua: ignore start
-  NormalFloat = { fg = palette.fg,    bg = palette.bg2 },
+  CursorLineNrNormal  = { fg = palette.statusline1, bg = palette.bg0 },
+  CursorLineNrInsert  = { fg = palette.statusline2, bg = palette.bg0 },
+  CursorLineNrVisual  = { fg = palette.statusline3, bg = palette.bg0 },
+  -- stylua: ignore end
+
+  -- stylua: ignore start
+  NormalFloat = { fg = palette.white, bg = palette.bg2 },
   FloatBorder = { fg = palette.grey1, bg = palette.bg2 },
   FloatTitle  = { fg = palette.grey1, bg = palette.bg2, bold = true },
   -- stylua: ignore end
@@ -735,13 +741,14 @@ local highlights = {
   MiniIconsRed = { fg = palette.red, bg = palette.none },
   MiniIconsYellow = { fg = palette.yellow, bg = palette.none },
 
+  MiniIndentScopeSymbol = { fg = palette.white },
+  MiniIndentScopeSymbolOff = { fg = palette.red },
   MiniIndentscopePrefix = { fg = palette.none, bg = palette.none, nocombine = true },
 
   MiniJump2dSpot = { fg = palette.orange, bg = palette.none, bold = true, nocombine = true },
   MiniJump2dSpotAhead = { fg = palette.aqua, bg = palette.none, nocombine = true },
   MiniJump2dSpotUnique = { fg = palette.yellow, bg = palette.none, bold = true, nocombine = true },
 
-  MiniPickPrompt = { fg = palette.blue, bg = palette.bg2 },
   MiniStarterCurrent = { fg = palette.none, bg = palette.none, nocombine = true },
 
   -- stylua: ignore start
@@ -787,7 +794,7 @@ local highlights = {
   -- stylua: ignore start
   MiniClueBorder              = { link = "FloatBorder" },
   MiniClueDescGroup           = { link = "DiagnosticFloatingWarn" },
-  MiniClueDescSingle          = { link = "NormalFloat" },
+  MiniClueDescSingle          = { fg = palette.fg },
   MiniClueNextKey             = { link = "DiagnosticFloatingHint" },
   MiniClueNextKeyWithPostkeys = { link = "DiagnosticFloatingError" },
   MiniClueSeparator           = { link = "DiagnosticFloatingInfo" },
@@ -840,7 +847,10 @@ local highlights = {
   MiniNotifyTitle = { link = "FloatTitle" },
 
   MiniNotifyLspProgress = { fg = palette.blue, bg = palette.none, italic = true },
+
   MiniOperatorsExchangeFrom = { link = "IncSearch" },
+
+  MiniPickPrompt = { fg = palette.blue, bg = palette.bg2 },
   MiniPickBorder = { link = "FloatBorder" },
   MiniPickBorderBusy = { link = "DiagnosticFloatingWarn" },
   MiniPickBorderText = { link = "FloatTitle" },
@@ -850,9 +860,10 @@ local highlights = {
   MiniPickMatchCurrent = { link = "CursorLine" },
   MiniPickMatchMarked = { link = "Visual" },
   MiniPickMatchRanges = { link = "DiagnosticFloatingHint" },
-  MiniPickNormal = { link = "NormalFloat" },
+  MiniPickNormal = { fg = palette.fg, bg = palette.bg2 },
   MiniPickPreviewLine = { link = "CursorLine" },
   MiniPickPreviewRegion = { link = "IncSearch" },
+
   MiniStarterFooter = { link = "Orange" },
   MiniStarterHeader = { link = "Yellow" },
   MiniStarterInactive = { link = "Comment" },
@@ -896,13 +907,16 @@ local highlights = {
   FSPrefix = { fg = palette.fg, bg = palette.bg0, bold = true },
   FSSuffix = { fg = palette.grey1, bg = palette.none },
 
-  -- sethen/line-number-change-mode.nvim
   -- stylua: ignore start
-  NumberColumnModeVisual  = { fg = palette.red,    bg = palette.bg0 },
   NumberColumnModeInsert  = { fg = palette.fg,     bg = palette.bg0 },
   NumberColumnModeNormal  = { fg = palette.green,  bg = palette.bg0 },
   NumberColumnModeReplace = { fg = palette.orange, bg = palette.bg0 },
+  NumberColumnModeVisual  = { fg = palette.red,    bg = palette.bg0 },
   -- stylua: ignore end
+
+  -- nvimdev/indentmini.nvim
+  IndentLine = { fg = palette.bg3 },
+  IndentLineCurrent = { fg = palette.white },
 }
 
 for group, opts in pairs(highlights) do

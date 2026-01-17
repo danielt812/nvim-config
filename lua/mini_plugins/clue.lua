@@ -30,6 +30,7 @@ clue.setup({
     { mode = { "n", "x" }, keys = "z" },
   },
   clues = {
+    { mode = { "n", "v" }, keys = "gl", desc = "Lsp" },
     -- stylua: ignore start
     { mode = {"n", "v"}, keys = "<leader>b",  desc = "+Buffer" },
     { mode = {"n", "v"}, keys = "<leader>c",  desc = "+Copilot" },
@@ -41,7 +42,7 @@ clue.setup({
     { mode = {"n", "v"}, keys = "<leader>n",  desc = "+Notify" },
     { mode = {"n", "v"}, keys = "<leader>o",  desc = "+Overseer" },
     { mode = {"n", "v"}, keys = "<leader>q",  desc = "+Quick Fix" },
-    { mode = {"n", "v"}, keys = "<leader>t",  desc = "+Terminal" },
+    -- { mode = {"n", "v"}, keys = "<leader>t",  desc = "+Terminal" },
 
     -- stylua: ignore end
     clue.gen_clues.square_brackets(),
