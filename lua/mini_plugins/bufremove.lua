@@ -5,6 +5,7 @@ bufremove.setup({
   silent = false,
 })
 
+--- Open starter page if the current buffer is empty
 local function open_starter_if_empty_buffer()
   local buf_id = vim.api.nvim_get_current_buf()
   local is_empty = vim.api.nvim_buf_get_name(buf_id) == "" and vim.bo[buf_id].filetype == ""
@@ -14,101 +15,69 @@ local function open_starter_if_empty_buffer()
   end
 
   local ok, starter = pcall(require, "mini.starter")
+
   if ok then
     starter.open()
-    vim.cmd(buf_id .. "bwipeout")
+    bufremove.wipeout(buf_id, true)
   end
 end
 
-local function bufdelete(...)
-  bufremove.delete(...)
-  open_starter_if_empty_buffer()
-end
-
-local function bufwipeout(...)
-  bufremove.wipeout(...)
-  open_starter_if_empty_buffer()
-end
-
-local function remove_buffers(action, mode, opts)
-  opts = opts or {}
-  local force = opts.force or false
-
-  if mode ~= "others" and mode ~= "left" and mode ~= "right" then
-    vim.notify("Invalid mode for remove_buffers: " .. tostring(mode), vim.log.levels.ERROR)
-    return
-  end
-
+--- Remove buffers by action and mode
+--- @param action string
+--- @param mode string
+--- @param force boolean
+local function remove_buffers(action, mode, force)
   local cur = vim.api.nvim_get_current_buf()
 
-  local function deletable(buf)
-    -- Skip current buffer
-    if buf == cur then
-      return false
-    end
-    -- Skip unlisted buffers
-    if vim.fn.buflisted(buf) ~= 1 then
-      return false
-    end
+  local valid_actions = { delete = true, wipeout = true }
 
-    local bt = vim.bo[buf].buftype
-    -- Skip special buffers unless force=true
-    if not force and (bt == "terminal" or bt == "quickfix" or bt == "nofile" or bt == "help" or bt == "prompt") then
-      return false
-    end
-
-    return true
+  if not valid_actions[action] then
+    vim.notify("Invalid action: " .. action, vim.log.levels.ERROR)
   end
 
-  -- All buffers in numerical order
-  local bufs = vim.api.nvim_list_bufs()
+  local valid_modes = { all = true, current = true, others = true, left = true, right = true }
 
-  -- Find index of current buffer
-  local cur_index
-  for i, buf in ipairs(bufs) do
-    if buf == cur then
-      cur_index = i
-      break
-    end
-  end
-
-  if not cur_index then
-    vim.notify("Could not determine current buffer index", vim.log.levels.WARN)
+  if not valid_modes[mode] then
+    vim.notify("Invalid mode: " .. mode, vim.log.levels.ERROR)
     return
   end
 
-  -- Apply deletion depending on mode
-  for i, buf in ipairs(bufs) do
-    local delete = false
+  local bufs = vim.api.nvim_list_bufs()
 
-    if mode == "others" then
-      delete = (buf ~= cur)
-    elseif mode == "left" then
-      delete = (i < cur_index)
-    elseif mode == "right" then
-      delete = (i > cur_index)
-    end
+  for _, buf in ipairs(bufs) do
+    local bt = vim.bo[buf].buftype
 
-    if delete and deletable(buf) then
-      if action == "delete" then
-        bufremove.delete(buf, force)
-      elseif action == "wipeout" then
-        bufremove.wipeout(buf, force)
-      end
+    local deletable = vim.fn.buflisted(buf) == 1
+      and (force or not vim.tbl_contains({ "terminal", "quickfix", "nofile", "help", "prompt" }, bt))
+
+    local delete = mode == "all"
+      or (mode == "current" and buf == cur)
+      or (mode == "others" and buf ~= cur)
+      or (mode == "left" and buf < cur)
+      or (mode == "right" and buf > cur)
+
+    if deletable and delete then
+      bufremove[action](buf, force)
     end
   end
+
+  open_starter_if_empty_buffer()
 end
 
 -- stylua: ignore start
-local function bufdelete_others(opts) remove_buffers("delete", "others", opts) end
-local function bufdelete_left(opts) remove_buffers("delete", "left", opts) end
-local function bufdelete_right(opts) remove_buffers("delete", "right", opts) end
+local function bufdelete_all()    remove_buffers("delete",  "all",     false) end
+local function bufdelete_cur()    remove_buffers("delete",  "current", false) end
+local function bufdelete_left()   remove_buffers("delete",  "left",    false) end
+local function bufdelete_others() remove_buffers("delete",  "others",  false) end
+local function bufdelete_right()  remove_buffers("delete",  "right",   false) end
+local function bufwipeout_cur()   remove_buffers("wipeout", "current", false) end
 -- stylua: ignore end
 
 -- stylua: ignore start
-vim.keymap.set("n", "<leader>bd", bufdelete, { desc = "Delete Current" })
+vim.keymap.set("n", "<leader>ba", bufdelete_all,    { desc = "Delete All" })
+vim.keymap.set("n", "<leader>bd", bufdelete_cur,    { desc = "Delete" })
+vim.keymap.set("n", "<leader>bh", bufdelete_left,   { desc = "Delete Left" })
+vim.keymap.set("n", "<leader>bl", bufdelete_right,  { desc = "Delete Right" })
 vim.keymap.set("n", "<leader>bo", bufdelete_others, { desc = "Delete Others" })
-vim.keymap.set("n", "<leader>bh", bufdelete_left, { desc = "Delete Left" })
-vim.keymap.set("n", "<leader>bl", bufdelete_right, { desc = "Delete Right" })
-vim.keymap.set("n", "<leader>bw", bufwipeout, { desc = "Wipeout" })
+vim.keymap.set("n", "<leader>bw", bufwipeout_cur,   { desc = "Wipeout" })
 -- stylua: ignore end
