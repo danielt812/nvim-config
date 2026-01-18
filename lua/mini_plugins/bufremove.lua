@@ -5,7 +5,6 @@ bufremove.setup({
   silent = false,
 })
 
---- Open starter page if the current buffer is empty
 local function open_starter_if_empty_buffer()
   local buf_id = vim.api.nvim_get_current_buf()
   local is_empty = vim.api.nvim_buf_get_name(buf_id) == "" and vim.bo[buf_id].filetype == ""
@@ -48,7 +47,8 @@ local function remove_buffers(action, mode, force)
     local bt = vim.bo[buf].buftype
 
     local deletable = vim.fn.buflisted(buf) == 1
-      and (force or not vim.tbl_contains({ "terminal", "quickfix", "nofile", "help", "prompt" }, bt))
+      -- buftypes to not consider
+      and (force or not vim.tbl_contains({ "terminal", "quickfix", "help", "prompt" }, bt))
 
     local delete = mode == "all"
       or (mode == "current" and buf == cur)
