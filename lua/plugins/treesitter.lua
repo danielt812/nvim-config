@@ -4,6 +4,11 @@ treesitter.setup({
   install_dir = vim.fn.stdpath("data") .. "/site",
 })
 
+-- Add here more languages with which you want to use tree-sitter
+-- To see available languages:
+--   Execute `:lua require('nvim-treesitter').get_available()`
+--   Or visit 'SUPPORTED_LANGUAGES.md' file at
+--   https://github.com/nvim-treesitter/nvim-treesitter/blob/main/SUPPORTED_LANGUAGES.md
 local languages = {
   "bash",
   "c",
@@ -27,8 +32,26 @@ local languages = {
   "zsh",
 }
 
-treesitter.install(languages)
+local function isnt_installed(lang)
+  return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0
+end
 
+local to_install = vim.tbl_filter(isnt_installed, languages)
+
+-- Optional check to make sure tree-sitter-cli is installed
+local function has_treesitter_cli()
+  return vim.fn.executable("tree-sitter-cli") == 1
+end
+
+if #to_install > 0 then
+  if has_treesitter_cli() then
+    treesitter.install(to_install)
+  else
+    vim.notify("tree-sitter-cli executable not found", vim.log.levels.WARN)
+  end
+end
+
+-- Enable tree-sitter after opening a file for a target language
 local filetypes = {}
 
 for _, language in ipairs(languages) do
@@ -37,11 +60,13 @@ for _, language in ipairs(languages) do
   end
 end
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = filetypes,
-  group = vim.api.nvim_create_augroup("treesitter", { clear = true }),
-  desc = "Start treesitter",
-  callback = function(args)
-    vim.treesitter.start(args.buf)
-  end,
-})
+if #filetypes > 0 then
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = filetypes,
+    group = vim.api.nvim_create_augroup("treesitter", { clear = true }),
+    desc = "Auto start treesitter",
+    callback = function(ev)
+      vim.treesitter.start(ev.buf)
+    end,
+  })
+end

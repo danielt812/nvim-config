@@ -186,13 +186,17 @@ later(function()
   add({
     source = "nvim-treesitter/nvim-treesitter",
     checkout = "main",
+    post_checkout = function()
+      vim.cmd("TSUpdate")
+    end,
   })
+
   add({
     source = "nvim-treesitter/nvim-treesitter-textobjects",
     checkout = "main",
   })
-
   add({ source = "JoosepAlviste/nvim-ts-context-commentstring" })
+
   plug("treesitter")
 
   add({ source = "Wansmer/treesj" })
@@ -276,10 +280,10 @@ later(function()
   plug("toggleterm")
 end)
 
-later(function()
-  add({ source = "folke/lazydev.nvim" })
-  plug("lazydev")
-end)
+-- later(function()
+--   add({ source = "folke/lazydev.nvim" })
+--   plug("lazydev")
+-- end)
 
 -- Co-pilot
 later(function()
