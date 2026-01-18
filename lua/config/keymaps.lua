@@ -2,12 +2,6 @@
 vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
 vim.keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
 
--- Cycle buffers
--- stylua: ignore start
-vim.keymap.set({ "n" }, "<S-h>", "<cmd>bprevious<cr>", { desc = "Go to previous buffer" })
-vim.keymap.set({ "n" }, "<S-l>", "<cmd>bnext<cr>",     { desc = "Go to next buffer" })
--- stylua: ignore end
-
 -- Move to window/tmux pane using ctrl + hjkl keys
 -- vim.keymap.set({ "n", "t" }, "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to left window", remap = true })
 -- vim.keymap.set({ "n", "t" }, "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go to lower window", remap = true })
@@ -39,8 +33,10 @@ vim.keymap.set("n", ">", ">>",  { desc = "Indent line to right",  silent = true 
 
 vim.keymap.set("n", "U", "<c-r>", { desc = "Redo", silent = true })
 
--- Clear search highlights
-vim.keymap.set({ "n", "x" }, "<esc>", "<cmd>nohlsearch<cr>", { desc = "Clear search highlights", silent = true })
+-- Create scratch buffer
+vim.keymap.set("n", "<leader>bs", function()
+  vim.api.nvim_win_set_buf(0, vim.api.nvim_create_buf(true, true))
+end, { desc = "Scratch" })
 
 -- Keep cursor placement after yanking
 vim.keymap.set({ "n", "x" }, "y", function()
