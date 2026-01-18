@@ -1,7 +1,8 @@
 local misc = require("mini.misc")
 
-misc.setup({})
+misc.setup()
 misc.setup_restore_cursor()
+misc.setup_termbg_sync()
 
 -- https://github.com/echasnovski/mini.nvim/issues/1911
 -- NOTE - Zoom without changing background color
@@ -16,7 +17,7 @@ end
 
 local function centered_zoom()
   local ui = vim.api.nvim_list_uis()[1]
-  local width = ui.width / 2
+  local width = math.ceil(ui.width / 2)
   local height = ui.height
 
   misc.zoom(0, {
@@ -28,9 +29,6 @@ local function centered_zoom()
     style = "minimal",
   })
 
-  vim.wo.number = true
-  vim.wo.relativenumber = true
-  vim.wo.cursorline = true
   vim.wo.winhighlight = "NormalFloat:Normal"
 end
 

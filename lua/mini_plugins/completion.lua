@@ -1,14 +1,13 @@
 local completion = require("mini.completion")
 
-local opts = {
-  filtersort = "fuzzy",
-  kind_priority = {
-    Text = -1,
-    Snippet = 99,
-  },
-}
-
-local process_items = function(items, base)
+local function process_items(items, base)
+  local opts = {
+    filtersort = "fuzzy",
+    kind_priority = {
+      Text = -1,
+      Snippet = 99,
+    },
+  }
   local processed = completion.default_process_items(items, base, opts)
 
   for _, item in ipairs(processed) do

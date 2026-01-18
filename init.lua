@@ -68,7 +68,7 @@ now(function()
   vim.g.mapleader = " "
   vim.g.maplocalleader = ","
 
-  for _, plugin in pairs(disabled_built_ins) do
+  for _, plugin in ipairs(disabled_built_ins) do
     vim.g["loaded_" .. plugin] = 1
   end
 
@@ -119,7 +119,7 @@ later(function()
   mplug("misc")
   mplug("move")
   mplug("operators")
-  mplug("pairs") -- Going to try this again, can't get it to behave how I am wanting yet
+  mplug("pairs")
   mplug("pick")
   mplug("snippets")
   mplug("splitjoin")
@@ -143,9 +143,10 @@ end)
 
 -- Autopair/Autotag
 later(function()
-  -- add({ source = "windwp/nvim-autopairs" })
+  add({ source = "windwp/nvim-autopairs" })
+  plug("autopairs")
+
   add({ source = "windwp/nvim-ts-autotag" })
-  -- plug("autopairs")
   plug("autotag")
 end)
 
@@ -182,8 +183,15 @@ end)
 
 -- Treesitter
 later(function()
-  add({ source = "nvim-treesitter/nvim-treesitter" })
-  add({ source = "nvim-treesitter/nvim-treesitter-textobjects" })
+  add({
+    source = "nvim-treesitter/nvim-treesitter",
+    checkout = "main",
+  })
+  add({
+    source = "nvim-treesitter/nvim-treesitter-textobjects",
+    checkout = "main",
+  })
+
   add({ source = "JoosepAlviste/nvim-ts-context-commentstring" })
   plug("treesitter")
 
@@ -217,9 +225,9 @@ later(function()
   plug("rainbow-delimeters")
 end)
 
--- Stevearc suite
+-- Stevearc plugins
 later(function()
-  -- Formatter
+  -- Formatter/Linter
   add({ source = "stevearc/conform.nvim" })
   plug("conform")
 

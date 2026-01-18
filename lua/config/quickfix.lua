@@ -3,14 +3,6 @@ vim.api.nvim_create_user_command("Grep", function(opts)
   vim.cmd("copen")
 end, { nargs = "+" })
 
-local function open_qf_list()
-  vim.cmd("copen")
-end
-
-local function close_qf_list()
-  vim.cmd("cclose")
-end
-
 local function clear_qf_list()
   vim.cmd("cexpr []")
 end
@@ -30,9 +22,7 @@ local function toggle_qf_list()
 end
 
 -- stylua: ignore start
-vim.keymap.set("n", "<leader>qc", close_qf_list,   { desc = "Close" })
 vim.keymap.set("n", "<leader>qd", set_diagnostics, { desc = "Diagnostics" })
-vim.keymap.set("n", "<leader>qo", open_qf_list,    { desc = "Open" })
-vim.keymap.set("n", "<leader>qq", toggle_qf_list,  { desc = "Toggle" })
-vim.keymap.set("n", "<leader>qr", clear_qf_list,   { desc = "Clear" })
+vim.keymap.set("n", "<leader>qq", toggle_qf_list,  { desc = "Quickfix" })
+vim.keymap.set("n", "<leader>qc", clear_qf_list,   { desc = "Clear" })
 -- stylua: ignore end

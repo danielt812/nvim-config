@@ -15,6 +15,7 @@ local capabilities = vim.tbl_deep_extend(
 
 -- Shared on_attach
 local function on_attach(client, bufnr)
+  -- Prefer treesitter highlighting
   if client.server_capabilities.semanticTokensProvider then
     client.server_capabilities.semanticTokensProvider = nil
   end

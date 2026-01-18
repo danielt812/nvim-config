@@ -26,7 +26,7 @@ toggleterm.setup({
   float_opts = {
     border = "single",
     title_pos = "left",
-    winblend = 15,
+    -- winblend = 15,
   },
 })
 

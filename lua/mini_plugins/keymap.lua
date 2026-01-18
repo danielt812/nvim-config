@@ -7,7 +7,6 @@ local map_combo     = keymap.map_combo
 
 local tab_steps = {
   "minisnippets_next",
-  -- "pmenu_next",
   "increase_indent",
   "minisnippets_expand",
   "jump_after_tsnode",
@@ -17,7 +16,6 @@ map_multistep("i", "<Tab>", tab_steps)
 
 local shifttab_steps = {
   "minisnippets_prev",
-  -- "pmenu_prev",
   "decrease_indent",
   "jump_before_tsnode",
   "jump_before_open",
@@ -30,12 +28,6 @@ map_multistep({ "i", "c" }, "<C-j>", { "pmenu_next" })
 map_multistep({ "i", "c" }, "<C-k>", { "pmenu_prev" })
 map_multistep({ "i", "c" }, "<C-CR>", { "pmenu_accept" })
 
--- Handle pair plugins (trying both, need to learn how neigh patterns work)
+-- Handle pair plugins
 map_multistep("i", "<CR>", { "nvimautopairs_cr", "minipairs_cr" })
 map_multistep("i", "<BS>", { "nvimautopairs_bs", "minipairs_bs" })
-
-local function no_hlsearch()
-  vim.cmd("nohlsearch")
-end
-
-map_combo({ "n", "i", "x", "c" }, "<Esc>", no_hlsearch)

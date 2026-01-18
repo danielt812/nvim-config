@@ -3,7 +3,6 @@ local splitjoin = require("mini.splitjoin")
 -- stylua: ignore start
 local curly  = { brackets = { "%b{}" } }
 local square = { brackets = { "%b[]" } }
-local paren  = { brackets = { "%b()" } }
 -- stylua: ignore end
 
 -- Disable hooks for specific filetypes
@@ -35,8 +34,6 @@ local add_comma_curly  = disable_for_filetypes(add_trailing_separator(curly), no
 local del_comma_curly  = disable_for_filetypes(del_trailing_separator(curly), no_trailing_comma)
 local add_comma_square = disable_for_filetypes(add_trailing_separator(square), no_trailing_comma)
 local del_comma_square = disable_for_filetypes(del_trailing_separator(square), no_trailing_comma)
-local add_comma_paren  = disable_for_filetypes(add_trailing_separator(paren), no_trailing_comma)
-local del_comma_paren  = disable_for_filetypes(del_trailing_separator(paren), no_trailing_comma)
 -- stylua: ignore end
 
 local pad_curly = splitjoin.gen_hook.pad_brackets(curly)
@@ -53,9 +50,9 @@ splitjoin.setup({
     exclude_regions = { "%b()", "%b[]", "%b{}", '%b""', "%b''" },
   },
   split = {
-    hooks_post = { add_comma_curly, add_comma_paren, add_comma_square },
+    hooks_post = { add_comma_curly, add_comma_square },
   },
   join = {
-    hooks_post = { del_comma_curly, del_comma_paren, del_comma_square, pad_curly },
+    hooks_post = { del_comma_curly, del_comma_square, pad_curly },
   },
 })

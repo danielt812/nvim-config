@@ -1,15 +1,18 @@
--- Better up/down
+-- Respect wrapped lines
 vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
 vim.keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
 
-vim.keymap.set({ "n" }, "<S-h>", "<cmd>bprevious<cr>")
-vim.keymap.set({ "n" }, "<S-l>", "<cmd>bnext<cr>")
+-- Cycle buffers
+-- stylua: ignore start
+vim.keymap.set({ "n" }, "<S-h>", "<cmd>bprevious<cr>", { desc = "Go to previous buffer" })
+vim.keymap.set({ "n" }, "<S-l>", "<cmd>bnext<cr>",     { desc = "Go to next buffer" })
+-- stylua: ignore end
 
 -- Move to window/tmux pane using ctrl + hjkl keys
-vim.keymap.set({ "n", "t" }, "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to left window", remap = true })
-vim.keymap.set({ "n", "t" }, "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go to lower window", remap = true })
-vim.keymap.set({ "n", "t" }, "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to upper window", remap = true })
-vim.keymap.set({ "n", "t" }, "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to right window", remap = true })
+-- vim.keymap.set({ "n", "t" }, "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to left window", remap = true })
+-- vim.keymap.set({ "n", "t" }, "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go to lower window", remap = true })
+-- vim.keymap.set({ "n", "t" }, "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to upper window", remap = true })
+-- vim.keymap.set({ "n", "t" }, "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to right window", remap = true })
 
 -- vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Center cursor line on scroll up" })
 -- vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Center cursor line on scroll down" })
@@ -26,6 +29,7 @@ vim.keymap.set({ "n", "v", "x" }, "C", '"_C', { desc = "Prevent C from yanking t
 vim.keymap.set({ "n", "v", "x" }, "s", '"_s', { desc = "Prevent s from yanking to clipboard" })
 vim.keymap.set({ "n", "v", "x" }, "S", '"_S', { desc = "Prevent S from yanking to clipboard" })
 
+-- Indent QOL
 -- stylua: ignore start
 vim.keymap.set("x", "<", "<gv", { desc = "Indent block to left",  silent = true })
 vim.keymap.set("x", ">", ">gv", { desc = "Indent block to right", silent = true })
@@ -34,6 +38,9 @@ vim.keymap.set("n", ">", ">>",  { desc = "Indent line to right",  silent = true 
 -- stylua: ignore end
 
 vim.keymap.set("n", "U", "<c-r>", { desc = "Redo", silent = true })
+
+-- Clear search highlights
+vim.keymap.set({ "n", "x" }, "<esc>", "<cmd>nohlsearch<cr>", { desc = "Clear search highlights", silent = true })
 
 -- Keep cursor placement after yanking
 vim.keymap.set({ "n", "x" }, "y", function()
