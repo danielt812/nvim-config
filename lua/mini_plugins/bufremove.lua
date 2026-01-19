@@ -21,11 +21,10 @@ local function open_starter_if_empty_buffer()
   end
 end
 
---- Remove buffers by action and mode
---- @param action string
---- @param mode string
+--- @param action '"delete"'|'"wipeout"'
+--- @param selection '"all"'|'"current"'|'"others"'|'"left"'|'"right"'
 --- @param force boolean
-local function remove_buffers(action, mode, force)
+local function remove_buffers(action, selection, force)
   local cur = vim.api.nvim_get_current_buf()
 
   local valid_actions = { delete = true, wipeout = true }
@@ -34,29 +33,23 @@ local function remove_buffers(action, mode, force)
     vim.notify("Invalid action: " .. action, vim.log.levels.ERROR)
   end
 
-  local valid_modes = { all = true, current = true, others = true, left = true, right = true }
+  local valid_selections = { all = true, current = true, others = true, left = true, right = true }
 
-  if not valid_modes[mode] then
-    vim.notify("Invalid mode: " .. mode, vim.log.levels.ERROR)
+  if not valid_selections[selection] then
+    vim.notify("Invalid selection: " .. selection, vim.log.levels.ERROR)
     return
   end
 
   local bufs = vim.api.nvim_list_bufs()
 
   for _, buf in ipairs(bufs) do
-    local bt = vim.bo[buf].buftype
+    local delete = selection == "all"
+      or (selection == "current" and buf == cur)
+      or (selection == "others" and buf ~= cur)
+      or (selection == "left" and buf < cur)
+      or (selection == "right" and buf > cur)
 
-    local deletable = vim.fn.buflisted(buf) == 1
-      -- buftypes to not consider
-      and (force or not vim.tbl_contains({ "terminal", "quickfix", "help", "prompt" }, bt))
-
-    local delete = mode == "all"
-      or (mode == "current" and buf == cur)
-      or (mode == "others" and buf ~= cur)
-      or (mode == "left" and buf < cur)
-      or (mode == "right" and buf > cur)
-
-    if deletable and delete then
+    if vim.fn.buflisted(buf) == 1 and delete then
       bufremove[action](buf, force)
     end
   end
