@@ -217,10 +217,7 @@ later(function()
   plug("smear-cursor")
 
   -- Animated highlights
-  add({
-    source = "rachartier/tiny-glimmer.nvim",
-    checkout = "624e8c3",
-  })
+  add({ source = "rachartier/tiny-glimmer.nvim" })
   plug("tiny-glimmer")
 
   -- Diagnostics
