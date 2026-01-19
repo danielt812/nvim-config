@@ -33,12 +33,4 @@ map_multistep({ "i", "c" }, "<C-CR>", { "pmenu_accept" })
 map_multistep("i", "<CR>", { "nvimautopairs_cr", "minipairs_cr" })
 map_multistep("i", "<BS>", { "nvimautopairs_bs", "minipairs_bs" })
 
--- stylua: ignore start
-local function nohlsearch() vim.cmd("nohlsearch") end
-local function bprevious()  vim.cmd("bprevious")  end
-local function bnext()      vim.cmd("bnext")      end
-
-map_combo("n", "H",     bprevious,  { desc = "Go to previous buffer" })
-map_combo("n", "L",     bnext,      { desc = "Go to previous buffer" })
-map_combo("n", "<esc>", nohlsearch, { desc = "Clear highlight" })
--- stylua: ignore end
+map_combo("n", "<esc>", "<cmd>nohlsearch<cr>", { desc = "Clear highlight" })

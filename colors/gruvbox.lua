@@ -100,7 +100,7 @@ local highlights = {
   -- stylua: ignore end
 
   -- stylua: ignore start
-  NormalFloat = { fg = palette.white, bg = palette.bg2 },
+  NormalFloat = { fg = palette.fg, bg = palette.bg2 },
   FloatBorder = { fg = palette.grey1, bg = palette.bg2 },
   FloatTitle  = { fg = palette.grey1, bg = palette.bg2, bold = true },
   -- stylua: ignore end
@@ -728,9 +728,6 @@ local highlights = {
   MiniAnimateCursor = { fg = palette.none, bg = palette.none, reverse = true, nocombine = true },
   MiniAnimateNormalFloat = { link = "NormalFloat" },
 
-  MiniFilesFile = { fg = palette.fg, bg = palette.none },
-  MiniFilesTitleFocused = { fg = palette.green, bg = palette.bg2, bold = true },
-
   MiniIconsAzure = { fg = palette.blue, bg = palette.none },
   MiniIconsBlue = { fg = palette.blue, bg = palette.none },
   MiniIconsCyan = { fg = palette.aqua, bg = palette.none },
@@ -794,7 +791,7 @@ local highlights = {
   -- stylua: ignore start
   MiniClueBorder              = { link = "FloatBorder" },
   MiniClueDescGroup           = { link = "DiagnosticFloatingWarn" },
-  MiniClueDescSingle          = { fg = palette.fg },
+  MiniClueDescSingle          = { link = "NormalFloat" },
   MiniClueNextKey             = { link = "DiagnosticFloatingHint" },
   MiniClueNextKeyWithPostkeys = { link = "DiagnosticFloatingError" },
   MiniClueSeparator           = { link = "DiagnosticFloatingInfo" },
@@ -803,19 +800,23 @@ local highlights = {
 
   MiniCompletionActiveParameter = { link = "LspSignatureActiveParameter" },
 
-  MiniCursorword = { underline = true },
-  MiniCursorwordCurrent = { link = "MiniCursorword" },
+  -- stylua: ignore start
+  MiniCursorword        = { underline = true },
+  MiniCursorwordCurrent = { underline = true },
+  -- stylua: ignore end
 
-  MiniDepsChangeAdded = { link = "Added" },
+  -- stylua: ignore start
+  MiniDepsChangeAdded   = { link = "Added" },
   MiniDepsChangeRemoved = { link = "Removed" },
-  MiniDepsHints = { link = "DiagnosticHint" },
-  MiniDepsInfo = { link = "DiagnosticInfo" },
-  MiniDepsMsgBreaking = { link = "DiagnosticWarn" },
-  MiniDepsPlaceholder = { link = "Comment" },
-  MiniDepsTitle = { link = "Title" },
-  MiniDepsTitleError = { link = "DiffDelete" },
-  MiniDepsTitleSame = { link = "DiffChange" },
-  MiniDepsTitleUpdate = { link = "DiffAdd" },
+  MiniDepsHints         = { link = "DiagnosticHint" },
+  MiniDepsInfo          = { link = "DiagnosticInfo" },
+  MiniDepsMsgBreaking   = { link = "DiagnosticWarn" },
+  MiniDepsPlaceholder   = { link = "Comment" },
+  MiniDepsTitle         = { link = "Title" },
+  MiniDepsTitleError    = { link = "DiffDelete" },
+  MiniDepsTitleSame     = { link = "DiffChange" },
+  MiniDepsTitleUpdate   = { link = "DiffAdd" },
+  -- stylua: ignore end
 
   MiniDiffOverAdd = { link = "DiffAdd" },
   MiniDiffOverChange = { link = "DiffText" },
@@ -829,8 +830,10 @@ local highlights = {
   MiniFilesBorderModified = { link = "DiagnosticFloatingWarn" },
   MiniFilesCursorLine = { link = "CursorLine" },
   MiniFilesDirectory = { link = "Directory" },
+  MiniFilesFile = { link = "NormalFloat" },
   MiniFilesNormal = { link = "NormalFloat" },
   MiniFilesTitle = { link = "FloatTitle" },
+  MiniFilesTitleFocused = { fg = palette.green, bg = palette.bg2, bold = true },
 
   MiniIndentscopeSymbol = { link = "Grey" },
 

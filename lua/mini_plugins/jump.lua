@@ -17,9 +17,9 @@ jump.setup({
 
 local function jump_stop()
   if not jump.state.jumping then
-    return "<Esc>"
+    return "<esc>"
   end
   jump.stop_jumping()
 end
 
-vim.keymap.set({ "n", "x" }, "<Esc>", jump_stop, { expr = true })
+vim.keymap.set({ "n", "x" }, "<esc>", jump_stop, { expr = true })
