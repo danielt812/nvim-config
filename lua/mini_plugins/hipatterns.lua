@@ -9,6 +9,7 @@ local function apply_custom_highlights()
   vim.api.nvim_set_hl(0, "MiniHipatternsHack",  { fg = "#000000", bg = "#d699b6" }) -- HACK  example
   vim.api.nvim_set_hl(0, "MiniHipatternsNote",  { fg = "#000000", bg = "#3498db" }) -- NOTE  example
   vim.api.nvim_set_hl(0, "MiniHipatternsInfo",  { fg = "#000000", bg = "#98c379" }) -- INFO  example
+  vim.api.nvim_set_hl(0, "MiniHipatternsLink",  { fg = "#000000", bg = "#8be9fd" }) -- LINK  example
 end
 -- stylua: ignore end
 

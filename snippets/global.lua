@@ -29,7 +29,6 @@ return {
         { prefix = "fixme", body = cs .. " FIXME  ${1:describe the bug or needed fix}",  desc = "Create a fixme comment" },
         { prefix = "hack",  body = cs .. " HACK  ${1:temporary workaround or solution}", desc = "Create a hack comment" },
         { prefix = "info",  body = cs .. " INFO  ${1:relevant context or metadata}",     desc = "Create a info comment" },
-        { prefix = "link",  body = cs .. " LINK  ${1:href to issue or documentation}",   desc = "Create a link comment" },
         { prefix = "note",  body = cs .. " NOTE  ${1:important detail}",                 desc = "Create a note comment" },
         { prefix = "todo",  body = cs .. " TODO  ${1:describe the task or goal}",        desc = "Create a todo comment" },
         { prefix = "warn",  body = cs .. " WARN  ${1:potential risk or edge case}",      desc = "Create a warn comment" },
