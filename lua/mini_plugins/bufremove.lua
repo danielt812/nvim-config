@@ -1,10 +1,5 @@
 local bufremove = require("mini.bufremove")
 
-bufremove.setup({
-  use_vim_settings = true,
-  silent = false,
-})
-
 local function open_starter_if_empty_buffer()
   local buf_id = vim.api.nvim_get_current_buf()
   local is_empty = vim.api.nvim_buf_get_name(buf_id) == "" and vim.bo[buf_id].filetype == ""
@@ -31,6 +26,7 @@ local function remove_buffers(action, selection, force)
 
   if not valid_actions[action] then
     vim.notify("Invalid action: " .. action, vim.log.levels.ERROR)
+    return
   end
 
   local valid_selections = { all = true, current = true, others = true, left = true, right = true }
