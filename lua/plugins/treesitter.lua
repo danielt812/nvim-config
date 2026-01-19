@@ -21,6 +21,7 @@ local languages = {
   "lua",
   "luadoc",
   "markdown",
+  "python",
   "query",
   "regex",
   "scss",

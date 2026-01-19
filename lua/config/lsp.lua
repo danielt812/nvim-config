@@ -60,6 +60,7 @@ end
 -- List of servers to enable
 local servers = {
   "angularls",
+  "basedpyright",
   "bashls",
   "css_variables",
   "cssls",
