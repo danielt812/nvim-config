@@ -20,8 +20,6 @@ end
 --- @param selection '"all"'|'"current"'|'"others"'|'"left"'|'"right"'
 --- @param force boolean
 local function remove_buffers(action, selection, force)
-  local cur = vim.api.nvim_get_current_buf()
-
   local valid_actions = { delete = true, wipeout = true }
 
   if not valid_actions[action] then
@@ -36,6 +34,7 @@ local function remove_buffers(action, selection, force)
     return
   end
 
+  local cur = vim.api.nvim_get_current_buf()
   local bufs = vim.api.nvim_list_bufs()
 
   for _, buf in ipairs(bufs) do
@@ -59,7 +58,7 @@ local function bufdelete_cur()    remove_buffers("delete",  "current", false) en
 local function bufdelete_left()   remove_buffers("delete",  "left",    false) end
 local function bufdelete_others() remove_buffers("delete",  "others",  false) end
 local function bufdelete_right()  remove_buffers("delete",  "right",   false) end
-local function bufwipeout_cur()   remove_buffers("wipeout", "current", false) end
+local function bufwipeout_cur()   remove_buffers("wipeout", "current", true)  end
 -- stylua: ignore end
 
 -- stylua: ignore start
