@@ -19,6 +19,7 @@ local languages = {
   "jsdoc",
   "json",
   "lua",
+  "luadoc",
   "markdown",
   "query",
   "regex",
@@ -38,17 +39,8 @@ end
 
 local to_install = vim.tbl_filter(isnt_installed, languages)
 
--- Optional check to make sure tree-sitter-cli is installed
-local function has_treesitter_cli()
-  return vim.fn.executable("tree-sitter-cli") == 1
-end
-
 if #to_install > 0 then
-  if has_treesitter_cli() then
-    treesitter.install(to_install)
-  else
-    vim.notify("tree-sitter-cli executable not found", vim.log.levels.WARN)
-  end
+  treesitter.install(to_install)
 end
 
 -- Enable tree-sitter after opening a file for a target language
