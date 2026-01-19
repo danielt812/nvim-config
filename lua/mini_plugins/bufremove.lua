@@ -1,4 +1,5 @@
 local bufremove = require("mini.bufremove")
+local pins = require("utils.buffer-pins")
 
 local function open_starter_if_empty_buffer()
   local buf_id = vim.api.nvim_get_current_buf()
@@ -17,7 +18,7 @@ local function open_starter_if_empty_buffer()
 end
 
 --- @param action '"delete"'|'"wipeout"'
---- @param selection '"all"'|'"current"'|'"others"'|'"left"'|'"right"'
+--- @param selection '"all"'|'"current"'|'"others"'|'"left"'|'"right"'|'"unpinned"'
 --- @param force boolean
 local function remove_buffers(action, selection, force)
   local valid_actions = { delete = true, wipeout = true }
@@ -27,7 +28,7 @@ local function remove_buffers(action, selection, force)
     return
   end
 
-  local valid_selections = { all = true, current = true, others = true, left = true, right = true }
+  local valid_selections = { all = true, current = true, others = true, left = true, right = true, unpinned = true }
 
   if not valid_selections[selection] then
     vim.notify("Invalid selection: " .. selection, vim.log.levels.ERROR)
@@ -43,6 +44,7 @@ local function remove_buffers(action, selection, force)
       or (selection == "others" and buf ~= cur)
       or (selection == "left" and buf < cur)
       or (selection == "right" and buf > cur)
+      or (selection == "unpinned" and not pins.is_pinned(buf))
 
     if vim.fn.buflisted(buf) == 1 and delete then
       bufremove[action](buf, force)
@@ -53,19 +55,27 @@ local function remove_buffers(action, selection, force)
 end
 
 -- stylua: ignore start
-local function bufdelete_all()    remove_buffers("delete",  "all",     false) end
-local function bufdelete_cur()    remove_buffers("delete",  "current", false) end
-local function bufdelete_left()   remove_buffers("delete",  "left",    false) end
-local function bufdelete_others() remove_buffers("delete",  "others",  false) end
-local function bufdelete_right()  remove_buffers("delete",  "right",   false) end
-local function bufwipeout_cur()   remove_buffers("wipeout", "current", true)  end
+local function bufdelete_cur()      remove_buffers("delete",  "current",  false) end
+local function bufdelete_left()     remove_buffers("delete",  "left",     false) end
+local function bufdelete_others()   remove_buffers("delete",  "others",   false) end
+local function bufdelete_right()    remove_buffers("delete",  "right",    false) end
+local function bufdelete_unpinned() remove_buffers("delete",  "unpinned", false) end
+local function bufwipeout_cur()     remove_buffers("wipeout", "current",  true)  end
 -- stylua: ignore end
 
 -- stylua: ignore start
-vim.keymap.set("n", "<leader>ba", bufdelete_all,    { desc = "Delete All" })
-vim.keymap.set("n", "<leader>bd", bufdelete_cur,    { desc = "Delete" })
-vim.keymap.set("n", "<leader>bh", bufdelete_left,   { desc = "Delete Left" })
-vim.keymap.set("n", "<leader>bl", bufdelete_right,  { desc = "Delete Right" })
-vim.keymap.set("n", "<leader>bo", bufdelete_others, { desc = "Delete Others" })
-vim.keymap.set("n", "<leader>bw", bufwipeout_cur,   { desc = "Wipeout" })
+vim.keymap.set("n", "<leader>bd", bufdelete_cur,      { desc = "Delete" })
+vim.keymap.set("n", "<leader>bh", bufdelete_left,     { desc = "Delete Left" })
+vim.keymap.set("n", "<leader>bl", bufdelete_right,    { desc = "Delete Right" })
+vim.keymap.set("n", "<leader>bo", bufdelete_others,   { desc = "Delete Others" })
+vim.keymap.set("n", "<leader>bw", bufwipeout_cur,     { desc = "Wipeout!" })
+vim.keymap.set("n", "<leader>bP", bufdelete_unpinned, { desc = "Delete Unpinned" })
 -- stylua: ignore end
+
+vim.api.nvim_create_autocmd({ "BufDelete", "BufWipeout" }, {
+  group = vim.api.nvim_create_augroup("mini_bufremove", { clear = true }),
+  desc = "Update buffer pinned",
+  callback = function(args)
+    pins.clear(args.buf)
+  end,
+})
