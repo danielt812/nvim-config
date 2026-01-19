@@ -20,7 +20,7 @@ deps.setup({ path = { package = path_package } })
 local add, now, later = deps.add, deps.now, deps.later
 
 --- Safely notifies an error message after a short delay to allow notify plugin to initialize.
--- @param msg string: The error message to display.
+--- @param msg string: The error message to display.
 local function delayed_notify(msg)
   vim.schedule(function()
     vim.defer_fn(function()
@@ -30,7 +30,7 @@ local function delayed_notify(msg)
 end
 
 --- Loads a module from the `plugins` namespace with error handling.
--- @param plugin string: Name of the plugin module (without the "plugins." prefix).
+--- @param plugin string: Name of the plugin module (without the "plugins." prefix).
 local function plug(plugin)
   local ok, err = pcall(require, "plugins." .. plugin)
   if not ok then
@@ -39,7 +39,7 @@ local function plug(plugin)
 end
 
 --- Loads a module from the `mini_plugins` namespace with error handling.
--- @param plugin string: Name of the plugin module (without the "mini_plugins." prefix).
+--- @param plugin string: Name of the plugin module (without the "mini_plugins." prefix).
 local function mplug(plugin)
   local ok, err = pcall(require, "mini_plugins." .. plugin)
   if not ok then
@@ -48,7 +48,7 @@ local function mplug(plugin)
 end
 
 --- Loads a configuration module from the `config` namespace with error handling.
--- @param config string: Name of the config module (without the "config." prefix).
+--- @param config string: Name of the config module (without the "config." prefix).
 local function conf(config)
   local ok, err = pcall(require, "config." .. config)
   if not ok then
