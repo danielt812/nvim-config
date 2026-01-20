@@ -41,12 +41,7 @@ return {
           },
           desc = "Create a boxed comment",
         },
-        {
-          prefix = "section",
-          body = cs
-            .. " ── ${1:Section name} ─────────────────────────────",
-          desc = "Create a section divider",
-        },
+        { prefix = "section", body = cs .. " ── ${1:Section name} ─────────────────────────────", desc = "Create a section divider" },
         {
           prefix = "header",
           body = {
