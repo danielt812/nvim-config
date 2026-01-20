@@ -23,9 +23,7 @@ pairs.setup({
   },
 })
 
-local function toggle_pairs()
-  vim.b.minipairs_disable = not vim.b.minipairs_disable
-  vim.notify("Pairs " .. (vim.b.minipairs_disable and "disabled" or "enabled"), vim.log.levels.INFO)
-end
+-- stylua: ignore
+local function toggle_pairs() vim.b.minipairs_disable = not vim.b.minipairs_disable end
 
 vim.keymap.set("n", "<leader>ep", toggle_pairs, { desc = "Pairs" })

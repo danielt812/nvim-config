@@ -15,6 +15,15 @@ statusline.setup({
           string.format("%%#MiniStatuslineDiag%s#%s %%#MiniStatuslineDevinfo#", severity, icon)
       end
 
+      local function section_disabled_mods(trunc_width)
+        if statusline.is_truncated(trunc_width) then
+          return ""
+        end
+        local pairs = components.pairs({ text = true })
+        local prefix = pairs ~= "" and "󱐤" or ""
+        return prefix .. pairs
+      end
+
       local function section_fileinfo(trunc_width)
         local truncate = statusline.is_truncated(trunc_width)
         local spell = components.spell({ icon = true, pad = "right" })
@@ -29,9 +38,9 @@ statusline.setup({
 
       local function section_location(trunc_width)
         local truncate = statusline.is_truncated(trunc_width)
-        local date = components.date({ icon = true, pad = "right" })
+        local date = components.date({ icon = true, pad = "both" })
         local time = components.time({ icon = true, pad = "right" })
-        local location = components.location({ icon = truncate and false or true })
+        local location = components.location({ pad = "left" })
 
         return truncate and location or date .. time .. location
       end
@@ -50,6 +59,7 @@ statusline.setup({
       local diagnostics = statusline.section_diagnostics({ trunc_width = 75, icon = "", signs = diagnostic_symbols })
       local filename = statusline.section_filename({ trunc_width = 240 })
       local searchcount = statusline.section_searchcount({ trunc_width = 120 })
+      local disabled = section_disabled_mods(80)
       local fileinfo = section_fileinfo(80)
       local location = section_location(80)
       local progress = section_progress(80)
@@ -60,6 +70,7 @@ statusline.setup({
         "%<", -- Mark general truncate point
         { hl = "MiniStatuslineFilename", strings = { filename } },
         "%=", -- End left alignment
+        { h1 = "MiniStatuslineFileinfo", strings = { disabled } },
         { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
         { hl = "MiniStatuslineLocation", strings = { searchcount, location } },
         { hl = mode_hl, strings = { progress } },
