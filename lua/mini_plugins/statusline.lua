@@ -1,12 +1,12 @@
 local statusline = require("mini.statusline")
 local icons = require("mini.icons")
+local components = require("utils.components")
 
 statusline.setup({
   content = {
     active = function()
-      -- NOTE these are custom highlight groups that are not part of MiniNvim
-      -- stylua: ignore
-      local diagnostic_icons = { ERROR = "", WARN  = "", INFO  = "", HINT  = "", }
+      -- NOTE  these are custom highlight groups that are not part of mini.nvim
+      local diagnostic_icons = { ERROR = "", WARN = "", INFO = "", HINT = "" }
 
       local diagnostic_symbols = {}
 
@@ -16,51 +16,32 @@ statusline.setup({
       end
 
       local function section_fileinfo(trunc_width)
-        local ft = vim.bo.filetype or "none"
-        local shiftwidth = "󰌒 " .. vim.api.nvim_get_option_value("shiftwidth", { buf = 0 })
-
-        if ft == "toggleterm" then
-          return nil
-        end
-
-        local icon, hl = icons.get("filetype", ft, { with_hl = true })
-        local fileinfo = string.format("%%#%s#%s %%#MiniStatuslineFileinfo#%s%%*", hl or "", icon, ft)
         local truncate = statusline.is_truncated(trunc_width)
+        local spell = components.spell({ icon = true, pad = "right" })
+        local shift = components.shiftwidth({ icon = true, pad = "right" })
 
-        return truncate and fileinfo or shiftwidth .. " " .. fileinfo
+        local ft = vim.bo.filetype or "none"
+        local icon, hl = icons.get("filetype", ft)
+        local fileinfo = string.format("%%#%s#%s %%#MiniStatuslineFileinfo#%s%%*", hl or "", icon, ft)
+
+        return truncate and fileinfo or spell .. shift .. fileinfo
       end
 
       local function section_location(trunc_width)
-        local ft = vim.bo.filetype or "none"
-        local line = vim.fn.line(".")
-        local col = vim.fn.col(".")
         local truncate = statusline.is_truncated(trunc_width)
+        local date = components.date({ icon = true, pad = "right" })
+        local time = components.time({ icon = true, pad = "right" })
+        local location = components.location({ icon = truncate and false or true })
 
-        if ft == "toggleterm" then
-          return nil
-        end
-
-        return truncate and "" or string.format("%d:%d", line, col)
+        return truncate and location or date .. time .. location
       end
 
       local function section_progress(trunc_width)
-        local progressbar = function()
-          local current_line = vim.fn.line(".")
-          local total_lines = vim.fn.line("$")
-          local chars = { "__", "▁▁", "▂▂", "▃▃", "▄▄", "▅▅", "▆▆", "▇▇", "██" }
-          local line_ratio = current_line / total_lines
-          local index = math.ceil(line_ratio * #chars)
-          return chars[index]
-        end
-
-        local ft = vim.bo.filetype or "none"
         local truncate = statusline.is_truncated(trunc_width)
+        local percent = "%P"
+        local progressbar = components.progressbar({ pad = "left" })
 
-        if ft == "toggleterm" then
-          return nil
-        end
-
-        return truncate and "%P" or "%P" .. " " .. progressbar()
+        return truncate and percent or percent .. progressbar
       end
 
       local mode, mode_hl = statusline.section_mode({ trunc_width = 80 })
