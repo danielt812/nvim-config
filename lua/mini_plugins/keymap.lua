@@ -12,7 +12,7 @@ local tab_steps = {
   "jump_after_tsnode",
   "jump_after_close",
 }
-map_multistep("i", "<Tab>", tab_steps)
+map_multistep("i", "<tab>", tab_steps)
 
 local shifttab_steps = {
   "minisnippets_prev",
@@ -21,16 +21,16 @@ local shifttab_steps = {
   "jump_before_open",
 }
 
-map_multistep("i", "<S-Tab>", shifttab_steps)
+map_multistep("i", "<s-tab>", shifttab_steps)
 
 -- stylua: ignore start
-map_multistep({ "i", "c" }, "<C-j>",  { "pmenu_next" })
-map_multistep({ "i", "c" }, "<C-k>",  { "pmenu_prev" })
-map_multistep({ "i", "c" }, "<C-CR>", { "pmenu_accept" })
+map_multistep({ "i", "c" }, "<c-j>",  { "pmenu_next" })
+map_multistep({ "i", "c" }, "<c-k>",  { "pmenu_prev" })
+map_multistep({ "i", "c" }, "<c-cr>", { "pmenu_accept" })
 -- stylua: ignore end
 
 -- Handle pair plugins
-map_multistep("i", "<CR>", { "nvimautopairs_cr", "minipairs_cr" })
-map_multistep("i", "<BS>", { "nvimautopairs_bs", "minipairs_bs" })
+map_multistep("i", "<cr>", { "nvimautopairs_cr", "minipairs_cr" })
+map_multistep("i", "<bs>", { "nvimautopairs_bs", "minipairs_bs" })
 
 map_combo("n", "<esc>", "<cmd>nohlsearch<cr>", { desc = "Clear highlight" })
