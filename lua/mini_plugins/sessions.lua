@@ -1,31 +1,25 @@
 local sessions = require("mini.sessions")
 
-sessions.setup({
-  {
-    -- Whether to read default session if Neovim opened without file arguments
-    autoread = false,
+sessions.setup()
 
-    -- Whether to write currently read session before quitting Neovim
-    autowrite = true,
+-- stylua: ignore start
+local function delete_session() sessions.select("delete") end
+local function select_session() sessions.select("read")   end
+local function write_session()
+  if vim.v.this_session ~= "" then
+    return sessions.write()
+  end
 
-    -- Directory where global sessions are stored (use `''` to disable)
-    directory = "", --<"session" subdir of user data directory from |stdpath()|>,
+  local name = vim.fn.input("New session: ")
 
-    -- File for local session (use `''` to disable)
-    file = "Session.vim",
+  if name == "" then
+    return vim.notify("Session name required", vim.log.levels.ERROR)
+  end
 
-    -- Whether to force possibly harmful actions (meaning depends on function)
-    force = { read = false, write = true, delete = false },
+  sessions.write(name)
+end
 
-    -- Hook functions for actions. Default `nil` means 'do nothing'.
-    hooks = {
-      -- Before successful action
-      pre = { read = nil, write = nil, delete = nil },
-      -- After successful action
-      post = { read = nil, write = nil, delete = nil },
-    },
-
-    -- Whether to print session path after action
-    verbose = { read = false, write = true, delete = true },
-  },
-})
+vim.keymap.set("n", "<leader>sd", delete_session, { desc = "Delete" })
+vim.keymap.set("n", "<leader>ss", select_session, { desc = "Select" })
+vim.keymap.set("n", "<leader>sw", write_session,  { desc = "Write" })
+-- stylua: ignore end
