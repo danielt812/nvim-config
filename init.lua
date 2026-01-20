@@ -143,8 +143,8 @@ end)
 
 -- Autopair/Autotag
 later(function()
-  add({ source = "windwp/nvim-autopairs" })
-  plug("autopairs")
+  -- add({ source = "windwp/nvim-autopairs" })
+  -- plug("autopairs")
 
   add({ source = "windwp/nvim-ts-autotag" })
   plug("autotag")
