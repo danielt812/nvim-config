@@ -9,14 +9,14 @@ tabline.setup({
 
     local suffix = ""
 
-    if vim.bo[buf].modified then
+    if vim.bo[buf].modified and pins.is_pinned(buf) then
+      suffix = " "
+    elseif pins.is_pinned(buf) then
+      suffix = " "
+    elseif vim.bo[buf].modified then
       suffix = "● "
     elseif vim.bo[buf].readonly or not vim.bo[buf].modifiable then
-      suffix = " "
-    end
-
-    if pins.is_pinned(buf) then
-      suffix = suffix .. " "
+      suffix = " "
     end
 
     return tabline.default_format(buf, label) .. suffix .. sep
