@@ -42,6 +42,7 @@ clue.setup({
     { mode = {"n", "v"}, keys = "<leader>n",  desc = "+Notify" },
     { mode = {"n", "v"}, keys = "<leader>o",  desc = "+Overseer" },
     { mode = {"n", "v"}, keys = "<leader>q",  desc = "+Quick Fix" },
+    { mode = {"n", "v"}, keys = "<leader>s",  desc = "+Sessions" },
     -- { mode = {"n", "v"}, keys = "<leader>t",  desc = "+Terminal" },
 
     -- stylua: ignore end
