@@ -4,7 +4,7 @@ basics.setup({
   options = {
     basic = true,
     extra_ui = false,
-    win_borders = "bold",
+    win_borders = "rounded",
   },
   mappings = {
     basic = true,
