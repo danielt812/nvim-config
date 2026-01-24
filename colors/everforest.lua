@@ -30,7 +30,9 @@ local palette = {
   statusline1 = "#a7c080",
   statusline2 = "#d3c6aa",
   statusline3 = "#e67e80",
+
   none        = "NONE",
+  url         = "#8be9fd"
 }
 -- stylua: ignore end
 
@@ -376,7 +378,7 @@ local highlights = {
   TSTypeBuiltin = { link = "Yellow" },
   TSTypeDefinition = { link = "Yellow" },
   TSTypeQualifier = { link = "Orange" },
-  TSURI = { fg = palette.blue, bg = palette.none, underline = true },
+  TSURI = { fg = palette.url, bg = palette.none, underline = true },
   TSVariable = { link = "Fg" },
   TSVariableBuiltin = { link = "Purple" },
 
@@ -415,11 +417,11 @@ local highlights = {
   ["@boolean.yaml"] = { link = "yamlTSBoolean" },
   ["@character"] = { link = "TSCharacter" },
   ["@character.special"] = { link = "TSCharacterSpecial" },
-  -- ["@comment"] = { link = "TSComment" },
-  -- ["@comment.error"] = { link = "TSDanger" },
-  -- ["@comment.note"] = { link = "TSNote" },
-  -- ["@comment.todo"] = { link = "TSTodo" },
-  -- ["@comment.warning"] = { link = "TSWarning" },
+  ["@comment"] = { link = "TSComment" },
+  ["@comment.error"] = { link = "TSComment" },
+  ["@comment.note"] = { link = "TSComment" },
+  ["@comment.todo"] = { link = "TSComment" },
+  ["@comment.warning"] = { link = "TSComment" },
   ["@conceal"] = { link = "Grey" },
   ["@conditional"] = { link = "TSConditional" },
   ["@constant"] = { link = "TSConstant" },
