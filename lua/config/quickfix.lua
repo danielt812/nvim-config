@@ -5,6 +5,7 @@ end, { nargs = "+" })
 
 local function clear_qf_list()
   vim.cmd("cexpr []")
+  vim.cmd("cclose")
 end
 
 local function set_diagnostics()
