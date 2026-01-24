@@ -277,11 +277,6 @@ later(function()
   plug("toggleterm")
 end)
 
-later(function()
-  add({ source = "folke/lazydev.nvim" })
-  plug("lazydev")
-end)
-
 -- Co-pilot
 later(function()
   add({
