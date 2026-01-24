@@ -67,7 +67,7 @@ local shfmt_filetypes = {
   "zsh",
 }
 
-for _, filetype in pairs(shfmt_filetypes) do
+for _, filetype in ipairs(shfmt_filetypes) do
   conform.formatters_by_ft[filetype] = { "shfmt" }
 end
 
@@ -83,9 +83,9 @@ vim.api.nvim_create_user_command("ConformLog", function()
   vim.cmd("split " .. log_path)
 end, { desc = "Open Conform log file" })
 
-vim.api.nvim_create_autocmd("BufWritePre", {
-  group = vim.api.nvim_create_augroup("format_on_save", { clear = true }),
-  desc = "Format on save",
-  pattern = { "*.css", "*.go", "*.js", "*.json", "*.jsonc", "*.jsx", "*.lua", "*.py", "*.scss", "*.sh", "*.zsh" },
-  callback = format,
-})
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   group = vim.api.nvim_create_augroup("format_on_save", { clear = true }),
+--   desc = "Format on save",
+--   pattern = { "*.css", "*.go", "*.js", "*.json", "*.jsonc", "*.jsx", "*.lua", "*.py", "*.scss", "*.sh", "*.zsh" },
+--   callback = format,
+-- })

@@ -20,16 +20,19 @@ end
 local function split_join_toggle()
   -- Prefer treesj in arrow functions
   if in_arrow_function() then
+    vim.notify("treesj")
     treesj.toggle()
     return
   end
 
   -- Prefer mini for bracket-based constructs
   if splitjoin.toggle() then
+    vim.notify("splitjoin")
     return
   end
 
   -- Otherwise, let treesj try (keywords, params, JSX, etc.)
+  vim.notify("treesj")
   treesj.toggle()
 end
 

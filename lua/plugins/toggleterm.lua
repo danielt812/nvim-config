@@ -84,7 +84,7 @@ end
 -- stylua: ignore start
 vim.keymap.set({ "n", "t" }, "<C-t>", "<cmd>lua terminal_float()<cr>", { desc = "Float" })
 vim.keymap.set({ "n", "t" }, "<C-g>", "<cmd>lua lazygit()<cr>",        { desc = "Lazygit" })
-vim.keymap.set({ "n", "t" }, "<C-e>", "<cmd>lua delta()<cr>",     { desc = "Delta" })
+vim.keymap.set({ "n", "t" }, "<C-e>", "<cmd>lua delta()<cr>",          { desc = "Delta" })
 -- stylua: ignore end
 
 -- stylua: ignore start

@@ -10,6 +10,7 @@ treesitter.setup({
 --   Or visit 'SUPPORTED_LANGUAGES.md' file at
 --   https://github.com/nvim-treesitter/nvim-treesitter/blob/main/SUPPORTED_LANGUAGES.md
 local languages = {
+  "angular",
   "bash",
   "c",
   "comment",

@@ -209,9 +209,6 @@ later(function()
   add({ source = "shellRaining/hlchunk.nvim" })
   plug("hlchunk")
 
-  -- add({ source = "nvimdev/indentmini.nvim" })
-  -- plug("indentmini")
-
   -- Trailing cursor
   add({ source = "sphamba/smear-cursor.nvim" })
   plug("smear-cursor")

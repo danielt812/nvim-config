@@ -1,3 +1,7 @@
+--------------------------------------------------------------------------------
+-- Color convert module
+--------------------------------------------------------------------------------
+
 local M = {}
 
 -- Normalize a full hex color (#rrggbb)
@@ -5,14 +9,14 @@ local M = {}
 -- with other converters and allows future normalization.
 ---@param match string
 ---@return string
-function M.get_hex_long(match)
+M.get_hex_long = function(match)
   return match
 end
 
--- Expand a short hex color (#rgb -> #rrggbb)
+-- Expand a short hex color (#rgb) -> (#rrggbb)
 ---@param match string
 ---@return string
-function M.get_hex_short(match)
+M.get_hex_short = function(match)
   local r = match:sub(2, 2)
   local g = match:sub(3, 3)
   local b = match:sub(4, 4)
@@ -23,7 +27,7 @@ end
 -- Convert rgb(r, g, b) to hex (#rrggbb)
 ---@param match string
 ---@return string
-function M.rgb_color(match)
+M.rgb_color = function(match)
   local red, green, blue = match:match("rgb%((%d+), ?(%d+), ?(%d+)%)")
 
   return string.format("#%02x%02x%02x", tonumber(red), tonumber(green), tonumber(blue))
@@ -32,7 +36,7 @@ end
 -- Convert rgba(r, g, b, a) to hex (#rrggbb), applying alpha
 ---@param match string
 ---@return string|false
-function M.rgba_color(match)
+M.rgba_color = function(match)
   local red, green, blue, alpha = match:match("rgba%((%d+), ?(%d+), ?(%d+), ?(%d*%.?%d*)%)")
 
   alpha = tonumber(alpha)

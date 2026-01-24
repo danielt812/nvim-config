@@ -8,7 +8,7 @@
 --- Common options shared by all components.
 --- @class ComponentOpts
 --- @field icon? string|boolean   Icon override or enable default icon
---- @field text? string|boolean   Text override or enable default text
+--- @field text? string   Text override or enable default text
 --- @field pad? '"left"'|'"right"'|'"both"' Padding direction
 --- @field format? string         Date/time format (when supported)
 --- @field horizontal? boolean    Horizontal progress bar (progressbar only)
@@ -68,11 +68,11 @@ H.resolve_text = function(opts, default)
     return opts.text
   end
 
-  if opts.text == true then
-    return default
+  if opts.text == false then
+    return ""
   end
 
-  return ""
+  return default
 end
 
 --- Check if a mini.nvim module is disabled.
@@ -159,9 +159,8 @@ end
 M.spell = function(opts)
   opts = opts or {}
   if not vim.wo.spell then return "" end
-  local icon = H.resolve_icon(opts, "󰓆 ")
-  local text = H.resolve_text(opts, "spell")
-  return H.pad(icon .. text, opts)
+  local icon = H.resolve_icon(opts, "󰓆")
+  return H.pad(icon, opts)
 end
 
 --- Time component.

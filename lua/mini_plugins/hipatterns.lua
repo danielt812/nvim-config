@@ -1,48 +1,28 @@
 local hipatterns = require("mini.hipatterns")
-local patterns = require("utils.string-patterns")
+local convert = require("utils.color-convert")
+local ts = require("utils.tree-sitter")
 
--- stylua: ignore start
-local function apply_custom_highlights()
-  vim.api.nvim_set_hl(0, "MiniHipatternsWarn",  { fg = "#000000", bg = "#ff2d00" }) -- WARN  example
-  vim.api.nvim_set_hl(0, "MiniHipatternsFixme", { fg = "#000000", bg = "#fce94f" }) -- FIX  example
-  vim.api.nvim_set_hl(0, "MiniHipatternsTodo",  { fg = "#000000", bg = "#ff8c00" }) -- TODO  example
-  vim.api.nvim_set_hl(0, "MiniHipatternsHack",  { fg = "#000000", bg = "#d699b6" }) -- HACK  example
-  vim.api.nvim_set_hl(0, "MiniHipatternsNote",  { fg = "#000000", bg = "#3498db" }) -- NOTE  example
-  vim.api.nvim_set_hl(0, "MiniHipatternsInfo",  { fg = "#000000", bg = "#98c379" }) -- INFO  example
-  vim.api.nvim_set_hl(0, "MiniHipatternsLink",  { fg = "#000000", bg = "#8be9fd" }) -- LINK  example
-end
--- stylua: ignore end
-
--- Url examples...
--- https://www.google.com
--- www.google.com
--- http://localhost:3000
-
-local function highlight_if_ts_capture(capture, hl_group)
-  return function(buf_id, _, data)
-    local captures = vim.treesitter.get_captures_at_pos(buf_id, data.line - 1, data.from_col - 1)
-
-    local pred = function(t)
-      return t.capture == capture
-    end
-
-    local not_in_capture = vim.tbl_isempty(vim.tbl_filter(pred, captures))
-
-    if not_in_capture then
-      return nil
-    end
-
-    return hl_group
+local function apply_hipattern_groups()
+  -- stylua: ignore
+  local colors = {
+    { "Fixme", "#fce94f" }, -- FIXME:
+    { "Hack",  "#d699b6" }, -- HACK:
+    { "Info",  "#98c379" }, -- INFO:
+    { "Note",  "#3498db" }, -- NOTE:
+    { "Todo",  "#ff8c00" }, -- TODO:
+    { "Warn",  "#ff2d00" }, -- WARN:
+  }
+  local prefix = "MiniHipatterns"
+  for _, pair in ipairs(colors) do
+    local word, hex = pair[1], pair[2]
+    vim.api.nvim_set_hl(0, prefix .. word, { fg = "#000000", bg = hex })
+    vim.api.nvim_set_hl(0, prefix .. word .. "Mask", { fg = hex, bg = hex })
   end
 end
 
-local function get_highlight(cb)
-  return function(_, match)
-    return hipatterns.compute_hex_color_group(cb(match), "fg")
-  end
-end
+apply_hipattern_groups()
 
-local function extmark_opts_color(_, _, data)
+local function color_extmark_opts(_, _, data)
   return {
     virt_text = { { "■ ", data.hl_group } },
     virt_text_pos = "inline", -- eol, eol_right_align, overlay, right_align, inline
@@ -51,8 +31,7 @@ local function extmark_opts_color(_, _, data)
 end
 
 local comments = {}
-
-for _, word in ipairs({
+local comment_words = {
   "todo",
   "note",
   "hack",
@@ -60,50 +39,69 @@ for _, word in ipairs({
   "warn",
   "info",
   "link",
-  { "bug", "warn" },
-  { "fix", "fixme" },
-}) do
+}
+
+local function in_comment(base, suffix)
+  suffix = suffix or ""
+  local name = "MiniHipatterns" .. base:sub(1, 1):upper() .. base:sub(2) .. suffix
+  return ts.if_capture("comment", name)
+end
+
+for _, word in ipairs(comment_words) do
   local w = type(word) == "table" and word[1] or word
   local hl = type(word) == "table" and word[2] or word
+  local colon = w .. "_colon"
 
   comments[w] = {
-    pattern = {
-      " " .. w:upper() .. " ",
-    },
-    group = highlight_if_ts_capture("comment", string.format("MiniHipatterns%s", hl:sub(1, 1):upper() .. hl:sub(2))),
+    pattern = "() ?" .. w:upper() .. " ?()",
+    group = in_comment(hl),
+  }
+  comments[colon] = {
+    pattern = w:upper() .. "()[:-]", -- Mask ":" or "-" after keyword
+    group = in_comment(hl, "Mask"),
   }
 end
 
-apply_custom_highlights()
+local function get_highlight(cb)
+  return function(_, match)
+    return hipatterns.compute_hex_color_group(cb(match), "fg")
+  end
+end
 
 hipatterns.setup({
   highlighters = vim.tbl_extend("force", comments, {
     hex_color = {
-      pattern = "#%x%x%x%x%x%x%f[%X]",
-      group = get_highlight(patterns.get_hex_long),
-      extmark_opts = extmark_opts_color,
+      pattern = "#%x%x%x%x%x%x%f[%W]",
+      group = get_highlight(convert.get_hex_long),
+      extmark_opts = color_extmark_opts,
     },
     hex_color_short = {
-      pattern = "#%x%x%x%f[%X]",
-      group = get_highlight(patterns.get_hex_short),
-      extmark_opts = extmark_opts_color,
+      pattern = "#%x%x%x%f[%W]",
+      group = get_highlight(convert.get_hex_short),
+      extmark_opts = color_extmark_opts,
     },
     rgb_color = {
       pattern = "rgb%(%d+, ?%d+, ?%d+%)",
-      group = get_highlight(patterns.rgb_color),
-      extmark_opts = extmark_opts_color,
+      group = get_highlight(convert.rgb_color),
+      extmark_opts = color_extmark_opts,
     },
     rgba_color = {
       pattern = "rgba%(%d+, ?%d+, ?%d+, ?%d*%.?%d*%)",
-      group = get_highlight(patterns.rgba_color),
-      extmark_opts = extmark_opts_color,
-    },
-    url = {
-      pattern = {
-        "%f[%S]()https?://[%w%-%._~:/%?#%[%]@!$&'()*+,;=%%]+",
-        "%f[%S]()www%.[%w%-%._~:/%?#%[%]@!$&'()*+,;=%%]+",
-      },
-      group = "MiniHipatternsUrl",
+      group = get_highlight(convert.rgba_color),
+      extmark_opts = color_extmark_opts,
     },
   }),
 })
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  group = vim.api.nvim_create_augroup("mini_hipatterns", { clear = true }),
+  desc = "Create custom highlight groups",
+  callback = function()
+    apply_hipattern_groups()
+  end,
+})
+
+-- stylua: ignore
+local function toggle_hipatterns() vim.b.minihipatterns_disable = not vim.b.minihipatterns_disable end
+
+vim.keymap.set("n", "<leader>eh", toggle_hipatterns, { desc = "Hipatterns" })

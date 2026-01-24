@@ -1,61 +1,49 @@
-return {
-  function()
-    local cs = vim.bo.commentstring:gsub("%%s", ""):gsub("%s*$", "")
+local author = vim.fn.executable("git") == 1 and vim.fn.system("git config user.name"):gsub("%s+$", "")
+  or vim.uv.os_get_passwd().username
 
-    local filename = vim.fn.expand("%:t")
+local function special_comments(context)
+  local cs_left, cs_right = vim.bo[context.buf_id].commentstring:match("^(.*)%%s(.*)$")
+  -- stylua: ignore
+  if cs_left == nil then return {} end
 
-    local function is_git_repo()
-      return vim.fn.system("git rev-parse --is-inside-work-tree 2>/dev/null"):match("true") ~= nil
+  cs_left = cs_left:find("%s$") and cs_left or (cs_left .. " ")
+  cs_right = cs_left:find("^%s") and cs_right or (" " .. cs_right)
+
+  local function wrap(s)
+    if s:match("^%s*$") then
+      return (cs_left:gsub("%s*$", "") .. cs_right:gsub("^%s*", ""))
     end
+    return (string.format("%s%s%s", cs_left, s, cs_right):gsub("%s$", ""))
+  end
 
-    local function git_author_or_placeholder()
-      if not is_git_repo() then
-        return "${2:Author}"
-      end
-
-      local author = vim.fn.system("git config user.name"):gsub("%s+$", "")
-      if author == "" then
-        return "${2:Author}"
-      end
-
-      return author
-    end
-
-    local author = git_author_or_placeholder()
-
-    return {
+  --stylua: ignore
+  return {
+    {
+      { prefix = "fixme", body = wrap("FIXME: ${0:describe the bug or needed fix}"),  desc = "Create a fixme comment" },
+      { prefix = "hack",  body = wrap("HACK: ${0:temporary workaround or solution}"), desc = "Create a hack comment" },
+      { prefix = "info",  body = wrap("INFO: ${0:relevant context or metadata}"),     desc = "Create a info comment" },
+      { prefix = "note",  body = wrap("NOTE: ${0:important detail}"),                 desc = "Create a note comment" },
+      { prefix = "todo",  body = wrap("TODO: ${0:describe the task or goal}"),        desc = "Create a todo comment" },
+      { prefix = "warn",  body = wrap("WARN: ${0:potential risk or edge case}"),      desc = "Create a warn comment" },
       {
-        -- stylua: ignore start
-        { prefix = "fixme", body = cs .. " FIXME  ${1:describe the bug or needed fix}",  desc = "Create a fixme comment" },
-        { prefix = "hack",  body = cs .. " HACK  ${1:temporary workaround or solution}", desc = "Create a hack comment" },
-        { prefix = "info",  body = cs .. " INFO  ${1:relevant context or metadata}",     desc = "Create a info comment" },
-        { prefix = "note",  body = cs .. " NOTE  ${1:important detail}",                 desc = "Create a note comment" },
-        { prefix = "todo",  body = cs .. " TODO  ${1:describe the task or goal}",        desc = "Create a todo comment" },
-        { prefix = "warn",  body = cs .. " WARN  ${1:potential risk or edge case}",      desc = "Create a warn comment" },
-        {
-          prefix = "box",
-          body = {
-            cs .. " ┌──────────────────────────────────────┐",
-            cs .. " │ ${1:TITLE} │",
-            cs .. " └──────────────────────────────────────┘",
-          },
-          desc = "Create a boxed comment",
-        },
-        { prefix = "section", body = cs .. " ── ${1:Section name} ─────────────────────────────", desc = "Create a section divider" },
-        {
-          prefix = "header",
-          body = {
-            cs .. " ================================================",
-            cs .. " " .. filename,
-            cs .. "",
-            cs .. " Description: ${1:What this file does}",
-            cs .. " Author: " .. author,
-            cs .. " ================================================",
-          },
-          desc = "Create a file header",
-        },
-        -- stylua: ignore end
+        prefix = "section",
+        body = wrap("── ${0:Section name} ─────────────────────────────"),
+        desc = "Create a section divider",
       },
-    }
-  end,
-}
+      {
+        prefix = "header",
+        body = {
+          wrap("================================================"),
+          wrap(" " .. vim.fn.expand('%:t')),
+          wrap(""),
+          wrap("Description: ${0:What this file does}"),
+          wrap("Author: " .. author),
+          wrap("================================================"),
+        },
+        desc = "Create a file header",
+      },
+    },
+  }
+end
+
+return { special_comments }

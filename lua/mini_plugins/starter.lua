@@ -38,26 +38,3 @@ starter.setup({
 local open = function() starter.open() end
 
 vim.keymap.set("n", "<leader>e;", open, { desc = "Starter" })
-
-local group = vim.api.nvim_create_augroup("mini_starter", { clear = true })
-
-vim.api.nvim_create_autocmd("User", {
-  pattern = "MiniStarterOpened",
-  group = group,
-  desc = "Hide statusline",
-  callback = function()
-    vim.opt.laststatus = 0
-  end,
-})
-
-vim.api.nvim_create_autocmd("BufWipeout", {
-  group = group,
-  desc = "Restore statusline",
-  callback = function(args)
-    if vim.bo[args.buf].filetype == "ministarter" then
-      vim.o.laststatus = 0
-    else
-      vim.opt.laststatus = 2
-    end
-  end,
-})

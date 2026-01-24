@@ -1,5 +1,5 @@
 local tabline = require("mini.tabline")
-local pins = require("utils.buffer-pins")
+local buf_utils = require("utils.buffer-pin")
 
 tabline.setup({
   format = function(buf, label)
@@ -7,26 +7,23 @@ tabline.setup({
 
     local sep = (#listed_buffers > 0) and "" or ""
 
-    local suffix = ""
+    local suffix = {}
 
-    if vim.bo[buf].modified and pins.is_pinned(buf) then
-      suffix = " "
-    elseif pins.is_pinned(buf) then
-      suffix = " "
+    if vim.bo[buf].modified and buf_utils.is_pinned(buf) then
+      table.insert(suffix, "")
+    elseif buf_utils.is_pinned(buf) then
+      table.insert(suffix, "")
     elseif vim.bo[buf].modified then
-      suffix = "● "
-    elseif vim.bo[buf].readonly or not vim.bo[buf].modifiable then
-      suffix = " "
+      table.insert(suffix, "●")
     end
 
-    return tabline.default_format(buf, label) .. suffix .. sep
+    if vim.bo[buf].readonly or not vim.bo[buf].modifiable then
+      table.insert(suffix, "")
+    end
+
+    return tabline.default_format(buf, label) .. table.concat(suffix, " ") .. " " .. sep
   end,
   tabpage_section = "right",
 })
 
-local function toggle_pinned()
-  pins.toggle(vim.api.nvim_get_current_buf())
-  vim.cmd("redrawtabline")
-end
-
-vim.keymap.set("n", "<leader>bp", toggle_pinned, { desc = "Pin/Unpin" })
+vim.keymap.set("n", "<leader>bp", buf_utils.toggle, { desc = "Pin/Unpin" })
