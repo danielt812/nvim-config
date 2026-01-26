@@ -71,9 +71,9 @@ for _, filetype in ipairs(shfmt_filetypes) do
   conform.formatters_by_ft[filetype] = { "shfmt" }
 end
 
-local format = function()
-  conform.format({ bufnr = 0 })
-  vim.notify("Formatting", vim.log.levels.INFO)
+local function format()
+  conform.format()
+  vim.notify("Formatting " .. vim.fn.expand("%:t"), vim.log.levels.INFO)
 end
 
 vim.keymap.set("n", "g.", format, { desc = "Format" })
