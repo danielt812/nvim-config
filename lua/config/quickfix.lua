@@ -1,7 +1,16 @@
-vim.api.nvim_create_user_command("Grep", function(opts)
-  vim.cmd("silent grep! " .. opts.args)
-  vim.cmd("copen")
-end, { nargs = "+" })
+-- vim.api.nvim_create_user_command("Grep", function(opts)
+--   -- opts.fargs is already shell-parsed and quote-aware
+--   local escaped = vim.tbl_map(vim.fn.shellescape, opts.fargs)
+
+--   local cmd = "silent grep! " .. table.concat(escaped, " ")
+
+--   vim.cmd(cmd)
+--   vim.cmd("copen")
+-- end, {
+--   nargs = "+",
+--   desc = "ripgrep (safe, supports flags, respects ripgrep.conf)",
+-- })
+
 
 local function clear_qf_list()
   vim.cmd("cexpr []")
