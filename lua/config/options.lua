@@ -12,7 +12,7 @@ vim.opt.tabstop = 2
 vim.opt.updatetime = 1000
 vim.opt.winborder = "rounded"
 
-vim.opt.grepprg =  "rg --vimgrep -u --glob '!.git/*' --glob '!node_modules/*' --glob '!.angular/*'"
+vim.opt.grepprg = "rg --vimgrep" -- Use ripgrep.rc config
 
 vim.opt.foldcolumn = "0"
 vim.opt.foldenable = true
