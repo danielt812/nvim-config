@@ -23,9 +23,7 @@ local add, now, later = deps.add, deps.now, deps.later
 --- @param msg string: The error message to display.
 local function delayed_notify(msg)
   vim.schedule(function()
-    vim.defer_fn(function()
-      vim.notify(msg, vim.log.levels.ERROR)
-    end, 100) -- delay in ms; adjust if needed
+    vim.defer_fn(function() vim.notify(msg, vim.log.levels.ERROR) end, 100) -- delay in ms; adjust if needed
   end)
 end
 
@@ -33,27 +31,21 @@ end
 --- @param plugin string: Name of the plugin module (without the "plugins." prefix).
 local function plug(plugin)
   local ok, err = pcall(require, "plugins." .. plugin)
-  if not ok then
-    delayed_notify("Failed to load plugin module: plugins." .. plugin .. "\n" .. err)
-  end
+  if not ok then delayed_notify("Failed to load plugin module: plugins." .. plugin .. "\n" .. err) end
 end
 
 --- Loads a module from the `mini_plugins` namespace with error handling.
 --- @param plugin string: Name of the plugin module (without the "mini_plugins." prefix).
 local function mplug(plugin)
   local ok, err = pcall(require, "mini_plugins." .. plugin)
-  if not ok then
-    delayed_notify("Failed to load plugin module: mini_plugins." .. plugin .. "\n" .. err)
-  end
+  if not ok then delayed_notify("Failed to load plugin module: mini_plugins." .. plugin .. "\n" .. err) end
 end
 
 --- Loads a configuration module from the `config` namespace with error handling.
 --- @param config string: Name of the config module (without the "config." prefix).
 local function conf(config)
   local ok, err = pcall(require, "config." .. config)
-  if not ok then
-    delayed_notify("Failed to load config file: config." .. config .. "\n" .. err)
-  end
+  if not ok then delayed_notify("Failed to load config file: config." .. config .. "\n" .. err) end
 end
 
 local disabled_built_ins = {
@@ -186,9 +178,7 @@ later(function()
   add({
     source = "nvim-treesitter/nvim-treesitter",
     checkout = "main",
-    post_checkout = function()
-      vim.cmd("TSUpdate")
-    end,
+    post_checkout = function() vim.cmd("TSUpdate") end,
   })
 
   add({
@@ -285,9 +275,7 @@ later(function()
       "zbirenbaum/copilot.lua",
     },
     hooks = {
-      post_install = function(spec)
-        vim.fn.system({ "make", "tiktoken" }, spec.path)
-      end,
+      post_install = function(spec) vim.fn.system({ "make", "tiktoken" }, spec.path) end,
     },
   })
   plug("copilot-chat")
