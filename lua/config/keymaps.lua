@@ -22,14 +22,16 @@ vim.keymap.set("n", "<S-l>", "<cmd>bnext<cr>",     { desc = "Go to next buffer" 
 -- vim.keymap.set("n", "<PageDown>", "<PageDown>zz", { desc = "Center cursor line on page down" })
 
 -- Prevent some registers from yanking
-vim.keymap.set({ "n", "v", "x" }, "x", '"_x', { desc = "Prevent x from yanking to clipboard" })
-vim.keymap.set({ "n", "v", "x" }, "X", '"_X', { desc = "Prevent X from yanking to clipboard" })
-vim.keymap.set({ "n", "v", "x" }, "c", '"_c', { desc = "Prevent c from yanking to clipboard" })
-vim.keymap.set({ "n", "v", "x" }, "C", '"_C', { desc = "Prevent C from yanking to clipboard" })
-vim.keymap.set({ "n", "v", "x" }, "s", '"_s', { desc = "Prevent s from yanking to clipboard" })
-vim.keymap.set({ "n", "v", "x" }, "S", '"_S', { desc = "Prevent S from yanking to clipboard" })
-vim.keymap.set({ "n", "v", "x" }, "r", '"_r', { desc = "Prevent r from yanking to clipboard" })
-vim.keymap.set({ "n", "v", "x" }, "R", '"_R', { desc = "Prevent R from yanking to clipboard" })
+-- stylua: ignore start
+vim.keymap.set({ "n", "v" }, "x", '"_x', { desc = "Prevent x from yanking to clipboard" })
+vim.keymap.set({ "n", "v" }, "X", '"_X', { desc = "Prevent X from yanking to clipboard" })
+vim.keymap.set({ "n", "v" }, "c", '"_c', { desc = "Prevent c from yanking to clipboard" })
+vim.keymap.set({ "n", "v" }, "C", '"_C', { desc = "Prevent C from yanking to clipboard" })
+vim.keymap.set({ "n", "v" }, "s", '"_s', { desc = "Prevent s from yanking to clipboard" })
+vim.keymap.set({ "n", "v" }, "S", '"_S', { desc = "Prevent S from yanking to clipboard" })
+vim.keymap.set({ "n", "v" }, "r", '"_r', { desc = "Prevent r from yanking to clipboard" })
+vim.keymap.set({ "n", "v" }, "R", '"_R', { desc = "Prevent R from yanking to clipboard" })
+-- stylua: ignore start
 
 -- Indent QOL
 -- stylua: ignore start
@@ -56,3 +58,4 @@ vim.keymap.set("n", "Y", function()
   vim.b.cursor_pre_yank = vim.api.nvim_win_get_cursor(0)
   return "y$"
 end, { expr = true })
+
