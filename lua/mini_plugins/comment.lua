@@ -24,6 +24,3 @@ comment.setup({
   },
 })
 
-local box = require("utils.comment-box")
-vim.keymap.set("n", "gcb", box.toggle_box,  { desc = "Comment box" })
-vim.keymap.set("n", "gcl", box.toggle_line, { desc = "Comment box" })

@@ -48,6 +48,17 @@ local function conf(config)
   if not ok then delayed_notify("Failed to load config file: config." .. config .. "\n" .. err) end
 end
 
+--- Loads a module from the `modules` namespace with error handling.
+--- @param plugin string: Name of the plugin module (without the "plugins." prefix).
+local function mod(plugin)
+  local ok, module = pcall(require, "modules." .. plugin)
+  if not ok then
+    delayed_notify("Failed to load plugin module: modules." .. plugin)
+  else
+    module.setup()
+  end
+end
+
 local disabled_built_ins = {
   "netrwPlugin",
   "netrw",
@@ -76,7 +87,7 @@ now(function()
   vim.cmd("colorscheme everforest")
 end)
 
--- Mini modules now
+-- Mini modules now ------------------------------------------------------------
 now(function()
   mplug("basics")
   mplug("notify")
@@ -85,7 +96,7 @@ now(function()
   mplug("snippets")
 end)
 
--- Mini modules later
+-- Mini modules later ----------------------------------------------------------
 later(function()
   mplug("ai")
   mplug("align")
@@ -121,19 +132,19 @@ later(function()
   mplug("trailspace")
 end)
 
--- Shared dependencies
-later(function()
-  add({ source = "nvim-lua/plenary.nvim" })
-  add({ source = "MunifTanjim/nui.nvim" })
-end)
-
--- Filetype rendering
+-- Filetype rendering ----------------------------------------------------------
 now(function()
   add({ source = "OXY2DEV/markview.nvim" })
   add({ source = "OXY2DEV/helpview.nvim" })
 end)
 
--- Autopair/Autotag
+-- Shared dependencies ---------------------------------------------------------
+later(function()
+  add({ source = "nvim-lua/plenary.nvim" })
+  add({ source = "MunifTanjim/nui.nvim" })
+end)
+
+-- Autopair/Autotag ------------------------------------------------------------
 later(function()
   -- add({ source = "windwp/nvim-autopairs" })
   -- plug("autopairs")
@@ -142,13 +153,13 @@ later(function()
   plug("autotag")
 end)
 
--- Window movement
+-- Window ----------------------------------------------------------------------
 later(function()
   add({ source = "aserowy/tmux.nvim" })
   plug("tmux")
 end)
 
--- Debugging
+-- Debugging -------------------------------------------------------------------
 later(function()
   add({
     source = "igorlfs/nvim-dap-view",
@@ -160,24 +171,27 @@ later(function()
   plug("dap")
 end)
 
--- Git
+-- Git -------------------------------------------------------------------------
 later(function()
   add({ source = "FabijanZulj/blame.nvim" })
   plug("blame")
 end)
 
--- Executables package manager
+-- Executables -----------------------------------------------------------------
 later(function()
-  -- Mason
+  -- Manager
   add({ source = "mason-org/mason.nvim" })
   plug("mason")
+
+  -- Formatter
+  add({ source = "stevearc/conform.nvim" })
+  plug("conform")
 end)
 
--- Treesitter
+-- Treesitter ------------------------------------------------------------------
 later(function()
   add({
     source = "nvim-treesitter/nvim-treesitter",
-    checkout = "main",
     post_checkout = function() vim.cmd("TSUpdate") end,
   })
 
@@ -185,6 +199,7 @@ later(function()
     source = "nvim-treesitter/nvim-treesitter-textobjects",
     checkout = "main",
   })
+
   add({ source = "JoosepAlviste/nvim-ts-context-commentstring" })
 
   plug("treesitter")
@@ -193,7 +208,7 @@ later(function()
   plug("treesj")
 end)
 
--- UI
+-- UI --------------------------------------------------------------------------
 later(function()
   -- Indentation
   add({ source = "shellRaining/hlchunk.nvim" })
@@ -216,22 +231,19 @@ later(function()
   plug("rainbow-delimeters")
 end)
 
--- Stevearc plugins
-later(function()
-  -- Formatter/Linter
-  add({ source = "stevearc/conform.nvim" })
-  plug("conform")
+-- Formatter -------------------------------------------------------------------
+later(function() end)
 
-  -- Quickfix
+-- Quickfix --------------------------------------------------------------------
+later(function()
   add({ source = "stevearc/quicker.nvim" })
   plug("quicker")
 
-  -- Task runner
-  add({ source = "stevearc/overseer.nvim" })
-  plug("overseer")
+  add({ source = "kevinhwang91/nvim-bqf" })
+  plug("bqf")
 end)
 
--- Editor
+-- Editor ----------------------------------------------------------------------
 later(function()
   -- Search and replace UI
   add({ source = "MagicDuck/grug-far.nvim" })
@@ -250,9 +262,13 @@ later(function()
 
   -- Multicursor
   add({ source = "mg979/vim-visual-multi" })
+
+  -- Task runner
+  add({ source = "stevearc/overseer.nvim" })
+  plug("overseer")
 end)
 
--- LSP extras
+-- LSP extras ------------------------------------------------------------------
 later(function()
   -- Winbar breadcrumbs
   add({ source = "SmiteshP/nvim-navic" })
@@ -261,13 +277,16 @@ later(function()
   plug("nav")
 end)
 
--- Terminal
+-- Terminal --------------------------------------------------------------------
 later(function()
   add({ source = "akinsho/toggleterm.nvim" })
   plug("toggleterm")
 end)
 
--- Co-pilot
+-- Extras ----------------------------------------------------------------------
+later(function() mod("box") end)
+
+-- Co-pilot --------------------------------------------------------------------
 later(function()
   add({
     source = "CopilotC-Nvim/CopilotChat.nvim",

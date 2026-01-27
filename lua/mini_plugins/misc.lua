@@ -5,7 +5,7 @@ misc.setup_restore_cursor()
 misc.setup_termbg_sync()
 
 -- https://github.com/echasnovski/mini.nvim/issues/1911
--- NOTE - Zoom without changing background color
+-- NOTE: - Zoom without changing background color
 local function zoom()
   misc.zoom()
   -- stylua: ignore

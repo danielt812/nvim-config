@@ -50,11 +50,13 @@ quicker.setup({
   -- How to trim the leading whitespace from results. Can be 'all', 'common', or false
   trim_leading_whitespace = "common",
   -- Maximum width of the filename column
-  max_filename_width = function()
-    return math.floor(math.min(95, vim.o.columns / 2))
-  end,
+  max_filename_width = function() return math.floor(math.min(95, vim.o.columns / 2)) end,
   -- How far the header should extend to the right
-  header_length = function(_, start_col)
-    return vim.o.columns - start_col
-  end,
+  header_length = function(_, start_col) return vim.o.columns - start_col end,
 })
+
+local function toggle_qf_list()
+  quicker.toggle({ min_height = 12 })
+end
+
+vim.keymap.set("n", "<leader>qq", toggle_qf_list, { desc = "Quickfix" })

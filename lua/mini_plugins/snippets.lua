@@ -14,7 +14,7 @@ snippets.setup({
     }),
   },
   mappings = {
-    -- NOTE  mini.keymaps is handling snippet jump and expansion
+    -- NOTE:  mini.keymaps is handling snippet jump and expansion
     expand = "",
     jump_next = "",
     jump_prev = "",

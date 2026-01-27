@@ -1,6 +1,4 @@
---------------------------------------------------------------------------------
 -- Window scroll module
---------------------------------------------------------------------------------
 
 local M = {}
 local H = {}
@@ -26,9 +24,7 @@ end
 H.get_page_size = function(size)
   local height = vim.api.nvim_win_get_height(0)
 
-  if size == "half" then
-    return math.floor(height / 2)
-  end
+  if size == "half" then return math.floor(height / 2) end
 
   return height - 2
 end
@@ -40,9 +36,7 @@ H.get_scroll_amount = function()
   return math.floor(vim.api.nvim_win_get_height(0) / 2)
 end
 
-H.normal_key = function(key)
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, false, true), "n", true)
-end
+H.normal_key = function(key) vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, false, true), "n", true) end
 
 --- Move the cursor down by one full page.
 M.page_down = function()

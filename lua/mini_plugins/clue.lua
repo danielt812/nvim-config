@@ -30,6 +30,7 @@ clue.setup({
     { mode = { "n", "x" }, keys = "z" },
   },
   clues = {
+    { mode = "n", keys = "gb", desc = "Box" },
     { mode = { "n", "v" }, keys = "gl", desc = "Lsp" },
     -- stylua: ignore start
     { mode = {"n", "v"}, keys = "<leader>b",  desc = "+Buffer" },

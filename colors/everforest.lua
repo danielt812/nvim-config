@@ -832,10 +832,10 @@ local highlights = {
   MiniFilesBorderModified = { link = "DiagnosticFloatingWarn" },
   MiniFilesCursorLine = { link = "CursorLine" },
   MiniFilesDirectory = { link = "Directory" },
-  MiniFilesFile = { link = "NormalFloat" },
+  MiniFilesFile = {},
   MiniFilesNormal = { link = "NormalFloat" },
   MiniFilesTitle = { link = "FloatTitle" },
-  MiniFilesTitleFocused = { fg = palette.green, bg = palette.bg2, bold = true },
+  MiniFilesTitleFocused = { fg = palette.green, bg = palette.bg2 },
 
   MiniIndentscopeSymbol = { link = "Grey" },
 

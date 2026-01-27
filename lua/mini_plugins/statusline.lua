@@ -5,7 +5,7 @@ local components = require("utils.components")
 statusline.setup({
   content = {
     active = function()
-      -- NOTE  these are custom highlight groups that are not part of mini.nvim
+      -- NOTE:  these are custom highlight groups that are not part of mini.nvim
       local diagnostic_icons =
         { ERROR = "", WARN = "", INFO = "", HINT = "" }
 
