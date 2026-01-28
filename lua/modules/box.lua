@@ -63,8 +63,8 @@ H.apply_config = function(config)
   ModuleBox.config = config
 
   -- Create mappings
-  H.map("n", config.mappings.box, ModuleBox.toggle_box, { desc = "Comment Box" })
-  H.map("n", config.mappings.line, ModuleBox.toggle_line, { desc = "Comment Line" })
+  H.map("n", config.mappings.box, ModuleBox.toggle_box, { desc = "Create Box" })
+  H.map("n", config.mappings.line, ModuleBox.toggle_line, { desc = "Create Line" })
 end
 
 H.is_disabled = function() return vim.g.boxcomments_disable == true or vim.b.boxcomments_disable == true end
