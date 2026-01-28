@@ -231,9 +231,6 @@ later(function()
   plug("rainbow-delimeters")
 end)
 
--- Formatter -------------------------------------------------------------------
-later(function() end)
-
 -- Quickfix --------------------------------------------------------------------
 later(function()
   add({ source = "stevearc/quicker.nvim" })
@@ -282,7 +279,8 @@ end)
 -- Extras ----------------------------------------------------------------------
 later(function()
   mod("box")
-  mod("marks")
+  mod("yank")
+  -- mod("marks")
 end)
 
 -- later(function() add({ source = "dimtion/guttermarks.nvim" }) end)
