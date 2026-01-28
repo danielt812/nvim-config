@@ -41,17 +41,6 @@ vim.api.nvim_create_autocmd("VimResized", {
   end,
 })
 
-vim.api.nvim_create_autocmd("TextYankPost", {
-  group = vim.api.nvim_create_augroup("yank_position", { clear = true }),
-  desc = "Prevent cursor moving after yank",
-  callback = function()
-    if vim.v.event.operator == "y" and vim.b.cursor_pre_yank then
-      vim.api.nvim_win_set_cursor(0, vim.b.cursor_pre_yank)
-      vim.b.cursor_pre_yank = nil
-    end
-  end,
-})
-
 vim.api.nvim_create_autocmd("QuitPre", {
   group = vim.api.nvim_create_augroup("auto_close_windows_on_quit", { clear = true }),
   desc = "Auto close plugin windows on quit",

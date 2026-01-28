@@ -48,14 +48,8 @@ vim.keymap.set("n", "U", "<c-r>", { desc = "Redo", silent = true })
 --   vim.api.nvim_win_set_buf(0, vim.api.nvim_create_buf(true, true))
 -- end, { desc = "Scratch" })
 
--- Keep cursor placement after yanking
-vim.keymap.set({ "n", "x" }, "y", function()
-  vim.b.cursor_pre_yank = vim.api.nvim_win_get_cursor(0)
-  return "y"
-end, { expr = true })
-
-vim.keymap.set("n", "Y", function()
-  vim.b.cursor_pre_yank = vim.api.nvim_win_get_cursor(0)
-  return "y$"
-end, { expr = true })
-
+vim.keymap.set("n", "<C-r>", function()
+  package.loaded["modules.yank"] = nil
+  require("modules.yank").setup()
+  vim.notify("modules.yank reloaded")
+end, { desc = "Reload Yank Module" })
