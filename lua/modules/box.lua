@@ -60,11 +60,11 @@ H.apply_config = function(config)
   H.map("n", config.mappings.box, M.toggle_box, { desc = "Comment Box" })
   H.map("n", config.mappings.line, M.toggle_line, { desc = "Comment Line" })
 
-  vim.keymap.set("n", "<C-r>", function()
-    package.loaded["modules.box"] = nil
-    require("modules.box").setup()
-    vim.notify("modules.box reloaded")
-  end, { desc = "Reload Box Module" })
+  -- vim.keymap.set("n", "<C-r>", function()
+  --   package.loaded["modules.box"] = nil
+  --   require("modules.box").setup()
+  --   vim.notify("modules.box reloaded")
+  -- end, { desc = "Reload Box Module" })
 end
 
 H.is_disabled = function() return vim.g.asciicomments_disable == true or vim.b.asciicomments_disable == true end

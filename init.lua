@@ -245,13 +245,9 @@ end)
 
 -- Editor ----------------------------------------------------------------------
 later(function()
-  -- Search and replace UI
-  add({ source = "MagicDuck/grug-far.nvim" })
-  plug("grug-far")
-
   -- Marks
-  add({ source = "chentoast/marks.nvim" })
-  plug("marks")
+  -- add({ source = "chentoast/marks.nvim" })
+  -- plug("marks")
 
   -- Folds
   add({
@@ -284,7 +280,12 @@ later(function()
 end)
 
 -- Extras ----------------------------------------------------------------------
-later(function() mod("box") end)
+later(function()
+  mod("box")
+  mod("marks")
+end)
+
+-- later(function() add({ source = "dimtion/guttermarks.nvim" }) end)
 
 -- Co-pilot --------------------------------------------------------------------
 later(function()
