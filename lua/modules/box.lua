@@ -1,16 +1,22 @@
 -- #############################################################################
--- #                               Ascii Module                                #
+-- #                                Box Module                                 #
 -- #############################################################################
 
-local M = {}
+local ModuleBox = {}
 local H = {}
 
-M.setup = function(config)
+ModuleBox.setup = function(config)
+  -- Export module
+  _G.ModuleYank = ModuleYank
+
+  -- Setup config
   config = H.setup_config(config)
+
+  -- Apply config
   H.apply_config(config)
 end
 
-M.config = {
+ModuleBox.config = {
   mappings = {
     box = "gbb",
     line = "gbl",
@@ -30,7 +36,7 @@ M.config = {
 }
 
 -- Helper Data -----------------------------------------------------------------
-H.default_config = vim.deepcopy(M.config)
+H.default_config = vim.deepcopy(ModuleBox.config)
 
 H.setup_config = function(config)
   H.check_type("config", config, "table", true)
@@ -54,22 +60,16 @@ H.setup_config = function(config)
 end
 
 H.apply_config = function(config)
-  M.config = config
+  ModuleBox.config = config
 
   -- Create mappings
-  H.map("n", config.mappings.box, M.toggle_box, { desc = "Comment Box" })
-  H.map("n", config.mappings.line, M.toggle_line, { desc = "Comment Line" })
-
-  -- vim.keymap.set("n", "<C-r>", function()
-  --   package.loaded["modules.box"] = nil
-  --   require("modules.box").setup()
-  --   vim.notify("modules.box reloaded")
-  -- end, { desc = "Reload Box Module" })
+  H.map("n", config.mappings.box, ModuleBox.toggle_box, { desc = "Comment Box" })
+  H.map("n", config.mappings.line, ModuleBox.toggle_line, { desc = "Comment Line" })
 end
 
-H.is_disabled = function() return vim.g.asciicomments_disable == true or vim.b.asciicomments_disable == true end
+H.is_disabled = function() return vim.g.boxcomments_disable == true or vim.b.boxcomments_disable == true end
 
-H.get_config = function() return vim.tbl_deep_extend("force", M.config, vim.b.asciicomments_config or {}) end
+H.get_config = function() return vim.tbl_deep_extend("force", ModuleBox.config, vim.b.boxcomments_config or {}) end
 
 H.get_comment_parts = function()
   local cs = vim.bo.commentstring or "%s"
@@ -258,7 +258,7 @@ H.replace_with = function(lines)
 end
 
 -- Public API ------------------------------------------------------------------
-M.toggle_line = function(width, char, justify)
+ModuleBox.toggle_line = function(width, char, justify)
   local config = H.get_config()
   justify = justify or config.line.justify
   char = char or config.line.char
@@ -289,7 +289,7 @@ M.toggle_line = function(width, char, justify)
   vim.api.nvim_set_current_line(H.join_comment(prefix, body, suffix))
 end
 
-M.toggle_box = function(width, char, justify)
+ModuleBox.toggle_box = function(width, char, justify)
   local config = H.get_config()
   width = width or config.box.width
   char = char or config.box.char
@@ -339,9 +339,8 @@ M.toggle_box = function(width, char, justify)
   vim.api.nvim_buf_set_lines(buf, row, row + 1, false, { top, middle, bottom })
 end
 
-
 -- Utils -----------------------------------------------------------------------
-H.error = function(msg) error("(ascii) " .. msg, 0) end
+H.error = function(msg) error("(box) " .. msg, 0) end
 
 H.check_type = function(name, val, ref, allow_nil)
   if type(val) == ref or (ref == "callable" and vim.is_callable(val)) or (allow_nil and val == nil) then return end
@@ -354,4 +353,4 @@ H.map = function(mode, lhs, rhs, opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
-return M
+return ModuleBox
