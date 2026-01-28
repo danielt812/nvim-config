@@ -54,9 +54,3 @@ quicker.setup({
   -- How far the header should extend to the right
   header_length = function(_, start_col) return vim.o.columns - start_col end,
 })
-
-local function toggle_qf_list()
-  quicker.toggle({ min_height = 12 })
-end
-
-vim.keymap.set("n", "<leader>qq", toggle_qf_list, { desc = "Quickfix" })
