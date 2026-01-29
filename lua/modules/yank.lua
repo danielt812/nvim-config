@@ -55,8 +55,6 @@ H.setup_config = function(config)
   H.check_type("config", config, "table", true)
   config = vim.tbl_deep_extend("force", vim.deepcopy(H.default_config), config or {})
 
-  H.check_type("mappings", config.mappings, "table")
-
   H.check_type("yank", config.yank, "table")
   H.check_type("yank.preserve_cursor", config.yank.preserve_cursor, "boolean")
 
@@ -69,9 +67,6 @@ end
 
 H.apply_config = function(config)
   ModuleYank.config = config
-
-  -- Make mappings
-  local maps = config.mappings
 
   if config.yank.preserve_cursor then
     local preserve_y = function() return H.preserve_cursor("y") end
@@ -93,7 +88,7 @@ end
 -- Yank ------------------------------------------------------------------------
 H.preserve_cursor = function(key)
   H.cache.cursor_pos = vim.api.nvim_win_get_cursor(0)
-  return key == "Y" and "y$" or "y"
+  return key
 end
 
 H.get_event_reg = function()
@@ -105,24 +100,9 @@ H.get_reg_lines = function(reg) return vim.fn.getreg(reg, 1) end
 
 H.is_yank_event = function() return vim.v.event.operator == "y" end
 
-H.make_entry = function(reg, lines)
-  return {
-    t = os.time(),
-    reg = reg,
-    ft = vim.bo.filetype,
-    lines = lines,
-  }
-end
-
-H.history_append = function(entry, max_items)
-  local items = H.history.items
-  items[#items + 1] = entry
-  if max_items and #items > max_items then table.remove(items, 1) end
-end
-
 -- Autocommands ----------------------------------------------------------------
 H.apply_autocommands = function(config)
-  local augroup = vim.api.nvim_create_augroup("ModuleYank", {})
+  local augroup = vim.api.nvim_create_augroup("ModuleYank", { clear = true })
 
   local au = function(event, pattern, callback, desc)
     vim.api.nvim_create_autocmd(event, { group = augroup, pattern = pattern, callback = callback, desc = desc })
@@ -139,13 +119,12 @@ H.apply_autocommands = function(config)
   end
 
   if config.history.enabled then
-    local append_to_history = function()
+    local dir = config.history.directory
+    local update_hist_cache = function()
       if H.is_yank_event then
-        local dir = config.history.directory
-        print(dir)
       end
     end
-    au("TextYankPost", "*", append_to_history, "Save yank to history file")
+    au("TextYankPost", "*", update_hist_cache, "Save yank to history file")
   end
 end
 
