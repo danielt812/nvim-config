@@ -1,13 +1,13 @@
-local scroll = require("utils.window-scroll")
+local move = require("utils.move-lines")
 
--- stylua: ignore start
-vim.keymap.set({ "n", "v" }, "<PageDown>", scroll.page_down,      { desc = "Scroll page down" })
-vim.keymap.set({ "n", "v" }, "<C-f>",      scroll.page_down,      { desc = "Scroll page down" })
-vim.keymap.set({ "n", "v" }, "<C-d>",      scroll.half_page_down, { desc = "Scroll half page down" })
-vim.keymap.set({ "n", "v" }, "<PageUp>",   scroll.page_up,        { desc = "Scroll page up" })
-vim.keymap.set({ "n", "v" }, "<C-b>",      scroll.page_up,        { desc = "Scroll page up" })
-vim.keymap.set({ "n", "v" }, "<C-u>",      scroll.half_page_up,   { desc = "Scroll half page up" })
--- stylua: ignore end
+-- -- stylua: ignore start
+vim.keymap.set({ "n", "v" }, "<PageDown>", move.page_down,      { desc = "Move page down" })
+vim.keymap.set({ "n", "v" }, "<C-f>",      move.page_down,      { desc = "Move page down" })
+vim.keymap.set({ "n", "v" }, "<C-d>",      move.half_page_down, { desc = "Move half page down" })
+vim.keymap.set({ "n", "v" }, "<PageUp>",   move.page_up,        { desc = "Move page up" })
+vim.keymap.set({ "n", "v" }, "<C-b>",      move.page_up,        { desc = "Move page up" })
+vim.keymap.set({ "n", "v" }, "<C-u>",      move.half_page_up,   { desc = "Move half page up" })
+-- -- stylua: ignore end
 
 -- stylua: ignore start
 vim.keymap.set("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Go to previous buffer" })
@@ -35,8 +35,8 @@ vim.keymap.set({ "n", "v" }, "R", '"_R', { desc = "Prevent R from yanking to cli
 
 -- Indent QOL
 -- stylua: ignore start
-vim.keymap.set("x", "<", "<gv", { desc = "Indent block to left",  silent = true })
-vim.keymap.set("x", ">", ">gv", { desc = "Indent block to right", silent = true })
+vim.keymap.set("v", "<", "<gv", { desc = "Indent block to left",  silent = true })
+vim.keymap.set("v", ">", ">gv", { desc = "Indent block to right", silent = true })
 vim.keymap.set("n", "<", "<<",  { desc = "Indent line to left",   silent = true })
 vim.keymap.set("n", ">", ">>",  { desc = "Indent line to right",  silent = true })
 -- stylua: ignore end
