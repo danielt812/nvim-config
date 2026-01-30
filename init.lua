@@ -280,6 +280,7 @@ end)
 later(function()
   mod("box")
   mod("yank")
+  mod("reactive")
   -- mod("marks")
 end)
 
