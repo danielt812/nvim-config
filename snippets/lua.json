@@ -1,4 +1,14 @@
 {
+  "stylua": {
+    "prefix": "sty",
+    "body": ["-- stylua: ignore\n\t$1"],
+    "description": "Stylua ignore (line)"
+  },
+  "stylua-ignore": {
+    "prefix": "styb",
+    "body": ["-- stylua: ignore start\n\t$1\n-- stylua: ignore end"],
+    "description": "Stylua ignore (block)"
+  },
   "require": {
     "prefix": "req",
     "body": ["require(${1:module})"],
