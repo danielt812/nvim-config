@@ -73,7 +73,7 @@ local servers = {
   "jsonls",
   "lua_ls",
   "tailwindcss",
-  -- "ts_ls",
+  "ts_ls",
   "tsgo",
   "yamlls",
 }
