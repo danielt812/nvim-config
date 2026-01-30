@@ -84,7 +84,7 @@ now(function()
   conf("diagnostics")
   conf("quickfix")
 
-  vim.cmd("colorscheme everforest")
+  vim.cmd("colorscheme gruvbox")
 end)
 
 -- Mini modules now ------------------------------------------------------------
