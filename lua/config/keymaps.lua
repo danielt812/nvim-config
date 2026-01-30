@@ -1,12 +1,12 @@
 local move = require("utils.move-lines")
 
 -- -- stylua: ignore start
-vim.keymap.set({ "n", "v" }, "<PageDown>", move.page_down,      { desc = "Move page down" })
-vim.keymap.set({ "n", "v" }, "<C-f>",      move.page_down,      { desc = "Move page down" })
-vim.keymap.set({ "n", "v" }, "<C-d>",      move.half_page_down, { desc = "Move half page down" })
-vim.keymap.set({ "n", "v" }, "<PageUp>",   move.page_up,        { desc = "Move page up" })
-vim.keymap.set({ "n", "v" }, "<C-b>",      move.page_up,        { desc = "Move page up" })
-vim.keymap.set({ "n", "v" }, "<C-u>",      move.half_page_up,   { desc = "Move half page up" })
+vim.keymap.set({ "n", "v" }, "<PageDown>", move.page_down, { desc = "Move page down" })
+vim.keymap.set({ "n", "v" }, "<C-f>", move.page_down, { desc = "Move page down" })
+vim.keymap.set({ "n", "v" }, "<C-d>", move.half_page_down, { desc = "Move half page down" })
+vim.keymap.set({ "n", "v" }, "<PageUp>", move.page_up, { desc = "Move page up" })
+vim.keymap.set({ "n", "v" }, "<C-b>", move.page_up, { desc = "Move page up" })
+vim.keymap.set({ "n", "v" }, "<C-u>", move.half_page_up, { desc = "Move half page up" })
 -- -- stylua: ignore end
 
 -- stylua: ignore start
