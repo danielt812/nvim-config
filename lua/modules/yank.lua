@@ -32,10 +32,8 @@ ModuleYank.config = {
     preserve_cursor = true,
   },
 
-  history = {
+  keyring = {
     enabled = true,
-
-    directory = vim.fn.stdpath("data") .. "/yanks",
   },
 }
 
@@ -58,9 +56,8 @@ H.setup_config = function(config)
   H.check_type("yank", config.yank, "table")
   H.check_type("yank.preserve_cursor", config.yank.preserve_cursor, "boolean")
 
-  H.check_type("history", config.history, "table")
-  H.check_type("history.directory", config.history.directory, "string")
-  H.check_type("history.enabled", config.history.enabled, "boolean")
+  H.check_type("keyring", config.keyring, "table")
+  H.check_type("keyring.enabled", config.keyring.enabled, "boolean")
 
   return config
 end
@@ -102,10 +99,10 @@ H.is_yank_event = function() return vim.v.event.operator == "y" end
 
 -- Autocommands ----------------------------------------------------------------
 H.apply_autocommands = function(config)
-  local augroup = vim.api.nvim_create_augroup("ModuleYank", { clear = true })
+  local group = vim.api.nvim_create_augroup("ModuleYank", { clear = true })
 
   local au = function(event, pattern, callback, desc)
-    vim.api.nvim_create_autocmd(event, { group = augroup, pattern = pattern, callback = callback, desc = desc })
+    vim.api.nvim_create_autocmd(event, { group = group, pattern = pattern, callback = callback, desc = desc })
   end
 
   if config.yank.preserve_cursor then
@@ -118,13 +115,8 @@ H.apply_autocommands = function(config)
     au("TextYankPost", "*", preserve_cursor, "Preserve cursor position on yank")
   end
 
-  if config.history.enabled then
-    local dir = config.history.directory
-    local update_hist_cache = function()
-      if H.is_yank_event then
-      end
-    end
-    au("TextYankPost", "*", update_hist_cache, "Save yank to history file")
+  if config.keyring.enabled then
+    -- au("TextYankPost", "*", update_hist_cache, "Save yank to history file")
   end
 end
 
