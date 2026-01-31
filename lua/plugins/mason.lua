@@ -30,12 +30,14 @@ mason.setup({
 })
 
 local ensure_installed = {
-  -- LSP
+  -- LSP -----------------------------------------------------------------------
   "angular-language-server",
   "basedpyright",
   "bash-language-server",
   "css-lsp",
+  "css-variables-language-server",
   "cssmodules-language-server",
+  "docker-language-server",
   "emmet-language-server",
   "eslint-lsp",
   "gopls",
@@ -43,14 +45,16 @@ local ensure_installed = {
   "json-lsp",
   "lua-language-server",
   "tailwindcss-language-server",
+  "taplo",
   "tsgo",
   "typescript-language-server",
   "yaml-language-server",
-  -- Formatters/Linters
+  -- Formatters/Linters --------------------------------------------------------
   "prettierd",
   "shfmt",
   "stylua",
-  -- DAP
+  "yamlfmt",
+  -- DAP -----------------------------------------------------------------------
   "js-debug-adapter",
 }
 

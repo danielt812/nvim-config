@@ -15,6 +15,7 @@ local languages = {
   "c",
   "comment",
   "css",
+  "git_config",
   "html",
   "javascript",
   "jsdoc",

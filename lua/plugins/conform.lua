@@ -9,19 +9,19 @@ conform.setup({
   notify_no_formatters = true,
 })
 
--- STYLUA
+-- stylua ----------------------------------------------------------------------
 conform.formatters.stylua = {
   prepend_args = {
     "--config-path=stylua.toml",
   },
 }
 
--- GOFMT
-conform.formatters_by_ft.go = { "gofmt" }
-
 conform.formatters_by_ft.lua = { "stylua" }
 
--- PRETTIER
+-- Gofmt -----------------------------------------------------------------------
+conform.formatters_by_ft.go = { "gofmt" }
+
+-- Prettier --------------------------------------------------------------------
 conform.formatters.prettierd = {
   prepend_args = {
     "--trailing-comma=es5",
@@ -53,7 +53,7 @@ for _, filetype in pairs(prettier_filetypes) do
   conform.formatters_by_ft[filetype] = { "prettierd" }
 end
 
--- SHFMT
+-- shfmt -----------------------------------------------------------------------
 conform.formatters.shfmt = {
   prepend_args = {
     "--indent",
@@ -70,6 +70,9 @@ local shfmt_filetypes = {
 for _, filetype in ipairs(shfmt_filetypes) do
   conform.formatters_by_ft[filetype] = { "shfmt" }
 end
+
+-- yamlfmt ---------------------------------------------------------------------
+conform.formatters_by_ft.yaml = { "yamlfmt" }
 
 local function format()
   conform.format()
