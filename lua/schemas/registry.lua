@@ -1,0 +1,16 @@
+return {
+  { name = "angular", description = "Angular workspace config", url = "https://raw.githubusercontent.com/angular/angular-cli/master/packages/angular/cli/lib/config/workspace-schema.json", json = { "angular.json" } },
+  { name = "azure-pipelines", description = "Azure pipelines definitions", url = "https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/master/service-schema.json", yaml = { "azure-pipelines.yml", "azure-pipelines.yaml" } },
+  { name = "docker-compose", description = "Docker Compose file", url = "https://raw.githubusercontent.com/compose-spec/compose-go/master/schema/compose-spec.json", yaml = { "docker-compose.yml", "docker-compose.yaml", "compose.yml", "compose.yaml" } },
+  { name = "eslint", description = "ESLint configuration files", url = "https://www.schemastore.org/eslintrc.json", json = { ".eslintrc", ".eslintrc.json" }, yaml = { ".eslintrc.yml", ".eslintrc.yaml" } },
+  { name = "github-workflow", description = "GitHub Actions workflow", url = "https://json.schemastore.org/github-workflow.json", yaml = { ".github/workflows/*.yml", ".github/workflows/*.yaml" } },
+  { name = "golangci-lint", description = "Golangci configuration file", url = "https://golangci-lint.run/jsonschema/golangci.jsonschema.json", json = { ".golangci.json" }, yaml = { ".golangci.yml", ".golangci.yaml" }, toml = { ".golangci.toml" } },
+  { name = "jest", description = "Jest configuration file", url = "https://www.schemastore.org/jest.json", json = { "jest.config.json" } },
+  { name = "jsconfig", description = "JavaScript configuration file", url = "https://www.schemastore.org/jsconfig.json", json = { "jsconfig.json" } },
+  { name = "kustomization.yaml", description = "Kubernetes native configuration management", url = "https://www.schemastore.org/kustomization.json", yaml = { "kustomization.yaml", "kustomization.yml" } },
+  { name = "nodemon", description = "Nodemon configuration file", url = "https://www.schemastore.org/nodemon.json", json = { "nodemon.json" } },
+  { name = "package.json", description = "NPM configuration file", url = "https://www.schemastore.org/package.json", json = { "package.json" } },
+  { name = "prettierrc", description = "Prettier configuration file", url = "https://www.schemastore.org/prettierrc.json", json = { ".prettierrc", ".prettierrc.json" }, yaml = { ".prettierrc.yml", ".prettierrc.yaml" } },
+  { name = "stylua", description = "Stylua configuration", url = "https://www.schemastore.org/stylua.json", toml = { ".stylua.toml", "stylua.toml" } },
+  { name = "tsconfig", description = "TypeScript configuration file", url = "https://www.schemastore.org/tsconfig.json", json = { "tsconfig*.json" } },
+}

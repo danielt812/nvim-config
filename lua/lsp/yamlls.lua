@@ -1,27 +1,28 @@
+local registry = require("schemas.registry")
+
+local schemas = {
+  kubernetes = {
+    "**/kubernetes*.yaml",
+    "**/kubernetes*.yml",
+    "kubernetes*.yaml",
+    "kubernetes*.yml",
+  },
+}
+
+for _, schema in ipairs(registry) do
+  if schema.url and schema.yaml then
+    schemas[schema.url] = schema.yaml
+  end
+end
+
 return {
   cmd = { "yaml-language-server", "--stdio" },
-  filetypes = {
-    "yaml",
-    "yaml.docker-compose",
-    "yaml.gitlab",
-    "yaml.helm-values",
-  },
+  filetypes = { "yaml", "yaml.docker-compose", "yaml.gitlab", "yaml.helm-values" },
   root_markers = { ".git" },
   settings = {
     yaml = {
-      keyOrdering = false,
-      format = { enable = true },
-      hover = true,
-      completion = true,
-      validate = true,
-      schemaStore = {
-        -- You must disable built-in schemaStore support if you want to use
-        -- this plugin and its advanced options like `ignore`.
-        enable = false,
-        -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
-        url = "",
-      },
-      schemas = require("schemastore").yaml.schemas(),
+      schemaStore = { enable = false },
+      schemas = schemas,
     },
   },
 }
