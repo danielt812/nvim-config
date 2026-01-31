@@ -1,12 +1,12 @@
 {
   "stylua": {
     "prefix": "sty",
-    "body": ["-- stylua: ignore\n\t$1"],
+    "body": ["-- stylua: ignore$0"],
     "description": "Stylua ignore (line)"
   },
   "stylua-ignore": {
     "prefix": "styb",
-    "body": ["-- stylua: ignore start\n\t$1\n-- stylua: ignore end"],
+    "body": ["-- stylua: ignore start\n\t$0\n-- stylua: ignore end"],
     "description": "Stylua ignore (block)"
   },
   "require": {
