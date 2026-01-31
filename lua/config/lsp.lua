@@ -16,9 +16,7 @@ local capabilities = vim.tbl_deep_extend(
 -- Shared on_attach
 local function on_attach(client, bufnr)
   -- Prefer treesitter highlighting
-  if client.server_capabilities.semanticTokensProvider then
-    client.server_capabilities.semanticTokensProvider = nil
-  end
+  if client.server_capabilities.semanticTokensProvider then client.server_capabilities.semanticTokensProvider = nil end
 
   local function map(mode, lhs, rhs, key_opts)
     key_opts = key_opts or {}
@@ -52,9 +50,7 @@ local function on_attach(client, bufnr)
   map("n", "<leader>lt", vim.lsp.buf.type_definition, { desc = "Type Definition" })
   -- stylua: ignore end
 
-  if client.supports_method("textDocument/inlayHint") then
-    vim.lsp.inlay_hint.enable(false)
-  end
+  if client.supports_method("textDocument/inlayHint") then vim.lsp.inlay_hint.enable(false) end
 end
 
 -- List of servers to enable
@@ -65,13 +61,14 @@ local servers = {
   "css_variables",
   "cssls",
   "cssmodules_ls",
-  "dockerls",
+  "docker_language_server",
   "emmet_language_server",
   "eslint",
   "gopls",
   "html",
   "jsonls",
   "lua_ls",
+  "taplo",
   "tailwindcss",
   "ts_ls",
   "tsgo",
@@ -100,10 +97,10 @@ end
 -- Enable them all
 vim.lsp.enable(servers)
 
-vim.api.nvim_create_user_command("LspInfo", function()
-  vim.cmd("checkhealth lsp")
-end, {})
+vim.api.nvim_create_user_command("LspInfo", function() vim.cmd("checkhealth lsp") end, {})
 
-vim.api.nvim_create_user_command("LspLog", function()
-  vim.cmd("edit " .. vim.lsp.get_log_path())
-end, { desc = "Open Neovim LSP log file" })
+vim.api.nvim_create_user_command(
+  "LspLog",
+  function() vim.cmd("edit " .. vim.lsp.get_log_path()) end,
+  { desc = "Open Neovim LSP log file" }
+)
