@@ -3,7 +3,7 @@ local diagnostic = require("tiny-inline-diagnostic")
 diagnostic.setup({
   -- Choose a preset style for diagnostic appearance
   -- Available: "modern", "classic", "minimal", "powerline", "ghost", "simple", "nonerdfont", "amongus"
-  preset = "modern",
+  preset = "classic",
 
   -- Make diagnostic background transparent
   transparent_bg = false,
