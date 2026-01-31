@@ -13,11 +13,12 @@ icons.setup({
     -- stylua: ignore start
     [".git"]     = { glyph = "󰊢", hl = "MiniIconsOrange" },
     [".github"]  = { glyph = "󰊤", hl = "MiniIconsAzure" },
-    ["config"]   = { glyph = "󱁿", hl = "MiniIconsAzure" },
-    ["settings"] = { glyph = "󱁿", hl = "MiniIconsAzure" },
-    ["icons"]    = { glyph = "󱞊", hl = "MiniIconsAzure" },
-    ["utils"]    = { glyph = "󱧼", hl = "MiniIconsAzure" },
     ["colors"]   = { glyph = "󱁽", hl = "MiniIconsAzure" },
+    ["config"]   = { glyph = "󱁿", hl = "MiniIconsAzure" },
+    ["icons"]    = { glyph = "󱞊", hl = "MiniIconsAzure" },
+    ["schemas"]  = { glyph = "󱁿", hl = "MiniIconsAzure" },
+    ["settings"] = { glyph = "󱁿", hl = "MiniIconsAzure" },
+    ["utils"]    = { glyph = "󱧼", hl = "MiniIconsAzure" },
     -- stylua: ignore end
   },
   extension = {
