@@ -59,23 +59,14 @@ local function mod(plugin)
   end
 end
 
-local disabled_built_ins = {
-  "netrwPlugin",
-  "netrw",
-  "netrwSettings",
-  "netrwFileHandlers",
-  "tutor",
-}
-
 now(function()
-  vim.g.mapleader = " "
-  vim.g.maplocalleader = ","
-
-  for _, plugin in ipairs(disabled_built_ins) do
+  local built_ins = { "netrwPlugin", "netrw", "netrwSettings", "netrwFileHandlers", "tutor" }
+  for _, plugin in ipairs(built_ins) do
     vim.g["loaded_" .. plugin] = 1
   end
 
-  add({ source = "b0o/SchemaStore.nvim" })
+  vim.g.mapleader = " "
+  vim.g.maplocalleader = ","
 
   conf("options")
   conf("keymaps")
@@ -84,7 +75,7 @@ now(function()
   conf("diagnostics")
   conf("quickfix")
 
-  vim.cmd("colorscheme gruvbox")
+  vim.cmd("colorscheme everforest")
 end)
 
 -- Mini modules now ------------------------------------------------------------
@@ -283,8 +274,6 @@ later(function()
   mod("reactive")
   -- mod("marks")
 end)
-
--- later(function() add({ source = "dimtion/guttermarks.nvim" }) end)
 
 -- Co-pilot --------------------------------------------------------------------
 later(function()
