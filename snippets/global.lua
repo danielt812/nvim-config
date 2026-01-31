@@ -26,11 +26,6 @@ local function special_comments(context)
       { prefix = "todo",  body = wrap("TODO: ${0:describe the task or goal}"),        desc = "Create a todo comment" },
       { prefix = "warn",  body = wrap("WARN: ${0:potential risk or edge case}"),      desc = "Create a warn comment" },
       {
-        prefix = "section",
-        body = wrap("── ${0:Section name} ─────────────────────────────"),
-        desc = "Create a section divider",
-      },
-      {
         prefix = "header",
         body = {
           wrap("================================================"),
