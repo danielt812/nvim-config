@@ -1,4 +1,4 @@
-local diagnostic_opts = {
+vim.diagnostic.config({
   signs = {
     priority = 9999,
     severity = { min = "INFO", max = "ERROR" },
@@ -16,15 +16,15 @@ local diagnostic_opts = {
   -- update_in_insert = false,
   -- underline = true,
   -- severity_sort = true,
-  -- float = {
-  --   focusable = false,
-  --   style = "minimal",
-  --   border = "rounded",
-  --   source = "always",
-  --   header = "",
-  --   prefix = "",
-  --   suffix = "",
-  -- },
-}
+  float = {
+    focusable = false,
+    style = "minimal",
+    border = "rounded",
+    source = true,
+    header = "",
+    prefix = "",
+    suffix = "",
+  },
+})
 
-vim.diagnostic.config(diagnostic_opts)
+vim.keymap.set("n", "g?", vim.diagnostic.open_float, { desc = "Open diagnostic float" })
