@@ -26,7 +26,7 @@ return {
     "typescriptreact",
   },
   root_markers = ROOT_MARKERS,
-  root_dir = function(bufnr, on_dir)
+  root_dir = function(bufnr, cb)
     local filename = vim.api.nvim_buf_get_name(bufnr)
     -- Only attach if there's some eslint config file in the root directory.
     local root_dir = vim.fs.dirname(vim.fs.find(ROOT_MARKERS, { path = filename, upward = true })[1])
@@ -34,7 +34,7 @@ return {
       return nil
     end
 
-    on_dir(root_dir)
+    cb(root_dir)
   end,
   -- https://github.com/Microsoft/vscode-eslint#settings-options
   settings = {
