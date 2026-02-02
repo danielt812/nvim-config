@@ -22,6 +22,7 @@ local languages = {
   "json",
   "lua",
   "luadoc",
+  "make",
   "markdown",
   "python",
   "query",
