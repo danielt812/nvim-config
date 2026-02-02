@@ -32,6 +32,7 @@ mason.setup({
 local ensure_installed = {
   -- LSP -----------------------------------------------------------------------
   "angular-language-server",
+  "autotools-language-server",
   "basedpyright",
   "bash-language-server",
   "css-lsp",
