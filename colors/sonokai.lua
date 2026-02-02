@@ -1,40 +1,40 @@
 vim.cmd.highlight("clear")
-vim.g.colors_name = "panda"
+vim.g.colors_name = "sonokai"
 
 -- stylua: ignore start
-
 local palette = {
-  bg_dim      = "#2d3035",
-  bg0         = "#373b41",
-  bg1         = "#404449",
-  bg2         = "#494d52",
-  bg3         = "#54575c",
-  bg4         = "#5a5e63",
-  bg5         = "#62656a",
-  bg_red      = "#4d3945",
-  bg_green    = "#405353",
-  bg_blue     = "#3e4b58",
-  bg_yellow   = "#4b444f",
+  bg_dim      = "#222327",
+  bg0         = "#2c2e34",
+  bg1         = "#33353f",
+  bg2         = "#363944",
+  bg3         = "#3b3e48",
+  bg4         = "#414550",
+  bg5         = "#5d6b66",
+  bg_red      = "#4c3743",
+  bg_green    = "#48584e",
+  bg_blue     = "#3f5865",
+  bg_yellow   = "#55544a",
 
-  fg          = "#dcdcdc",
+  fg          = "#e2e2e3",
   white       = "#ffffff",
-  red         = "#ec2864",
-  orange      = "#ffb86c",
-  yellow      = "#ff90d0",
-  green       = "#7fffd4",
-  cyan        = "#35ffdc",
-  blue        = "#6fc1ff",
-  magenta     = "#b084eb",
+  red         = "#fc5d7c",
+  orange      = "#f39660",
+  yellow      = "#e7c664",
+  green       = "#9ed072",
+  cyan        = "#83c092",
+  blue        = "#76cce9",
+  magenta     = "#b39df3",
+
   grey0       = "#7a8478",
   grey1       = "#859289",
   grey2       = "#9da9a0",
 
-  statusline1 = "#35ffdc",
-  statusline2 = "#ffb86c",
-  statusline3 = "#ff90d0",
+  statusline1 = "#76cce9",
+  statusline2 = "#9ed072",
+  statusline3 = "#fc5d7c",
 
-  none        = "none",
-  url         = "#8be9fd"
+  none        = "NONE",
+  url         = "#7fbbb3"
 }
 -- stylua: ignore end
 
@@ -58,7 +58,7 @@ local highlights = {
   PmenuKindMatch    = { fg = palette.fg,   bg   = palette.bg2 },
   PmenuKindMatchSel = { fg = palette.fg,   bg   = palette.bg2 },
   PmenuSbar         = { fg = palette.none, bg   = palette.bg2 },
-  PmenuSel          = { fg = palette.bg0,  bg   = palette.statusline1 },
+  PmenuSel          = { fg = palette.bg0,  bg   = palette.green },
   PmenuThumb        = { fg = palette.none, bg   = palette.grey0 },
   WildMenu          = { link = "PmenuSel" },
   -- stylua: ignore end
@@ -84,10 +84,10 @@ local highlights = {
   -- stylua: ignore end
 
 -- stylua: ignore start
-  Cursor       = { fg   = palette.none,  bg = palette.none, reverse = true },
-  lCursor      = { fg   = palette.none,  bg = palette.none, reverse = true },
-  CursorLineNr = { fg   = palette.grey1, bg = palette.bg0 },
-  CursorLine   = { fg   = palette.none,  bg = palette.bg1 },
+  Cursor       = { fg   = palette.none, bg = palette.none, reverse = true },
+  lCursor      = { fg   = palette.none, bg = palette.none, reverse = true },
+  CursorLineNr = { fg   = palette.fg,   bg = palette.bg0 },
+  CursorLine   = { fg   = palette.none, bg = palette.bg1 },
   CursorIM     = { link = "Cursor" },
   TermCursor   = { link = "Cursor" },
   TermCursorNC = { link = "Cursor" },
@@ -98,7 +98,7 @@ local highlights = {
   -- stylua: ignore end
 
   -- stylua: ignore start
-  NormalFloat = { fg = palette.fg,    bg = palette.bg2 },
+  NormalFloat = { fg = palette.fg, bg = palette.bg2 },
   FloatBorder = { fg = palette.grey1, bg = palette.bg2 },
   FloatTitle  = { fg = palette.grey1, bg = palette.bg2, bold = true },
   -- stylua: ignore end
@@ -210,7 +210,7 @@ local highlights = {
   -- stylua: ignore end
 
   -- stylua: ignore start
-  Boolean      = { fg = palette.orange,  bg = palette.none },
+  Boolean      = { fg = palette.magenta, bg = palette.none },
   Number       = { fg = palette.magenta, bg = palette.none },
   Float        = { fg = palette.magenta, bg = palette.none },
   PreProc      = { fg = palette.magenta, bg = palette.none },
@@ -233,7 +233,7 @@ local highlights = {
   SpecialChar  = { fg = palette.yellow,  bg = palette.none },
   Type         = { fg = palette.yellow,  bg = palette.none },
   Function     = { fg = palette.green,   bg = palette.none },
-  String       = { fg = palette.green,   bg = palette.none },
+  String       = { fg = palette.yellow,  bg = palette.none },
   Character    = { fg = palette.green,   bg = palette.none },
   Constant     = { fg = palette.cyan,    bg = palette.none },
   Macro        = { fg = palette.cyan,    bg = palette.none },
@@ -252,15 +252,15 @@ local highlights = {
 
   -- Predefined highlight groups
   -- stylua: ignore start
-  Fg      = { fg = palette.fg,     bg  = palette.none },
-  White   = { fg = palette.white,  bg  = palette.none },
-  Grey    = { fg = palette.grey1,  bg  = palette.none },
-  Red     = { fg = palette.red,    bg  = palette.none },
-  Orange  = { fg = palette.orange, bg  = palette.none },
-  Yellow  = { fg = palette.yellow, bg  = palette.none },
-  Green   = { fg = palette.green,  bg  = palette.none },
-  Cyan    = { fg = palette.cyan,   bg  = palette.none },
-  Blue    = { fg = palette.blue,   bg  = palette.none },
+  Fg      = { fg = palette.fg,      bg = palette.none },
+  White   = { fg = palette.fg,      bg = palette.none },
+  Grey    = { fg = palette.grey1,   bg = palette.none },
+  Red     = { fg = palette.red,     bg = palette.none },
+  Orange  = { fg = palette.orange,  bg = palette.none },
+  Yellow  = { fg = palette.yellow,  bg = palette.none },
+  Green   = { fg = palette.green,   bg = palette.none },
+  Cyan    = { fg = palette.cyan,    bg = palette.none },
+  Blue    = { fg = palette.blue,    bg = palette.none },
   Magenta = { fg = palette.magenta, bg = palette.none },
   -- stylua: ignore end
 
@@ -311,11 +311,11 @@ local highlights = {
   TSDanger = { fg = palette.bg0, bg = palette.red, bold = true },
   TSAnnotation = { link = "Magenta" },
   TSAttribute = { link = "Magenta" },
-  TSBoolean = { link = "Orange" },
+  TSBoolean = { link = "Magenta" },
   TSCharacter = { link = "Cyan" },
   TSCharacterSpecial = { link = "SpecialChar" },
   TSComment = { link = "Comment" },
-  TSConditional = { link = "Yellow" },
+  TSConditional = { link = "Red" },
   TSConstBuiltin = { link = "Magenta" },
   TSConstMacro = { link = "Magenta" },
   TSConstant = { link = "Constant" },
@@ -328,13 +328,13 @@ local highlights = {
   TSException = { link = "Red" },
   TSField = { link = "Blue" },
   TSFloat = { link = "Magenta" },
-  TSFuncBuiltin = { link = "Orange" },
+  TSFuncBuiltin = { link = "Green" },
   TSFuncMacro = { link = "Green" },
-  TSFunction = { link = "Blue" },
-  TSFunctionCall = { link = "Blue" },
+  TSFunction = { link = "Green" },
+  TSFunctionCall = { link = "Green" },
   TSInclude = { link = "Red" },
   TSKeyword = { link = "Red" },
-  TSKeywordFunction = { link = "Yellow" },
+  TSKeywordFunction = { link = "Red" },
   TSKeywordOperator = { link = "Orange" },
   TSKeywordReturn = { link = "Red" },
   TSLabel = { link = "Orange" },
@@ -348,17 +348,17 @@ local highlights = {
   TSNone = { link = "Fg" },
   TSNumber = { link = "Magenta" },
   TSOperator = { link = "Orange" },
-  TSParameter = { link = "Fg" },
+  TSParameter = { link = "Green" },
   TSParameterReference = { link = "Fg" },
   TSPreProc = { link = "PreProc" },
-  TSProperty = { link = "White" },
+  TSProperty = { link = "Blue" },
   TSPunctBracket = { link = "Fg" },
   TSPunctDelimiter = { link = "Grey" },
   TSPunctSpecial = { link = "Blue" },
   TSRepeat = { link = "Red" },
   TSStorageClass = { link = "Orange" },
   TSStorageClassLifetime = { link = "Orange" },
-  TSString = { link = "Cyan" },
+  TSString = { link = "Yellow" },
   TSStringEscape = { link = "Green" },
   TSStringRegex = { link = "Green" },
   TSStringSpecial = { link = "SpecialChar" },
@@ -370,7 +370,7 @@ local highlights = {
   TSTextReference = { link = "Constant" },
   TSTitle = { link = "Title" },
   TSTodo = { link = "Todo" },
-  TSType = { link = "Yellow" },
+  TSType = { link = "Blue" },
   TSTypeBuiltin = { link = "Yellow" },
   TSTypeDefinition = { link = "Yellow" },
   TSTypeQualifier = { link = "Orange" },
@@ -701,10 +701,7 @@ local highlights = {
   MiniAnimateCursor = { fg = palette.none, bg = palette.none, reverse = true, nocombine = true },
   MiniAnimateNormalFloat = { link = "NormalFloat" },
 
-  MiniFilesFile = { fg = palette.fg, bg = palette.none },
-  MiniFilesTitleFocused = { fg = palette.green, bg = palette.bg2, bold = true },
-
-  --stylua: ignore start
+  -- stylua: start
   MiniIconsAzure   = { fg = palette.blue,    bg = palette.none },
   MiniIconsBlue    = { fg = palette.blue,    bg = palette.none },
   MiniIconsCyan    = { fg = palette.cyan,    bg = palette.none },
@@ -714,7 +711,7 @@ local highlights = {
   MiniIconsMagenta = { fg = palette.magenta, bg = palette.none },
   MiniIconsRed     = { fg = palette.red,     bg = palette.none },
   MiniIconsYellow  = { fg = palette.yellow,  bg = palette.none },
-  --stylua: ignore end
+  -- stylua: end
 
   MiniIndentscopeSymbol = { fg = palette.white },
   MiniIndentscopeSymbolOff = { fg = palette.red },
@@ -723,18 +720,19 @@ local highlights = {
   MiniJump2dSpotAhead = { fg = palette.cyan, bg = palette.none, nocombine = true },
   MiniJump2dSpotUnique = { fg = palette.yellow, bg = palette.none, bold = true, nocombine = true },
 
-  MiniPickPrompt = { fg = palette.blue, bg = palette.bg2 },
   MiniStarterCurrent = { fg = palette.none, bg = palette.none, nocombine = true },
 
   -- stylua: ignore start
   MiniStatuslineDevinfo     = { fg = palette.grey2,  bg = palette.bg1 },
   MiniStatuslineFilename    = { fg = palette.grey1,  bg = palette.bg2 },
+
   MiniStatuslineModeCommand = { fg = palette.bg0,    bg = palette.cyan },
   MiniStatuslineModeInsert  = { fg = palette.bg0,    bg = palette.statusline2 },
   MiniStatuslineModeNormal  = { fg = palette.bg0,    bg = palette.statusline1 },
   MiniStatuslineModeOther   = { fg = palette.bg0,    bg = palette.magenta, bold = true },
   MiniStatuslineModeReplace = { fg = palette.bg0,    bg = palette.orange, bold = true },
   MiniStatuslineModeVisual  = { fg = palette.bg0,    bg = palette.red   , bold = true },
+
   MiniStatuslineDiffAdd     = { fg = palette.green,  bg = palette.bg1 },
   MiniStatuslineDiffChange  = { fg = palette.blue,   bg = palette.bg1 },
   MiniStatuslineDiffDelete  = { fg = palette.red,    bg = palette.bg1 },
@@ -778,19 +776,23 @@ local highlights = {
 
   MiniCompletionActiveParameter = { link = "LspSignatureActiveParameter" },
 
-  MiniCursorword = { underline = true },
-  MiniCursorwordCurrent = { link = "MiniCursorword" },
+  -- stylua: ignore start
+  MiniCursorword        = { underline = true },
+  MiniCursorwordCurrent = { underline = true },
+  -- stylua: ignore end
 
-  MiniDepsChangeAdded = { link = "Added" },
+  -- stylua: ignore start
+  MiniDepsChangeAdded   = { link = "Added" },
   MiniDepsChangeRemoved = { link = "Removed" },
-  MiniDepsHints = { link = "DiagnosticHint" },
-  MiniDepsInfo = { link = "DiagnosticInfo" },
-  MiniDepsMsgBreaking = { link = "DiagnosticWarn" },
-  MiniDepsPlaceholder = { link = "Comment" },
-  MiniDepsTitle = { link = "Title" },
-  MiniDepsTitleError = { link = "DiffDelete" },
-  MiniDepsTitleSame = { link = "DiffChange" },
-  MiniDepsTitleUpdate = { link = "DiffAdd" },
+  MiniDepsHints         = { link = "DiagnosticHint" },
+  MiniDepsInfo          = { link = "DiagnosticInfo" },
+  MiniDepsMsgBreaking   = { link = "DiagnosticWarn" },
+  MiniDepsPlaceholder   = { link = "Comment" },
+  MiniDepsTitle         = { link = "Title" },
+  MiniDepsTitleError    = { link = "DiffDelete" },
+  MiniDepsTitleSame     = { link = "DiffChange" },
+  MiniDepsTitleUpdate   = { link = "DiffAdd" },
+  -- stylua: ignore end
 
   MiniDiffOverAdd = { link = "DiffAdd" },
   MiniDiffOverChange = { link = "DiffText" },
@@ -804,8 +806,10 @@ local highlights = {
   MiniFilesBorderModified = { link = "DiagnosticFloatingWarn" },
   MiniFilesCursorLine = { link = "CursorLine" },
   MiniFilesDirectory = { link = "Directory" },
+  MiniFilesFile = {},
   MiniFilesNormal = { link = "NormalFloat" },
   MiniFilesTitle = { link = "FloatTitle" },
+  MiniFilesTitleFocused = { fg = palette.green, bg = palette.bg2 },
 
   MiniJump = { link = "Search" },
   MiniJump2dDim = { link = "Comment" },
@@ -820,7 +824,10 @@ local highlights = {
   MiniNotifyTitle = { link = "FloatTitle" },
 
   MiniNotifyLspProgress = { fg = palette.blue, bg = palette.none, italic = true },
+
   MiniOperatorsExchangeFrom = { link = "IncSearch" },
+
+  MiniPickPrompt = { fg = palette.blue, bg = palette.bg2 },
   MiniPickBorder = { link = "FloatBorder" },
   MiniPickBorderBusy = { link = "DiagnosticFloatingWarn" },
   MiniPickBorderText = { link = "FloatTitle" },
@@ -830,9 +837,10 @@ local highlights = {
   MiniPickMatchCurrent = { link = "CursorLine" },
   MiniPickMatchMarked = { link = "Visual" },
   MiniPickMatchRanges = { link = "DiagnosticFloatingHint" },
-  MiniPickNormal = { link = "NormalFloat" },
+  MiniPickNormal = { fg = palette.fg, bg = palette.bg2 },
   MiniPickPreviewLine = { link = "CursorLine" },
   MiniPickPreviewRegion = { link = "IncSearch" },
+
   MiniStarterFooter = { link = "Orange" },
   MiniStarterHeader = { link = "Yellow" },
   MiniStarterInactive = { link = "Comment" },
