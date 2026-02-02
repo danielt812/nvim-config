@@ -1,8 +1,10 @@
+local completion = require("mini.completion")
+
 -- Shared capabilities
 local capabilities = vim.tbl_deep_extend(
   "force",
   vim.lsp.protocol.make_client_capabilities(),
-  require("mini.completion").get_lsp_capabilities(),
+  completion.get_lsp_capabilities(),
   {
     textDocument = {
       foldingRange = {
@@ -56,6 +58,7 @@ end
 -- List of servers to enable
 local servers = {
   "angularls",
+  "autotools_ls",
   "basedpyright",
   "bashls",
   "css_variables",
