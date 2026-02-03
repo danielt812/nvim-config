@@ -34,7 +34,7 @@ local palette = {
   statusline3 = "#e67e80",
 
   none        = "NONE",
-  url         = "#7fbbb3"
+  url         = "#8be9fd"
 }
 -- stylua: ignore end
 
