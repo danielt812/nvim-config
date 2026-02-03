@@ -45,4 +45,4 @@ local augroup = vim.api.nvim_create_augroup
 --   end,
 -- })
 
-vim.keymap.set("n", "<leader>gb", "<cmd>BlameToggle<cr>", { desc = "Blame" })
+vim.keymap.set("n", "<leader>gB", "<cmd>BlameToggle<cr>", { desc = "Blame" })

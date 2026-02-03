@@ -19,5 +19,9 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
+local blame = function() vim.cmd("vertical Git blame -- %") end
+
+vim.keymap.set("n", "<leader>gb", blame, { desc = "Blame" })
+
 require("utils.git-conflict")
 require("utils.git-blame")
