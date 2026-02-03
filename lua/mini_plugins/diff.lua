@@ -4,7 +4,7 @@ diff.setup({
   view = {
     style = "sign",
     signs = { add = "+", change = "~", delete = "-" },
-    priority = 199,
+    priority = 1,
   },
   source = nil,
   delay = {

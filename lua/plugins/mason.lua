@@ -56,6 +56,7 @@ local ensure_installed = {
   "stylua",
   "yamlfmt",
   -- DAP -----------------------------------------------------------------------
+  "bash-debug-adapter",
   "js-debug-adapter",
 }
 

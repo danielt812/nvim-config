@@ -10,29 +10,29 @@ vim.fn.sign_define("DapBreakpoint", {
   texthl = "DiagnosticSignError",
   linehl = "",
   numhl = "DiagnosticSignError",
-  priority = 11,
+  priority = 3,
 })
 vim.fn.sign_define("DapBreakpointRejected", {
   text = "",
   texthl = "DiagnosticSignError",
   linehl = "",
   numhl = "DiagnosticSignError",
-  priority = 11,
+  priority = 3,
 })
 vim.fn.sign_define("DapStopped", {
   text = "",
   texthl = "DiagnosticSignOk",
   linehl = "Visual",
   numhl = "DiagnosticSignOk",
-  priority = 11,
+  priority = 3,
 })
 
 -- stylua: ignore start
 vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Breakpoint" })
 vim.keymap.set("n", "<leader>dc", dap.continue,          { desc = "Continue"   })
-vim.keymap.set("n", "<leader>do", dap.step_over,         { desc = "Step over"  })
-vim.keymap.set("n", "<leader>dO", dap.step_out,          { desc = "Step out"   })
+vim.keymap.set("n", "<leader>dh", dap.step_out,          { desc = "Step out"   })
 vim.keymap.set("n", "<leader>di", dap.step_into,         { desc = "Step into"  })
+vim.keymap.set("n", "<leader>dl", dap.step_over,         { desc = "Step over"  })
 vim.keymap.set("n", "<leader>dv", dap_view.toggle,       { desc = "View"       })
 -- stylua: ignore end
 
@@ -73,17 +73,46 @@ dap_virtual_text.setup({
   virt_text_pos = "eol",
 })
 
-local mason_packages = vim.fn.stdpath("data") .. "/mason/packages"
-local js_debug = mason_packages .. "/js-debug-adapter/js-debug/src/dapDebugServer.js"
+local pkg = vim.fn.stdpath("data") .. "/mason/packages"
 
--- Javascript
+-- Bash ------------------------------------------------------------------------
+dap.adapters.bashdb = {
+  type = "executable",
+  command = pkg .. "/bash-debug-adapter/bash-debug-adapter",
+  name = "bashdb",
+}
+
+dap.configurations.sh = {
+  {
+    type = "bashdb",
+    request = "launch",
+    name = "Launch file",
+    showDebugOutput = true,
+    pathBashdb = pkg .. "/bash-debug-adapter/extension/bashdb_dir/bashdb",
+    pathBashdbLib = pkg .. "/bash-debug-adapter/extension/bashdb_dir",
+    trace = true,
+    file = "${file}",
+    program = "${file}",
+    cwd = "${workspaceFolder}",
+    pathCat = "cat",
+    pathBash = "/bin/bash",
+    pathMkfifo = "mkfifo",
+    pathPkill = "pkill",
+    args = {},
+    argsString = "",
+    env = {},
+    terminalKind = "integrated",
+  },
+}
+
+-- Javascript ------------------------------------------------------------------
 dap.adapters["pwa-node"] = {
   type = "server",
   host = "localhost",
   port = "${port}",
   executable = {
     command = "node",
-    args = { js_debug, "${port}" },
+    args = { pkg .. "/js-debug-adapter/js-debug/src/dapDebugServer.js", "${port}" },
   },
 }
 
