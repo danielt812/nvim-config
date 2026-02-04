@@ -269,9 +269,9 @@ end)
 
 -- Extras ----------------------------------------------------------------------
 later(function()
-  mod("box")
+  mod("boxes")
   mod("yank")
-  mod("reactive")
+  mod("modes")
   -- mod("marks")
 end)
 

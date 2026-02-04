@@ -1,13 +1,13 @@
 -- #############################################################################
--- #                                Box Module                                 #
+-- #                               Boxes Module                                #
 -- #############################################################################
 
-local ModuleBox = {}
+local ModBoxes = {}
 local H = {}
 
-ModuleBox.setup = function(config)
+ModBoxes.setup = function(config)
   -- Export module
-  _G.ModuleYank = ModuleYank
+  _G.ModBoxes = ModBoxes
 
   -- Setup config
   config = H.setup_config(config)
@@ -16,7 +16,7 @@ ModuleBox.setup = function(config)
   H.apply_config(config)
 end
 
-ModuleBox.config = {
+ModBoxes.config = {
   mappings = {
     box = "gbb",
     line = "gbl",
@@ -24,19 +24,21 @@ ModuleBox.config = {
 
   box = {
     char = "#",
+    alt = "*",
     justify = "center",
     width = 80,
   },
 
   line = {
     char = "-",
+    alt = "",
     justify = "left",
     width = 80,
   },
 }
 
 -- Helper Data -----------------------------------------------------------------
-H.default_config = vim.deepcopy(ModuleBox.config)
+H.default_config = vim.deepcopy(ModBoxes.config)
 
 H.setup_config = function(config)
   H.check_type("config", config, "table", true)
@@ -48,11 +50,13 @@ H.setup_config = function(config)
 
   H.check_type("box", config.box, "table")
   H.check_type("box.char", config.box.char, "string")
+  H.check_type("box.alt", config.box.alt, "string")
   H.check_type("box.justify", config.box.justify, "string")
   H.check_type("box.width", config.box.width, "number")
 
   H.check_type("line", config.line, "table")
   H.check_type("line.char", config.line.char, "string")
+  H.check_type("line.alt", config.line.alt, "string")
   H.check_type("line.justify", config.line.justify, "string")
   H.check_type("line.width", config.line.width, "number")
 
@@ -60,16 +64,16 @@ H.setup_config = function(config)
 end
 
 H.apply_config = function(config)
-  ModuleBox.config = config
+  ModBoxes.config = config
 
   -- Create mappings
-  H.map("n", config.mappings.box, ModuleBox.toggle_box, { desc = "Create Box" })
-  H.map("n", config.mappings.line, ModuleBox.toggle_line, { desc = "Create Line" })
+  H.map("n", config.mappings.box, ModBoxes.toggle_box, { desc = "Create Box" })
+  H.map("n", config.mappings.line, ModBoxes.toggle_line, { desc = "Create Line" })
 end
 
 H.is_disabled = function() return vim.g.boxcomments_disable == true or vim.b.boxcomments_disable == true end
 
-H.get_config = function() return vim.tbl_deep_extend("force", ModuleBox.config, vim.b.boxcomments_config or {}) end
+H.get_config = function() return vim.tbl_deep_extend("force", ModBoxes.config, vim.b.boxcomments_config or {}) end
 
 H.get_comment_parts = function()
   local cs = vim.bo.commentstring or "%s"
@@ -120,14 +124,6 @@ H.compute_inner_width = function(total_width, prefix, suffix)
   return inner
 end
 
-H.join_comment = function(prefix, body, suffix) return prefix .. body .. suffix end
-
-H.wrap_comment = function(prefix, body, suffix)
-  if prefix ~= "" then body = " " .. body end
-  if suffix ~= "" then body = body .. " " end
-  return H.join_comment(prefix, body, suffix)
-end
-
 H.compute_body_width = function(total_width, prefix, suffix)
   local left_gap = prefix ~= "" and 1 or 0
   local right_gap = suffix ~= "" and 1 or 0
@@ -136,7 +132,26 @@ H.compute_body_width = function(total_width, prefix, suffix)
   return inner
 end
 
--- Width includes " " .. text .. " "
+H.pick_char = function(primary, alt)
+  local cs = vim.bo.commentstring or ""
+  if primary ~= "" and cs:find(primary, 1, true) then
+    if type(alt) == "string" and alt ~= "" then return alt end
+  end
+  return primary
+end
+
+H.detect_line_char = function(text, primary, alt)
+  if primary and primary ~= "" and H.is_ascii_line(text, primary) then return primary end
+  if alt and alt ~= "" and H.is_ascii_line(text, alt) then return alt end
+  return nil
+end
+
+H.detect_box_char = function(lines3, prefix, suffix, primary, alt)
+  if primary and primary ~= "" and H.is_box_lines(lines3, prefix, suffix, primary) then return primary end
+  if alt and alt ~= "" and H.is_box_lines(lines3, prefix, suffix, alt) then return alt end
+  return nil
+end
+
 H.justify_pads = function(text_len, width, justify)
   local remaining = width - (text_len + 2)
   if remaining < 0 then return nil end
@@ -159,7 +174,6 @@ H.build_ascii_line_body = function(text, char, left_pad, right_pad)
   }, " ")
 end
 
--- Detect: chars on either side (left/right/center formats)
 H.is_ascii_line = function(text, char)
   local esc = vim.pesc(char)
   return text:match("^" .. esc .. "+%s+.+$") ~= nil -- right-justified
@@ -178,7 +192,14 @@ H.unwrap_line = function(prefix, text, suffix, char)
   return H.join_comment(prefix, body, suffix)
 end
 
--- Extract the body from a full line (inverse of wrap_comment)
+H.join_comment = function(prefix, body, suffix) return prefix .. body .. suffix end
+
+H.wrap_comment = function(prefix, body, suffix)
+  if prefix ~= "" then body = " " .. body end
+  if suffix ~= "" then body = body .. " " end
+  return H.join_comment(prefix, body, suffix)
+end
+
 H.extract_body = function(line, prefix, suffix)
   if not vim.startswith(line, prefix) then return nil end
   local rest = line:sub(#prefix + 1)
@@ -193,6 +214,14 @@ H.extract_body = function(line, prefix, suffix)
   end
 
   return rest
+end
+
+H.check_one_byte = function(name, s)
+  if type(s) ~= "string" then H.error(string.format("`%s` should be string, not %s", name, type(s))) end
+  if s == "" then
+    H.error(string.format("`%s` must not be empty", name))
+  end
+  if s ~= "" and #s ~= 1 then H.error(string.format("`%s` must be exactly 1 byte", name)) end
 end
 
 H.is_box_lines = function(lines, prefix, suffix, char)
@@ -251,27 +280,30 @@ H.build_box_middle_body = function(text, char, body_width, justify)
   return char .. " " .. string.rep(" ", left_spaces) .. text .. string.rep(" ", right_spaces) .. " " .. char
 end
 
-H.replace_with = function(lines)
-  local buf = vim.api.nvim_get_current_buf()
-  local row = vim.fn.line(".") - 1
-  vim.api.nvim_buf_set_lines(buf, row, row + 1, false, lines)
-end
-
 -- Public API ------------------------------------------------------------------
-ModuleBox.toggle_line = function(width, char, justify)
+ModBoxes.toggle_line = function(width, char, justify)
+  if H.is_disabled() then return end
+
   local config = H.get_config()
   justify = justify or config.line.justify
-  char = char or config.line.char
   width = width or config.line.width
+
+  local primary = config.line.char
+  local alt = config.line.alt
 
   local prefix, suffix, text = H.get_subject()
   if not text or text == "" then return end
 
-  -- Toggle off
-  if H.is_ascii_line(text, char) then
-    vim.api.nvim_set_current_line(H.unwrap_line(prefix, text, suffix, char))
+  -- Toggle off (match either primary or alt)
+  local used = H.detect_line_char(text, primary, alt)
+  if used then
+    vim.api.nvim_set_current_line(H.unwrap_line(prefix, text, suffix, used))
     return
   end
+
+  -- Toggle on (choose char based on commentstring unless caller passed one)
+  char = char or H.pick_char(primary, alt)
+  H.check_one_byte("char", char)
 
   local inner_width = H.compute_inner_width(width, prefix, suffix)
   if not inner_width then
@@ -289,10 +321,11 @@ ModuleBox.toggle_line = function(width, char, justify)
   vim.api.nvim_set_current_line(H.join_comment(prefix, body, suffix))
 end
 
-ModuleBox.toggle_box = function(width, char, justify)
+ModBoxes.toggle_box = function(width, char, justify)
+  if H.is_disabled() then return end
+
   local config = H.get_config()
   width = width or config.box.width
-  char = char or config.box.char
   justify = justify or config.box.justify
 
   local buf = vim.api.nvim_get_current_buf()
@@ -306,15 +339,31 @@ ModuleBox.toggle_box = function(width, char, justify)
     return (indent .. cs_left):gsub("%s+$", ""), cs_right:gsub("^%s+", "")
   end)()
 
-  -- Toggle off: if cursor is on the TOP line of a 3-line box
-  local lines3 = vim.api.nvim_buf_get_lines(buf, row, row + 3, false)
-  if H.is_box_lines(lines3, prefix, suffix, char) then
-    local unboxed = H.unwrap_box_to_line(lines3, prefix, suffix, char)
-    if unboxed then vim.api.nvim_buf_set_lines(buf, row, row + 3, false, { unboxed }) end
-    return
+  -- Toggle off: if cursor is on any line of a 3-line box (primary or alt)
+  local primary = config.box.char
+  local alt = config.box.alt
+
+  -- Try the 3 possible starts for a 3-line box that could include `row`
+  for start = row - 2, row do
+    if start >= 0 then
+      local lines3 = vim.api.nvim_buf_get_lines(buf, start, start + 3, false)
+      local used = H.detect_box_char(lines3, prefix, suffix, primary, alt)
+
+      if used then
+        local unboxed = H.unwrap_box_to_line(lines3, prefix, suffix, used)
+        if unboxed then
+          vim.api.nvim_buf_set_lines(buf, start, start + 3, false, { unboxed })
+          vim.api.nvim_win_set_cursor(0, { start + 1, 0 })
+        end
+        return
+      end
+    end
   end
 
   -- Toggle on: works for commented and non-commented
+  char = char or H.pick_char(primary, alt)
+  H.check_one_byte("char", char)
+
   local pfx, sfx, text = H.get_subject()
   if not text or text == "" then return end
 
@@ -340,7 +389,7 @@ ModuleBox.toggle_box = function(width, char, justify)
 end
 
 -- Utils -----------------------------------------------------------------------
-H.error = function(msg) error("(box) " .. msg, 0) end
+H.error = function(msg) error("(module.boxes) " .. msg, 0) end
 
 H.check_type = function(name, val, ref, allow_nil)
   if type(val) == ref or (ref == "callable" and vim.is_callable(val)) or (allow_nil and val == nil) then return end
@@ -353,4 +402,4 @@ H.map = function(mode, lhs, rhs, opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
-return ModuleBox
+return ModBoxes

@@ -1,22 +1,22 @@
 -- #############################################################################
--- #                           Highlight Mode Module                           #
+-- #                               Modes Module                                #
 -- #############################################################################
 
-local ModuleReactive = {}
+local ModModes = {}
 local H = {}
 
 --- Module setup
 ---
----@param config table|nil Module config table. See |ModuleReactive.config|.
+---@param config table|nil Module config table. See |ModModes.config|.
 ---
 ---@usage >lua
 ---   require('modules.himode').setup() -- use default config
 ---   -- OR
 ---   require('modules.himode').setup({}) -- replace {} with your config table
 --- <
-ModuleReactive.setup = function(config)
+ModModes.setup = function(config)
   -- Export module
-  _G.ModuleReactive = ModuleReactive
+  _G.ModModes = ModModes
 
   -- Setup config
   config = H.setup_config(config)
@@ -25,7 +25,7 @@ ModuleReactive.setup = function(config)
   H.apply_config(config)
 end
 
-ModuleReactive.config = {
+ModModes.config = {
   mode = {
     number = true,
 
@@ -41,7 +41,7 @@ ModuleReactive.config = {
 }
 
 -- Helper Data -----------------------------------------------------------------
-H.default_config = vim.deepcopy(ModuleReactive.config)
+H.default_config = vim.deepcopy(ModModes.config)
 
 H.setup_config = function(config)
   H.check_type("config", config, "table", true)
@@ -64,7 +64,7 @@ H.setup_config = function(config)
 end
 
 H.apply_config = function(config)
-  ModuleReactive.config = config
+  ModModes.config = config
 
   -- Apply highlights
   H.apply_highlights(config)
@@ -145,7 +145,7 @@ end
 
 -- Autocommands ----------------------------------------------------------------
 H.apply_autocmds = function(config)
-  local group = vim.api.nvim_create_augroup("ModuleReactive", { clear = true })
+  local group = vim.api.nvim_create_augroup("ModModes", { clear = true })
 
   local au = function(event, pattern, callback, desc)
     vim.api.nvim_create_autocmd(event, { group = group, pattern = pattern, callback = callback, desc = desc })
@@ -156,7 +156,7 @@ H.apply_autocmds = function(config)
       -- stylua: ignore
       H.link_mode_highlights(vim.fn.mode(), "CursorLineNr")
     end
-    au("ModeChanged", "*", hl_number, "Reactive cursor line number")
+    au("ModeChanged", "*", hl_number, "Modes cursor line number")
   end
 
   local ensure_colors = function()
@@ -167,7 +167,7 @@ H.apply_autocmds = function(config)
 end
 
 -- Utils -----------------------------------------------------------------------
-H.error = function(msg) error("(module.reactive) " .. msg, 0) end
+H.error = function(msg) error("(module.modes) " .. msg, 0) end
 
 H.check_type = function(name, val, ref, allow_nil)
   if type(val) == ref or (ref == "callable" and vim.is_callable(val)) or (allow_nil and val == nil) then return end
@@ -180,4 +180,4 @@ H.map = function(mode, lhs, rhs, opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
-return ModuleReactive
+return ModModes
