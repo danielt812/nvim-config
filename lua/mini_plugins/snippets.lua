@@ -10,11 +10,12 @@ snippets.setup({
         sh = { "shell.json" },
         zsh = { "shell.json" },
         bash = { "shell.json" },
+        markdown = {"markdown.json"}
       },
     }),
   },
   mappings = {
-    -- NOTE:  mini.keymaps is handling snippet jump and expansion
+    -- NOTE: mini.keymaps is handling snippet jump and expansion
     expand = "",
     jump_next = "",
     jump_prev = "",
