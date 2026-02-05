@@ -79,19 +79,19 @@ local servers = {
 }
 
 -- Register each server configuration under vim.lsp.configs
-for _, name in ipairs(servers) do
-  local ok, conf = pcall(require, "lsp." .. name)
+for _, server in ipairs(servers) do
+  local ok, conf = pcall(require, "lsp." .. server)
   if not ok then
-    vim.notify("Failed to load LSP config: lsp." .. name, vim.log.levels.WARN)
+    vim.notify("Failed to load LSP config: lsp." .. server, vim.log.levels.WARN)
     conf = {}
   end
 
-  if name == "emmet_language_server" then
+  if server == "emmet_language_server" then
     local kinds = vim.lsp.protocol.CompletionItemKind
     kinds.Emmet = "󰅴 Emmet Abbreviation"
   end
 
-  vim.lsp.config[name] = vim.tbl_deep_extend("force", {
+  vim.lsp.config[server] = vim.tbl_deep_extend("force", {
     on_attach = on_attach,
     capabilities = capabilities,
   }, conf or {})

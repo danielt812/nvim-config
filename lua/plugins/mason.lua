@@ -52,6 +52,7 @@ local ensure_installed = {
   "yaml-language-server",
   -- Formatters/Linters --------------------------------------------------------
   "prettierd",
+  "shellcheck",
   "shfmt",
   "stylua",
   "yamlfmt",
