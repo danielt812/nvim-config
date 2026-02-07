@@ -6,7 +6,7 @@ misc.setup_termbg_sync()
 
 -- https://github.com/echasnovski/mini.nvim/issues/1911
 -- NOTE: - Zoom without changing background color
-local function zoom()
+local zoom = function()
   misc.zoom()
   -- stylua: ignore
   if vim.api.nvim_win_get_config(0).relative == "" then return end
@@ -15,7 +15,7 @@ local function zoom()
   vim.wo.winhighlight = "NormalFloat:Normal"
 end
 
-local function centered_zoom()
+local centered_zoom = function()
   local ui = vim.api.nvim_list_uis()[1]
   local width = math.ceil(ui.width / 2)
   local height = ui.height

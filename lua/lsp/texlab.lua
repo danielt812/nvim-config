@@ -1,4 +1,4 @@
-local function buf_build(client, bufnr)
+local buf_build = function(client, bufnr)
   local win = vim.api.nvim_get_current_win()
   local params = vim.lsp.util.make_position_params(win, client.offset_encoding)
   client:request("textDocument/build", params, function(err, result)
@@ -15,7 +15,7 @@ local function buf_build(client, bufnr)
   end, bufnr)
 end
 
-local function buf_search(client, bufnr)
+local buf_search = function(client, bufnr)
   local win = vim.api.nvim_get_current_win()
   local params = vim.lsp.util.make_position_params(win, client.offset_encoding)
   client:request("textDocument/forwardSearch", params, function(err, result)
@@ -32,14 +32,14 @@ local function buf_search(client, bufnr)
   end, bufnr)
 end
 
-local function buf_cancel_build(client, bufnr)
+local buf_cancel_build = function(client, bufnr)
   return client:exec_cmd({
     title = "cancel",
     command = "texlab.cancelBuild",
   }, { bufnr = bufnr })
 end
 
-local function dependency_graph(client)
+local dependency_graph = function(client)
   client:exec_cmd({ command = "texlab.showDependencyGraph" }, { bufnr = 0 }, function(err, result)
     if err then
       return vim.notify(err.code .. ": " .. err.message, vim.log.levels.ERROR)
@@ -48,7 +48,7 @@ local function dependency_graph(client)
   end)
 end
 
-local function command_factory(cmd)
+local command_factory = function(cmd)
   local cmd_tbl = {
     Auxiliary = "texlab.cleanAuxiliary",
     Artifacts = "texlab.cleanArtifacts",
@@ -68,7 +68,7 @@ local function command_factory(cmd)
   end
 end
 
-local function buf_find_envs(client, bufnr)
+local buf_find_envs = function(client, bufnr)
   local win = vim.api.nvim_get_current_win()
   client:exec_cmd({
     command = "texlab.findEnvironments",
@@ -96,7 +96,7 @@ local function buf_find_envs(client, bufnr)
   end)
 end
 
-local function buf_change_env(client, bufnr)
+local buf_change_env = function(client, bufnr)
   vim.ui.input({ prompt = "New environment name: " }, function(input)
     if not input or input == "" then
       return vim.notify("No environment name provided", vim.log.levels.WARN)

@@ -30,7 +30,7 @@
 -- -- Recursive case: cmd_path points to a CMD wrapper (Windows)
 -- resolve_cmd_shim('C:/Users/user/project/node_modules/.bin/ngserver.cmd')
 -- => 'C:/Users/user/project/node_modules/@angular/language-server/bin/ngserver'
-local function resolve_cmd_shim(cmd_path)
+local resolve_cmd_shim = function(cmd_path)
   if not cmd_path:lower():match('%ngserver.cmd$') then
     return cmd_path
   end
@@ -50,7 +50,7 @@ local function resolve_cmd_shim(cmd_path)
   return resolve_cmd_shim(full)
 end
 
-local function collect_node_modules(root_dir)
+local collect_node_modules = function(root_dir)
   local results = {}
 
   local project_node = vim.fs.joinpath(root_dir, 'node_modules')
@@ -71,7 +71,7 @@ local function collect_node_modules(root_dir)
   return results
 end
 
-local function get_angular_core_version(root_dir)
+local get_angular_core_version = function(root_dir)
   local package_json = vim.fs.joinpath(root_dir, 'package.json')
   if not vim.uv.fs_stat(package_json) then
     return ''

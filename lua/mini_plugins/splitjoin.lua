@@ -3,15 +3,14 @@ local splitjoin = require("mini.splitjoin")
 -- stylua: ignore start
 local curly  = { brackets = { "%b{}" } }
 local square = { brackets = { "%b[]" } }
+local paren  = { brackets = { "%b()" } }
 -- stylua: ignore end
 
 -- Disable hooks for specific filetypes
-local function disable_for_filetypes(hook, disabled)
+local disable_for_filetypes = function(hook, disabled)
   return function(...)
     local ft = vim.bo.filetype
-    if disabled[ft] then
-      return ...
-    end
+    if disabled[ft] then return ... end
     return hook(...)
   end
 end

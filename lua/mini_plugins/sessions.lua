@@ -3,9 +3,9 @@ local sessions = require("mini.sessions")
 sessions.setup()
 
 -- stylua: ignore start
-local function delete_session() sessions.select("delete") end
-local function select_session() sessions.select("read")   end
-local function write_session()
+local delete_session = function() sessions.select("delete") end
+local select_session = function() sessions.select("read")   end
+local write_session = function()
   if vim.v.this_session ~= "" then
     return sessions.write()
   end

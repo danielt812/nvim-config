@@ -2,7 +2,7 @@ local hipatterns = require("mini.hipatterns")
 local convert = require("utils.color-convert")
 local ts = require("utils.tree-sitter")
 
-local function apply_hipattern_groups()
+local apply_hipattern_groups = function()
   -- stylua: ignore
   local colors = {
     { "Fixme", "#fce94f" }, -- FIXME:
@@ -22,7 +22,7 @@ end
 
 apply_hipattern_groups()
 
-local function color_extmark_opts(_, _, data)
+local color_extmark_opts = function(_, _, data)
   return {
     virt_text = { { "■ ", data.hl_group } },
     virt_text_pos = "inline", -- eol, eol_right_align, overlay, right_align, inline
@@ -41,7 +41,7 @@ local comment_words = {
   "link",
 }
 
-local function in_comment(base, suffix)
+local in_comment = function(base, suffix)
   suffix = suffix or ""
   local name = "MiniHipatterns" .. base:sub(1, 1):upper() .. base:sub(2) .. suffix
   return ts.if_capture("comment", name)
@@ -62,7 +62,7 @@ for _, word in ipairs(comment_words) do
   }
 end
 
-local function get_highlight(cb)
+local get_highlight = function(cb)
   return function(_, match)
     return hipatterns.compute_hex_color_group(cb(match), "fg")
   end
@@ -102,6 +102,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 
 -- stylua: ignore
-local function toggle_hipatterns() vim.b.minihipatterns_disable = not vim.b.minihipatterns_disable end
+local toggle_hipatterns = function() vim.b.minihipatterns_disable = not vim.b.minihipatterns_disable end
 
 vim.keymap.set("n", "<leader>eh", toggle_hipatterns, { desc = "Hipatterns" })

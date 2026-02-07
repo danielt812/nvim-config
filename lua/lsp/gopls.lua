@@ -15,7 +15,7 @@ local std_lib = nil
 
 ---@param custom_args go_dir_custom_args
 ---@param on_complete fun(dir: string | nil)
-local function identify_go_dir(custom_args, on_complete)
+local identify_go_dir = function(custom_args, on_complete)
   local cmd = { "go", "env", custom_args.envvar_id }
   vim.system(cmd, { text = true }, function(output)
     local res = vim.trim(output.stdout or "")
@@ -40,7 +40,7 @@ local function identify_go_dir(custom_args, on_complete)
 end
 
 ---@return string?
-local function get_std_lib_dir()
+local get_std_lib_dir = function()
   if std_lib and std_lib ~= "" then
     return std_lib
   end
@@ -54,7 +54,7 @@ local function get_std_lib_dir()
 end
 
 ---@return string?
-local function get_mod_cache_dir()
+local get_mod_cache_dir = function()
   if mod_cache and mod_cache ~= "" then
     return mod_cache
   end
@@ -69,7 +69,7 @@ end
 
 ---@param fname string
 ---@return string?
-local function get_root_dir(fname)
+local get_root_dir = function(fname)
   if mod_cache and fname:sub(1, #mod_cache) == mod_cache then
     local clients = vim.lsp.get_clients({ name = "gopls" })
     if #clients > 0 then

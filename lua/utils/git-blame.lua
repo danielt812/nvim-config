@@ -1,17 +1,17 @@
-local function is_uncommitted(item)
+local is_uncommitted = function(item)
   if not item then return false end
   if item.hash:match("^0+$") then return true end
   if item.author:lower():find("not committed yet", 1, true) then return true end
   return false
 end
 
-local function format_time_slash(time_str)
+local format_time_slash = function(time_str)
   local y, m, d, hh, mm = time_str:match("^(%d%d%d%d)%-(%d%d)%-(%d%d)%s+(%d%d):(%d%d)")
   if not y then return time_str end
   return string.format("%s/%s/%s - %s:%s", m, d, y, hh, mm)
 end
 
-local function parse_blame_line(line)
+local parse_blame_line = function(line)
   -- hash + "(meta)" part
   local hash, meta = line:match("^(%S+)%s+%((.-)%)")
   if not hash or not meta then return nil end
@@ -29,13 +29,13 @@ local function parse_blame_line(line)
   }
 end
 
-local function pad_right(str, width)
+local pad_right = function(str, width)
   local w = vim.fn.strwidth(str)
   if w >= width then return str end
   return str .. string.rep(" ", width - w)
 end
 
-local function column_widths(items)
+local column_widths = function(items)
   local w_hash, w_author = 0, 0
   for _, it in ipairs(items) do
     if not is_uncommitted(it) then
@@ -60,7 +60,7 @@ local palette = {
   "PreProc",
 }
 
-local function hl_for_hash(hash, map)
+local hl_for_hash = function(hash, map)
   local hl = map[hash]
   if hl then return hl end
   local next_index = (vim.tbl_count(map) % #palette) + 1
@@ -69,7 +69,7 @@ local function hl_for_hash(hash, map)
   return hl
 end
 
-local function apply_blame_extmarks(bufnr, blame_parts, w_hash, w_author)
+local apply_blame_extmarks = function(bufnr, blame_parts, w_hash, w_author)
   vim.api.nvim_buf_clear_namespace(bufnr, BLAME_NS, 0, -1)
 
   -- output line format: "<hash padded>␠␠<author padded>␠␠<time>"

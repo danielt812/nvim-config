@@ -21,7 +21,7 @@ local add, now, later = deps.add, deps.now, deps.later
 
 --- Safely notifies an error message after a short delay to allow notify plugin to initialize.
 --- @param msg string: The error message to display.
-local function delayed_notify(msg)
+local delayed_notify = function(msg)
   vim.schedule(function()
     vim.defer_fn(function() vim.notify(msg, vim.log.levels.ERROR) end, 100) -- delay in ms; adjust if needed
   end)
@@ -29,28 +29,28 @@ end
 
 --- Loads a module from the `plugins` namespace with error handling.
 --- @param plugin string: Name of the plugin module (without the "plugins." prefix).
-local function plug(plugin)
+local plug = function(plugin)
   local ok, err = pcall(require, "plugins." .. plugin)
   if not ok then delayed_notify("Failed to load plugin module: plugins." .. plugin .. "\n" .. err) end
 end
 
 --- Loads a module from the `mini_plugins` namespace with error handling.
 --- @param plugin string: Name of the plugin module (without the "mini_plugins." prefix).
-local function mplug(plugin)
+local mplug = function(plugin)
   local ok, err = pcall(require, "mini_plugins." .. plugin)
   if not ok then delayed_notify("Failed to load plugin module: mini_plugins." .. plugin .. "\n" .. err) end
 end
 
 --- Loads a configuration module from the `config` namespace with error handling.
 --- @param config string: Name of the config module (without the "config." prefix).
-local function conf(config)
+local conf = function(config)
   local ok, err = pcall(require, "config." .. config)
   if not ok then delayed_notify("Failed to load config file: config." .. config .. "\n" .. err) end
 end
 
 --- Loads a module from the `modules` namespace with error handling.
 --- @param plugin string: Name of the plugin module (without the "plugins." prefix).
-local function mod(plugin)
+local mod = function(plugin)
   local ok, module = pcall(require, "modules." .. plugin)
   if not ok then
     delayed_notify("Failed to load plugin module: modules." .. plugin)

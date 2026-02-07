@@ -1,7 +1,7 @@
 local author = vim.fn.executable("git") == 1 and vim.fn.system("git config user.name"):gsub("%s+$", "")
   or vim.uv.os_get_passwd().username
 
-local function special_comments(context)
+local special_comments = function(context)
   local cs_left, cs_right = vim.bo[context.buf_id].commentstring:match("^(.*)%%s(.*)$")
   -- stylua: ignore
   if cs_left == nil then return {} end
@@ -9,7 +9,7 @@ local function special_comments(context)
   cs_left = cs_left:find("%s$") and cs_left or (cs_left .. " ")
   cs_right = cs_left:find("^%s") and cs_right or (" " .. cs_right)
 
-  local function wrap(s)
+  local wrap = function(s)
     if s:match("^%s*$") then
       return (cs_left:gsub("%s*$", "") .. cs_right:gsub("^%s*", ""))
     end

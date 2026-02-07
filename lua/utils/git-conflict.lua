@@ -13,7 +13,7 @@ local conflict_au = vim.api.nvim_create_augroup("git_conflict", {})
 -- 6: local a = "feature"
 -- 7: >>>>>>> xxxxxxx (xxx)
 --
-local function find_conflicts(buf)
+local find_conflicts = function(buf)
   buf = buf or 0
   local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, true)
   local ours, base, theirs = {}, {}, {}
@@ -39,7 +39,7 @@ local function find_conflicts(buf)
 end
 
 local conflict_state = {}
-local function toggle_conflicts(buf)
+local toggle_conflicts = function(buf)
   buf = buf or 0
   if not vim.api.nvim_buf_is_valid(buf) then
     vim.notify(string.format("Invalid buffer: %d", buf), vim.log.levels.ERROR)
@@ -156,7 +156,7 @@ do
   end
 end
 
-local function minigit_is_merge(buf)
+local minigit_is_merge = function(buf)
   buf = buf or 0
   local git_summary = vim.b[buf].minigit_summary or {}
   local in_progress = git_summary.in_progress

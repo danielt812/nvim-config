@@ -10,7 +10,7 @@ jump2d.setup({
   },
 })
 
-local function jump()
+local jump = function()
   local builtin = jump2d.builtin_opts.word_start
   builtin.view = { n_steps_ahead = 10 }
   jump2d.start(builtin)

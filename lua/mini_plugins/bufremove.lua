@@ -1,7 +1,7 @@
 local bufremove = require("mini.bufremove")
 local pin = require("utils.buffer-pin")
 
-local function open_starter_if_empty_buffer()
+local open_starter_if_empty_buffer = function()
   local buf_id = vim.api.nvim_get_current_buf()
   local is_empty = vim.api.nvim_buf_get_name(buf_id) == "" and vim.bo[buf_id].filetype == ""
 
@@ -21,7 +21,7 @@ end
 --- @param action? '"delete"'|'"wipeout"'
 --- @param selection? '"all"'|'"current"'|'"others"'|'"left"'|'"right"'|'"unpinned"'
 --- @param force boolean?
-local function remove_buffers(action, selection, force)
+local remove_buffers = function(action, selection, force)
   action = action or "delete"
   selection = selection or "current"
   force = force or false
@@ -57,12 +57,12 @@ local function remove_buffers(action, selection, force)
 end
 
 -- stylua: ignore start
-local function bufdelete_cur()    remove_buffers("delete",  "current", false) end
-local function bufdelete_others() remove_buffers("delete",  "others",  false) end
-local function bufdelete_all()    remove_buffers("delete",  "all",     false) end
-local function bufdelete_left()   remove_buffers("delete",  "left",    false) end
-local function bufdelete_right()  remove_buffers("delete",  "right",   false) end
-local function bufwipeout_cur()   remove_buffers("wipeout", "current", true)  end
+local bufdelete_cur = function()    remove_buffers("delete",  "current", false) end
+local bufdelete_others = function() remove_buffers("delete",  "others",  false) end
+local bufdelete_all = function()    remove_buffers("delete",  "all",     false) end
+local bufdelete_left = function()   remove_buffers("delete",  "left",    false) end
+local bufdelete_right = function()  remove_buffers("delete",  "right",   false) end
+local bufwipeout_cur = function()   remove_buffers("wipeout", "current", true)  end
 -- stylua: ignore end
 
 -- stylua: ignore start

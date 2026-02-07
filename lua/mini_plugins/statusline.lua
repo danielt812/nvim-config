@@ -14,14 +14,14 @@ statusline.setup({
           string.format("%%#MiniStatuslineDiag%s#%s %%#MiniStatuslineDevinfo#", severity, icon)
       end
 
-      local function section_disabled_mods(trunc_width)
+      local section_disabled_mods = function(trunc_width)
         if statusline.is_truncated(trunc_width) then return "" end
         local pairs = components.pairs({ text = true })
         local prefix = pairs ~= "" and "󱐤" or ""
         return prefix .. pairs
       end
 
-      local function section_fileinfo(trunc_width)
+      local section_fileinfo = function(trunc_width)
         local truncate = statusline.is_truncated(trunc_width)
         local spell = components.spell({ icon = true, pad = "right" })
         local shift = components.shiftwidth({ icon = true, pad = "both" })
@@ -33,20 +33,20 @@ statusline.setup({
         return truncate and fileinfo or spell .. shift .. fileinfo
       end
 
-      local function section_location(trunc_width)
+      local section_location = function(trunc_width)
         local truncate = statusline.is_truncated(trunc_width)
         local location = components.location({ pad = "both" })
         return truncate and location or location
       end
 
-      local function section_progress(trunc_width)
+      local section_progress = function(trunc_width)
         local truncate = statusline.is_truncated(trunc_width)
         local progressbar = components.progressbar({ pad = "left" })
 
         return truncate and "%P" or "%P" .. progressbar
       end
 
-      local function section_filename(trunc_width)
+      local section_filename = function(trunc_width)
         local truncate = statusline.is_truncated(trunc_width)
 
         if vim.bo.buftype == "terminal" then

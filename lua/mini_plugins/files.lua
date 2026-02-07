@@ -29,10 +29,10 @@ files.setup({
 
 local show_dotfiles = true
 
-local function toggle_dotfiles()
+local toggle_dotfiles = function()
   show_dotfiles = not show_dotfiles
 
-  local function filter(fs_entry)
+  local filter = function(fs_entry)
     if show_dotfiles then
       return true
     end
@@ -42,7 +42,7 @@ local function toggle_dotfiles()
   files.refresh({ content = { filter = filter } })
 end
 
-local function open_current()
+local open_current = function()
   files.open(vim.api.nvim_buf_get_name(0))
 end
 

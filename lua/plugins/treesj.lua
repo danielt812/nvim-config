@@ -11,7 +11,7 @@ treesj.setup({
 
 local splitjoin = require("mini.splitjoin")
 
-local function in_arrow_function()
+local in_arrow_function = function()
   local ok, node = pcall(vim.treesitter.get_node)
   if not ok or not node then return false end
 
@@ -22,7 +22,7 @@ local function in_arrow_function()
   return false
 end
 
-local function split_join_toggle()
+local split_join_toggle = function()
   -- Prefer treesj on arrow functions
   if in_arrow_function() then
     vim.notify("treesj")

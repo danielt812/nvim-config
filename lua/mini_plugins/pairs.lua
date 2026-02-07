@@ -24,6 +24,6 @@ pairs.setup({
 })
 
 -- stylua: ignore
-local function toggle_pairs() vim.b.minipairs_disable = not vim.b.minipairs_disable end
+local toggle_pairs = function() vim.b.minipairs_disable = not vim.b.minipairs_disable end
 
 vim.keymap.set("n", "<leader>ep", toggle_pairs, { desc = "Pairs" })

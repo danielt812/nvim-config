@@ -15,7 +15,7 @@ jump.setup({
   silent = false,
 })
 
-local function jump_stop()
+local jump_stop = function()
   if not jump.state.jumping then
     return "<esc>"
   end

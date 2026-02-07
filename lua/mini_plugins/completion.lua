@@ -1,6 +1,6 @@
 local completion = require("mini.completion")
 
-local function process_items(items, base)
+local process_items = function(items, base)
   local opts = {
     filtersort = "fuzzy",
     kind_priority = {
