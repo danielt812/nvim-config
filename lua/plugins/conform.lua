@@ -43,6 +43,7 @@ local prettier_filetypes = {
   "css",
   "scss",
   "html",
+  "htmlangular",
   "json",
   "jsonc",
   "markdown",
