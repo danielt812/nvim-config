@@ -1,182 +1,66 @@
 {
-  "prettier-ignore": {
-    "prefix": "prettierignore",
-    "body": "// prettier-ignore\n$0"
-  },
-  "await Promise.all": {
-    "prefix": "awaitpromiseall",
-    "body": "await Promise.all(${1:promises});$0"
-  },
-  "await sleep": {
-    "prefix": "sleep",
-    "body": "await new Promise((resolve) => setTimeout(resolve, ${1:milliseconds}));$0"
-  },
-  "console.dir": {
-    "prefix": "consoledir",
-    "body": "console.dir(${1:value});$0"
-  },
-  "console.error": {
-    "prefix": "consoleerror",
-    "body": "console.error(${1:error});$0"
+  "block comment": {
+    "prefix": "block",
+    "body": "\/*\n\t${0}\n*\/"
   },
   "console.log": {
-    "prefix": "consolelog",
-    "body": "console.log(${1:value});$0"
+    "prefix": "cl",
+    "body": "console.log(\"${1}:\", ${1});${0}"
+  },
+  "console.error": {
+    "prefix": "ce",
+    "body": "console.error(\"${1}:\", ${1});${0}"
   },
   "console.warn": {
-    "prefix": "consolewarn",
-    "body": "console.warn(${1:value});$0"
+    "prefix": "cw",
+    "body": "console.warn(\"${1}:\", ${1});${0}"
   },
-  "log": {
-    "prefix": "log",
-    "body": "console.{$1:log}(\"${2:label}:\", ${2:value});$0"
+  "forOf": {
+    "prefix": "forof",
+    "body": "for (const ${1:element} of ${2:array}) {\n\t${0}\n}"
   },
-  "class-list add": {
-    "prefix": "classlistadd",
-    "body": "${1:element}.classList.add(\"${2:className}\");$0"
+  "forIn": {
+    "prefix": "forin",
+    "body": "for (const ${1:property} in ${2:object}) {\n\t${0}\n}"
   },
-  "class-list remove": {
-    "prefix": "classlistremove",
-    "body": "${1:element}.classList.remove(\"${2:className}\");$0"
-  },
-  "class-list toggle": {
-    "prefix": "classlisttoggle",
-    "body": "${1:element}.classList.toggle(\"${2:className}\");$0"
-  },
-  "getElementById": {
-    "prefix": "getelementbyid",
-    "body": "${1:document}.getElementById(\"${2:id}\");$0"
-  },
-  "getElementsByClassName": {
-    "prefix": "getelementsbyclassname",
-    "body": "Array.from(${1:document}.getElementsByClassName(\"${2:className}\"));$0"
-  },
-  "getElementsByTagName": {
-    "prefix": "getelementsbytagname",
-    "body": "Array.from(${1:document}.getElementsByTagName(\"${2:tagName}\"));$0"
-  },
-  "getAttribute": {
-    "prefix": "getattribute",
-    "body": "${1:element}.getAttribute(\"${2:attribute}\");$0"
-  },
-  "removeAttribute": {
-    "prefix": "removeattribute",
-    "body": "${1:element}.removeAttribute(\"${2:attribute}\");$0"
-  },
-  "setAttribute": {
-    "prefix": "setattribute",
-    "body": "${1:element}.setAttribute(\"${2:attribute}\", ${3:value});$0"
-  },
-  "appendChild": {
-    "prefix": "appendchild",
-    "body": "${1:parent}.appendChild(${2:child});$0"
-  },
-  "removeChild": {
-    "prefix": "removechild",
-    "body": "${1:parent}.removeChild(${2:child});$0"
-  },
-  "addEventListener": {
-    "prefix": "addeventlistener",
-    "body": "${1:document}.addEventListener(\"${2:eventName}\", (${3:event}) => {\n\t$0\n});"
-  },
-  "removeEventListener": {
-    "prefix": "removeeventlistener",
-    "body": "${1:document}.removeEventListener(\"${2:eventName}\", ${3:listener});$0"
-  },
-  "async function statement": {
-    "prefix": "asyncfunction",
-    "body": "async function ${1:functionName}(${2:parameters}) {\n\t$0\n}"
-  },
-  "function": {
-    "prefix": "function",
-    "body": "function ${1:functionName}(${2:parameters}) {\n\t$0\n}"
-  },
-  "if": {
-    "prefix": "if",
-    "body": "if (${1:condition}) {\n\t$0\n}"
-  },
-  "if-else": {
-    "prefix": "ifelse",
-    "body": "if (${1:condition}) {\n\t${2}\n} else {\n\t$0\n}"
-  },
-  "switch": {
-    "prefix": "switch",
-    "body": "switch (${1:key}) {\n\tcase ${2:value}:\n\t\t$0\n\t\tbreak;\n\n\tdefault:\n\t\tbreak;\n}"
+  "forEach": {
+    "prefix": "foreach",
+    "body": "${1:iterable}.forEach((${2:item}) => {\n\t${0}\n})"
   },
   "map": {
     "prefix": "map",
-    "body": "${1:iterable}.map((${2:item}) => {\n\t$0\n});"
+    "body": "${1:iterable}.map((${2:item}) => {\n\t${0}\n})"
   },
   "reduce": {
     "prefix": "reduce",
-    "body": "${1:iterable}.reduce((${2:previous}, ${3:current}) => {\n\t$0\n}${4:, initialValue});"
+    "body": "${1:iterable}.reduce((${2:accumulator}, ${3:current}) => {\n\t${0}\n}${4:, initial})"
   },
   "filter": {
     "prefix": "filter",
-    "body": "${1:iterable}.filter((${2:item}) => {\n\treturn $0\n});"
+    "body": "${1:iterable}.filter((${2:item}) => {\n\t${0}\n})"
   },
   "find": {
     "prefix": "find",
-    "body": "${1:iterable}.find((${2:item}) => {\n\treturn $0\n});"
+    "body": "${1:iterable}.find((${2:item}) => {\n\t${0}\n})"
   },
   "every": {
     "prefix": "every",
-    "body": "${1:iterable}.every((${2:item}) => {\n\treturn $0\n});"
+    "body": "${1:iterable}.every((${2:item}) => {\n\t${0}\n})"
   },
   "some": {
     "prefix": "some",
-    "body": "${1:iterable}.some((${2:item}) => {\n\treturn $0\n});"
-  },
-  "for-in": {
-    "prefix": "forin",
-    "body": "for (const ${1:key} in ${2:object}) {\n\tif (Object.prototype.hasOwnProperty.call(${2:object}, ${1:key})) {\n\t\tconst ${3:element} = ${2:object}[${1:key}];\n\t\t$0\n\t}\n}"
-  },
-  "for-of": {
-    "prefix": "forof",
-    "body": "for (const ${1:item} of ${2:iterable}) {\n\t$0\n}"
-  },
-  "while": {
-    "prefix": "while",
-    "body": "while (${1:condition}) {\n\t$0\n}"
+    "body": "${1:iterable}.some((${2:item}) => {\n\t${0}\n})"
   },
   "try/catch": {
-    "prefix": "trycatch",
-    "body": "try {\n\t${1}\n} catch (${2:error}) {\n\t$0\n}"
+    "prefix": "tc",
+    "body": "try {\n\t${0}\n} catch (error) {\n\tthrow error;\n}"
   },
   "try/finally": {
-    "prefix": "tryfinally",
-    "body": "try {\n\t${1}\n} finally {\n\t$0\n}"
+    "prefix": "tf",
+    "body": "try {\n\t${0}\n} finally {\n\t\n}"
   },
   "try/catch/finally": {
-    "prefix": "trycatchfinally",
-    "body": "try {\n\t${1}\n} catch (${2:error}) {\n\t${3}\n} finally {\n\t$0\n}"
-  },
-  "set timeout function": {
-    "prefix": "settimeout",
-    "body": "setTimeout(() => {\n\t$0\n}, ${1:milliseconds});"
-  },
-  "set interval function": {
-    "prefix": "setinterval",
-    "body": "setInterval(() => {\n\t$0\n}, ${1:milliseconds});"
-  },
-  "concat": {
-    "prefix": "concat",
-    "body": "${1:source}.concat(${2:append});$0"
-  },
-  "startsWith": {
-    "prefix": "startswith",
-    "body": "${1:string}.startsWith(\"${2:searchString}\"${3:, position});$0"
-  },
-  "substring": {
-    "prefix": "substring",
-    "body": "${1:string}.substring(${2:startIndex}${3:, endIndex});$0"
-  },
-  "endsWith": {
-    "prefix": "endswith",
-    "body": "${1:string}.endsWith(\"${2:searchString}\"${3:, length});$0"
-  },
-  "new statement": {
-    "prefix": "new",
-    "body": "const ${1:name} = new ${2:Type}(${3:arguments});$0"
+    "prefix": "tcf",
+    "body": "try {\n\t${0}\n} catch (error) {\n\tthrow error;\n} finally {\n\t\n}"
   }
 }

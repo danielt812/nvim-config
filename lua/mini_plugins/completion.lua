@@ -5,15 +5,17 @@ local process_items = function(items, base)
     filtersort = "fuzzy",
     kind_priority = {
       Text = -1,
-      Snippet = 99,
+      Variable = -1,
+      Snippet = 1,
+      Emmet = 2,
+      Keyword = 3,
+      Function = 4,
     },
   }
   local processed = completion.default_process_items(items, base, opts)
 
   for _, item in ipairs(processed) do
-    if item.detail == "Emmet Abbreviation" then
-      item.kind = "Emmet"
-    end
+    if item.detail == "Emmet Abbreviation" then item.kind = "Emmet" end
   end
 
   return processed
@@ -21,7 +23,7 @@ end
 
 completion.setup({
   lsp_completion = {
-    source_func = "omnifunc",
+    source_func = "completefunc",
     auto_setup = true,
     process_items = process_items,
     snippet_insert = nil,
