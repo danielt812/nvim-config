@@ -68,6 +68,11 @@ now(function()
   vim.g.mapleader = " "
   vim.g.maplocalleader = ","
 
+  local providers = { "perl", "node", "python3", "ruby" }
+  for _, provider in ipairs(providers) do
+    vim.g["loaded_" .. provider .. "_provider"] = 0
+  end
+
   conf("options")
   conf("keymaps")
   conf("autocmds")
