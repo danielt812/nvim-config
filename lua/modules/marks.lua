@@ -2,12 +2,22 @@
 -- #                               Marks Module                                #
 -- #############################################################################
 
-local M = {}
+-- Module definition -----------------------------------------------------------
+local ModMarks = {}
 local H = {}
 
-M.setup = function(config)
+--- Module setup
+---
+---@param config table|nil Module config table. See |ModMarks.config|.
+---
+---@usage >lua
+---   require('mod.marks').setup() -- use default config
+---   -- OR
+---   require('mod.marks').setup({}) -- replace {} with your config table
+--- <
+ModMarks.setup = function(config)
   -- Export module
-  _G.ModuleMarks = M
+  _G.ModMarks = ModMarks
 
   -- Setup config
   config = H.setup_config(config)
@@ -15,124 +25,63 @@ M.setup = function(config)
   -- Apply config
   H.apply_config(config)
 
-  -- Set up autocmds
-  H.apply_autocmds()
+  -- Define behavior
+  H.create_autocmds()
 
   -- Create default highlighting
   H.create_default_hl()
-
-  H.clear_namespace(0, H.ns_id)
 end
 
-M.config = {
+ModMarks.config = {
+  -- stylua: ignore start
   mappings = {
-    del = "dm",
-    get = "'",
-    set = "m",
+    delete_mark = "dm",
+    set_mark    = "m",
   },
-  priority = 2,
+
+  signs = {
+    local_marks  = true,
+    global_marks = true,
+    priority     = 3,
+  },
+  -- stylua: ignore end
 }
 
--- Helper Data -----------------------------------------------------------------
-H.default_config = vim.deepcopy(M.config)
+-- Helper data -----------------------------------------------------------------
+H.default_config = vim.deepcopy(ModMarks.config)
 
+H.ns_id = vim.api.nvim_create_namespace("ModMarks")
+
+-- Helper functionality --------------------------------------------------------
 H.setup_config = function(config)
   H.check_type("config", config, "table", true)
   config = vim.tbl_deep_extend("force", vim.deepcopy(H.default_config), config or {})
 
   H.check_type("mappings", config.mappings, "table")
-  H.check_type("mappings.del", config.mappings.del, "string")
-  H.check_type("mappings.get", config.mappings.get, "string")
-  H.check_type("mappings.set", config.mappings.set, "string")
+  H.check_type("mappings.delete_mark", config.mappings.delete_mark, "string")
+  H.check_type("mappings.set_mark", config.mappings.set_mark, "string")
 
-  H.check_type("priority", config.priority, "number")
+  H.check_type("signs", config.signs, "table")
+  H.check_type("signs.local_marks", config.signs.local_marks, "boolean")
+  H.check_type("signs.global_marks", config.signs.global_marks, "boolean")
+  H.check_type("signs.priority", config.signs.priority, "number")
 
   return config
 end
 
 H.apply_config = function(config)
-  M.config = config
+  ModMarks.config = config
 
-  -- stylua: ignore start
-  H.map("n", config.mappings.del, H.delete_mark,  { desc = "Delete Mark" })
-  H.map("n", config.mappings.get, H.jump_to_mark, { desc = "Get Mark" })
-  H.map("n", config.mappings.set, H.set_mark,     { desc = "Set Mark" })
-  -- stylua: ignore end
-  H.map("n", "<leader>ms", H.set_buf_ext_marks, { desc = "Set Buf Ext Marks" })
-  H.map("n", "<leader>mg", H.get_buf_ext_marks, { desc = "Get Buf Ext Marks" })
-  H.map("n", "<leader>md", H.del_buf_ext_marks, { desc = "Del Buf Ext Marks" })
-  H.map("n", "<leader>mn", H.clear_namespace, { desc = "Clear Namespace" })
-  H.map("n", "<leader>mp", H.print_cache, { desc = "Print Cache" })
+  local maps = config.mappings
 
-  vim.keymap.set("n", "<C-r>", function()
-    package.loaded["modules.marks"] = nil
-    require("modules.marks").setup()
-    vim.notify("modules.marks reloaded")
-  end, { desc = "Reload Marks Module" })
-end
+  H.map("n", maps.delete_mark, ModMarks.delete_mark, { desc = "Delete mark" })
+  H.map("n", maps.set_mark, ModMarks.set_mark, { desc = "Delete mark" })
+  vim.keymap.set("n", "<leader>ms", H.apply_extmarks, { desc = "Set ext marks" })
+  -- Define behavior
+  H.create_autocmds()
 
-H.apply_autocmds = function()
-  vim.api.nvim_create_autocmd("BufReadPost", {
-    callback = function()
-      vim.schedule(function()
-        H.set_buf_cache()
-        H.set_buf_ext_marks()
-      end)
-    end,
-  })
-end
-
--- Helper Functionality --------------------------------------------------------
-H.cache = {}
-H.ns_id = vim.api.nvim_create_namespace("ModuleMarks")
-
-H.print_cache = function() print(vim.inspect(H.cache)) end
-
-H.set_buf_cache = function()
-  local bufs = vim.api.nvim_list_bufs()
-  for _, buf_id in ipairs(bufs) do
-    if H.validate_buf_id(buf_id) and not H.cache[buf_id] then H.cache[buf_id] = {} end
-  end
-end
-
-H.get_buf_ext_marks = function()
-  local buf_id = vim.api.nvim_get_current_buf()
-  local extmarks = vim.api.nvim_buf_get_extmarks(buf_id, H.ns_id, 0, -1, {})
-  return extmarks
-end
-
-H.set_buf_ext_marks = function()
-  local bufs = vim.api.nvim_list_bufs()
-
-  for _, buf_id in ipairs(bufs) do
-    local marks = vim.fn.getmarklist(buf_id)
-
-    for _, mark in ipairs(marks) do
-      local char = mark.mark:sub(-1)
-      local pos = mark.pos -- {buf_id, lnum, col, off}
-
-      local extmark_opts = { sign_text = char, sign_hl_group = "ModuleMarkSign", priority = 200 }
-
-      if char:match("[a-z]") then
-        local lnum = pos[2]
-        local extmark_id = vim.api.nvim_buf_set_extmark(buf_id, H.ns_id, lnum - 1, 0, extmark_opts)
-        if H.validate_buf_id(buf_id) then
-          if not H.cache[buf_id] then H.cache[buf_id] = {} end
-          H.cache[buf_id][char] = extmark_id
-        end
-      end
-    end
-  end
-end
-
-H.del_buf_ext_marks = function()
-  local buf_id = vim.api.nvim_get_current_buf()
-  local extmarks = H.get_buf_ext_marks()
-
-  for _, extmark in ipairs(extmarks) do
-    local extmark_id = extmark[1]
-    vim.api.nvim_buf_del_extmark(buf_id, H.ns_id, extmark_id)
-  end
+  -- Create default highlighting
+  H.create_default_hl()
 end
 
 H.create_default_hl = function()
@@ -141,74 +90,176 @@ H.create_default_hl = function()
     vim.api.nvim_set_hl(0, name, opts)
   end
 
-  hi("ModuleMarkSign", { link = "Constant" })
+  hi("ModMarksSign", { link = "Constant" })
 end
 
-H.clear_namespace = function(buf_id, ns_id)
-  buf_id = vim.api.nvim_get_current_buf()
-  ns_id = ns_id or H.ns_id
-  pcall(vim.api.nvim_buf_clear_namespace, buf_id, ns_id, 0, -1)
-end
+-- Module functionality --------------------------------------------------------
+-- Normal keymaps
+ModMarks.delete_mark = function(char)
+  char = char or vim.fn.getcharstr()
 
-H.extmark_set = function(char, buf_id, ns_id, row, col)
-  local opts = { sign_text = char, sign_hl_group = "ModuleMarkSign", priority = M.config.priority }
-  return vim.api.nvim_buf_set_extmark(buf_id, ns_id, row, col, opts)
-end
-
-H.delete_mark = function()
   local buf_id = vim.api.nvim_get_current_buf()
-  local char = vim.fn.getcharstr()
 
-  local mark_deleted = pcall(vim.api.nvim_buf_del_mark, buf_id, char)
-  if not mark_deleted then return end
+  vim.api.nvim_buf_del_mark(buf_id, char)
 
-  if H.cache[buf_id][char] then
-    vim.api.nvim_buf_del_extmark(buf_id, H.ns_id, H.cache[buf_id][char])
-    H.cache[buf_id][char] = nil
-  end
+  H.apply_extmarks()
 end
 
-H.set_mark = function()
-  local char = vim.fn.getcharstr()
+ModMarks.set_mark = function(char)
+  char = char or vim.fn.getcharstr()
+
   local win_id = vim.api.nvim_get_current_win()
-  local buf_id = vim.api.nvim_get_current_buf()
-  local ns_id = H.ns_id
-
   local row, col = unpack(vim.api.nvim_win_get_cursor(win_id))
 
-  local prev_cache = H.cache[buf_id][char]
+  vim.api.nvim_buf_set_mark(0, char, row, col, {})
 
-  local mark_set = pcall(vim.api.nvim_buf_set_mark, 0, char, row, col, {})
-  if not mark_set then return end
-  -- Delete previous mark sign if mark_set is successful
-  if prev_cache then vim.api.nvim_buf_del_extmark(0, ns_id, prev_cache) end
-
-  local extmark_id = H.extmark_set(char, buf_id, H.ns_id, row - 1, 0)
-
-  H.cache[buf_id][char] = extmark_id
+  H.apply_extmarks()
 end
 
-H.jump_to_mark = function()
-  local char = vim.fn.getcharstr()
-  local win_id = vim.api.nvim_get_current_win()
-  local mark = vim.api.nvim_buf_get_mark(0, char) -- {row, col}
-
-  if mark[1] == 0 then return end
-
-  vim.api.nvim_win_set_cursor(win_id, mark)
+-- Quickfix
+ModMarks.send_marks_to_qf = function(opts)
+  opts = opts or {}
+  local items = H.marks_to_list_items(opts)
+  vim.fn.setqflist({}, "r", {
+    title = opts.title or "Marks",
+    items = items,
+  })
+  if opts.open ~= false and #items > 0 then vim.cmd("copen") end
 end
 
--- Validators ------------------------------------------------------------------
-H.validate_buf_id = function(x)
-  if x == nil or x == 0 then return vim.api.nvim_get_current_buf() end
-  if not (type(x) == "number" and vim.api.nvim_buf_is_valid(x)) then
-    H.error("`buf_id` should be `nil` or valid buffer id.")
+-- Location list
+ModMarks.send_marks_to_loc = function(opts)
+  opts = opts or {}
+  local winid = opts.winid or 0
+  local items = H.marks_to_list_items(opts)
+  vim.fn.setloclist(winid, {}, "r", {
+    title = opts.title or "Marks (loclist)",
+    items = items,
+  })
+
+  if opts.open ~= false and #items > 0 then vim.cmd("lopen") end
+end
+
+H.apply_extmarks = function()
+  local buf_id = vim.api.nvim_get_current_buf()
+  -- Clear highlights before applying/removing new marks
+  H.clear_ns(buf_id, H.ns_id)
+
+  local global_marks = vim.tbl_filter(
+    function(m) return m.mark:sub(-1):match("^[A-Z]$") and m.pos[1] == buf_id end,
+    vim.fn.getmarklist()
+  )
+
+  local local_marks = vim.tbl_filter(function(m) return m.mark:sub(-1):match("^[a-z]$") end, vim.fn.getmarklist(buf_id))
+
+  H.place_extmarks(global_marks, buf_id, "global")
+  H.place_extmarks(local_marks, buf_id, "local")
+end
+
+H.place_extmarks = function(marks, buf_id, scope)
+  for _, m in ipairs(marks) do
+    local char = m.mark:sub(-1)
+    local pos = m.pos -- { buf_id, lnum, col, off }
+    local lnum = pos[2]
+    if lnum == 0 then goto continue end
+
+    local extmark_opts = { sign_text = char, sign_hl_group = "ModMarksSign", priority = ModMarks.config.signs.priority }
+
+    if ModMarks.config.signs.global_marks and scope == "global" then
+      vim.api.nvim_buf_set_extmark(buf_id, H.ns_id, lnum - 1, 0, extmark_opts)
+    end
+
+    if ModMarks.config.signs.local_marks and scope == "local" then
+      vim.api.nvim_buf_set_extmark(buf_id, H.ns_id, lnum - 1, 0, extmark_opts)
+    end
+
+    ::continue::
   end
-  return x
+end
+
+H.marks_to_list_items = function(opts)
+  opts = opts or {}
+  local scope = opts.scope or "local"
+  local buf_id = opts.buf_id or vim.api.nvim_get_current_buf()
+
+  local marks = {}
+  if scope == "global" then
+    vim.list_extend(marks, vim.fn.getmarklist())
+  elseif scope == "local" then
+    vim.list_extend(marks, vim.fn.getmarklist(buf_id))
+  else
+    error('marks_to_list_items: opts.scope must be "local" or "global"')
+  end
+
+  local items = {}
+  for _, m in ipairs(marks) do
+    local char = m.mark:sub(-1)
+    local is_local = char:match("^[a-z]$")
+    local is_global = char:match("^[A-Z]$")
+
+    local pos = m.pos -- { buf_id, lnum, col, off }
+    local bufnr, lnum, col = pos[1], pos[2], pos[3]
+
+    if lnum ~= 0 then
+      if (scope == "local" and is_local) or (scope == "global" and is_global) then
+        table.insert(items, {
+          bufnr = bufnr,
+          lnum = lnum,
+          col = (col or 0) + 1,
+          text = string.format("mark %s", char),
+        })
+      end
+    end
+  end
+
+  table.sort(items, function(a, b)
+    if a.bufnr ~= b.bufnr then return a.bufnr < b.bufnr end
+    if a.lnum ~= b.lnum then return a.lnum < b.lnum end
+    return a.col < b.col
+  end)
+
+  return items
+end
+
+
+H.debounce = function(ms, fn)
+  local timer = vim.loop.new_timer()
+  if not timer then return end
+
+  return function(...)
+    local argv = { ... }
+    timer:stop()
+    timer:start(ms, 0, function()
+      vim.schedule(function() fn(unpack(argv)) end)
+    end)
+  end
+end
+
+H.refresh_extmarks_debounced = H.debounce(100, function() H.apply_extmarks() end)
+
+H.on_mark_command = function()
+  vim.schedule(function()
+    local last_cmd = vim.fn.histget("cmd", -1)
+    if last_cmd:match("^m[a-zA-Z0-9]") or last_cmd:match("^delm") then H.apply_extmarks() end
+  end)
+end
+
+-- Autocommands ----------------------------------------------------------------
+H.create_autocmds = function()
+  local group = vim.api.nvim_create_augroup("ModMarks", { clear = true })
+
+  local au = function(event, pattern, callback, desc)
+    vim.api.nvim_create_autocmd(event, { group = group, pattern = pattern, callback = callback, desc = desc })
+  end
+
+  au({ "TextChanged", "TextChangedI" }, "*", H.refresh_extmarks_debounced, "Refresh mark signs after edits")
+  au({ "BufEnter", "WinEnter" }, "*", H.apply_extmarks, "Set extension marks")
+  au("CmdlineLeave", "*", H.on_mark_command, "Refresh extention marks")
+  au("ColorScheme", "*", H.create_default_hl, "Ensure colors")
 end
 
 -- Utils -----------------------------------------------------------------------
-H.error = function(msg) error("(module) " .. msg, 0) end
+H.error = function(msg) error("(module.marks) " .. msg, 0) end
 
 H.check_type = function(name, val, ref, allow_nil)
   if type(val) == ref or (ref == "callable" and vim.is_callable(val)) or (allow_nil and val == nil) then return end
@@ -221,4 +272,10 @@ H.map = function(mode, lhs, rhs, opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
-return M
+H.clear_ns = function(buf_id, ns_id)
+  buf_id = buf_id or vim.api.nvim_get_current_buf()
+  ns_id = ns_id or H.ns_id
+  vim.api.nvim_buf_clear_namespace(buf_id, ns_id, 0, -1)
+end
+
+return ModMarks

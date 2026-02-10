@@ -239,8 +239,8 @@ end)
 -- Editor ----------------------------------------------------------------------
 later(function()
   -- Marks
-  add({ source = "chentoast/marks.nvim" })
-  plug("marks")
+  -- add({ source = "chentoast/marks.nvim" })
+  -- plug("marks")
 
   -- Folds
   add({
@@ -277,7 +277,7 @@ later(function()
   mod("boxes")
   mod("yank")
   mod("modes")
-  -- mod("marks")
+  mod("marks")
 end)
 
 -- Co-pilot --------------------------------------------------------------------
