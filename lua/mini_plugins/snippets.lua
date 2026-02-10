@@ -7,6 +7,7 @@ snippets.setup({
       lang_patterns = {
         lua = { "lua.json" },
         javascript = { "javascript.json" },
+        typescript = { "typescript.json" },
         sh = { "shell.json" },
         zsh = { "shell.json" },
         bash = { "shell.json" },
