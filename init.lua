@@ -228,9 +228,6 @@ end)
 later(function()
   add({ source = "stevearc/quicker.nvim" })
   plug("quicker")
-
-  -- add({ source = "kevinhwang91/nvim-bqf" })
-  -- plug("bqf")
 end)
 
 -- Editor ----------------------------------------------------------------------
