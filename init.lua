@@ -110,7 +110,7 @@ later(function()
   mplug("git")
   mplug("hipatterns")
   mplug("icons")
-  -- mplug("indentscope")
+  mplug("indentscope")
   mplug("jump")
   mplug("jump2d")
   mplug("keymap")
@@ -207,8 +207,8 @@ end)
 -- UI --------------------------------------------------------------------------
 later(function()
   -- Indentation
-  add({ source = "shellRaining/hlchunk.nvim" })
-  plug("hlchunk")
+  -- add({ source = "shellRaining/hlchunk.nvim" })
+  -- plug("hlchunk")
 
   -- Trailing cursor
   add({ source = "sphamba/smear-cursor.nvim" })
@@ -278,6 +278,7 @@ later(function()
   mod("yank")
   mod("modes")
   mod("marks")
+  mod("indent")
 end)
 
 -- Co-pilot --------------------------------------------------------------------
