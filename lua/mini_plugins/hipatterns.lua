@@ -1,6 +1,5 @@
 local hipatterns = require("mini.hipatterns")
-local convert = require("utils.color-convert")
-local ts = require("utils.tree-sitter")
+local ts_utils = require("utils.ts")
 
 local apply_hipattern_groups = function()
   -- stylua: ignore
@@ -20,7 +19,52 @@ local apply_hipattern_groups = function()
   end
 end
 
-apply_hipattern_groups()
+local in_comment = function(base, suffix)
+  suffix = suffix or ""
+  local name = "MiniHipatterns" .. base:sub(1, 1):upper() .. base:sub(2) .. suffix
+  return ts_utils.if_capture("comment", name)
+end
+
+local comments = {}
+local comment_words = { "fixme", "hack", "info", "link", "note", "todo", "warn" }
+
+for _, word in ipairs(comment_words) do
+  comments[word] = {
+    pattern = "() ?" .. word:upper() .. " ?()",
+    group = in_comment(word),
+  }
+  comments[word .. "_colon"] = {
+    pattern = word:upper() .. "()[:-]", -- Mask ":" or "-" after keyword
+    group = in_comment(word, "Mask"),
+  }
+end
+
+local get_highlight = function(cb)
+  return function(_, match) return hipatterns.compute_hex_color_group(cb(match), "fg") end
+end
+
+--- Return long hex color (#rrggbb)
+local get_hex_long = function(match) return match end
+
+--- Expand a short hex color (#rgb) -> (#rrggbb)
+local get_hex_short = function(match)
+  local r, g, b = match:sub(2, 2), match:sub(3, 3), match:sub(4, 4)
+  return string.format("#%s%s%s%s%s%s", r, r, g, g, b, b):lower()
+end
+
+--- Convert rgb(r, g, b) to hex (#rrggbb)
+local rgb_color = function(match)
+  local r, g, b = match:match("rgb%((%d+), ?(%d+), ?(%d+)%)")
+  return string.format("#%02x%02x%02x", tonumber(r), tonumber(g), tonumber(b))
+end
+
+--- Convert rgba(r, g, b, a) to hex (#rrggbb), applying alpha
+local rgba_color = function(match)
+  local r, g, b, a = match:match("rgba?%((%d+), ?(%d+), ?(%d+), ?(%d*%.?%d*)%)")
+  a = tonumber(a)
+  if not a or a < 0 or a > 1 then return false end
+  return string.format("#%02x%02x%02x", tonumber(r) * a, tonumber(g) * a, tonumber(b) * a)
+end
 
 local color_extmark_opts = function(_, _, data)
   return {
@@ -30,75 +74,44 @@ local color_extmark_opts = function(_, _, data)
   }
 end
 
-local comments = {}
-local comment_words = {
-  "todo",
-  "note",
-  "hack",
-  "fixme",
-  "warn",
-  "info",
-  "link",
+local colors = {
+  hex_long = {
+    pattern = "#%x%x%x%x%x%x%f[%W]", -- #ffffff
+    group = get_highlight(get_hex_long),
+    extmark_opts = color_extmark_opts,
+  },
+  hex_short = {
+    pattern = "#%x%x%x%f[%W]", -- #fff
+    group = get_highlight(get_hex_short),
+    extmark_opts = color_extmark_opts,
+  },
+  rgb = {
+    pattern = "rgb%(%d+, ?%d+, ?%d+%)", -- rgb(225, 225, 225)
+    group = get_highlight(rgb_color),
+    extmark_opts = color_extmark_opts,
+  },
+  rgba = {
+    pattern = "rgba?%(%d+, ?%d+, ?%d+, ?%d*%.?%d*%)", -- rgb(225, 225, 225, 1)
+    group = get_highlight(rgba_color),
+    extmark_opts = color_extmark_opts,
+  },
 }
 
-local in_comment = function(base, suffix)
-  suffix = suffix or ""
-  local name = "MiniHipatterns" .. base:sub(1, 1):upper() .. base:sub(2) .. suffix
-  return ts.if_capture("comment", name)
-end
+local highlighters = {}
 
-for _, word in ipairs(comment_words) do
-  local w = type(word) == "table" and word[1] or word
-  local hl = type(word) == "table" and word[2] or word
-  local colon = w .. "_colon"
-
-  comments[w] = {
-    pattern = "() ?" .. w:upper() .. " ?()",
-    group = in_comment(hl),
-  }
-  comments[colon] = {
-    pattern = w:upper() .. "()[:-]", -- Mask ":" or "-" after keyword
-    group = in_comment(hl, "Mask"),
-  }
-end
-
-local get_highlight = function(cb)
-  return function(_, match)
-    return hipatterns.compute_hex_color_group(cb(match), "fg")
-  end
+local highlight_tables = { comments, colors }
+for _, tbl in ipairs(highlight_tables) do
+  highlighters = vim.tbl_extend("force", tbl, highlighters)
 end
 
 hipatterns.setup({
-  highlighters = vim.tbl_extend("force", comments, {
-    hex_color = {
-      pattern = "#%x%x%x%x%x%x%f[%W]",
-      group = get_highlight(convert.get_hex_long),
-      extmark_opts = color_extmark_opts,
-    },
-    hex_color_short = {
-      pattern = "#%x%x%x%f[%W]",
-      group = get_highlight(convert.get_hex_short),
-      extmark_opts = color_extmark_opts,
-    },
-    rgb_color = {
-      pattern = "rgb%(%d+, ?%d+, ?%d+%)",
-      group = get_highlight(convert.rgb_color),
-      extmark_opts = color_extmark_opts,
-    },
-    rgba_color = {
-      pattern = "rgba%(%d+, ?%d+, ?%d+, ?%d*%.?%d*%)",
-      group = get_highlight(convert.rgba_color),
-      extmark_opts = color_extmark_opts,
-    },
-  }),
+  highlighters = highlighters,
 })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
   group = vim.api.nvim_create_augroup("mini_hipatterns", { clear = true }),
   desc = "Create custom highlight groups",
-  callback = function()
-    apply_hipattern_groups()
-  end,
+  callback = apply_hipattern_groups,
 })
 
 -- stylua: ignore

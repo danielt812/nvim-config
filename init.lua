@@ -80,16 +80,15 @@ now(function()
   conf("diagnostics")
   conf("quickfix")
 
-  vim.cmd("colorscheme everforest")
-end)
-
--- Mini modules now ------------------------------------------------------------
-now(function()
+  -- Mini modules now ------------------------------------------------------------
   mplug("basics")
+  mplug("hipatterns")
   mplug("notify")
   mplug("starter")
   mplug("sessions")
   mplug("snippets")
+
+  vim.cmd("colorscheme everforest")
 end)
 
 -- Mini modules later ----------------------------------------------------------
@@ -108,7 +107,6 @@ later(function()
   mplug("extra")
   mplug("files")
   mplug("git")
-  mplug("hipatterns")
   mplug("icons")
   mplug("indentscope")
   mplug("jump")
@@ -120,7 +118,6 @@ later(function()
   mplug("operators")
   mplug("pairs")
   mplug("pick")
-  mplug("snippets")
   mplug("splitjoin")
   mplug("statusline")
   mplug("surround")
