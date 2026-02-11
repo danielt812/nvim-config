@@ -241,9 +241,8 @@ local highlights = {
   -- stylua: ignore end
 
   -- stylua: ignore start
-  Comment        = { fg   = palette.grey1, bg = palette.none, italic = true },
-  SpecialComment = { link = "Comment"},
-  -- Todo           = { fg   = palette.bg0,   bg = palette.blue, bold   = true },
+  Comment        = { fg = palette.grey1, bg  = palette.none, italic = true },
+  SpecialComment = { fg = palette.blue,  bg = palette.none,  italic = true },
   -- stylua: ignore end
 
   Delimiter = { fg = palette.fg, bg = palette.none },
@@ -376,7 +375,7 @@ local highlights = {
   TSTypeQualifier = { link = "Orange" },
   TSURI = { fg = palette.url, bg = palette.none, underline = true },
   TSVariable = { link = "Fg" },
-  TSVariableBuiltin = { link = "Magenta" },
+  TSVariableBuiltin = { link = "Yellow" },
 
   javascriptTSInclude = { link = "Magenta" },
   typescriptTSInclude = { link = "Magenta" },
