@@ -235,10 +235,6 @@ end)
 
 -- Editor ----------------------------------------------------------------------
 later(function()
-  -- Marks
-  -- add({ source = "chentoast/marks.nvim" })
-  -- plug("marks")
-
   -- Folds
   add({
     source = "kevinhwang91/nvim-ufo",
