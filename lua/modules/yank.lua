@@ -69,8 +69,6 @@ H.apply_config = function(config)
     H.map({ "n", "v" }, "Y", preserve_Y, { expr = true })
   end
 
-  H.map("n", "<leader>mc", function() print(vim.inspect(H.cache)) end, { desc = "Print module cache" })
-
   H.apply_autocommands(config)
 end
 
