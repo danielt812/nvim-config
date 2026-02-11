@@ -19,3 +19,6 @@ operators.setup({
     },
   },
 })
+
+vim.keymap.set("n", "(", "gxiagxila", { remap = true, desc = "Swap argument left" })
+vim.keymap.set("n", ")", "gxiagxina", { remap = true, desc = "Swap argument right" })
