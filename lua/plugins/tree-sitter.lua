@@ -53,13 +53,9 @@ for _, language in ipairs(languages) do
   end
 end
 
-if #filetypes > 0 then
-  vim.api.nvim_create_autocmd("FileType", {
-    pattern = filetypes,
-    group = vim.api.nvim_create_augroup("treesitter", { clear = true }),
-    desc = "Auto start treesitter",
-    callback = function(ev)
-      vim.treesitter.start(ev.buf)
-    end,
-  })
-end
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = filetypes,
+  group = vim.api.nvim_create_augroup("treesitter", { clear = true }),
+  desc = "Auto start treesitter",
+  callback = function(args) vim.treesitter.start(args.buf) end,
+})
