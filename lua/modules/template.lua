@@ -2,6 +2,7 @@
 -- #                              Module Template                              #
 -- #############################################################################
 
+-- Module definition -----------------------------------------------------------
 local Module = {}
 local H = {}
 
@@ -16,13 +17,20 @@ Module.setup = function(config)
   H.apply_config(config)
 end
 
+-- Defaults
 Module.config = {
   mappings = {}
 }
 
+-- Module functionality --------------------------------------------------------
+-- Exposed api goes here
+
 -- Helper Data -----------------------------------------------------------------
 H.default_config = vim.deepcopy(Module.config)
 
+H.cache = {}
+
+-- Helper functionality --------------------------------------------------------
 H.setup_config = function(config)
   H.check_type("config", config, "table", true)
   config = vim.tbl_deep_extend("force", vim.deepcopy(H.default_config), config or {})
@@ -36,7 +44,7 @@ H.apply_config = function(config)
   Module.config = config
 
   -- Mappings/Autocmds/Usercmds go here
-  H.apply_autocommands(config)
+  H.create_autocommands()
 
   -- Put this into keymaps.lua
   vim.keymap.set("n", "<C-r>", function()
@@ -46,14 +54,20 @@ H.apply_config = function(config)
   end, { desc = "Reload Template Module" })
 end
 
--- Autocommands ----------------------------------------------------------------
-H.apply_autocommands = function(config)
+H.create_autocommands = function()
   local group = vim.api.nvim_create_augroup("Module", { clear = true })
 
   local au = function(event, pattern, callback, desc)
     vim.api.nvim_create_autocmd(event, { group = group, pattern = pattern, callback = callback, desc = desc })
   end
 end
+
+H.get_config = function(config)
+  return vim.tbl_deep_extend('force', Module.config, vim.b.module_config or {}, config or {})
+end
+
+-- Autocommands ----------------------------------------------------------------
+-- Autocmd callbacks goes here
 
 -- Utils -----------------------------------------------------------------------
 H.error = function(msg) error("(module.template) " .. msg, 0) end
