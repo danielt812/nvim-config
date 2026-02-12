@@ -240,7 +240,8 @@ later(function()
   plug("ufo")
 
   -- Multicursor
-  add({ source = "mg979/vim-visual-multi" })
+  add({ source = "jake-stewart/multicursor.nvim" })
+  plug("multicursor")
 
   -- Task runner
   add({ source = "stevearc/overseer.nvim" })
