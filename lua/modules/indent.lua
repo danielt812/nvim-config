@@ -80,7 +80,6 @@ H.ns_id = vim.api.nvim_create_namespace("ModIndent")
 
 H.cache = {
   pending = {},
-  augroup = nil,
 
   current = {
     event_id = 0,
@@ -107,10 +106,7 @@ end
 H.apply_config = function(config) ModIndent.config = config end
 
 H.create_autocommands = function()
-  H.remove_autocommands()
-
   local group = vim.api.nvim_create_augroup("ModIndent", { clear = true })
-  H.cache.augroup = group
 
   local au = function(event, pattern, callback, desc)
     vim.api.nvim_create_autocmd(event, { group = group, pattern = pattern, callback = callback, desc = desc })
@@ -137,13 +133,6 @@ H.create_autocommands = function()
       end
     end
   end, "Clear ns")
-end
-
-H.remove_autocommands = function()
-  if H.cache.augroup then
-    pcall(vim.api.nvim_del_augroup_by_id, H.cache.augroup)
-    H.cache.augroup = nil
-  end
 end
 
 H.create_default_hl = function() vim.api.nvim_set_hl(0, "ModIndentSymbol", { default = true, link = "NonText" }) end
