@@ -43,13 +43,14 @@ vim.keymap.set("n", ">", ">>",  { desc = "Indent line to right",  silent = true 
 
 vim.keymap.set("n", "U", "<c-r>", { desc = "Redo", silent = true })
 
+-- Put this into keymaps.lua
+vim.keymap.set("n", "<C-r>", function()
+  package.loaded["modules.indent"] = nil
+  require("modules.indent").setup()
+  vim.notify("modules.indent reloaded")
+end, { desc = "Reload Indent Module" })
+
 -- Create scratch buffer
 -- vim.keymap.set("n", "<leader>bs", function()
 --   vim.api.nvim_win_set_buf(0, vim.api.nvim_create_buf(true, true))
 -- end, { desc = "Scratch" })
-
-vim.keymap.set("n", "<C-r>", function()
-  package.loaded["modules.yank"] = nil
-  require("modules.yank").setup()
-  vim.notify("modules.yank reloaded")
-end, { desc = "Reload Yank Module" })
