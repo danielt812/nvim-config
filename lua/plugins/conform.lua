@@ -51,7 +51,7 @@ local prettier_filetypes = {
 }
 
 for _, filetype in pairs(prettier_filetypes) do
-  conform.formatters_by_ft[filetype] = { "prettierd" }
+  conform.formatters_by_ft[filetype] = { "prettierd", "prettier" }
 end
 
 -- shfmt -----------------------------------------------------------------------
