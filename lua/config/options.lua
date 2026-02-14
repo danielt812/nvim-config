@@ -21,5 +21,5 @@ vim.opt.foldlevelstart = 99
 
 vim.opt.fillchars = { eob = " ", fold = " ", foldopen = "", foldsep = " ", foldclose = "", lastline = " " }
 
-vim.opt.guicursor:append("a:blinkon500-blinkoff500")
+vim.opt.guicursor:append("a:blinkon300-blinkoff300")
 vim.opt.shortmess:append("S")
