@@ -33,6 +33,7 @@ local add_comma_curly  = disable_for_filetypes(add_trailing_separator(curly), no
 local del_comma_curly  = disable_for_filetypes(del_trailing_separator(curly), no_trailing_comma)
 local add_comma_square = disable_for_filetypes(add_trailing_separator(square), no_trailing_comma)
 local del_comma_square = disable_for_filetypes(del_trailing_separator(square), no_trailing_comma)
+local del_comma_paren = del_trailing_separator(paren)
 -- stylua: ignore end
 
 local pad_curly = splitjoin.gen_hook.pad_brackets(curly)
@@ -52,6 +53,6 @@ splitjoin.setup({
     hooks_post = { add_comma_curly, add_comma_square },
   },
   join = {
-    hooks_post = { del_comma_curly, del_comma_square, pad_curly },
+    hooks_post = { del_comma_curly, del_comma_square, pad_curly, del_comma_paren },
   },
 })
