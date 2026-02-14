@@ -17,12 +17,17 @@ local apply_hipattern_groups = function()
     vim.api.nvim_set_hl(0, prefix .. word, { fg = "#000000", bg = hex })
     vim.api.nvim_set_hl(0, prefix .. word .. "Mask", { fg = hex, bg = hex })
   end
+  vim.api.nvim_set_hl(0, prefix .. "Link", { fg = "#8be9fd" })
 end
 
 local in_comment = function(base, suffix)
   suffix = suffix or ""
   local name = "MiniHipatterns" .. base:sub(1, 1):upper() .. base:sub(2) .. suffix
   return ts_utils.if_capture("comment", name)
+end
+
+local in_string = function(base)
+  return ts_utils.if_capture("string", base)
 end
 
 local comments = {}
@@ -97,9 +102,19 @@ local colors = {
   },
 }
 
-local highlighters = {}
+local extras = {
+  url = {
+    pattern = "https?://[%w-_%.%?%.:/%+=&]+",
+    group = in_comment("Link")
+  },
+  quote = {
+    pattern = "\"",
+    group = in_string("Grey")
+  }
+}
 
-local highlight_tables = { comments, colors }
+local highlighters = {}
+local highlight_tables = { comments, colors, extras }
 for _, tbl in ipairs(highlight_tables) do
   highlighters = vim.tbl_extend("force", tbl, highlighters)
 end
