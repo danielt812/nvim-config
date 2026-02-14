@@ -34,7 +34,6 @@ local palette = {
   statusline3 = "#e67e80",
 
   none        = "NONE",
-  url         = "#8be9fd"
 }
 -- stylua: ignore end
 
@@ -373,9 +372,9 @@ local highlights = {
   TSTypeBuiltin = { link = "Yellow" },
   TSTypeDefinition = { link = "Yellow" },
   TSTypeQualifier = { link = "Orange" },
-  TSURI = { fg = palette.url, bg = palette.none, underline = true },
+  TSURI = { fg = palette.blue, bg = palette.none, underline = true },
   TSVariable = { link = "Fg" },
-  TSVariableBuiltin = { link = "Yellow" },
+  TSVariableBuiltin = { link = "Purple" },
 
   javascriptTSInclude = { link = "Magenta" },
   typescriptTSInclude = { link = "Magenta" },
@@ -700,7 +699,7 @@ local highlights = {
   MiniAnimateCursor = { fg = palette.none, bg = palette.none, reverse = true, nocombine = true },
   MiniAnimateNormalFloat = { link = "NormalFloat" },
 
-  -- stylua: start
+  -- stylua: ignore start
   MiniIconsAzure   = { fg = palette.blue,    bg = palette.none },
   MiniIconsBlue    = { fg = palette.blue,    bg = palette.none },
   MiniIconsCyan    = { fg = palette.cyan,    bg = palette.none },
@@ -710,37 +709,34 @@ local highlights = {
   MiniIconsMagenta = { fg = palette.magenta, bg = palette.none },
   MiniIconsRed     = { fg = palette.red,     bg = palette.none },
   MiniIconsYellow  = { fg = palette.yellow,  bg = palette.none },
-  -- stylua: end
 
-  MiniIndentscopeSymbol = { fg = palette.white },
+  MiniIndentscopeSymbol    = { fg = palette.white },
   MiniIndentscopeSymbolOff = { fg = palette.red },
 
-  MiniJump2dSpot = { fg = palette.orange, bg = palette.none, bold = true, nocombine = true },
-  MiniJump2dSpotAhead = { fg = palette.cyan, bg = palette.none, nocombine = true },
-  MiniJump2dSpotUnique = { fg = palette.yellow, bg = palette.none, bold = true, nocombine = true },
+  MiniJump2dSpot       = { fg = palette.orange, bg = palette.none, bold      = true, nocombine = true },
+  MiniJump2dSpotAhead  = { fg = palette.cyan,   bg = palette.none, nocombine = true },
+  MiniJump2dSpotUnique = { fg = palette.yellow, bg = palette.none, bold      = true, nocombine = true },
 
   MiniStarterCurrent = { fg = palette.none, bg = palette.none, nocombine = true },
 
-  -- stylua: ignore start
-  MiniStatuslineDevinfo     = { fg = palette.grey2,  bg = palette.bg1 },
-  MiniStatuslineFilename    = { fg = palette.grey1,  bg = palette.bg2 },
+  MiniStatuslineDevinfo = { fg = palette.grey2, bg = palette.bg1 },
+  MiniStatuslineFilename = { fg = palette.grey1, bg = palette.bg2 },
+  MiniStatuslineModeCommand = { fg = palette.bg0, bg = palette.cyan },
+  MiniStatuslineModeInsert = { fg = palette.bg0, bg = palette.statusline2 },
+  MiniStatuslineModeNormal = { fg = palette.bg0, bg = palette.statusline1 },
+  MiniStatuslineModeOther = { fg = palette.bg0, bg = palette.magenta, bold = true },
+  MiniStatuslineModeReplace = { fg = palette.bg0, bg = palette.orange, bold = true },
+  MiniStatuslineModeVisual = { fg = palette.bg0, bg = palette.red, bold = true },
 
-  MiniStatuslineModeCommand = { fg = palette.bg0,    bg = palette.cyan },
-  MiniStatuslineModeInsert  = { fg = palette.bg0,    bg = palette.statusline2 },
-  MiniStatuslineModeNormal  = { fg = palette.bg0,    bg = palette.statusline1 },
-  MiniStatuslineModeOther   = { fg = palette.bg0,    bg = palette.magenta, bold = true },
-  MiniStatuslineModeReplace = { fg = palette.bg0,    bg = palette.orange, bold = true },
-  MiniStatuslineModeVisual  = { fg = palette.bg0,    bg = palette.red   , bold = true },
-
-  MiniStatuslineDiffAdd     = { fg = palette.green,  bg = palette.bg1 },
-  MiniStatuslineDiffChange  = { fg = palette.blue,   bg = palette.bg1 },
-  MiniStatuslineDiffDelete  = { fg = palette.red,    bg = palette.bg1 },
-  MiniStatuslineDiagError   = { fg = palette.red,    bg = palette.bg1 },
-  MiniStatuslineDiagWarn    = { fg = palette.yellow, bg = palette.bg1 },
-  MiniStatuslineDiagInfo    = { fg = palette.magenta, bg = palette.bg1 },
-  MiniStatuslineDiagHint    = { fg = palette.blue,   bg = palette.bg1 },
-  MiniStatuslineFileinfo    = { fg = palette.grey2,  bg = palette.bg2 },
-  MiniStatuslineLocation    = { fg = palette.grey2,  bg = palette.bg1 },
+  MiniStatuslineDiffAdd = { fg = palette.green, bg = palette.bg1 },
+  MiniStatuslineDiffChange = { fg = palette.blue, bg = palette.bg1 },
+  MiniStatuslineDiffDelete = { fg = palette.red, bg = palette.bg1 },
+  MiniStatuslineDiagError = { fg = palette.red, bg = palette.bg1 },
+  MiniStatuslineDiagWarn = { fg = palette.yellow, bg = palette.bg1 },
+  MiniStatuslineDiagInfo = { fg = palette.magenta, bg = palette.bg1 },
+  MiniStatuslineDiagHint = { fg = palette.blue, bg = palette.bg1 },
+  MiniStatuslineFileinfo = { fg = palette.grey2, bg = palette.bg2 },
+  MiniStatuslineLocation = { fg = palette.grey2, bg = palette.bg1 },
   -- stylua: ignore end
 
 

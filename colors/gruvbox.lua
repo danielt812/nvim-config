@@ -32,7 +32,6 @@ local palette = {
   statusline2 = "#fbf1c7",
   statusline3 = "#d3869b",
 
-  url         = "#8be9fd",
   none        = "NONE",
   -- stylua: ignore end
 }
@@ -374,7 +373,7 @@ local highlights = {
   TSTypeBuiltin = { link = "Yellow" },
   TSTypeDefinition = { link = "Yellow" },
   TSTypeQualifier = { link = "Orange" },
-  TSURI = { fg = palette.url, bg = palette.none, underline = true },
+  TSURI = { fg = palette.blue, bg = palette.none, underline = true },
   TSVariable = { link = "Blue" },
   TSVariableBuiltin = { link = "Magenta" },
   -- stylua: ignore end

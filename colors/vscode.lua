@@ -34,7 +34,6 @@ local palette = {
   statusline3 = "#e51400",
 
   none        = "NONE",
-  url         = "#7fbbb3",
 }
 -- stylua: ignore end
 
@@ -378,7 +377,7 @@ local highlights = {
   TSTypeQualifier        = { link = "Orange" },
   TSVariable             = { link = "Cyan" },
   TSVariableBuiltin      = { link = "Magenta" },
-  TSURI = { fg = palette.url, bg = palette.none, underline = true },
+  TSURI = { fg = palette.blue, bg = palette.none, underline = true },
   -- stylua: ignore end
 
   javascriptTSInclude = { link = "Magenta" },
