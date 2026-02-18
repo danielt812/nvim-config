@@ -4,7 +4,7 @@ indentscope.setup({
   -- Draw options
   draw = {
     -- Delay (in ms) between event and start of drawing scope indicator
-    delay = 50,
+    delay = 100,
 
     -- Animation rule for scope's first drawing. A function which, given
     -- next and total step numbers, returns wait time (in ms). See
@@ -18,7 +18,7 @@ indentscope.setup({
     predicate = function(scope) return not scope.body.is_incomplete end,
 
     -- Symbol priority. Increase to display on top of more symbols.
-    priority = 1000,
+    priority = 2,
   },
 
   -- Module mappings. Use `''` (empty string) to disable one.

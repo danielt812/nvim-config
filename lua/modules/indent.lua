@@ -29,7 +29,7 @@ ModIndent.config = {
     predicate = nil,
 
     -- Extmark priority (higher draws on top)
-    priority = 10,
+    priority = 1,
   },
 
   -- Which character to use for drawing guides
