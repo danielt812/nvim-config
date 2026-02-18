@@ -4,13 +4,18 @@ local duration = 100
 
 animate.setup({
   cursor = {
-    enable = false,
-    -- Animate for 200 milliseconds with linear easing
-    timing = animate.gen_timing.linear({ duration = 200, unit = "total" }),
+    enable = true,
+    timing = animate.gen_timing.linear({ duration = duration, unit = "total" }),
 
     -- Animate with shortest line for any cursor move
-    -- stylua: ignore
-    path = animate.gen_path.line({ predicate = function() return true end }),
+    path = animate.gen_path.line({
+      predicate = function(args)
+        local delta_line = math.abs(args[1] or 0)
+        local delta_col = math.abs(args[2] or 0)
+        if delta_line == 1 and delta_col == 0 then return false end
+        return true
+      end,
+    }),
   },
   scroll = {
     enable = true,
@@ -37,7 +42,5 @@ vim.api.nvim_create_autocmd("User", {
   group = vim.api.nvim_create_augroup("mini_animate", { clear = true }),
   pattern = "MiniAnimateDoneScroll",
   desc = "Center after scroll",
-  callback = function()
-    vim.cmd("normal! zvzz")
-  end,
+  callback = function() vim.cmd("normal! zvzz") end,
 })

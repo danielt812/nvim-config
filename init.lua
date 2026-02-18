@@ -208,8 +208,8 @@ later(function()
   -- plug("hlchunk")
 
   -- Trailing cursor
-  add({ source = "sphamba/smear-cursor.nvim" })
-  plug("smear-cursor")
+  -- add({ source = "sphamba/smear-cursor.nvim" })
+  -- plug("smear-cursor")
 
   -- Animated highlights
   add({ source = "rachartier/tiny-glimmer.nvim" })
