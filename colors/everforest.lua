@@ -374,7 +374,7 @@ local highlights = {
   TSTypeQualifier = { link = "Orange" },
   TSURI = { fg = palette.blue, bg = palette.none, underline = true },
   TSVariable = { link = "Fg" },
-  TSVariableBuiltin = { link = "Purple" },
+  TSVariableBuiltin = { link = "Magenta" },
 
   javascriptTSInclude = { link = "Magenta" },
   typescriptTSInclude = { link = "Magenta" },
