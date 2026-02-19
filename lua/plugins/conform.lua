@@ -22,17 +22,20 @@ conform.formatters_by_ft.lua = { "stylua" }
 conform.formatters_by_ft.go = { "gofmt" }
 
 -- Prettier --------------------------------------------------------------------
+local prettier_args = {
+  "--trailing-comma=es5",
+  "--tab-width=2",
+  "--single-quote=false",
+  "--prose-wrap=preserve",
+  "--print-width=120",
+  "--single-attribute-per-line",
+}
 conform.formatters.prettierd = {
-  prepend_args = {
-    "--trailing-comma=es5",
-    "--tab-width=2",
-    "--single-quote=false",
-    "--prose-wrap=preserve",
-    "--print-width=120",
-    "--single-attribute-per-line",
-    -- "--config-precedence",
-    -- "prefer-file",
-  },
+  prepend_args = prettier_args,
+}
+
+conform.formatters.prettier = {
+  prepend_args = prettier_args,
 }
 
 local prettier_filetypes = {
