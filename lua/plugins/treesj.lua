@@ -41,5 +41,5 @@ local split_join_toggle = function()
   treesj.toggle()
 end
 
-vim.keymap.set({ "n" }, "J", split_join_toggle, { desc = "Split/Join" })
+vim.keymap.set({ "n" }, "J", treesj.toggle, { desc = "Split/Join" })
 vim.keymap.set({ "x" }, "J", treesj.toggle, { desc = "Split/Join" })
