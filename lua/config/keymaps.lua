@@ -43,6 +43,15 @@ vim.keymap.set("n", ">", ">>",  { desc = "Indent line to right",  silent = true 
 
 vim.keymap.set("n", "U", "<c-r>", { desc = "Redo", silent = true })
 
+vim.keymap.set("n", "dd", function()
+  if vim.fn.getline("."):match("^%s*$") then return '"_dd' end
+  return "dd"
+end, { expr = true })
+
+vim.keymap.set("n", "yy", function()
+  if vim.fn.getline(".") ~= "" then vim.cmd("normal! yy") end
+end, { noremap = true, silent = true })
+
 -- Put this into keymaps.lua
 vim.keymap.set("n", "<C-r>", function()
   package.loaded["modules.indent"] = nil
