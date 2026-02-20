@@ -22,8 +22,6 @@ vim.g.rainbow_delimiters = {
 local color_schemes = {
   everforest = { "Red", "Yellow", "Green", "Blue", "Orange", "Violet", "Cyan" },
   gruvbox = { "Violet", "Blue", "Cyan", "Green", "Yellow", "Orange", "Red" },
-  vscode = { "Yellow", "Violet", "Blue", "Orange", "Green", "Red", "Cyan" },
-  panda = { "Yellow", "Violet", "Blue", "Orange", "Green", "Red", "Cyan" },
   sonokai = { "Yellow", "Violet", "Blue", "Orange", "Green", "Red", "Cyan" },
 }
 
