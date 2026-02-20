@@ -74,9 +74,9 @@ local palette = vim.o.background == "light" and light or dark
 local highlights = {
   -- INFO: Common Highlight Groups
   -- stylua: ignore start
-  Normal   = { fg = palette.fg, bg = palette.bg0 },
-  NormalNC = { fg = palette.fg, bg = palette.bg0 },
-  Terminal = { fg = palette.fg, bg = palette.bg0 },
+  Normal   = { fg = palette.fg,    bg = palette.bg0 },
+  NormalNC = { fg = palette.fg,    bg = palette.bg0 },
+  Terminal = { fg = palette.white, bg = palette.bg0 },
   -- stylua: ignore end
 
   -- stylua: ignore start
