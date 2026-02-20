@@ -4,9 +4,15 @@ trailspace.setup({
   only_in_normal_buffers = true,
 })
 
+-- #############################################################################
+-- #                            Automatic Commands                             #
+-- #############################################################################
+
+local au_group = vim.api.nvim_create_augroup("mini_trailspace", { clear = true })
+
 vim.api.nvim_create_autocmd("BufWritePre", {
-  group = vim.api.nvim_create_augroup("mini_trailspace_trim_on_save", { clear = true }),
   pattern = "*",
+  group = au_group,
   callback = function()
     trailspace.trim()
   end,

@@ -13,10 +13,20 @@ map.setup({
   },
 })
 
+-- #############################################################################
+-- #                                  Keymaps                                  #
+-- #############################################################################
+
 vim.keymap.set("n", "<leader>em", map.toggle, { desc = "Map" })
 
--- vim.api.nvim_create_autocmd("BufEnter", {
---   group = vim.api.nvim_create_augroup("mini_map", { clear = true }),
---   desc = "Auto open mini map",
---   callback = map.open,
--- })
+-- #############################################################################
+-- #                            Automatic Commands                             #
+-- #############################################################################
+
+local au_group = vim.api.nvim_create_augroup("mini_map", { clear = true })
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = au_group,
+  desc = "Auto open mini map",
+  callback = map.open,
+})

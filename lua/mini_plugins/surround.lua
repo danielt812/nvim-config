@@ -17,7 +17,7 @@ surround.setup({
   n_lines = 100,
 
   -- Whether to respect selection type:
-  -- - Place surroundings on separate lines in linewise mode.
-  -- - Place surroundings on each line in blockwise mode.
+  -- Place surroundings on separate lines in linewise mode.
+  -- Place surroundings on each line in blockwise mode.
   respect_selection_type = false,
 })

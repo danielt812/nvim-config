@@ -10,6 +10,10 @@ jump2d.setup({
   },
 })
 
+-- #############################################################################
+-- #                                  Keymaps                                  #
+-- #############################################################################
+
 local jump = function()
   local builtin = jump2d.builtin_opts.word_start
   builtin.view = { n_steps_ahead = 10 }

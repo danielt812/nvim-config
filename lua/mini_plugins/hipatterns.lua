@@ -167,13 +167,22 @@ hipatterns.setup({
   highlighters = highlighters,
 })
 
-vim.api.nvim_create_autocmd("ColorScheme", {
-  group = vim.api.nvim_create_augroup("mini_hipatterns", { clear = true }),
-  desc = "Create custom highlight groups",
-  callback = apply_hipattern_groups,
-})
+-- #############################################################################
+-- #                                  Keymaps                                  #
+-- #############################################################################
 
--- stylua: ignore
 local toggle_hipatterns = function() vim.b.minihipatterns_disable = not vim.b.minihipatterns_disable end
 
 vim.keymap.set("n", "<leader>eh", toggle_hipatterns, { desc = "Hipatterns" })
+
+-- #############################################################################
+-- #                            Automatic Commands                             #
+-- #############################################################################
+
+local au_group = vim.api.nvim_create_augroup("mini_hipatterns", { clear = true })
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  group = au_group,
+  desc = "Create custom highlight groups",
+  callback = apply_hipattern_groups,
+})

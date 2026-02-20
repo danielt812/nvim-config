@@ -34,7 +34,10 @@ starter.setup({
   footer = nvim_version,
 })
 
--- stylua: ignore
+-- #############################################################################
+-- #                                  Keymaps                                  #
+-- #############################################################################
+
 local open = function() starter.open() end
 
 vim.keymap.set("n", "<leader>e;", open, { desc = "Starter" })

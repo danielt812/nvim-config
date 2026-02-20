@@ -3,9 +3,7 @@ local icons = require("mini.icons")
 -- stylua: ignore start
 local test_icon = ""
 local js_table  = { glyph = test_icon, hl = "MiniIconsYellow" }
-local jsx_table = { glyph = test_icon, hl = "MiniIconsAzure" }
 local ts_table  = { glyph = test_icon, hl = "MiniIconsAzure" }
-local tsx_table = { glyph = test_icon, hl = "MiniIconsBlue" }
 -- stylua: ignore end
 
 icons.setup({
@@ -16,6 +14,7 @@ icons.setup({
     ["colors"]   = { glyph = "󱁽", hl = "MiniIconsAzure" },
     ["config"]   = { glyph = "󱁿", hl = "MiniIconsAzure" },
     ["icons"]    = { glyph = "󱞊", hl = "MiniIconsAzure" },
+    ["lsp"]      = { glyph = "󱁽", hl = "MiniIconsAzure" },
     ["schemas"]  = { glyph = "󱁿", hl = "MiniIconsAzure" },
     ["settings"] = { glyph = "󱁿", hl = "MiniIconsAzure" },
     ["utils"]    = { glyph = "󱧼", hl = "MiniIconsAzure" },
@@ -24,13 +23,13 @@ icons.setup({
   extension = {
     -- stylua: ignore start
     ["test.js"]  = js_table,
-    ["test.jsx"] = jsx_table,
+    ["test.jsx"] = js_table,
     ["test.ts"]  = ts_table,
-    ["test.tsx"] = tsx_table,
+    ["test.tsx"] = ts_table,
     ["spec.js"]  = js_table,
-    ["spec.jsx"] = jsx_table,
+    ["spec.jsx"] = js_table,
     ["spec.ts"]  = ts_table,
-    ["spec.tsx"] = tsx_table,
+    ["spec.tsx"] = ts_table,
     -- stylua: ignore end
   },
   file = {

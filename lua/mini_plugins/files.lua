@@ -27,32 +27,39 @@ files.setup({
   },
 })
 
+
+-- #############################################################################
+-- #                                  Keymaps                                  #
+-- #############################################################################
+
+local open_current = function() files.open(vim.api.nvim_buf_get_name(0)) end
+
+vim.keymap.set("n", "<leader>ef", open_current, { desc = "Files" })
+
+-- #############################################################################
+-- #                            Automatic Commands                             #
+-- #############################################################################
+
 local show_dotfiles = true
 
 local toggle_dotfiles = function()
   show_dotfiles = not show_dotfiles
 
   local filter = function(fs_entry)
-    if show_dotfiles then
-      return true
-    end
+    if show_dotfiles then return true end
     return not vim.startswith(fs_entry.name, ".")
   end
 
   files.refresh({ content = { filter = filter } })
 end
 
-local open_current = function()
-  files.open(vim.api.nvim_buf_get_name(0))
-end
+local au_group = vim.api.nvim_create_augroup("mini_files", { clear = true })
 
 vim.api.nvim_create_autocmd("User", {
-  group = vim.api.nvim_create_augroup("mini_files", { clear = true }),
   pattern = "MiniFilesBufferCreate",
+  group = au_group,
   callback = function(args)
     local buf_id = args.data.buf_id
     vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = buf_id })
   end,
 })
-
-vim.keymap.set("n", "<leader>ef", open_current, { desc = "Files" })

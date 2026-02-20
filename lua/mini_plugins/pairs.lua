@@ -23,7 +23,31 @@ pairs.setup({
   },
 })
 
--- stylua: ignore
+-- #############################################################################
+-- #                                  Keymaps                                  #
+-- #############################################################################
+
 local toggle_pairs = function() vim.b.minipairs_disable = not vim.b.minipairs_disable end
 
 vim.keymap.set("n", "<leader>ep", toggle_pairs, { desc = "Pairs" })
+
+-- #############################################################################
+-- #                            Automatic commands                             #
+-- #############################################################################
+
+local au_group = vim.api.nvim_create_augroup("mini_pairs", { clear = true })
+
+vim.api.nvim_create_autocmd("CmdlineEnter", {
+  group = au_group,
+  desc = "Disable minipairs in search",
+  callback = function()
+    local cmdtype = vim.fn.getcmdtype()
+    if cmdtype == "/" or cmdtype == "?" then vim.g.minipairs_disable = true end
+  end,
+})
+
+vim.api.nvim_create_autocmd("CmdlineLeave", {
+  group = au_group,
+  desc = "Restore minipairs state",
+  callback = function() vim.g.minipairs_disable = false end,
+})

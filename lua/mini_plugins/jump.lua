@@ -15,10 +15,12 @@ jump.setup({
   silent = false,
 })
 
+-- #############################################################################
+-- #                                  Keymaps                                  #
+-- #############################################################################
+
 local jump_stop = function()
-  if not jump.state.jumping then
-    return "<esc>"
-  end
+  if not jump.state.jumping then return "<esc>" end
   jump.stop_jumping()
 end
 

@@ -15,6 +15,10 @@ pick.setup({
   },
 })
 
+-- #############################################################################
+-- #                                  Keymaps                                  #
+-- #############################################################################
+
 local pick_colorschemes = function()
   local config = vim.fn.stdpath("config")
   local names = vim.tbl_filter(function(name)
@@ -31,15 +35,15 @@ local pick_colorschemes = function()
 end
 
 -- NOTE: Only filter my colorschemes
-vim.keymap.set("n", "<leader>fc", pick_colorschemes, { desc = "Colorschemes" })
 
 -- stylua: ignore start
-vim.keymap.set("n", "<leader>fe", "<cmd>Pick explorer<cr>",     { desc = "Explorer" })
-vim.keymap.set("n", "<leader>ff", "<cmd>Pick files<cr>",        { desc = "Files" })
-vim.keymap.set("n", "<leader>fg", "<cmd>Pick grep_live<cr>",    { desc = "Livegrep" })
-vim.keymap.set("n", "<leader>fh", "<cmd>Pick help<cr>",         { desc = "Help" })
-vim.keymap.set("n", "<leader>fi", "<cmd>Pick hl_groups<cr>",    { desc = "Highlights" })
-vim.keymap.set("n", "<leader>fk", "<cmd>Pick keymaps<cr>",      { desc = "Keymaps" })
-vim.keymap.set("n", "<leader>fl", "<cmd>Pick buf_lines<cr>",    { desc = "Lines" })
-vim.keymap.set("n", "<leader>fm", "<cmd>Pick marks<cr>",        { desc = "Marks" })
+vim.keymap.set("n", "<leader>fc", pick_colorschemes,         { desc = "Colorschemes" })
+vim.keymap.set("n", "<leader>fe", "<cmd>Pick explorer<cr>",  { desc = "Explorer" })
+vim.keymap.set("n", "<leader>ff", "<cmd>Pick files<cr>",     { desc = "Files" })
+vim.keymap.set("n", "<leader>fg", "<cmd>Pick grep_live<cr>", { desc = "Livegrep" })
+vim.keymap.set("n", "<leader>fh", "<cmd>Pick help<cr>",      { desc = "Help" })
+vim.keymap.set("n", "<leader>fi", "<cmd>Pick hl_groups<cr>", { desc = "Highlights" })
+vim.keymap.set("n", "<leader>fk", "<cmd>Pick keymaps<cr>",   { desc = "Keymaps" })
+vim.keymap.set("n", "<leader>fl", "<cmd>Pick buf_lines<cr>", { desc = "Lines" })
+vim.keymap.set("n", "<leader>fm", "<cmd>Pick marks<cr>",     { desc = "Marks" })
 -- stylua: ignore end

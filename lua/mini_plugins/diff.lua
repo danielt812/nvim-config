@@ -29,16 +29,20 @@ diff.setup({
   },
 })
 
+-- #############################################################################
+-- #                            Automatic Commands                             #
+-- #############################################################################
+
+local au_group = vim.api.nvim_create_augroup("mini_diff", { clear = true })
+
 vim.api.nvim_create_autocmd("User", {
-  group = vim.api.nvim_create_augroup("minidiff_summary", { clear = true }),
   pattern = "MiniDiffUpdated",
+  group = au_group,
   desc = "Format Mini Diff summary string with colors for statusline",
   callback = function(data)
     local summary = vim.b[data.buf] and vim.b[data.buf].minidiff_summary
 
-    if type(summary) ~= "table" then
-      return
-    end
+    if type(summary) ~= "table" then return end
 
     local symbols = {
       add = "%#MiniStatuslineDiffAdd#",
@@ -46,13 +50,13 @@ vim.api.nvim_create_autocmd("User", {
       delete = "%#MiniStatuslineDiffDelete#",
     }
 
-    local t = {}
+    local diffs = {}
     local has_diff = false
 
     for key, icon in pairs(symbols) do
       local count = summary[key]
       if type(count) == "number" and count > 0 then
-        table.insert(t, icon .. "%#MiniStatuslineDevinfo#" .. " " .. count)
+        table.insert(diffs, icon .. "%#MiniStatuslineDevinfo#" .. " " .. count)
         has_diff = true
       end
     end
@@ -62,9 +66,6 @@ vim.api.nvim_create_autocmd("User", {
       return
     end
 
-    -- Reset highlight after diff summary
-    -- table.insert(t, "%*")
-
-    vim.b[data.buf].minidiff_summary_string = table.concat(t, " ")
+    vim.b[data.buf].minidiff_summary_string = table.concat(diffs, " ")
   end,
 })

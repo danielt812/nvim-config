@@ -7,7 +7,7 @@ comment.setup({
     textobject = "gc",
   },
   options = {
-    ignore_blank_line = false,
+    ignore_blank_line = true,
     pad_comment = false,
     custom_commentstring = function()
       local ok, ts_context_commentstring = pcall(require, "ts_context_commentstring.internal")
@@ -23,4 +23,3 @@ comment.setup({
     fallback = "# %s",
   },
 })
-
