@@ -19,8 +19,6 @@ local special_comments = function(context)
   --stylua: ignore
   return {
     {
-      { prefix = "fixme", body = wrap("FIXME: ${0:describe the bug or needed fix}"),  desc = "Create a fixme comment" },
-      { prefix = "hack",  body = wrap("HACK: ${0:temporary workaround or solution}"), desc = "Create a hack comment" },
       { prefix = "info",  body = wrap("INFO: ${0:relevant context or metadata}"),     desc = "Create a info comment" },
       { prefix = "note",  body = wrap("NOTE: ${0:important detail}"),                 desc = "Create a note comment" },
       { prefix = "todo",  body = wrap("TODO: ${0:describe the task or goal}"),        desc = "Create a todo comment" },
