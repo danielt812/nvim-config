@@ -1,6 +1,10 @@
 local multicursor = require("multicursor-nvim")
 multicursor.setup()
 
+-- VM-like “add cursor by line”
+vim.keymap.set({ "n", "x" }, "<Down>", function() multicursor.lineAddCursor(1) end)
+vim.keymap.set({ "n", "x" }, "<Up>",   function() multicursor.lineAddCursor(-1) end)
+
 -- VM-like “match next/prev”
 vim.keymap.set({ "n", "x" }, "<C-n>", function() multicursor.matchAddCursor(1) end)
 vim.keymap.set({ "n", "x" }, "<C-p>", function() multicursor.matchAddCursor(-1) end)
