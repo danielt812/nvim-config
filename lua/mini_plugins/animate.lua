@@ -13,6 +13,7 @@ animate.setup({
         local delta_line = math.abs(args[1] or 0)
         local delta_col = math.abs(args[2] or 0)
         if delta_line == 1 and delta_col == 0 then return false end
+        if delta_col == 1 and delta_line == 0 then return false end
         return true
       end,
     }),
