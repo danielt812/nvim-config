@@ -24,14 +24,12 @@ ModBoxes.config = {
 
   box = {
     char = "#",
-    alt = "*",
     justify = "center",
     width = 80,
   },
 
   line = {
     char = "-",
-    alt = "",
     justify = "left",
     width = 80,
   },
@@ -50,13 +48,11 @@ H.setup_config = function(config)
 
   H.check_type("box", config.box, "table")
   H.check_type("box.char", config.box.char, "string")
-  H.check_type("box.alt", config.box.alt, "string")
   H.check_type("box.justify", config.box.justify, "string")
   H.check_type("box.width", config.box.width, "number")
 
   H.check_type("line", config.line, "table")
   H.check_type("line.char", config.line.char, "string")
-  H.check_type("line.alt", config.line.alt, "string")
   H.check_type("line.justify", config.line.justify, "string")
   H.check_type("line.width", config.line.width, "number")
 
@@ -132,23 +128,13 @@ H.compute_body_width = function(total_width, prefix, suffix)
   return inner
 end
 
-H.pick_char = function(primary, alt)
-  local cs = vim.bo.commentstring or ""
-  if primary ~= "" and cs:find(primary, 1, true) then
-    if type(alt) == "string" and alt ~= "" then return alt end
-  end
-  return primary
-end
-
-H.detect_line_char = function(text, primary, alt)
-  if primary and primary ~= "" and H.is_ascii_line(text, primary) then return primary end
-  if alt and alt ~= "" and H.is_ascii_line(text, alt) then return alt end
+H.detect_line_char = function(text, char)
+  if char and char ~= "" and H.is_ascii_line(text, char) then return char end
   return nil
 end
 
-H.detect_box_char = function(lines3, prefix, suffix, primary, alt)
-  if primary and primary ~= "" and H.is_box_lines(lines3, prefix, suffix, primary) then return primary end
-  if alt and alt ~= "" and H.is_box_lines(lines3, prefix, suffix, alt) then return alt end
+H.detect_box_char = function(lines3, prefix, suffix, char)
+  if char and char ~= "" and H.is_box_lines(lines3, prefix, suffix, char) then return char end
   return nil
 end
 
@@ -288,21 +274,20 @@ ModBoxes.toggle_line = function(width, char, justify)
   justify = justify or config.line.justify
   width = width or config.line.width
 
-  local primary = config.line.char
-  local alt = config.line.alt
+  local char_config = config.line.char
 
   local prefix, suffix, text = H.get_subject()
   if not text or text == "" then return end
 
-  -- Toggle off (match either primary or alt)
-  local used = H.detect_line_char(text, primary, alt)
+  -- Toggle off
+  local used = H.detect_line_char(text, char_config)
   if used then
     vim.api.nvim_set_current_line(H.unwrap_line(prefix, text, suffix, used))
     return
   end
 
-  -- Toggle on (choose char based on commentstring unless caller passed one)
-  char = char or H.pick_char(primary, alt)
+  -- Toggle on (unless caller passed one)
+  char = char or char_config
   H.check_one_byte("char", char)
 
   local inner_width = H.compute_inner_width(width, prefix, suffix)
@@ -339,15 +324,14 @@ ModBoxes.toggle_box = function(width, char, justify)
     return (indent .. cs_left):gsub("%s+$", ""), cs_right:gsub("^%s+", "")
   end)()
 
-  -- Toggle off: if cursor is on any line of a 3-line box (primary or alt)
-  local primary = config.box.char
-  local alt = config.box.alt
+  -- Toggle off: if cursor is on any line of a 3-line box
+  local char_config = config.box.char
 
   -- Try the 3 possible starts for a 3-line box that could include `row`
   for start = row - 2, row do
     if start >= 0 then
       local lines3 = vim.api.nvim_buf_get_lines(buf, start, start + 3, false)
-      local used = H.detect_box_char(lines3, prefix, suffix, primary, alt)
+      local used = H.detect_box_char(lines3, prefix, suffix, char_config)
 
       if used then
         local unboxed = H.unwrap_box_to_line(lines3, prefix, suffix, used)
@@ -361,7 +345,7 @@ ModBoxes.toggle_box = function(width, char, justify)
   end
 
   -- Toggle on: works for commented and non-commented
-  char = char or H.pick_char(primary, alt)
+  char = char or char_config
   H.check_one_byte("char", char)
 
   local pfx, sfx, text = H.get_subject()
