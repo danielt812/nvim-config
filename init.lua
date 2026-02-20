@@ -271,17 +271,3 @@ later(function()
   mod("marks")
   mod("indent")
 end)
-
--- Co-pilot --------------------------------------------------------------------
-later(function()
-  add({
-    source = "CopilotC-Nvim/CopilotChat.nvim",
-    depends = {
-      "zbirenbaum/copilot.lua",
-    },
-    hooks = {
-      post_install = function(spec) vim.fn.system({ "make", "tiktoken" }, spec.path) end,
-    },
-  })
-  plug("copilot-chat")
-end)
