@@ -84,12 +84,11 @@ end
 -- stylua: ignore start
 vim.keymap.set({ "n", "t" }, "<C-t>", "<cmd>lua terminal_float()<cr>", { desc = "Float" })
 vim.keymap.set({ "n", "t" }, "<C-g>", "<cmd>lua lazygit()<cr>",        { desc = "Lazygit" })
-vim.keymap.set({ "n", "t" }, "<C-e>", "<cmd>lua delta()<cr>",          { desc = "Delta" })
 -- stylua: ignore end
 
 -- stylua: ignore start
-vim.keymap.set("n",  "<leader>gg", "<cmd>lua lazygit()<cr>",             { desc = "Lazygit" })
--- vim.keymap.set("n",  "<leader>tv", "<cmd>lua terminal_vertical()<cr>",   { desc = "Vertical" })
--- vim.keymap.set("n",  "<leader>th", "<cmd>lua terminal_horizontal()<cr>", { desc = "Horizontal" })
--- vim.keymap.set("n",  "<leader>tf", "<cmd>lua terminal_float()<cr>",      { desc = "Float" })
+vim.keymap.set("n", "<leader>gd", "<cmd>lua delta()<cr>",               { desc = "Delta" })
+vim.keymap.set("n", "<leader>gg", "<cmd>lua lazygit()<cr>",             { desc = "Lazygit" })
+vim.keymap.set("n", "<leader>t|", "<cmd>lua terminal_vertical()<cr>",   { desc = "Vertical" })
+vim.keymap.set("n", "<leader>t-", "<cmd>lua terminal_horizontal()<cr>", { desc = "Horizontal" })
 -- stylua: ignore end
