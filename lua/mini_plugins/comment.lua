@@ -7,7 +7,7 @@ comment.setup({
     textobject = "gc",
   },
   options = {
-    ignore_blank_line = true,
+    ignore_blank_line = false,
     pad_comment = false,
     custom_commentstring = function()
       local ok, ts_context_commentstring = pcall(require, "ts_context_commentstring.internal")
