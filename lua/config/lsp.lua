@@ -1,25 +1,18 @@
 local completion = require("mini.completion")
 
 -- Shared capabilities
-local capabilities = vim.tbl_deep_extend(
-  "force",
-  vim.lsp.protocol.make_client_capabilities(),
-  completion.get_lsp_capabilities(),
-  {
+local capabilities =
+  vim.tbl_deep_extend("force", vim.lsp.protocol.make_client_capabilities(), completion.get_lsp_capabilities(), {
     textDocument = {
       foldingRange = {
         dynamicRegistration = false,
         lineFoldingOnly = true,
       },
     },
-  }
-)
+  })
 
 -- Shared on_attach
 local on_attach = function(client, bufnr)
-  -- Prefer treesitter highlighting
-  if client.server_capabilities.semanticTokensProvider then client.server_capabilities.semanticTokensProvider = nil end
-
   local map = function(mode, lhs, rhs, key_opts)
     key_opts = key_opts or {}
     key_opts.silent = key_opts.silent ~= false
@@ -100,10 +93,24 @@ end
 -- Enable them all
 vim.lsp.enable(servers)
 
-vim.api.nvim_create_user_command("LspInfo", function() vim.cmd("checkhealth lsp") end, {})
+local lsp_health = function() vim.cmd("checkhealth lsp") end
+local lsp_log = function() vim.cmd("edit " .. vim.lsp.get_log_path()) end
 
-vim.api.nvim_create_user_command(
-  "LspLog",
-  function() vim.cmd("edit " .. vim.lsp.get_log_path()) end,
-  { desc = "Open Neovim LSP log file" }
-)
+vim.api.nvim_create_user_command("LspInfo", lsp_health, { desc = "Lsp checkhealth"})
+vim.api.nvim_create_user_command("LspLog", lsp_log, { desc = "Lsp log" })
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = { "*" },
+  group = vim.api.nvim_create_augroup("semantic_highlights", { clear = true }),
+  desc = "Clear some semantic highlighting",
+  callback = function()
+    -- :h lsp-semantic-highlight
+    -- Hide semantic highlights for functions
+    vim.api.nvim_set_hl(0, "@lsp.type.variable", {})
+
+    -- Hide all semantic highlights
+    -- for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
+    --   vim.api.nvim_set_hl(0, group, {})
+    -- end
+  end,
+})
