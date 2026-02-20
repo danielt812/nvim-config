@@ -17,7 +17,7 @@ local apply_hipattern_groups = function()
     vim.api.nvim_set_hl(0, prefix .. word, { fg = "#000000", bg = hex })
     vim.api.nvim_set_hl(0, prefix .. word .. "Mask", { fg = hex, bg = hex })
   end
-  vim.api.nvim_set_hl(0, prefix .. "Link", { fg = "#8be9fd" })
+  vim.api.nvim_set_hl(0, prefix .. "Link", { fg = "#8be9fd", underline = true })
 end
 
 local in_comment = function(base, suffix)
