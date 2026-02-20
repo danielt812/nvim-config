@@ -70,7 +70,10 @@ H.set_diagnostics_loc = function()
   end
 end
 
--- Commands --------------------------------------------------------------------
+-- #############################################################################
+-- #                                 Commands                                  #
+-- #############################################################################
+
 vim.api.nvim_create_user_command("Grep", function(opts) H.grep(opts, false) end, {
   nargs = "+",
   desc = "ripgrep -> quickfix (safe, supports flags, respects ripgrep.conf)",
@@ -81,13 +84,16 @@ vim.api.nvim_create_user_command("LGrep", function(opts) H.grep(opts, true) end,
   desc = "ripgrep -> loclist (safe, supports flags, respects ripgrep.conf)",
 })
 
--- Keymaps ---------------------------------------------------------------------
+-- #############################################################################
+-- #                                  Keymaps                                  #
+-- #############################################################################
+
 -- stylua: ignore start
 vim.keymap.set("n", "<leader>qd", H.set_diagnostics_qf,  { desc = "Diagnostics (QF)" })
 vim.keymap.set("n", "<leader>qD", H.set_diagnostics_loc, { desc = "Diagnostics (Loc)" })
 
 vim.keymap.set("n", "<leader>qq", H.toggle_qf,           { desc = "Quickfix" })
-vim.keymap.set("n", "<leader>ql", H.toggle_loc,          { desc = "Loclist" })
+vim.keymap.set("n", "<leader>qQ", H.toggle_loc,          { desc = "Loclist" })
 
 vim.keymap.set("n", "<leader>qc", H.clear_qf,            { desc = "Quickfix clear" })
 vim.keymap.set("n", "<leader>qC", H.clear_loc,           { desc = "Loclist clear" })
