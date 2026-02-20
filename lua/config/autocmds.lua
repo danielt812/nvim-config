@@ -1,4 +1,5 @@
 vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = { "*" },
   group = vim.api.nvim_create_augroup("comment_new_line", { clear = true }),
   desc = "No comment on new line",
   -- stylua: ignore
@@ -8,9 +9,9 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "help", "man" },
   group = vim.api.nvim_create_augroup("open_help_vs", { clear = true }),
   desc = "Open help files in vertical split",
-  pattern = { "help", "man" },
   callback = function()
     -- stylua: ignore
     vim.schedule(function()
@@ -20,9 +21,9 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("BufReadPost", {
+  pattern = { "*.cfml", "*.inc" },
   group = vim.api.nvim_create_augroup("coldfusion_filetype", { clear = true }),
   desc = "Set coldfusion filetype",
-  pattern = { "*.cfml", "*.inc" },
   -- stylua: ignore
   callback = function()
     vim.cmd("set filetype=cf")
@@ -30,9 +31,9 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 vim.api.nvim_create_autocmd("BufReadPost", {
+  pattern = { "*.env*" },
   group = vim.api.nvim_create_augroup("env_filetype", { clear = true }),
   desc = "Set env filetype",
-  pattern = { "*.env*" },
   -- stylua: ignore
   callback = function()
     vim.cmd("set filetype=sh")
@@ -40,6 +41,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 vim.api.nvim_create_autocmd("VimResized", {
+  pattern = { "*" },
   group = vim.api.nvim_create_augroup("resize_window", { clear = true }),
   desc = "Resize windows evenly on screen resize",
   -- stylua: ignore
@@ -49,6 +51,7 @@ vim.api.nvim_create_autocmd("VimResized", {
 })
 
 vim.api.nvim_create_autocmd("QuitPre", {
+  pattern = { "*" },
   group = vim.api.nvim_create_augroup("auto_close_windows_on_quit", { clear = true }),
   desc = "Auto close plugin windows on quit",
   callback = function()
@@ -61,6 +64,7 @@ vim.api.nvim_create_autocmd("QuitPre", {
 })
 
 vim.api.nvim_create_autocmd("BufReadPre", {
+  pattern = { "*" },
   group = vim.api.nvim_create_augroup("defer_treesitter", { clear = true }),
   desc = "Defer treesitter on large files",
   callback = function(args)
@@ -78,4 +82,3 @@ vim.api.nvim_create_autocmd("BufReadPre", {
     end
   end,
 })
-
