@@ -137,11 +137,8 @@ later(function()
   add({ source = "MunifTanjim/nui.nvim" })
 end)
 
--- Autopair/Autotag ------------------------------------------------------------
+-- Autotag ------------------------------------------------------------
 later(function()
-  -- add({ source = "windwp/nvim-autopairs" })
-  -- plug("autopairs")
-
   add({ source = "windwp/nvim-ts-autotag" })
   plug("autotag")
 end)
@@ -203,14 +200,6 @@ end)
 
 -- UI --------------------------------------------------------------------------
 later(function()
-  -- Indentation
-  -- add({ source = "shellRaining/hlchunk.nvim" })
-  -- plug("hlchunk")
-
-  -- Trailing cursor
-  -- add({ source = "sphamba/smear-cursor.nvim" })
-  -- plug("smear-cursor")
-
   -- Animated highlights
   add({ source = "rachartier/tiny-glimmer.nvim" })
   plug("tiny-glimmer")
