@@ -9,19 +9,19 @@ local header = table.concat({
 }, "\n")
 
 local v = vim.version()
-local nvim_version = string.format("Version %d.%d.%d", v.major, v.minor, v.patch)
+local nvim_version = string.format("v%d.%d.%d", v.major, v.minor, v.patch)
 
 starter.setup({
   evaluate_single = true,
   header = header,
   items = {
-      -- stylua: ignore start
-      { name = "Files",    action  = "Pick files",           section = "Actions" },
-      { name = "Grep",     action  = "Pick grep_live",       section = "Actions" },
-      { name = "Explorer", action  = "lua MiniFiles.open()", section = "Actions" },
-      { name = "Mason",    action  = "Mason",                section = "Actions" },
-      { name = "Visited",  action  = "Pick visit_paths",     section = "Actions" },
-      { name = "Quit",     action  = "qa!",                  section = "Actions" },
+    -- stylua: ignore start
+    { name = "Files",    action  = "Pick files",           section = "Actions" },
+    { name = "Grep",     action  = "Pick grep_live",       section = "Actions" },
+    { name = "Explorer", action  = "lua MiniFiles.open()", section = "Actions" },
+    { name = "Mason",    action  = "Mason",                section = "Actions" },
+    { name = "Visited",  action  = "Pick visit_paths",     section = "Actions" },
+    { name = "Quit",     action  = "qa!",                  section = "Actions" },
     --stylua: ignore end
     starter.sections.recent_files(5, true, false),
     starter.sections.sessions(5, true),
