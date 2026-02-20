@@ -335,7 +335,6 @@ local highlights = {
   Delimiter = { fg = palette.fg },
   Ignore    = { fg = palette.grey1 },
   -- stylua: ignore end
-  Underlined = { underline = true },
 
   -- INFO: Predefined Highlight Groups
   -- stylua: ignore start

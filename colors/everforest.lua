@@ -335,7 +335,6 @@ local highlights = {
   Delimiter = { fg = palette.fg },
   Ignore    = { fg = palette.grey1 },
   -- stylua: ignore end
-  Underlined = { underline = true },
 
   -- INFO: Predefined Highlight Groups
   -- stylua: ignore start
@@ -466,7 +465,7 @@ local highlights = {
   TSNone                 = { link = "Fg" },
   TSNumber               = { link = "Purple" },
   TSOperator             = { link = "Orange" },
-  TSParameter            = { link = "Fg" },
+  TSParameter            = { link = "Green" },
   TSParameterReference   = { link = "Fg" },
   TSPreProc              = { link = "PreProc" },
   TSProperty             = { link = "Blue" },
