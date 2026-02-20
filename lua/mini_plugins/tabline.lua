@@ -27,3 +27,11 @@ tabline.setup({
 })
 
 vim.keymap.set("n", "<leader>bp", buf_utils.toggle, { desc = "Pin/Unpin" })
+
+for i = 1, 9 do
+  vim.keymap.set("n", "<leader>b" .. i, function()
+    local bufs = vim.fn.getbufinfo({ buflisted = 1 })
+    table.sort(bufs, function(a, b) return a.bufnr < b.bufnr end)
+    if bufs[i] then vim.api.nvim_set_current_buf(bufs[i].bufnr) end
+  end, { desc = "Goto " .. i })
+end
