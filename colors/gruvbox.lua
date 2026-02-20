@@ -783,8 +783,9 @@ local highlights = {
   MiniIndentscopeSymbolOff = { link = "Red" },
   -- stylua: ignore end
 
+  MiniJump = { fg = palette.red, reverse = true },
+
   -- stylua: ignore start
-  MiniJump             = { link = "SpellRare" },
   MiniJump2dDim        = { link = "Comment" },
   MiniJump2dSpot       = { link = "Orange" },
   MiniJump2dSpotAhead  = { link = "Aqua" },
