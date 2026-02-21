@@ -191,6 +191,7 @@ later(function()
   })
 
   add({ source = "JoosepAlviste/nvim-ts-context-commentstring" })
+  add({ source = "folke/ts-comments.nvim" })
 
   plug("tree-sitter")
 
