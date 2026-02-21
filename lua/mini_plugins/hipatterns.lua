@@ -2,61 +2,70 @@ local hipatterns = require("mini.hipatterns")
 local ts_utils = require("utils.ts")
 
 local apply_hipattern_groups = function()
-  -- stylua: ignore
-  local colors = {
-    { "Info",  "#98c379" }, -- INFO:
-    { "Note",  "#3498db" }, -- NOTE:
-    { "Todo",  "#ff8c00" }, -- TODO:
-    { "Warn",  "#ff2d00" }, -- WARN:
-  }
   local prefix = "MiniHipatterns"
-  for _, pair in ipairs(colors) do
-    local word, hex = pair[1], pair[2]
-    vim.api.nvim_set_hl(0, prefix .. word, { fg = "#000000", bg = hex })
-    vim.api.nvim_set_hl(0, prefix .. word .. "Mask", { fg = hex, bg = hex })
+
+  -- Comment keywords
+  local comment_colors = {
+    Info = "#98c379", -- INFO:
+    Note = "#3498db", -- NOTE:
+    Perf = "#d699b6", -- PERF:
+    Todo = "#ff8c00", -- TODO:
+    Warn = "#ff2d00", -- WARN:
+  }
+
+  for name, hex in pairs(comment_colors) do
+    vim.api.nvim_set_hl(0, prefix .. name, { fg = "#000000", bg = hex, italic = true })
+    vim.api.nvim_set_hl(0, prefix .. name .. "Mask", { fg = hex, bg = hex, italic = true })
   end
+
+  -- General links https://www.google.com
   vim.api.nvim_set_hl(0, prefix .. "Link", { fg = "#8be9fd", underline = true })
+
+  -- Vendor links
+  -- stylua: ignore
+  local link_colors = {
+    Atlassian     = "#3266d4", -- https://atlassian.net/foo/bar
+    Azure         = "#0078d4", -- https://azure.com/foo/bar
+    Docker        = "#2496ed", -- https://docker.com/foo/bar
+    Github        = "#f2f5f3", -- https://github.com/foo/bar
+    Mdn           = "#54ffbd", -- https://developer.mozilla.org/foo/bar
+    Reddit        = "#ff4500", -- https://reddit.com/foo/bar
+    StackOverflow = "#f48024", -- https://stackoverflow.com/foo/bar
+  }
+
+  for name, hex in pairs(link_colors) do
+    vim.api.nvim_set_hl(0, prefix .. name, { fg = hex, underline = true })
+  end
+
+  -- Test markers
+  local test_colors = {
+    Pass = "#00ff00", -- PASS
+    Fail = "#ff0000", -- FAIL
+  }
+
+  for name, hex in pairs(test_colors) do
+    vim.api.nvim_set_hl(0, prefix .. name, { fg = hex, italic = true })
+  end
 end
 
 local function in_comment(base, suffix)
   suffix = suffix or ""
-  local name = "MiniHipatterns" .. base:sub(1, 1):upper() .. base:sub(2) .. suffix
+  local name = "MiniHipatterns" .. base:sub(1, 1) .. base:sub(2) .. suffix
   return ts_utils.if_capture("comment", name)
 end
 
+-- stylua: ignore
 local comments = {
-  info = {
-    pattern = "() ?INFO ?()",
-    group = in_comment("info"),
-  },
-  info_colon = {
-    pattern = "INFO()[:-]",
-    group = in_comment("info", "Mask"),
-  },
-  note = {
-    pattern = "() ?NOTE ?()",
-    group = in_comment("note"),
-  },
-  note_colon = {
-    pattern = "NOTE()[:-]",
-    group = in_comment("note", "Mask"),
-  },
-  todo = {
-    pattern = "() ?TODO ?()",
-    group = in_comment("todo"),
-  },
-  todo_colon = {
-    pattern = "TODO()[:-]",
-    group = in_comment("todo", "Mask"),
-  },
-  warn = {
-    pattern = "() ?WARN ?()",
-    group = in_comment("warn"),
-  },
-  warn_colon = {
-    pattern = "WARN()[:-]",
-    group = in_comment("warn", "Mask"),
-  },
+  info       = { pattern = "() ?INFO ?()", group = in_comment("INFO") },
+  info_colon = { pattern = "INFO()[:-]",   group = in_comment("INFO", "Mask") },
+  note       = { pattern = "() ?NOTE ?()", group = in_comment("NOTE") },
+  note_colon = { pattern = "NOTE()[:-]",   group = in_comment("NOTE", "Mask") },
+  perf       = { pattern = "() ?PERF ?()", group = in_comment("PERF") },
+  perf_colon = { pattern = "PERF()[:-]",   group = in_comment("PERF", "Mask") },
+  todo       = { pattern = "() ?TODO ?()", group = in_comment("TODO") },
+  todo_colon = { pattern = "TODO()[:-]",   group = in_comment("TODO", "Mask") },
+  warn       = { pattern = "() ?WARN ?()", group = in_comment("WARN") },
+  warn_colon = { pattern = "WARN()[:-]",   group = in_comment("WARN", "Mask") },
 }
 
 --- Return long hex color (#rrggbb)
@@ -117,48 +126,61 @@ local colors = {
   },
 }
 
+-- stylua: ignore
 local http = {
-  get = {
-    pattern = "%f[%a]GET%f[%A]",
-    group = "GreenItalic",
-  },
-  post = {
-    pattern = "%f[%a]POST%f[%A]",
-    group = "BlueItalic",
-  },
-  put = {
-    pattern = "%f[%a]PUT%f[%A]",
-    group = "OrangeItalic",
-  },
-  patch = {
-    pattern = "%f[%a]PATCH%f[%A]",
-    group = "PurpleItalic",
-  },
-  delete = {
-    pattern = "%f[%a]DELETE%f[%A]",
-    group = "RedItalic",
-  },
+  get    = { pattern = "%f[%a]GET%f[%A]",    group = "GreenItalic" },
+  post   = { pattern = "%f[%a]POST%f[%A]",   group = "BlueItalic" },
+  put    = { pattern = "%f[%a]PUT%f[%A]",    group = "OrangeItalic" },
+  patch  = { pattern = "%f[%a]PATCH%f[%A]",  group = "PurpleItalic" },
+  delete = { pattern = "%f[%a]DELETE%f[%A]", group = "RedItalic" },
 }
 
-local function in_string(name) return ts_utils.if_capture("string", name) end
+local test_extmark = function(symbol)
+  return function(_, _, data)
+    return {
+      hl_group = data.hl_group,
+      hl_mode = "combine",
+      end_col = data.to_col,
+      virt_text = { { symbol .. " ", data.hl_group } },
+      virt_text_pos = "inline",
+      right_gravity = false,
+    }
+  end
+end
 
-local extras = {
-  url = {
-    pattern = "https?://[%w-_%.%?%.:/%+=&]+",
-    group = in_comment("Link"),
-  },
-  quote = {
-    pattern = '"',
-    group = in_string("Grey"),
-  },
-  email = {
-    pattern = "[%w%.%-_]+@[%w%.%-_]+%.[%a]+",
-    group = in_comment("Underline"),
-  },
+local function link_extmark(icon)
+  return function(_, _, data)
+    return {
+      hl_group = data.hl_group,
+      hl_mode = "combine",
+      end_col = data.to_col,
+      virt_text = { { icon .. " ", data.hl_group } },
+      virt_text_pos = "inline",
+      right_gravity = false,
+    }
+  end
+end
+
+-- stylua: ignore
+local links = {
+  url           = { pattern = "https?://[%w%-%._~:/%?#%[%]@!$&'()*+,;=]+", group = in_comment("Link") },
+  atlassian     = { pattern = "https://[%w%-%._]*atlassian%.net[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",  group = in_comment("Atlassian"), extmark_opts = link_extmark("") },
+  azure         = { pattern = "https://[%w%-%._]*azure[%w%-%._]*[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*", group = in_comment("Azure"), extmark_opts = link_extmark("") },
+  docker        = { pattern = "https://[%w%-%._]*docker%.com[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",     group = in_comment("Docker"), extmark_opts = link_extmark("󰡨") },
+  github        = { pattern = "https://[%w%-%._]*github%.com[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",     group = in_comment("Github"), extmark_opts = link_extmark("󰊤") },
+  mdn           = { pattern = "https://[%w%-%._]*mozilla%.org[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",    group = in_comment("Mdn"), extmark_opts = link_extmark("󰖟") },
+  reddit        = { pattern = "https://[%w%-%._]*reddit%.com[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",     group = in_comment("Reddit"), extmark_opts = link_extmark("󰑍") },
+  stackoverflow = { pattern = "https://[%w%-%._]*stackoverflow%.com[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*", group = in_comment("StackOverflow"), extmark_opts = link_extmark("󰓌") },
+}
+
+local tests = {
+  pass = { pattern = "%f[%a]PASS%f[%A]", group = in_comment("Pass"), extmark_opts = test_extmark("✓") },
+  fail = { pattern = "%f[%a]FAIL%f[%A]", group = in_comment("Fail"), extmark_opts = test_extmark("✗") },
 }
 
 local highlighters = {}
-local highlight_tables = { comments, colors, http, extras }
+local highlight_tables = { colors, comments, http, links, tests }
+
 for _, tbl in ipairs(highlight_tables) do
   highlighters = vim.tbl_extend("force", tbl, highlighters)
 end
