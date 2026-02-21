@@ -24,13 +24,15 @@ local apply_hipattern_groups = function()
   -- Vendor links
   -- stylua: ignore
   local link_colors = {
+    Arch          = "#4591cb", -- https://archlinux.org/foo/bar
     Atlassian     = "#3266d4", -- https://atlassian.net/foo/bar
     Azure         = "#0078d4", -- https://azure.com/foo/bar
-    Docker        = "#2496ed", -- https://docker.com/foo/bar
+    Fedora        = "#65a0d6", -- https://fedoraproject.org/foo/bar
     Github        = "#f2f5f3", -- https://github.com/foo/bar
     Mdn           = "#54ffbd", -- https://developer.mozilla.org/foo/bar
     Reddit        = "#ff4500", -- https://reddit.com/foo/bar
-    StackOverflow = "#f48024", -- https://stackoverflow.com/foo/bar
+    Redhat        = "#da2f21", -- https://redhat.com/foo/bar
+    SO            = "#f48024", -- https://stackoverflow.com/foo/bar
   }
 
   for name, hex in pairs(link_colors) do
@@ -164,13 +166,15 @@ end
 -- stylua: ignore
 local links = {
   url           = { pattern = "https?://[%w%-%._~:/%?#%[%]@!$&'()*+,;=]+", group = in_comment("Link") },
-  atlassian     = { pattern = "https://[%w%-%._]*atlassian%.net[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",  group = in_comment("Atlassian"), extmark_opts = link_extmark("") },
-  azure         = { pattern = "https://[%w%-%._]*azure[%w%-%._]*[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*", group = in_comment("Azure"), extmark_opts = link_extmark("") },
-  docker        = { pattern = "https://[%w%-%._]*docker%.com[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",     group = in_comment("Docker"), extmark_opts = link_extmark("󰡨") },
-  github        = { pattern = "https://[%w%-%._]*github%.com[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",     group = in_comment("Github"), extmark_opts = link_extmark("󰊤") },
-  mdn           = { pattern = "https://[%w%-%._]*mozilla%.org[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",    group = in_comment("Mdn"), extmark_opts = link_extmark("󰖟") },
-  reddit        = { pattern = "https://[%w%-%._]*reddit%.com[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",     group = in_comment("Reddit"), extmark_opts = link_extmark("󰑍") },
-  stackoverflow = { pattern = "https://[%w%-%._]*stackoverflow%.com[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*", group = in_comment("StackOverflow"), extmark_opts = link_extmark("󰓌") },
+  arch          = { pattern = "https://[%w%-%._]*archlinux%.org[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",     group = in_comment("Arch"),      extmark_opts = link_extmark("󰣇") },
+  atlassian     = { pattern = "https://[%w%-%._]*atlassian%.net[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",     group = in_comment("Atlassian"), extmark_opts = link_extmark("") },
+  azure         = { pattern = "https://[%w%-%._]*azure[%w%-%._]*[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",    group = in_comment("Azure"),     extmark_opts = link_extmark("") },
+  fedora        = { pattern = "https://[%w%-%._]*fedoraproject%.org[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*", group = in_comment("Fedora"),    extmark_opts = link_extmark("") },
+  github        = { pattern = "https://[%w%-%._]*github%.com[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",        group = in_comment("Github"),    extmark_opts = link_extmark("󰊤") },
+  mdn           = { pattern = "https://[%w%-%._]*mozilla%.org[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",       group = in_comment("Mdn"),       extmark_opts = link_extmark("󰖟") },
+  reddit        = { pattern = "https://[%w%-%._]*reddit%.com[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",        group = in_comment("Reddit"),    extmark_opts = link_extmark("󰑍") },
+  redhat        = { pattern = "https://[%w%-%._]*redhat%.com[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",        group = in_comment("Redhat"),    extmark_opts = link_extmark("") },
+  stackoverflow = { pattern = "https://[%w%-%._]*stackoverflow%.com[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*", group = in_comment("SO"),        extmark_opts = link_extmark("󰓌") },
 }
 
 local tests = {
