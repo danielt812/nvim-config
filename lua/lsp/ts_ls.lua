@@ -13,7 +13,7 @@ return {
   single_file_support = true,
   settings = {
     diagnostics = {
-      ignoredCodes = { 80001 },
+      ignoredCodes = { 80001, 80005 },
     },
   },
 }
