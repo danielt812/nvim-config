@@ -190,9 +190,6 @@ later(function()
     checkout = "main",
   })
 
-  add({ source = "JoosepAlviste/nvim-ts-context-commentstring" })
-  add({ source = "folke/ts-comments.nvim" })
-
   plug("tree-sitter")
 
   add({ source = "Wansmer/treesj" })
