@@ -11,11 +11,9 @@ indentscope.setup({
     -- Default draws only fully computed scope (see `options.n_lines`).
     predicate = function(scope)
       local ft_ignore = { "help", "markdown" }
-      if vim.tbl_contains(ft_ignore, vim.bo[scope.buf_id].filetype) then
-        return false
-      else
-        return not scope.body.is_incomplete
-      end
+      if not vim.api.nvim_buf_is_valid(scope.buf_id) then return false end
+      if vim.tbl_contains(ft_ignore, vim.bo[scope.buf_id].filetype) then return false end
+      return not scope.body.is_incomplete
     end,
 
     -- Symbol priority. Increase to display on top of more symbols.
