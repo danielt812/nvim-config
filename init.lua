@@ -137,12 +137,6 @@ later(function()
   add({ source = "MunifTanjim/nui.nvim" })
 end)
 
--- Autotag ------------------------------------------------------------
-later(function()
-  add({ source = "windwp/nvim-ts-autotag" })
-  plug("autotag")
-end)
-
 -- Window ----------------------------------------------------------------------
 later(function()
   add({ source = "aserowy/tmux.nvim" })
@@ -185,15 +179,15 @@ later(function()
     post_checkout = function() vim.cmd("TSUpdate") end,
   })
 
-  add({
-    source = "nvim-treesitter/nvim-treesitter-textobjects",
-    checkout = "main",
-  })
+  add({ source = "nvim-treesitter/nvim-treesitter-textobjects" })
 
   plug("tree-sitter")
 
   add({ source = "Wansmer/treesj" })
   plug("treesj")
+
+  add({ source = "windwp/nvim-ts-autotag" })
+  plug("autotag")
 end)
 
 -- UI --------------------------------------------------------------------------
