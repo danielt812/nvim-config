@@ -25,7 +25,7 @@ local apply_hipattern_groups = function()
   -- stylua: ignore
   local link_colors = {
     Arch          = "#4591cb", -- https://archlinux.org/foo/bar
-    Atlassian     = "#3266d4", -- https://atlassian.net/foo/bar
+    Atlassian     = "#3266d3", -- https://atlassian.net/foo/bar
     Azure         = "#0078d4", -- https://azure.com/foo/bar
     Fedora        = "#65a0d6", -- https://fedoraproject.org/foo/bar
     Github        = "#f2f5f3", -- https://github.com/foo/bar
