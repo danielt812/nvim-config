@@ -32,6 +32,9 @@ ModIndent.config = {
     priority = 1,
   },
 
+  -- Don't place ext mark over tab listchar
+  show_tabs = true,
+
   -- Which character to use for drawing guides
   symbol = "│",
 }
@@ -72,6 +75,7 @@ H.setup_config = function(config)
   H.check_type("draw.predicate", config.draw.predicate, "function", true)
   H.check_type("draw.priority", config.draw.priority, "number")
 
+  H.check_type("show_tabs", config.show_tabs, "boolean")
   H.check_type("symbol", config.symbol, "string")
 
   return config
@@ -180,7 +184,7 @@ H.should_render = function(buf, win)
   local wcfg = vim.api.nvim_win_get_config(win)
   if wcfg and wcfg.relative ~= "" then return false end
 
-  -- user predicate is only for extra filtering
+  -- User predicate is only for extra filtering
   if H.get_config().draw.predicate and not H.get_config().draw.predicate(buf, win) then return false end
 
   return true
@@ -198,9 +202,9 @@ H.render_line = function(buf, lnum, leftcol)
   if indent_cols <= 0 then return end
 
   local line = vim.fn.getline(lnum)
-
   local symbol = H.get_config().symbol
   local priority = H.get_config().draw.priority
+  local show_tabs = H.get_config().show_tabs
 
   local is_blank = line:match("^%s*$") ~= nil
   leftcol = leftcol or 0
@@ -209,8 +213,11 @@ H.render_line = function(buf, lnum, leftcol)
     if col < indent_cols then
       local win_col = col - leftcol
       if win_col >= 0 then
-        local byte = line:sub(col + 1, col + 1)
-        if is_blank or byte == " " or byte == "\t" or byte == "" then
+        local ch = line:sub(col + 1, col + 1)
+
+        local ok = is_blank or ch == " " or (show_tabs and ch == "\t")
+
+        if ok then
           vim.api.nvim_buf_set_extmark(buf, H.ns_id, lnum - 1, 0, {
             hl_mode = "combine",
             priority = priority,
