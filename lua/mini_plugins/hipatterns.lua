@@ -1,55 +1,6 @@
 local hipatterns = require("mini.hipatterns")
 local ts_utils = require("utils.ts")
 
-local apply_hipattern_groups = function()
-  local prefix = "MiniHipatterns"
-
-  -- Comment keywords
-  local comment_colors = {
-    Info = "#98c379", -- INFO:
-    Note = "#3498db", -- NOTE:
-    Perf = "#d699b6", -- PERF:
-    Todo = "#ff8c00", -- TODO:
-    Warn = "#ff2d00", -- WARN:
-  }
-
-  for name, hex in pairs(comment_colors) do
-    vim.api.nvim_set_hl(0, prefix .. name, { fg = "#000000", bg = hex, italic = true })
-    vim.api.nvim_set_hl(0, prefix .. name .. "Mask", { fg = hex, bg = hex, italic = true })
-  end
-
-  -- General links https://www.google.com
-  vim.api.nvim_set_hl(0, prefix .. "Link", { fg = "#8be9fd", underline = true })
-
-  -- Vendor links
-  -- stylua: ignore
-  local link_colors = {
-    Arch          = "#4591cb", -- https://archlinux.org/foo/bar
-    Atlassian     = "#3266d3", -- https://atlassian.net/foo/bar
-    Azure         = "#0078d4", -- https://azure.com/foo/bar
-    Fedora        = "#65a0d6", -- https://fedoraproject.org/foo/bar
-    Github        = "#f2f5f3", -- https://github.com/foo/bar
-    Mdn           = "#54ffbd", -- https://developer.mozilla.org/foo/bar
-    Reddit        = "#ff4500", -- https://reddit.com/foo/bar
-    Redhat        = "#da2f21", -- https://redhat.com/foo/bar
-    SO            = "#f48024", -- https://stackoverflow.com/foo/bar
-  }
-
-  for name, hex in pairs(link_colors) do
-    vim.api.nvim_set_hl(0, prefix .. name, { fg = hex, underline = true })
-  end
-
-  -- Test markers
-  local test_colors = {
-    Pass = "#00ff00", -- PASS
-    Fail = "#ff0000", -- FAIL
-  }
-
-  for name, hex in pairs(test_colors) do
-    vim.api.nvim_set_hl(0, prefix .. name, { fg = hex, italic = true })
-  end
-end
-
 local function in_comment(base, suffix)
   suffix = suffix or ""
   local name = "MiniHipatterns" .. base:sub(1, 1) .. base:sub(2) .. suffix
@@ -205,10 +156,62 @@ vim.keymap.set("n", "<leader>eh", toggle_hipatterns, { desc = "Hipatterns" })
 -- #                            Automatic Commands                             #
 -- #############################################################################
 
+local apply_hl = function()
+  local prefix = "MiniHipatterns"
+
+  -- Comment keywords
+  local comment_colors = {
+    Info = "#98c379", -- INFO:
+    Note = "#3498db", -- NOTE:
+    Perf = "#d699b6", -- PERF:
+    Todo = "#ff8c00", -- TODO:
+    Warn = "#ff2d00", -- WARN:
+  }
+
+  for name, hex in pairs(comment_colors) do
+    vim.api.nvim_set_hl(0, prefix .. name, { fg = "#000000", bg = hex, italic = true })
+    vim.api.nvim_set_hl(0, prefix .. name .. "Mask", { fg = hex, bg = hex, italic = true })
+  end
+
+  -- General links https://www.google.com
+  vim.api.nvim_set_hl(0, prefix .. "Link", { fg = "#8be9fd", underline = true })
+
+  -- Vendor links
+  -- stylua: ignore
+  local link_colors = {
+    Arch          = "#4591cb", -- https://archlinux.org/foo/bar
+    Atlassian     = "#3266d3", -- https://atlassian.net/foo/bar
+    Azure         = "#0078d4", -- https://azure.com/foo/bar
+    Fedora        = "#65a0d6", -- https://fedoraproject.org/foo/bar
+    Github        = "#f2f5f3", -- https://github.com/foo/bar
+    Mdn           = "#54ffbd", -- https://developer.mozilla.org/foo/bar
+    Reddit        = "#ff4500", -- https://reddit.com/foo/bar
+    Redhat        = "#da2f21", -- https://redhat.com/foo/bar
+    SO            = "#f48024", -- https://stackoverflow.com/foo/bar
+  }
+
+  for name, hex in pairs(link_colors) do
+    vim.api.nvim_set_hl(0, prefix .. name, { fg = hex, underline = true })
+  end
+
+  -- Test markers
+  local test_colors = {
+    Pass = "#00ff00", -- PASS
+    Fail = "#ff0000", -- FAIL
+  }
+
+  for name, hex in pairs(test_colors) do
+    vim.api.nvim_set_hl(0, prefix .. name, { fg = hex, italic = true })
+  end
+end
+
+-- Call once when this module is loaded
+apply_hl()
+
 local au_group = vim.api.nvim_create_augroup("mini_hipatterns", { clear = true })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
   group = au_group,
   desc = "Create custom highlight groups",
-  callback = apply_hipattern_groups,
+  callback = apply_hl,
 })

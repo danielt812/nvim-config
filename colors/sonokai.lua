@@ -830,7 +830,6 @@ local highlights = {
   MiniStarterSection    = { link = "Title" },
   -- stylua: ignore end
 
-  -- NOTE: Modes highlight groups
   -- stylua: ignore start
   MiniStatuslineModeCommand = { fg = palette.bg0, bg = palette.aqua },
   MiniStatuslineModeInsert  = { fg = palette.bg0, bg = palette.fg },
@@ -846,19 +845,6 @@ local highlights = {
   MiniStatuslineFileinfo = { fg = palette.grey2, bg = palette.bg2 },
   MiniStatuslineLocation = { fg = palette.grey2, bg = palette.bg1 },
   MiniStatuslineInactive = { fg = palette.grey2, bg = palette.bg1 },
-  -- stylua: ignore end
-
-  -- stylua: ignore start
-  MiniStatuslineDiagError = { fg = palette.red, bg    = palette.bg1 }, -- NOTE: Custom
-  MiniStatuslineDiagWarn  = { fg = palette.yellow, bg = palette.bg1 }, -- NOTE: Custom
-  MiniStatuslineDiagInfo  = { fg = palette.purple, bg = palette.bg1 }, -- NOTE: Custom
-  MiniStatuslineDiagHint  = { fg = palette.blue, bg   = palette.bg1 }, -- NOTE: Custom
-  -- stylua: ignore end
-
-  -- stylua: ignore start
-  MiniStatuslineDiffAdd    = { fg = palette.green, bg = palette.bg1 }, -- NOTE: Custom
-  MiniStatuslineDiffChange = { fg = palette.blue, bg  = palette.bg1 }, -- NOTE: Custom
-  MiniStatuslineDiffDelete = { fg = palette.red, bg   = palette.bg1 }, -- NOTE: Custom
   -- stylua: ignore end
 
   -- stylua: ignore start
