@@ -222,16 +222,16 @@ local highlights = {
 
   -- stylua: ignore start
   DiagnosticError = { fg = palette.red },
-  DiagnosticHint  = { fg = palette.green },
-  DiagnosticInfo  = { fg = palette.blue },
+  DiagnosticHint  = { fg = palette.blue },
+  DiagnosticInfo  = { fg = palette.green },
   DiagnosticOk    = { fg = palette.purple },
   DiagnosticWarn  = { fg = palette.yellow },
   -- stylua: ignore end
 
   -- stylua: ignore start
   DiagnosticUnderlineError = { undercurl = true, sp = palette.red },
-  DiagnosticUnderlineHint  = { undercurl = true, sp = palette.green },
-  DiagnosticUnderlineInfo  = { undercurl = true, sp = palette.blue },
+  DiagnosticUnderlineHint  = { undercurl = true, sp = palette.blue },
+  DiagnosticUnderlineInfo  = { undercurl = true, sp = palette.green },
   DiagnosticUnderlineOk    = { undercurl = true, sp = palette.purple },
   DiagnosticUnderlineWarn  = { undercurl = true, sp = palette.yellow },
   -- stylua: ignore end
