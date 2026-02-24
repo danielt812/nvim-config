@@ -38,8 +38,11 @@ local function override_cs(lang, node)
 end
 
 local function custom_commentstring()
-  local ok, parser = pcall(vim.treesitter.get_parser, 0)
-  if not ok or not parser then return vim.bo.commentstring end
+  local ft = vim.bo.filetype
+  local fallback = comment_strings.default[ft] or vim.bo.commentstring
+
+  local parser_ok, parser = pcall(vim.treesitter.get_parser, 0)
+  if not parser_ok or not parser then return fallback end
 
   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
   row = row - 1
