@@ -1,6 +1,6 @@
 vim.diagnostic.config({
   signs = {
-    priority = 9999,
+    priority = 2,
     severity = { min = "INFO", max = "ERROR" },
     text = {
       [vim.diagnostic.severity.ERROR] = "",
