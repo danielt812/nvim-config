@@ -4,77 +4,137 @@ local icons = require("mini.icons")
 statusline.setup({
   content = {
     active = function()
-      -- NOTE these are custom highlight groups that are not part of MiniNvim
-      local diagnostic_icons = { ERROR = "", WARN = "", INFO = "", HINT = "" }
-      local diagnostic_symbols = {}
+      local function section_diagnostics(args)
+        local levels = {
+          { name = "ERROR", sign = "" },
+          { name = "WARN", sign = "" },
+          { name = "INFO", sign = "" },
+          { name = "HINT", sign = "" },
+        }
 
-      for severity, icon in pairs(diagnostic_icons) do
-        diagnostic_symbols[severity] =
-          string.format("%%#MiniStatuslineDiagnostic%s#%s %%#MiniStatuslineDevinfo#", severity, icon)
+        if statusline.is_truncated(args.trunc_width) then return "" end
+        local count = vim.diagnostic.count(0)
+        if not count or not vim.diagnostic.is_enabled({ bufnr = 0 }) then return "" end
+
+        local severity = vim.diagnostic.severity
+        local diagnostics = {}
+
+        for _, level in ipairs(levels) do
+          local num = count[severity[level.name]] or 0
+          if num > 0 then
+            local str
+            if args.symbols then
+              -- stylua: ignore
+              str = string.format("%%#MiniStatuslineDiagnostic%s#%s %d%%#MiniStatuslineDevinfo#", level.name, level.sign, num)
+            else
+              str = string.format("%%#MiniStatuslineDiagnostic%s#%d%%#MiniStatuslineDevinfo#", level.name, num)
+            end
+            table.insert(diagnostics, str)
+          end
+        end
+
+        if #diagnostics == 0 then return "" end
+        local icon = args.icon and "" .. " " or ""
+        return icon .. table.concat(diagnostics, "|")
       end
 
-      local function section_fileinfo(trunc_width)
+      local section_filetype = function(args)
+        local truncate = statusline.is_truncated(args.trunc_width)
+        if truncate then return "" end
         local ft = vim.bo.filetype or "none"
-        local shiftwidth = "󰌒 " .. vim.api.nvim_get_option_value("shiftwidth", { buf = 0 })
-
         if ft == "toggleterm" then return nil end
 
         local icon, hl_name = icons.get("filetype", ft, { with_hl = true })
         local color = hl_name:gsub("MiniIcons", "MiniStatuslineIcons")
 
         local fileinfo = string.format("%%#%s#%s %%#MiniStatuslineFileinfo#%s", color or "", icon, ft)
-        local truncate = statusline.is_truncated(trunc_width)
 
-        return truncate and fileinfo or shiftwidth .. " " .. fileinfo
+        return truncate and "" or fileinfo
       end
 
-      local function section_location(trunc_width)
+      local section_shift_width = function(args)
+        local truncate = statusline.is_truncated(args.trunc_width)
+        local shiftwidth = "󰌒 " .. vim.bo.shiftwidth
+        return truncate and "" or shiftwidth
+      end
+
+      local section_spell = function(args)
+        local truncate = statusline.is_truncated(args.trunc_width)
+        local spell = vim.wo.spell and "󰓆" or ""
+        return truncate and "" or spell
+      end
+
+      local section_location = function(args)
+        local truncate = statusline.is_truncated(args.trunc_width)
         local ft = vim.bo.filetype or "none"
+        if ft == "toggleterm" then return nil end
         local line = vim.fn.line(".")
         local col = vim.fn.col(".")
-        local truncate = statusline.is_truncated(trunc_width)
-
-        if ft == "toggleterm" then return nil end
 
         return truncate and "" or string.format("%d:%d", line, col)
       end
 
-      local section_progress = function(trunc_width)
-        local progressbar = function()
-          local current_line = vim.fn.line(".")
-          local total_lines = vim.fn.line("$")
-          local chars = { "__", "▁▁", "▂▂", "▃▃", "▄▄", "▅▅", "▆▆", "▇▇", "██" }
-          local line_ratio = current_line / total_lines
-          local index = math.ceil(line_ratio * #chars)
-          return chars[index]
-        end
-
+      local section_progress = function(args)
+        local truncate = statusline.is_truncated(args.trunc_width)
         local ft = vim.bo.filetype or "none"
-        local truncate = statusline.is_truncated(trunc_width)
-
         if ft == "toggleterm" then return nil end
 
-        return truncate and "%P" or "%P" -- .. " " .. progressbar()
+        return truncate and "" or "%P"
+      end
+
+      local section_diff = function(args)
+        local truncate = statusline.is_truncated(args.trunc_width)
+        local summary = vim.b.minidiff_summary
+
+        if type(summary) ~= "table" then return "" end
+
+        local symbols = {
+          add = args.symbols and "%#MiniStatuslineDiffAdd#" or "%#MiniStatuslineDiffAdd#",
+          change = args.symbols and "%#MiniStatuslineDiffChange#" or "%#MiniStatuslineDiffChange#",
+          delete = args.symbols and "%#MiniStatuslineDiffDelete#" or "%#MiniStatuslineDiffDelete#",
+        }
+        local diffs, has_diff = {}, false
+
+        for key, symbol in pairs(symbols) do
+          local count = summary[key]
+          if type(count) == "number" and count > 0 then
+            symbol = args.symbols and symbol .. " " or symbol
+            if not args.symbols then table.insert(diffs, symbol .. count .. "%#MiniStatuslineDevinfo#") end
+            if args.symbols then table.insert(diffs, symbol .. "%#MiniStatuslineDevinfo#" .. count) end
+            has_diff = true
+          end
+        end
+        if not has_diff then return "" end
+
+        local icon = args.icon and "" .. " " or ""
+        return truncate and "" or icon .. table.concat(diffs, "|")
       end
 
       local mode, mode_hl = statusline.section_mode({ trunc_width = 120 })
-      local git = statusline.section_git({ trunc_width = 100 })
-      local diff = statusline.section_diff({ trunc_width = 100, icon = "" })
-      local diagnostics = statusline.section_diagnostics({ trunc_width = 75, icon = "", signs = diagnostic_symbols })
+      local git = statusline.section_git({ trunc_width = 80 })
+      local diff = section_diff({ trunc_width = 80, icon = true, symbols = false })
+      local diagnostics = section_diagnostics({ trunc_width = 75, icon = true, signs = false })
       local filename = statusline.section_filename({ trunc_width = 120 })
-      local fileinfo = section_fileinfo(120)
+      local filetype = section_filetype({ trunc_width = 120 })
+      local shiftwidth = section_shift_width({ trunc_width = 120 })
+      local spell = section_spell({ trunc_width = 120 })
       local searchcount = statusline.section_searchcount({ trunc_width = 80 })
-      local location = section_location(80)
-      local progress = section_progress(80)
+      local location = section_location({ trunc_width = 80 })
+      local progress = section_progress({ trunc_width = 80 })
+
+      local gen_string = function(tbl, seperator)
+        seperator = seperator and " " .. seperator .. " " or " "
+        return { table.concat(vim.fn.filter(tbl, function(_, v) return v ~= nil and v ~= "" end), seperator) }
+      end
 
       return statusline.combine_groups({
-        { hl = mode_hl, strings = { mode } },
-        { hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics } },
+        { hl = mode_hl, strings = gen_string({ mode }, "│") },
+        { hl = "MiniStatuslineDevinfo", strings = gen_string({ git, diff, diagnostics }, "│") },
         "%<", -- Mark general truncate point
-        { hl = "MiniStatuslineFilename", strings = { filename } },
+        { hl = "MiniStatuslineFilename", strings = gen_string({ filename }, "│") },
         "%=", -- End left alignment
-        { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
-        { hl = mode_hl, strings = { searchcount, location, "│", progress } },
+        { hl = "MiniStatuslineFileinfo", strings = gen_string({ spell, shiftwidth, filetype }, "│") },
+        { hl = mode_hl, strings = gen_string({ searchcount, location, progress }, "│") },
       })
     end,
   },
@@ -109,6 +169,8 @@ local apply_hl = function()
   for _, suffix in ipairs({ "Azure", "Blue", "Cyan", "Green", "Grey", "Orange", "Magenta", "Red", "Yellow" }) do
     merge_hl("MiniIcons" .. suffix, prefix .. "Fileinfo", prefix .. "Icons" .. suffix)
   end
+  -- Git
+  merge_hl("White", prefix .. "Devinfo", prefix .. "Git")
 end
 
 -- Call once when this module is loaded

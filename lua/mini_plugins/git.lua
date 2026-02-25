@@ -21,6 +21,11 @@ vim.api.nvim_create_autocmd("User", {
   group = group,
   callback = function(data)
     local summary = vim.b[data.buf].minigit_summary
-    vim.b[data.buf].minigit_summary_string = summary.head_name or nil
+    local branch = summary.head_name
+    if branch then
+      vim.b[data.buf].minigit_summary_string = "%#MiniStatuslineGit#" .. branch .. "%#MiniStatuslineDevinfo#"
+    else
+      vim.b[data.buf].minigit_summary_string = nil
+    end
   end,
 })
