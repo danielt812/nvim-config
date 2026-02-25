@@ -61,7 +61,7 @@ statusline.setup({
       local git = statusline.section_git({ trunc_width = 100 })
       local diff = statusline.section_diff({ trunc_width = 100, icon = "" })
       local diagnostics = statusline.section_diagnostics({ trunc_width = 75, icon = "", signs = diagnostic_symbols })
-      local filename = statusline.section_filename({ trunc_width = 240 })
+      local filename = statusline.section_filename({ trunc_width = 120 })
       local fileinfo = section_fileinfo(120)
       local searchcount = statusline.section_searchcount({ trunc_width = 80 })
       local location = section_location(80)
@@ -114,11 +114,11 @@ end
 -- Call once when this module is loaded
 apply_hl()
 
-local au_group = vim.api.nvim_create_augroup("mini_statusline", { clear = true })
+local group = vim.api.nvim_create_augroup("mini_statusline", { clear = true })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = "*",
-  group = au_group,
+  group = group,
   desc = "Generate icon highlights",
   callback = apply_hl,
 })

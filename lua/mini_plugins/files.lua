@@ -53,11 +53,11 @@ local toggle_dotfiles = function()
   files.refresh({ content = { filter = filter } })
 end
 
-local au_group = vim.api.nvim_create_augroup("mini_files", { clear = true })
+local group = vim.api.nvim_create_augroup("mini_files", { clear = true })
 
 vim.api.nvim_create_autocmd("User", {
   pattern = "MiniFilesBufferCreate",
-  group = au_group,
+  group = group,
   callback = function(args)
     local buf_id = args.data.buf_id
     vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = buf_id })

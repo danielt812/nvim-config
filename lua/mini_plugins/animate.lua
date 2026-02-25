@@ -43,11 +43,11 @@ animate.setup({
 -- #                            Automatic Commands                             #
 -- #############################################################################
 
-local au_group = vim.api.nvim_create_augroup("mini_animate", { clear = true })
+local group = vim.api.nvim_create_augroup("mini_animate", { clear = true })
 
 vim.api.nvim_create_autocmd("User", {
   pattern = "MiniAnimateDoneScroll",
-  group = au_group,
+  group = group,
   desc = "Center after scroll",
   callback = function() vim.cmd("normal! zvzz") end,
 })

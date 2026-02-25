@@ -8,11 +8,12 @@ trailspace.setup({
 -- #                            Automatic Commands                             #
 -- #############################################################################
 
-local au_group = vim.api.nvim_create_augroup("mini_trailspace", { clear = true })
+local group = vim.api.nvim_create_augroup("mini_trailspace", { clear = true })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
-  group = au_group,
+  group = group,
+  desc = "Trim trailing whitespace on save",
   callback = function()
     trailspace.trim()
   end,

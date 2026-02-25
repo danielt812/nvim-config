@@ -35,10 +35,11 @@ vim.keymap.set("n", "<leader>ep", toggle_pairs, { desc = "Pairs" })
 -- #                            Automatic commands                             #
 -- #############################################################################
 
-local au_group = vim.api.nvim_create_augroup("mini_pairs", { clear = true })
+local group = vim.api.nvim_create_augroup("mini_pairs", { clear = true })
 
 vim.api.nvim_create_autocmd("CmdlineEnter", {
-  group = au_group,
+  pattern = "*",
+  group = group,
   desc = "Disable minipairs in search",
   callback = function()
     local cmdtype = vim.fn.getcmdtype()
@@ -47,7 +48,8 @@ vim.api.nvim_create_autocmd("CmdlineEnter", {
 })
 
 vim.api.nvim_create_autocmd("CmdlineLeave", {
-  group = au_group,
+  pattern = "*",
+  group = group,
   desc = "Restore minipairs state",
   callback = function() vim.g.minipairs_disable = false end,
 })

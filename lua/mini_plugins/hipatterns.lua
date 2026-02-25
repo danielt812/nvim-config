@@ -180,7 +180,7 @@ local apply_hl = function()
   -- stylua: ignore
   local link_colors = {
     Arch          = "#4591cb", -- https://archlinux.org/foo/bar
-    Atlassian     = "#3266d3", -- https://atlassian.net/foo/bar
+    Atlassian     = "#356bd6", -- https://atlassian.net/foo/bar
     Azure         = "#0078d4", -- https://azure.com/foo/bar
     Fedora        = "#65a0d6", -- https://fedoraproject.org/foo/bar
     Github        = "#f2f5f3", -- https://github.com/foo/bar
@@ -208,10 +208,10 @@ end
 -- Call once when this module is loaded
 apply_hl()
 
-local au_group = vim.api.nvim_create_augroup("mini_hipatterns", { clear = true })
+local group = vim.api.nvim_create_augroup("mini_hipatterns", { clear = true })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
-  group = au_group,
+  group = group,
   desc = "Create custom highlight groups",
   callback = apply_hl,
 })
