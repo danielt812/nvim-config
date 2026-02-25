@@ -70,7 +70,6 @@ statusline.setup({
         if ft == "toggleterm" then return nil end
         local line = vim.fn.line(".")
         local col = vim.fn.col(".")
-
         return truncate and "" or string.format("%d:%d", line, col)
       end
 
@@ -78,7 +77,6 @@ statusline.setup({
         local truncate = statusline.is_truncated(args.trunc_width)
         local ft = vim.bo.filetype or "none"
         if ft == "toggleterm" then return nil end
-
         return truncate and "" or "%P"
       end
 
@@ -113,7 +111,7 @@ statusline.setup({
       local mode, mode_hl = statusline.section_mode({ trunc_width = 120 })
       local git = statusline.section_git({ trunc_width = 80 })
       local diff = section_diff({ trunc_width = 80, icon = true, symbols = false })
-      local diagnostics = section_diagnostics({ trunc_width = 75, icon = true, signs = false })
+      local diagnostics = section_diagnostics({ trunc_width = 75, icon = true, symbols = false })
       local filename = statusline.section_filename({ trunc_width = 120 })
       local filetype = section_filetype({ trunc_width = 120 })
       local shiftwidth = section_shift_width({ trunc_width = 120 })
