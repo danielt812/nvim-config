@@ -54,9 +54,18 @@ for _, language in ipairs(languages) do
   end
 end
 
+local start_treesitter = function(args)
+  local lang = vim.bo[args.buf].filetype
+
+  if vim.treesitter.language.get_lang(lang) then
+    vim.treesitter.start(args.buf)
+    vim.bo[args.buf].syntax = "OFF"
+  end
+end
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = filetypes,
   group = vim.api.nvim_create_augroup("treesitter", { clear = true }),
   desc = "Auto start treesitter",
-  callback = function(args) vim.treesitter.start(args.buf) end,
+  callback = start_treesitter,
 })
