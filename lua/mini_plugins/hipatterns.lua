@@ -7,6 +7,11 @@ local function in_comment(base, suffix)
   return ts_utils.if_capture("comment", name)
 end
 
+local function in_string(base)
+  local name = base:sub(1, 1) .. base:sub(2)
+  return ts_utils.if_capture("string", name)
+end
+
 -- stylua: ignore
 local comments = {
   info       = { pattern = "() ?INFO ?()", group = in_comment("INFO") },
@@ -101,7 +106,7 @@ local test_extmark = function(symbol)
   end
 end
 
-local function link_extmark(icon)
+local link_extmark = function(icon)
   return function(_, _, data)
     return {
       hl_group = data.hl_group,
@@ -116,7 +121,7 @@ end
 
 -- stylua: ignore
 local links = {
-  url           = { pattern = "https?://[%w%-%._~:/%?#%[%]@!$&'()*+,;=]+", group = in_comment("Link") },
+  url           = { pattern = "https?://[%w%-%._~:/%?#%[%]@!$&'()*+,;=]+",                            group = in_comment("Link") },
   arch          = { pattern = "https://[%w%-%._]*archlinux%.org[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",     group = in_comment("Arch"),      extmark_opts = link_extmark("󰣇") },
   atlassian     = { pattern = "https://[%w%-%._]*atlassian%.net[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",     group = in_comment("Atlassian"), extmark_opts = link_extmark("") },
   azure         = { pattern = "https://[%w%-%._]*azure[%w%-%._]*[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",    group = in_comment("Azure"),     extmark_opts = link_extmark("") },
@@ -133,8 +138,17 @@ local tests = {
   fail = { pattern = "%f[%a]FAIL%f[%A]", group = in_comment("Fail"), extmark_opts = test_extmark("✗") },
 }
 
+local strings = {
+  double_quote_open  = { pattern = '()"()[^"]*"',   group = in_string("Grey") },
+  double_quote_close = { pattern = '"[^"]*()"()',   group = in_string("Grey") },
+  single_quote_open  = { pattern = "()'()[^']*'",   group = in_string("Grey") },
+  single_quote_close = { pattern = "'[^']*()'()",   group = in_string("Grey") },
+  backtick_open      = { pattern = "()`()[^`]*`",   group = in_string("Grey") },
+  backtick_close     = { pattern = "`[^`]*()`()",   group = in_string("Grey") },
+}
+
 local highlighters = {}
-local highlight_tables = { colors, comments, http, links, tests }
+local highlight_tables = { colors, comments, http, links, strings, tests }
 
 for _, tbl in ipairs(highlight_tables) do
   highlighters = vim.tbl_extend("force", tbl, highlighters)
