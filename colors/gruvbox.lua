@@ -78,7 +78,7 @@ local dark_soft = {
   bg2       = "#504945",
   bg3       = "#665c54",
   bg4       = "#7c6f64",
-  bg5       = "#928374",  -- matches grey tone
+  bg5       = "#928374",
 
   bg_red    = "#4c3432",
   bg_orange = "#4a3a2f",
@@ -976,8 +976,8 @@ local highlights = {
 
   -- https://github.com/mason-org/mason.nvim
   -- stylua: ignore start
-  MasonHeader          = { fg = palette.green, reverse = true },
-  MasonHeaderSecondary = { fg = palette.green, reverse = true },
+  MasonHeader                      = { fg = palette.green, reverse = true },
+  MasonHeaderSecondary             = { fg = palette.green, reverse = true },
   MasonHighlight                   = { fg = palette.green },
   MasonHighlightSecondary          = { fg = palette.green },
   MasonHighlightBlock              = { fg = palette.aqua,   bg = palette.bg0, reverse = true },

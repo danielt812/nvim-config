@@ -975,8 +975,8 @@ local highlights = {
 
   -- https://github.com/mason-org/mason.nvim
   -- stylua: ignore start
-  MasonHeader          = { fg = palette.green, reverse = true },
-  MasonHeaderSecondary = { fg = palette.green, reverse = true },
+  MasonHeader                      = { fg = palette.green, reverse = true },
+  MasonHeaderSecondary             = { fg = palette.green, reverse = true },
   MasonHighlight                   = { fg = palette.green },
   MasonHighlightSecondary          = { fg = palette.green },
   MasonHighlightBlock              = { fg = palette.aqua,   bg = palette.bg0, reverse = true },
