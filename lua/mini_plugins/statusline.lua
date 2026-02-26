@@ -4,6 +4,11 @@ local icons = require("mini.icons")
 statusline.setup({
   content = {
     active = function()
+      local combine_strings = function(tbl, seperator)
+        seperator = seperator and " " .. seperator .. " " or " "
+        return { table.concat(vim.fn.filter(tbl, function(_, v) return v ~= nil and v ~= "" end), seperator) }
+      end
+
       local function section_diagnostics(args)
         local levels = {
           { name = "ERROR", sign = "" },
@@ -120,19 +125,14 @@ statusline.setup({
       local location = section_location({ trunc_width = 80 })
       local progress = section_progress({ trunc_width = 80 })
 
-      local gen_string = function(tbl, seperator)
-        seperator = seperator and " " .. seperator .. " " or " "
-        return { table.concat(vim.fn.filter(tbl, function(_, v) return v ~= nil and v ~= "" end), seperator) }
-      end
-
       return statusline.combine_groups({
-        { hl = mode_hl, strings = gen_string({ mode }, "│") },
-        { hl = "MiniStatuslineDevinfo", strings = gen_string({ git, diff, diagnostics }, "│") },
+        { hl = mode_hl, strings = combine_strings({ mode }, "│") },
+        { hl = "MiniStatuslineDevinfo", strings = combine_strings({ git, diff, diagnostics }, "│") },
         "%<", -- Mark general truncate point
-        { hl = "MiniStatuslineFilename", strings = gen_string({ filename }, "│") },
+        { hl = "MiniStatuslineFilename", strings = combine_strings({ filename }, "│") },
         "%=", -- End left alignment
-        { hl = "MiniStatuslineFileinfo", strings = gen_string({ spell, shiftwidth, filetype }, "│") },
-        { hl = mode_hl, strings = gen_string({ searchcount, location, progress }, "│") },
+        { hl = "MiniStatuslineFileinfo", strings = combine_strings({ spell, shiftwidth, filetype }, "│") },
+        { hl = mode_hl, strings = combine_strings({ searchcount, location, progress }, "│") },
       })
     end,
   },
