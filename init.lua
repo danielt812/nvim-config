@@ -87,6 +87,7 @@ now(function()
   mplug("sessions")
   mplug("snippets")
 
+  vim.g.colors_variant = "soft"
   vim.cmd("colorscheme everforest")
 end)
 

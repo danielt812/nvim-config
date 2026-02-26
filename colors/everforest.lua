@@ -69,6 +69,89 @@ local light = {
   purple    = "#df69ba",
 }
 
+-- Variants --------------------------------------------------------------------
+-- stylua: ignore start
+local dark_soft = {
+  bg_dim    = "#293136",
+  bg0       = "#333c43",
+  bg1       = "#3a464c",
+  bg2       = "#434f55",
+  bg3       = "#4d5960",
+  bg4       = "#555f66",
+  bg5       = "#5d6b66",
+
+  bg_red    = "#59464c",
+  bg_orange = "#4a3a2f",
+  bg_yellow = "#55544a",
+  bg_green  = "#58484e",
+  bg_blue   = "#3f5865",
+  bg_aqua   = "#3b4f4c",
+  bg_purple = "#4b3f52",
+}
+
+local dark_hard = {
+  bg_dim    = "#1e2326",
+  bg0       = "#272e33",
+  bg1       = "#323c41",
+  bg2       = "#3a454a",
+  bg3       = "#445055",
+  bg4       = "#4c555b",
+  bg5       = "#53605c",
+
+  bg_red    = "#4e3e43",
+  bg_orange = "#4a3a2f",
+  bg_yellow = "#45443c",
+  bg_green  = "#404d44",
+  bg_aqua   = "#394b51",
+  bg_blue   = "#384b55",
+  bg_purple = "#473c50",
+}
+
+local light_soft = {
+  bg_dim    = "#f2efdf",
+  bg0       = "#fffbef",
+  bg1       = "#f8f5e4",
+  bg2       = "#f2efdf",
+  bg3       = "#edeada",
+  bg4       = "#e8e5d5",
+  bg5       = "#bec5b2",
+
+  bg_red    = "#ffe7de",
+  bg_orange = "#f9e2d6",
+  bg_yellow = "#fef2d5",
+  bg_green  = "#f3f5d9",
+  bg_aqua   = "#ecf5ed",
+  bg_blue   = "#ecf5ed",
+  bg_purple = "#f0e3e8",
+}
+
+local light_hard = {
+  bg_dim    = "#fff9e8",
+  bg0       = "#fffceb",
+  bg1       = "#f9f4df",
+  bg2       = "#f3ebce",
+  bg3       = "#ece3c4",
+  bg4       = "#e5dbba",
+  bg5       = "#c8c9a6",
+
+  bg_red    = "#ffe7de",
+  bg_orange = "#f9e2d6",
+  bg_yellow = "#fef2d5",
+  bg_green  = "#f3f5d9",
+  bg_aqua   = "#ecf5ed",
+  bg_blue   = "#ecf5ed",
+  bg_purple = "#f0e3e8",
+}
+-- stylua: ignore end
+
+if vim.g.colors_variant == "soft" then
+  dark = vim.tbl_deep_extend("force", dark, dark_soft)
+  light = vim.tbl_deep_extend("force", light, light_soft)
+elseif vim.g.colors_variant == "hard" then
+  dark = vim.tbl_deep_extend("force", dark, dark_hard)
+  light = vim.tbl_deep_extend("force", light, light_hard)
+end
+
 local palette = vim.o.background == "light" and light or dark
 
 local highlights = {
