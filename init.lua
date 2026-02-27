@@ -126,6 +126,21 @@ later(function()
   mplug("trailspace")
 end)
 
+-- Treesitter ------------------------------------------------------------------
+now(function()
+  add({ source = "nvim-treesitter/nvim-treesitter" })
+  add({ source = "nvim-treesitter/nvim-treesitter-textobjects" })
+  plug("tree-sitter")
+end)
+
+later(function()
+  add({ source = "Wansmer/treesj" })
+  plug("treesj")
+
+  add({ source = "windwp/nvim-ts-autotag" })
+  plug("autotag")
+end)
+
 -- Filetype rendering ----------------------------------------------------------
 now(function()
   add({ source = "OXY2DEV/markview.nvim" })
@@ -171,24 +186,6 @@ later(function()
   -- Formatter
   add({ source = "stevearc/conform.nvim" })
   plug("conform")
-end)
-
--- Treesitter ------------------------------------------------------------------
-later(function()
-  add({
-    source = "nvim-treesitter/nvim-treesitter",
-    post_checkout = function() vim.cmd("TSUpdate") end,
-  })
-
-  add({ source = "nvim-treesitter/nvim-treesitter-textobjects" })
-
-  plug("tree-sitter")
-
-  add({ source = "Wansmer/treesj" })
-  plug("treesj")
-
-  add({ source = "windwp/nvim-ts-autotag" })
-  plug("autotag")
 end)
 
 -- UI --------------------------------------------------------------------------
