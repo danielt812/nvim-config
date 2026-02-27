@@ -53,3 +53,14 @@ indentscope.setup({
   -- Which character to use for drawing scope indicator
   symbol = "│",
 })
+
+-- #############################################################################
+-- #                                  Keymaps                                  #
+-- #############################################################################
+
+local toggle_indentscope = function()
+  vim.b.miniindentscope_disable = not vim.b.miniindentscope_disable
+  vim.cmd("redrawstatus")
+end
+
+vim.keymap.set("n", "<leader>\\i", toggle_indentscope, { desc = "Indentscope" })

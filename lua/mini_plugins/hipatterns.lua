@@ -139,12 +139,12 @@ local tests = {
 }
 
 local strings = {
-  double_quote_open  = { pattern = '()"()[^"]*"',   group = in_string("Grey") },
-  double_quote_close = { pattern = '"[^"]*()"()',   group = in_string("Grey") },
-  single_quote_open  = { pattern = "()'()[^']*'",   group = in_string("Grey") },
-  single_quote_close = { pattern = "'[^']*()'()",   group = in_string("Grey") },
-  backtick_open      = { pattern = "()`()[^`]*`",   group = in_string("Grey") },
-  backtick_close     = { pattern = "`[^`]*()`()",   group = in_string("Grey") },
+  double_quote_open = { pattern = '()"()[^"]*"', group = in_string("Grey") },
+  double_quote_close = { pattern = '"[^"]*()"()', group = in_string("Grey") },
+  single_quote_open = { pattern = "()'()[^']*'", group = in_string("Grey") },
+  single_quote_close = { pattern = "'[^']*()'()", group = in_string("Grey") },
+  backtick_open = { pattern = "()`()[^`]*`", group = in_string("Grey") },
+  backtick_close = { pattern = "`[^`]*()`()", group = in_string("Grey") },
 }
 
 local highlighters = {}
@@ -162,9 +162,12 @@ hipatterns.setup({
 -- #                                  Keymaps                                  #
 -- #############################################################################
 
-local toggle_hipatterns = function() vim.b.minihipatterns_disable = not vim.b.minihipatterns_disable end
+local toggle_hipatterns = function()
+  vim.b.minihipatterns_disable = not vim.b.minihipatterns_disable
+  vim.cmd("redrawstatus")
+end
 
-vim.keymap.set("n", "<leader>eh", toggle_hipatterns, { desc = "Hipatterns" })
+vim.keymap.set("n", "<leader>\\h", toggle_hipatterns, { desc = "Hipatterns" })
 
 -- #############################################################################
 -- #                            Automatic Commands                             #

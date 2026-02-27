@@ -43,6 +43,11 @@ vim.keymap.set("n", ">", ">>",  { desc = "Indent line to right",  silent = true 
 
 vim.keymap.set("n", "U", "<c-r>", { desc = "Redo", silent = true })
 
+vim.keymap.set("n", "<leader>\\s", function()
+  vim.wo.spell = not vim.wo.spell
+  vim.cmd("redrawstatus")
+end, { desc = "Spell" })
+
 vim.keymap.set("n", "dd", function()
   if vim.fn.getline("."):match("^%s*$") then return '"_dd' end
   return "dd"

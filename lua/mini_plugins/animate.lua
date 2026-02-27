@@ -40,6 +40,17 @@ animate.setup({
 })
 
 -- #############################################################################
+-- #                                  Keymaps                                  #
+-- #############################################################################
+
+local toggle_animate = function()
+  vim.b.minianimate_disable = not vim.b.minianimate_disable
+  vim.cmd("redrawstatus")
+end
+
+vim.keymap.set("n", "<leader>\\a", toggle_animate, { desc = "Animate" })
+
+-- #############################################################################
 -- #                            Automatic Commands                             #
 -- #############################################################################
 

@@ -27,9 +27,12 @@ pairs.setup({
 -- #                                  Keymaps                                  #
 -- #############################################################################
 
-local toggle_pairs = function() vim.b.minipairs_disable = not vim.b.minipairs_disable end
+local toggle_pairs = function()
+  vim.b.minipairs_disable = not vim.b.minipairs_disable
+  vim.cmd("redrawstatus")
+end
 
-vim.keymap.set("n", "<leader>ep", toggle_pairs, { desc = "Pairs" })
+vim.keymap.set("n", "<leader>\\p", toggle_pairs, { desc = "Pairs" })
 
 -- #############################################################################
 -- #                            Automatic commands                             #

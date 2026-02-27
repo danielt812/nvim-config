@@ -110,6 +110,32 @@ statusline.setup({
         return fileinfo
       end
 
+      local section_disabled = function(args)
+        local truncate = statusline.is_truncated(args.trunc_width)
+        if truncate then return "" end
+
+        local plugins = {
+          animate = "A",
+          hipatterns = "H",
+          indentscope = "I",
+          pairs = "P",
+        }
+
+        local disabled = {}
+
+        for plugin, symbol in pairs(plugins) do
+          local g = vim.g["mini" .. plugin .. "_disable"]
+          local b = vim.b["mini" .. plugin .. "_disable"]
+          if g or b then table.insert(disabled, symbol) end
+        end
+
+        if #disabled == 0 then return "" end
+
+        local icon = args.icon and "󱐤" .. " " or ""
+
+        return icon .. "[" .. table.concat(disabled, ",") .. "]"
+      end
+
       local section_spell = function(args)
         local truncate = statusline.is_truncated(args.trunc_width)
         if truncate then return "" end
@@ -161,7 +187,7 @@ statusline.setup({
         local line = vim.fn.line(".")
         local col = vim.fn.col(".")
 
-        return line .. ":" .. col -- string.format("%d:%d", line, col)
+        return line .. ":" .. col
       end
 
       local section_progress = function(args)
@@ -181,6 +207,7 @@ statusline.setup({
       local filename = section_filename({ trunc_width = 120 })
       local filetype = section_filetype({ trunc_width = 120 })
       local shiftwidth = section_shift_width({ trunc_width = 120 })
+      local disabled = section_disabled({ trunc_width = 120, icon = true })
       local spell = section_spell({ trunc_width = 120 })
       local searchcount = section_searchcount({ trunc_width = 70 })
       local location = section_location({ trunc_width = 70 })
@@ -192,7 +219,7 @@ statusline.setup({
         "%<", -- Mark general truncate point
         { hl = "MiniStatuslineFilename", strings = combine_strings({ filename }, "│") },
         "%=", -- End left alignment
-        { hl = "MiniStatuslineFileinfo", strings = combine_strings({ spell, shiftwidth, filetype }, "│") },
+        { hl = "MiniStatuslineFileinfo", strings = combine_strings({ disabled, spell, shiftwidth, filetype }, "│") },
         { hl = mode_hl, strings = combine_strings({ searchcount, location, progress }, "│") },
       })
     end,

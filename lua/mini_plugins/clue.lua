@@ -16,8 +16,9 @@ clue.setup({
 
     -- Marks
     { mode = { "n", "x" }, keys = "'" },
+    { mode = { "n", "x" }, keys = "g'" },
     { mode = { "n", "x" }, keys = "`" },
-    { mode = { "n", "x" }, keys = "m" },
+    { mode = { "n", "x" }, keys = "g`" },
 
     -- Registers
     { mode = { "n", "x" }, keys = '"' },
@@ -33,6 +34,7 @@ clue.setup({
     { mode = "n", keys = "gb", desc = "Box" },
     { mode = { "n", "v" }, keys = "gl", desc = "Lsp" },
     -- stylua: ignore start
+    { mode = {"n", "v"}, keys = "<leader>\\", desc = "+Toggle" },
     { mode = {"n", "v"}, keys = "<leader>b",  desc = "+Buffer" },
     { mode = {"n", "v"}, keys = "<leader>d",  desc = "+Debugger" },
     { mode = {"n", "v"}, keys = "<leader>e",  desc = "+Editor" },
