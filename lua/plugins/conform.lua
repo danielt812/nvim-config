@@ -18,10 +18,10 @@ conform.formatters.stylua = {
 
 conform.formatters_by_ft.lua = { "stylua" }
 
--- Gofmt -----------------------------------------------------------------------
+-- gofmt -----------------------------------------------------------------------
 conform.formatters_by_ft.go = { "gofmt" }
 
--- Prettier --------------------------------------------------------------------
+-- prettier --------------------------------------------------------------------
 local prettier_args = {
   "--trailing-comma=es5",
   "--tab-width=2",
@@ -54,7 +54,7 @@ local prettier_filetypes = {
 }
 
 for _, filetype in pairs(prettier_filetypes) do
-  conform.formatters_by_ft[filetype] = { "prettierd", "prettier" }
+  conform.formatters_by_ft[filetype] = { "prettierd", "prettier", stop_after_first = true }
 end
 
 -- shfmt -----------------------------------------------------------------------
