@@ -28,7 +28,6 @@ local prettier_args = {
   "--single-quote=false",
   "--prose-wrap=preserve",
   "--print-width=120",
-  "--single-attribute-per-line",
 }
 conform.formatters.prettierd = {
   prepend_args = prettier_args,
