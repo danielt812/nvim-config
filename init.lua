@@ -230,10 +230,10 @@ end)
 -- LSP extras ------------------------------------------------------------------
 later(function()
   -- Winbar breadcrumbs
-  add({ source = "SmiteshP/nvim-navic" })
   -- Symbol navigation
-  add({ source = "SmiteshP/nvim-navbuddy" })
-  plug("nav")
+  -- add({ source = "SmiteshP/nvim-navic" })
+  -- add({ source = "SmiteshP/nvim-navbuddy" })
+  -- plug("nav")
 end)
 
 -- Terminal --------------------------------------------------------------------
@@ -248,5 +248,6 @@ later(function()
   mod("indent")
   mod("marks")
   mod("modes")
+  mod("winbar")
   mod("yank")
 end)

@@ -207,7 +207,7 @@ statusline.setup({
       local filename = section_filename({ trunc_width = 120 })
       local filetype = section_filetype({ trunc_width = 120 })
       local shiftwidth = section_shift_width({ trunc_width = 120 })
-      local disabled = section_disabled({ trunc_width = 120, icon = true })
+      local disabled = section_disabled({ trunc_width = 70, icon = true })
       local spell = section_spell({ trunc_width = 120 })
       local searchcount = section_searchcount({ trunc_width = 70 })
       local location = section_location({ trunc_width = 70 })

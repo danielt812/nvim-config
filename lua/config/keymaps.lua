@@ -59,10 +59,10 @@ end, { noremap = true, silent = true })
 
 -- Put this into keymaps.lua
 vim.keymap.set("n", "<C-r>", function()
-  package.loaded["modules.indent"] = nil
-  require("modules.indent").setup()
-  vim.notify("modules.indent reloaded")
-end, { desc = "Reload Indent Module" })
+  package.loaded["modules.winbar"] = nil
+  require("modules.winbar").setup()
+  vim.notify("modules.winbar reloaded")
+end, { desc = "Reload Winbar Module" })
 
 -- Create scratch buffer
 -- vim.keymap.set("n", "<leader>bs", function()

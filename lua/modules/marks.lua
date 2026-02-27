@@ -76,12 +76,6 @@ H.apply_config = function(config)
 
   H.map("n", maps.delete_mark, ModMarks.delete_mark, { desc = "Delete mark" })
   H.map("n", maps.set_mark, ModMarks.set_mark, { desc = "Delete mark" })
-
-  -- Define behavior
-  H.create_autocmds()
-
-  -- Create default highlighting
-  H.create_default_hl()
 end
 
 H.create_default_hl = function()
