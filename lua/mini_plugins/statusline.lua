@@ -11,6 +11,7 @@ statusline.setup({
 
       local section_git = function(args)
         local truncate = statusline.is_truncated(args.trunc_width)
+        if truncate then return "" end
 
         local summary = vim.b.minigit_summary
         if type(summary) ~= "table" then return "" end
@@ -19,13 +20,14 @@ statusline.setup({
         if not branch then return "" end
 
         local icon = args.icon and "" .. " " or ""
-        return truncate and "" or icon .. "%#MiniStatuslineGit#" .. branch .. "%#MiniStatuslineDevinfo#"
+        return icon .. "%#MiniStatuslineGit#" .. branch .. "%#MiniStatuslineDevinfo#"
       end
 
       local section_diff = function(args)
         local truncate = statusline.is_truncated(args.trunc_width)
-        local summary = vim.b.minidiff_summary
+        if truncate then return "" end
 
+        local summary = vim.b.minidiff_summary
         if type(summary) ~= "table" then return "" end
 
         local symbols = {
@@ -47,7 +49,7 @@ statusline.setup({
         if not has_diff then return "" end
 
         local icon = args.icon and "" .. " " or ""
-        return truncate and "" or icon .. table.concat(diffs, "|")
+        return icon .. table.concat(diffs, "|")
       end
 
       local function section_diagnostics(args)
@@ -85,15 +87,17 @@ statusline.setup({
       end
 
       local section_filename = function(args)
+        if vim.bo.buftype == "toggleterm" then return "%t" end
+
         local truncate = statusline.is_truncated(args.trunc_width)
+        if truncate then return "%t %h" end
 
-        if vim.bo.buftype == "toggleterm" or vim.bo.buftype == "terminal" then return "%t" end
-
-        return truncate and "%t %h" or "%f %h"
+        return "%f %h"
       end
 
       local section_filetype = function(args)
         local truncate = statusline.is_truncated(args.trunc_width)
+        if truncate then return "" end
 
         local ft = vim.bo.filetype or "none"
         if ft == "toggleterm" then return nil end
@@ -103,27 +107,30 @@ statusline.setup({
 
         local fileinfo = string.format("%%#%s#%s %%#MiniStatuslineFileinfo#%s", color or "", icon, ft)
 
-        return truncate and "" or fileinfo
-      end
-
-      local section_shift_width = function(args)
-        local truncate = statusline.is_truncated(args.trunc_width)
-
-        local shiftwidth = "󰌒 " .. vim.bo.shiftwidth
-
-        return truncate and "" or shiftwidth
+        return fileinfo
       end
 
       local section_spell = function(args)
         local truncate = statusline.is_truncated(args.trunc_width)
+        if truncate then return "" end
 
         local spell = vim.wo.spell and "󰓆" or ""
 
-        return truncate and "" or spell
+        return spell
+      end
+
+      local section_shift_width = function(args)
+        local truncate = statusline.is_truncated(args.trunc_width)
+        if truncate then return "" end
+
+        local shiftwidth = "󰌒 " .. vim.bo.shiftwidth
+
+        return shiftwidth
       end
 
       local section_searchcount = function(args)
         local truncate = statusline.is_truncated(args.trunc_width)
+        if truncate then return "" end
 
         local in_search = vim.fn.getcmdtype() == "/" or vim.fn.getcmdtype() == "?"
         if vim.v.hlsearch == 0 and not in_search then return "" end
@@ -141,11 +148,12 @@ statusline.setup({
         local current = s_count.current > s_count.maxcount and too_many or s_count.current
         local total = s_count.total > s_count.maxcount and too_many or s_count.total
 
-        return truncate and "" or current .. "/" .. total
+        return current .. "/" .. total
       end
 
       local section_location = function(args)
         local truncate = statusline.is_truncated(args.trunc_width)
+        if truncate then return "" end
 
         local ft = vim.bo.filetype or "none"
         if ft == "toggleterm" then return nil end
@@ -153,16 +161,17 @@ statusline.setup({
         local line = vim.fn.line(".")
         local col = vim.fn.col(".")
 
-        return truncate and "" or line .. ":" .. col -- string.format("%d:%d", line, col)
+        return line .. ":" .. col -- string.format("%d:%d", line, col)
       end
 
       local section_progress = function(args)
         local truncate = statusline.is_truncated(args.trunc_width)
+        if truncate then return "" end
 
         local ft = vim.bo.filetype or "none"
         if ft == "toggleterm" then return nil end
 
-        return truncate and "" or "%P"
+        return "%P"
       end
 
       local mode, mode_hl = statusline.section_mode({ trunc_width = 120 })
@@ -176,8 +185,6 @@ statusline.setup({
       local searchcount = section_searchcount({ trunc_width = 70 })
       local location = section_location({ trunc_width = 70 })
       local progress = section_progress({ trunc_width = 70 })
-
-      local truncate = statusline.is_truncated(70)
 
       return statusline.combine_groups({
         { hl = mode_hl, strings = combine_strings({ mode }, "│") },
