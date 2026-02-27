@@ -234,6 +234,8 @@ later(function()
   -- add({ source = "SmiteshP/nvim-navic" })
   -- add({ source = "SmiteshP/nvim-navbuddy" })
   -- plug("nav")
+  -- add({ source = "Bekaboo/dropbar.nvim" })
+  -- require("dropbar").setup()
 end)
 
 -- Terminal --------------------------------------------------------------------
