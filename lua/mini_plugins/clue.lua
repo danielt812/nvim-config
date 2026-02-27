@@ -16,9 +16,7 @@ clue.setup({
 
     -- Marks
     { mode = { "n", "x" }, keys = "'" },
-    { mode = { "n", "x" }, keys = "g'" },
     { mode = { "n", "x" }, keys = "`" },
-    { mode = { "n", "x" }, keys = "g`" },
 
     -- Registers
     { mode = { "n", "x" }, keys = '"' },
