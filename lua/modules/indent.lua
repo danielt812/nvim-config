@@ -116,12 +116,9 @@ H.make_view_key = function(win)
   local leftcol = (vim.fn.winsaveview().leftcol or 0)
   return table.concat({ buf, top, bot, leftcol }, ":")
 end
+
 -- Indents ---------------------------------------------------------------------
 
---- Return the effective indent “step” (in screen columns) for a buffer.
---- Uses `shiftwidth` when it’s > 0, otherwise falls back to `tabstop`.
----@param buf_id number|nil Buffer handle (0 = current)
----@return number indent_step Columns per indent level
 H.get_indent_step = function(buf_id)
   buf_id = buf_id or 0
   if vim.bo[buf_id].shiftwidth > 0 then
@@ -131,12 +128,6 @@ H.get_indent_step = function(buf_id)
   end
 end
 
---- Get effective indent for a line.
---- For non-blank lines: its own indent.
---- For blank lines: minimum of previous and next non-blank indents.
----@param buf number
----@param lnum number
----@return number indent_cols
 H.get_effective_indent_cols = function(buf, lnum)
   return vim.api.nvim_buf_call(buf, function()
     local line = vim.fn.getline(lnum)
@@ -168,12 +159,6 @@ end
 
 -- Rendering -------------------------------------------------------------------
 
---- Decide whether indent guides should render for a given buffer/window.
---- Applies hard defaults (valid buf/win, same buf in win, normal buftype, non-float),
---- then config-based checks.
----@param buf number
----@param win number
----@return boolean
 H.should_render = function(buf, win)
   if H.is_disabled() then return false end
   if not vim.api.nvim_buf_is_valid(buf) then return false end
@@ -190,10 +175,6 @@ H.should_render = function(buf, win)
   return true
 end
 
---- Render indent guide symbols for a single line.
----@param buf number
----@param lnum number
----@return nil
 H.render_line = function(buf, lnum, leftcol)
   local cols = H.get_guide_cols_for_line(buf, lnum)
   if #cols == 0 then return end
@@ -232,10 +213,6 @@ H.render_line = function(buf, lnum, leftcol)
   end
 end
 
---- Render indent guides for the currently visible lines in a window.
----@param buf number
----@param win number
----@return nil
 H.render = function(buf, win)
   if not H.should_render(buf, win) then return end
 
@@ -250,20 +227,12 @@ H.render = function(buf, win)
   end
 end
 
---- Clear ModIndent extmarks for a single buffer.
----@param buf_id number|nil
----@return nil
 H.clear_ns = function(buf_id)
   buf_id = buf_id or vim.api.nvim_get_current_buf()
   if not vim.api.nvim_buf_is_valid(buf_id) then return end
   vim.api.nvim_buf_clear_namespace(buf_id, H.ns_id, 0, -1)
 end
 
---- Auto-render indent guides in the current window.
---- Uses a cached render key to skip work on "lazy" events (cursor/mode moves),
---- and uses an event id to prevent out-of-order deferred draws.
----@param opts table|nil { lazy?: boolean }
----@return nil
 H.auto_draw = function(opts)
   opts = opts or {}
 

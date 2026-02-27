@@ -1,5 +1,5 @@
 -- #############################################################################
--- #                            Breadcrumbs Module                             #
+-- #                               Winbar Module                               #
 -- #############################################################################
 
 -- Module definition -----------------------------------------------------------
@@ -16,11 +16,14 @@ ModWinbar.setup = function(config)
   -- Apply config
   H.apply_config(config)
 
+  -- Define behavior
+  H.create_autocommands()
+
   -- Create default highlighting
   H.create_default_hl()
 end
 
--- Defaults
+-- Defaults --------------------------------------------------------------------
 ModWinbar.config = {
   winbar = {
     icons = true,
@@ -35,12 +38,16 @@ ModWinbar.config = {
   icons = {},
 }
 
--- Module functionality --------------------------------------------------------
+-- ModWinbar functionality --------------------------------------------------------
+--- Enable the winbar for a buffer.
+--- @param bufnr? integer Buffer handle, defaults to current buffer.
 ModWinbar.enable = function(bufnr)
   bufnr = bufnr or vim.api.nvim_get_current_buf()
   vim.b[bufnr].modwinbar_disable = false
 end
 
+--- Disable the winbar for a buffer and clear it from all windows showing that buffer.
+--- @param bufnr? integer Buffer handle, defaults to current buffer.
 ModWinbar.disable = function(bufnr)
   bufnr = bufnr or vim.api.nvim_get_current_buf()
   vim.b[bufnr].modwinbar_disable = true
@@ -49,6 +56,8 @@ ModWinbar.disable = function(bufnr)
   end
 end
 
+--- Toggle the winbar on or off for a buffer.
+--- @param bufnr? integer Buffer handle, defaults to current buffer.
 ModWinbar.toggle = function(bufnr)
   bufnr = bufnr or vim.api.nvim_get_current_buf()
   if vim.b[bufnr].modwinbar_disable then
@@ -100,21 +109,18 @@ H.setup_config = function(config)
   config = vim.tbl_deep_extend("force", vim.deepcopy(H.default_config), config or {})
 
   H.check_type("winbar", config.winbar, "table")
-  H.check_type("separator", config.winbar.separator, "string")
-  H.check_type("icons", config.winbar.icons, "boolean")
-  H.check_type("alt_icons", config.winbar.alt_icons, "boolean")
-  H.check_type("max_depth", config.winbar.max_depth, "number")
-  H.check_type("always_show", config.winbar.always_show, "boolean")
+  H.check_type("winbar.separator", config.winbar.separator, "string")
+  H.check_type("winbar.icons", config.winbar.icons, "boolean")
+  H.check_type("winbar.alt_icons", config.winbar.alt_icons, "boolean")
+  H.check_type("winbar.max_depth", config.winbar.max_depth, "number")
+  H.check_type("winbar.always_show", config.winbar.always_show, "boolean")
 
   H.check_type("icons", config.icons, "table")
 
   return config
 end
 
-H.apply_config = function(config)
-  ModWinbar.config = config
-  H.create_autocommands()
-end
+H.apply_config = function(config) ModWinbar.config = config end
 
 H.create_autocommands = function()
   H.group = vim.api.nvim_create_augroup("ModWinbar", { clear = true })
@@ -126,10 +132,6 @@ H.create_autocommands = function()
   au("LspAttach", "*", H.on_lsp_attach, "Check for documentSymbol support on LSP attach")
 
   au("CursorMoved", "*", H.on_cursor_moved, "Update winbar symbol path on cursor move")
-end
-
-H.get_config = function(config)
-  return vim.tbl_deep_extend("force", ModWinbar.config, vim.b.modwinbar_config or {}, config or {})
 end
 
 H.create_default_hl = function()
@@ -165,6 +167,10 @@ H.create_default_hl = function()
 end
 
 H.is_disabled = function() return vim.g.modwinbar_disable == true or vim.b.modwinbar_disable == true end
+
+H.get_config = function(config)
+  return vim.tbl_deep_extend("force", ModWinbar.config, vim.b.modwinbar_config or {}, config or {})
+end
 
 -- Autocommands ----------------------------------------------------------------
 H.on_lsp_attach = function(args)
@@ -222,6 +228,7 @@ H.on_cursor_moved = function(args)
   H.cache[bufnr].cancel_request = cancel
 end
 
+-- Rendering -------------------------------------------------------------------
 H.render = function(symbol_path)
   if not symbol_path or #symbol_path == 0 then return H.get_config().winbar.always_show and " " or "" end
 
@@ -253,6 +260,7 @@ H.render = function(symbol_path)
 end
 
 H.pos_in_range = function(range, row, col)
+  if not range or not range.start or not range["end"] then return false end
   if row < range.start.line or row > range["end"].line then return false end
   if row == range.start.line and col < range.start.character then return false end
   if row == range["end"].line and col > range["end"].character then return false end
@@ -260,6 +268,12 @@ H.pos_in_range = function(range, row, col)
 end
 
 H.find_symbols_at_pos = function(symbols, row, col)
+  -- SymbolInformation (flat list) vs DocumentSymbol (tree)
+  if #symbols > 0 and not symbols[1].range then
+    return H.find_flat_symbols_at_pos(symbols, row, col)
+  end
+
+  -- DocumentSymbol: recursive tree traversal
   local path = {}
   for _, symbol in ipairs(symbols) do
     if H.pos_in_range(symbol.range, row, col) then
@@ -269,6 +283,24 @@ H.find_symbols_at_pos = function(symbols, row, col)
     end
   end
   return path
+end
+
+H.find_flat_symbols_at_pos = function(symbols, row, col)
+  local matches = {}
+  for _, symbol in ipairs(symbols) do
+    local range = symbol.location and symbol.location.range
+    if H.pos_in_range(range, row, col) then
+      table.insert(matches, symbol)
+    end
+  end
+  table.sort(matches, function(a, b)
+    local ra, rb = a.location.range, b.location.range
+    if ra.start.line ~= rb.start.line then return ra.start.line < rb.start.line end
+    if ra.start.character ~= rb.start.character then return ra.start.character < rb.start.character end
+    if ra["end"].line ~= rb["end"].line then return ra["end"].line > rb["end"].line end
+    return ra["end"].character > rb["end"].character
+  end)
+  return matches
 end
 
 -- Utils -----------------------------------------------------------------------
