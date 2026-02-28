@@ -4,9 +4,13 @@ local icons = require("mini.icons")
 statusline.setup({
   content = {
     active = function()
-      local combine_strings = function(tbl, seperator)
-        seperator = seperator and " " .. seperator .. " " or " "
-        return { table.concat(vim.fn.filter(tbl, function(_, v) return v ~= nil and v ~= "" end), seperator) }
+      local function combine_strings(strings, separator)
+        separator = separator and (" " .. separator .. " ") or " "
+        local out = {}
+        for _, str in ipairs(strings) do
+          if str ~= nil and str ~= "" then out[#out + 1] = str end
+        end
+        return { table.concat(out, separator) }
       end
 
       local section_git = function(args)
@@ -49,7 +53,7 @@ statusline.setup({
         if not has_diff then return "" end
 
         local icon = args.icon and "" .. " " or ""
-        return icon .. table.concat(diffs, "|")
+        return icon .. table.concat(diffs, args.symbols and " " or "·")
       end
 
       local function section_diagnostics(args)
@@ -72,11 +76,11 @@ statusline.setup({
           local num = count[severity[level.name]] or 0
           if num > 0 then
             local str
+            local hl = "%#MiniStatuslineDiagnostic" .. level.name .. "#"
             if args.symbols then
-              -- stylua: ignore
-              str = string.format("%%#MiniStatuslineDiagnostic%s#%s %d%%#MiniStatuslineDevinfo#", level.name, level.sign, num)
+              str = hl .. level.sign .. " " .. num .. "%#MiniStatuslineDevinfo#"
             else
-              str = string.format("%%#MiniStatuslineDiagnostic%s#%d%%#MiniStatuslineDevinfo#", level.name, num)
+              str = hl .. num .. "%#MiniStatuslineDevinfo#"
             end
             table.insert(diagnostics, str)
           end
@@ -84,7 +88,7 @@ statusline.setup({
 
         if #diagnostics == 0 then return "" end
         local icon = args.icon and "" .. " " or ""
-        return icon .. table.concat(diagnostics, "|")
+        return icon .. table.concat(diagnostics, args.symbols and " " or "·")
       end
 
       local section_filename = function(args)
