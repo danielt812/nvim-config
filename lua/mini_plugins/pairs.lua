@@ -40,19 +40,23 @@ vim.keymap.set("n", "<leader>\\p", toggle_pairs, { desc = "Pairs" })
 
 local group = vim.api.nvim_create_augroup("mini_pairs", { clear = true })
 
+local disable_pairs = function()
+  local cmdtype = vim.fn.getcmdtype()
+  if cmdtype == "/" or cmdtype == "?" then vim.g.minipairs_disable = true end
+end
+
 vim.api.nvim_create_autocmd("CmdlineEnter", {
   pattern = "*",
   group = group,
   desc = "Disable minipairs in search",
-  callback = function()
-    local cmdtype = vim.fn.getcmdtype()
-    if cmdtype == "/" or cmdtype == "?" then vim.g.minipairs_disable = true end
-  end,
+  callback = disable_pairs,
 })
+
+local enable_pairs = function() vim.g.minipairs_disable = false end
 
 vim.api.nvim_create_autocmd("CmdlineLeave", {
   pattern = "*",
   group = group,
   desc = "Restore minipairs state",
-  callback = function() vim.g.minipairs_disable = false end,
+  callback = enable_pairs,
 })
