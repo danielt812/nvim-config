@@ -53,11 +53,12 @@ statusline.setup({
       end
 
       local function section_diagnostics(args)
+        -- stylua: ignore
         local levels = {
           { name = "ERROR", sign = "" },
-          { name = "WARN", sign = "" },
-          { name = "INFO", sign = "" },
-          { name = "HINT", sign = "" },
+          { name = "WARN",  sign = "" },
+          { name = "INFO",  sign = "" },
+          { name = "HINT",  sign = "" },
         }
 
         if statusline.is_truncated(args.trunc_width) then return "" end
@@ -271,10 +272,13 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   callback = apply_hl,
 })
 
-local redraw_status = function() vim.cmd("redrawstatus") end
+local redraw_status = function()
+  local cmdtype = vim.fn.getcmdtype()
+  if cmdtype == "/" or cmdtype == "?" then vim.cmd("redrawstatus") end
+end
 
 vim.api.nvim_create_autocmd("CmdlineChanged", {
-  pattern = { "/", "?" },
+  pattern = "*",
   group = group,
   desc = "Redraw statusline on search",
   callback = redraw_status,
