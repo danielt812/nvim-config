@@ -196,7 +196,7 @@ local highlights = {
 
   -- stylua: ignore start
   CursorLineNr    = { fg = palette.fg },
-  CursorLine      = { bg = palette.bg3 },
+  CursorLine      = { bg = palette.bg2 },
   CursorLineFloat = { bg = palette.bg4 },
   -- stylua: ignore end
 
