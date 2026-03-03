@@ -59,10 +59,10 @@ end, { noremap = true, silent = true })
 
 -- Put this into keymaps.lua
 vim.keymap.set("n", "<C-r>", function()
-  package.loaded["modules.winbar"] = nil
-  require("modules.winbar").setup()
-  vim.notify("modules.winbar reloaded")
-end, { desc = "Reload Winbar Module" })
+  package.loaded["modules.blame"] = nil
+  require("modules.blame").setup()
+  vim.notify("modules.blame reloaded")
+end, { desc = "Reload Blame Module" })
 
 -- Create scratch buffer
 -- vim.keymap.set("n", "<leader>bs", function()

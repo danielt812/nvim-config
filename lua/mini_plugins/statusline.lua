@@ -215,7 +215,7 @@ statusline.setup({
       local diff        = section_diff       ({ trunc_width = 70, icon = true, symbols = false })
       local diagnostics = section_diagnostics({ trunc_width = 70, icon = true, symbols = false })
       local filename    = section_filename   ({ trunc_width = 120 })
-      local filetype    = section_filetype   ({ trunc_width = 70 })
+      local filetype    = section_filetype   ({ trunc_width = 30 })
       local shiftwidth  = section_shift_width({ trunc_width = 120 })
       local disabled    = section_disabled   ({ trunc_width = 70, icon = true })
       local spell       = section_spell      ({ trunc_width = 120 })

@@ -150,7 +150,7 @@ end)
 -- Shared dependencies ---------------------------------------------------------
 later(function()
   add({ source = "nvim-lua/plenary.nvim" })
-  add({ source = "MunifTanjim/nui.nvim" })
+  -- add({ source = "MunifTanjim/nui.nvim" })
 end)
 
 -- Window ----------------------------------------------------------------------
@@ -173,8 +173,8 @@ end)
 
 -- Git -------------------------------------------------------------------------
 later(function()
-  add({ source = "FabijanZulj/blame.nvim" })
-  plug("blame")
+  -- add({ source = "FabijanZulj/blame.nvim" })
+  -- plug("blame")
 end)
 
 -- Executables -----------------------------------------------------------------
@@ -246,6 +246,7 @@ end)
 
 -- Extras ----------------------------------------------------------------------
 later(function()
+  mod("blame")
   mod("boxes")
   mod("indent")
   mod("marks")
