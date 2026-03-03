@@ -75,9 +75,9 @@ H.cache = {}
 -- stylua: ignore start
 H.kinds = {
   [1]  = { name = "file",          hl = "ModWinbarFile",          default = "", alt = "󰈙" },
-  [2]  = { name = "module",        hl = "ModWinbarModule",        default = "", alt = "" },
+  [2]  = { name = "module",        hl = "ModWinbarModule",        default = '󰏗', alt = "" },
   [3]  = { name = "namespace",     hl = "ModWinbarNamespace",     default = "", alt = "" },
-  [4]  = { name = "package",       hl = "ModWinbarPackage",       default = "", alt = "󰉋" },
+  [4]  = { name = "package",       hl = "ModWinbarPackage",       default = "", alt = "" },
   [5]  = { name = "class",         hl = "ModWinbarClass",         default = "", alt = "󰠱" },
   [6]  = { name = "method",        hl = "ModWinbarMethod",        default = "", alt = "󰆧" },
   [7]  = { name = "property",      hl = "ModWinbarProperty",      default = "", alt = "󰜢" },
