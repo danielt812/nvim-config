@@ -11,8 +11,9 @@ local zoom = function()
   -- stylua: ignore
   if vim.api.nvim_win_get_config(0).relative == "" then return end
 
-  vim.wo.winbar = nil
-  vim.wo.winhighlight = "NormalFloat:Normal"
+  vim.wo.number = true
+  vim.wo.relativenumber = true
+  vim.wo.winhighlight = "NormalFloat:Normal,FloatBorder:Normal,FloatTitle:Normal"
 end
 
 local centered_zoom = function()
@@ -27,9 +28,13 @@ local centered_zoom = function()
     col = math.floor((ui.width - width) / 2),
     row = 2,
     style = "minimal",
+    title = " Zoom (centered) "
   })
 
-  vim.wo.winhighlight = "NormalFloat:Normal"
+  vim.wo.number = true
+  vim.wo.relativenumber = true
+  vim.wo.winhighlight = "NormalFloat:Normal,FloatBorder:Normal,FloatTitle:Normal"
 end
 
-vim.keymap.set("n", "<leader>ez", centered_zoom, { desc = "Zoom" })
+vim.keymap.set("n", "<leader>ez", zoom, { desc = "Zoom" })
+vim.keymap.set("n", "<leader>eZ", centered_zoom, { desc = "Zoom (centered)" })
