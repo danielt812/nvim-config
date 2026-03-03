@@ -60,6 +60,9 @@ statusline.setup({
         local truncate = statusline.is_truncated(args.trunc_width)
         if truncate then return "" end
 
+        local count = vim.diagnostic.count(0)
+        if not count or not vim.diagnostic.is_enabled({ bufnr = 0 }) then return "" end
+
         -- stylua: ignore
         local levels = {
           { name = "ERROR", sign = "" },
@@ -67,9 +70,6 @@ statusline.setup({
           { name = "INFO",  sign = "" },
           { name = "HINT",  sign = "" },
         }
-
-        local count = vim.diagnostic.count(0)
-        if not count or not vim.diagnostic.is_enabled({ bufnr = 0 }) then return "" end
 
         local severity = vim.diagnostic.severity
         local diagnostics = {}
@@ -109,23 +109,24 @@ statusline.setup({
         local ft = vim.bo.filetype or "none"
         if ft == "toggleterm" then return nil end
 
-        local icon, hl_name = icons.get("filetype", ft, { with_hl = true })
-        local color = hl_name:gsub("MiniIcons", "MiniStatuslineIcons")
+        local icon, icon_hl = icons.get("filetype", ft, { with_hl = true })
+        icon_hl = icon_hl:gsub("MiniIcons", "MiniStatuslineIcons")
 
-        local fileinfo = string.format("%%#%s#%s %%#MiniStatuslineFileinfo#%s", color or "", icon, ft)
+        local str = "%#" .. icon_hl .. "#" .. icon .. " %#MiniStatuslineFileinfo#" .. ft
 
-        return fileinfo
+        return str
       end
 
       local section_disabled = function(args)
         local truncate = statusline.is_truncated(args.trunc_width)
         if truncate then return "" end
 
+        -- stylua: ignore
         local plugins = {
-          animate = "A",
-          hipatterns = "H",
+          animate     = "A",
+          hipatterns  = "H",
           indentscope = "I",
-          pairs = "P",
+          pairs       = "P",
         }
 
         local disabled = {}
@@ -208,17 +209,20 @@ statusline.setup({
       end
 
       local mode, mode_hl = statusline.section_mode({ trunc_width = 120 })
-      local git = section_git({ trunc_width = 70, icon = true })
-      local diff = section_diff({ trunc_width = 70, icon = true, symbols = false })
+
+      -- stylua: ignore start
+      local git         = section_git        ({ trunc_width = 70, icon = true })
+      local diff        = section_diff       ({ trunc_width = 70, icon = true, symbols = false })
       local diagnostics = section_diagnostics({ trunc_width = 70, icon = true, symbols = false })
-      local filename = section_filename({ trunc_width = 120 })
-      local filetype = section_filetype({ trunc_width = 120 })
-      local shiftwidth = section_shift_width({ trunc_width = 120 })
-      local disabled = section_disabled({ trunc_width = 70, icon = true })
-      local spell = section_spell({ trunc_width = 120 })
+      local filename    = section_filename   ({ trunc_width = 120 })
+      local filetype    = section_filetype   ({ trunc_width = 70 })
+      local shiftwidth  = section_shift_width({ trunc_width = 120 })
+      local disabled    = section_disabled   ({ trunc_width = 70, icon = true })
+      local spell       = section_spell      ({ trunc_width = 120 })
       local searchcount = section_searchcount({ trunc_width = 70 })
-      local location = section_location({ trunc_width = 70 })
-      local progress = section_progress({ trunc_width = 70 })
+      local location    = section_location   ({ trunc_width = 70 })
+      local progress    = section_progress   ({ trunc_width = 70 })
+      -- stylua: ignore end
 
       return statusline.combine_groups({
         { hl = mode_hl, strings = combine_strings({ mode }, "│") },
@@ -263,7 +267,7 @@ local apply_hl = function()
     merge_hl("MiniIcons" .. suffix, prefix .. "Fileinfo", prefix .. "Icons" .. suffix)
   end
   -- Git
-  merge_hl("White", prefix .. "Devinfo", prefix .. "Git")
+  merge_hl("Terminal", prefix .. "Devinfo", prefix .. "Git")
 end
 
 -- Call once when this module is loaded
