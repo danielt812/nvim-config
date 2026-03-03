@@ -112,38 +112,37 @@ ModBlame.config = {
 
 -- Module functionality --------------------------------------------------------
 ModBlame.file = function()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local cur_win = vim.api.nvim_get_current_win()
+  local buf = vim.api.nvim_get_current_buf()
 
   -- If we're inside a blame window, close it via its source buf entry
-  for src_bufnr, state in pairs(H.cache.window) do
-    if state.win == cur_win then
-      vim.api.nvim_win_close(state.win, true)
+  for src_bufnr, cache in pairs(H.cache.window) do
+    if cache.win == vim.api.nvim_get_current_win() then
+      vim.api.nvim_win_close(cache.win, true)
       H.cache.window[src_bufnr] = nil
       return
     end
   end
 
-  local existing = H.cache.window[bufnr]
+  local existing = H.cache.window[buf]
   if existing and vim.api.nvim_win_is_valid(existing.win) then
     vim.api.nvim_win_close(existing.win, true)
-    H.cache.window[bufnr] = nil
+    H.cache.window[buf] = nil
     return
   end
 
   local blame_win = H.create_window()
-  H.cache.window[bufnr] = blame_win
+  H.cache.window[buf] = blame_win
 
-  local close = function() H.close_window(bufnr) end
+  local close = function() H.close_window(buf) end
   vim.keymap.set("n", "q", close, { buffer = blame_win.buf, silent = true })
   vim.keymap.set("n", "<Esc>", close, { buffer = blame_win.buf, silent = true })
 
-  local file = vim.api.nvim_buf_get_name(bufnr)
+  local file = vim.api.nvim_buf_get_name(buf)
   H.get_blame(file, function(blame)
     vim.schedule(function()
       if not vim.api.nvim_buf_is_valid(blame_win.buf) then return end
       local config = H.get_config()
-      local line_count = vim.api.nvim_buf_line_count(bufnr)
+      local line_count = vim.api.nvim_buf_line_count(buf)
       local lines = {}
       local merged = {}
       local line_hash = {}
