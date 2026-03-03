@@ -139,7 +139,7 @@ H.get_effective_indent_cols = function(buf, lnum)
     local prev_indent = (prev > 0) and vim.fn.indent(prev) or 0
     local next_indent = (next > 0) and vim.fn.indent(next) or 0
 
-    return math.min(prev_indent, next_indent)
+    return math.max(prev_indent, next_indent)
   end)
 end
 
