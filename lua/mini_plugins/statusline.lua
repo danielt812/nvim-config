@@ -57,6 +57,9 @@ statusline.setup({
       end
 
       local function section_diagnostics(args)
+        local truncate = statusline.is_truncated(args.trunc_width)
+        if truncate then return "" end
+
         -- stylua: ignore
         local levels = {
           { name = "ERROR", sign = "" },
@@ -65,7 +68,6 @@ statusline.setup({
           { name = "HINT",  sign = "" },
         }
 
-        if statusline.is_truncated(args.trunc_width) then return "" end
         local count = vim.diagnostic.count(0)
         if not count or not vim.diagnostic.is_enabled({ bufnr = 0 }) then return "" end
 
@@ -78,7 +80,7 @@ statusline.setup({
             local str
             local hl = "%#MiniStatuslineDiagnostic" .. level.name .. "#"
             if args.symbols then
-              str = hl .. level.sign .. " " .. num .. "%#MiniStatuslineDevinfo#"
+              str = hl .. level.sign .. " " .. "%#MiniStatuslineDevinfo#" .. num
             else
               str = hl .. num .. "%#MiniStatuslineDevinfo#"
             end
