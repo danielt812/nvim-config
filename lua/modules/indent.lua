@@ -113,7 +113,7 @@ H.make_view_key = function(win)
   local buf = vim.api.nvim_win_get_buf(win)
   local top = vim.fn.line("w0", win)
   local bot = vim.fn.line("w$", win)
-  local leftcol = (vim.fn.winsaveview().leftcol or 0)
+  local leftcol = vim.api.nvim_win_call(win, function() return vim.fn.winsaveview().leftcol or 0 end)
   return table.concat({ buf, top, bot, leftcol }, ":")
 end
 
@@ -182,7 +182,7 @@ H.render_line = function(buf, lnum, leftcol)
   local indent_cols = H.get_effective_indent_cols(buf, lnum)
   if indent_cols <= 0 then return end
 
-  local line = vim.fn.getline(lnum)
+  local line = vim.api.nvim_buf_get_lines(buf, lnum - 1, lnum, false)[1] or ""
   local symbol = H.get_config().symbol
   local priority = H.get_config().draw.priority
   local show_tabs = H.get_config().show_tabs
@@ -218,12 +218,12 @@ H.render = function(buf, win)
 
   local top = vim.fn.line("w0", win)
   local bot = vim.fn.line("w$", win)
-  local view = vim.fn.winsaveview()
+  local leftcol = vim.api.nvim_win_call(win, function() return vim.fn.winsaveview().leftcol end)
 
   vim.api.nvim_buf_clear_namespace(buf, H.ns_id, top - 1, bot)
 
   for lnum = top, bot do
-    H.render_line(buf, lnum, view.leftcol)
+    H.render_line(buf, lnum, leftcol)
   end
 end
 
@@ -236,18 +236,18 @@ end
 H.auto_draw = function(opts)
   opts = opts or {}
 
-  local win = vim.api.nvim_get_current_win()
-  local buf = vim.api.nvim_win_get_buf(win)
-
-  if not H.should_render(buf, win) then return end
-
-  if opts.lazy then
-    local key = H.make_view_key(win)
-    if H.cache[win] == key then return end
-    H.cache[win] = key
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    if H.should_render(buf, win) then
+      if opts.lazy then
+        local key = H.make_view_key(win)
+        if H.cache[win] == key then goto continue end
+        H.cache[win] = key
+      end
+      H.render(buf, win)
+    end
+    ::continue::
   end
-
-  H.render(buf, win)
 end
 
 -- Utils -----------------------------------------------------------------------
