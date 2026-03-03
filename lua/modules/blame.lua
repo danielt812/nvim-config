@@ -490,6 +490,7 @@ H.close_window = function(src_bufnr)
     vim.wo[w.source_win].winbar = w.source_winbar
     vim.wo[w.source_win].number = w.source_number
     vim.wo[w.source_win].relativenumber = w.source_relativenumber
+    vim.wo[w.source_win].signcolumn = w.source_signcolumn
     vim.wo[w.source_win].scrollbind = false
     vim.wo[w.source_win].cursorbind = false
   end
@@ -523,11 +524,13 @@ H.create_window = function()
   local source_winbar = vim.wo[source_win].winbar
   local source_number = vim.wo[source_win].number
   local source_relativenumber = vim.wo[source_win].relativenumber
+  local source_signcolumn = vim.wo[source_win].signcolumn
   vim.wo[source_win].wrap = false
   vim.wo[source_win].winbar = ""
   if numbers then
     vim.wo[source_win].number = false
     vim.wo[source_win].relativenumber = false
+    vim.wo[source_win].signcolumn = "no"
   end
   vim.wo[source_win].scrollbind = true
   vim.wo[source_win].cursorbind = true
@@ -541,6 +544,7 @@ H.create_window = function()
     source_winbar = source_winbar,
     source_number = source_number,
     source_relativenumber = source_relativenumber,
+    source_signcolumn = source_signcolumn,
   }
 end
 
