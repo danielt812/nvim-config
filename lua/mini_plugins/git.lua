@@ -131,7 +131,7 @@ local parse_porcelain = function(lines)
     table.insert(parsed, {
       sha = sha:sub(1, 7),
       author = c.author or "",
-      date = c["author-time"] and format_time(c["author-time"], "%m-%d-%Y", 10) or "",
+      date = c["author-time"] and format_time(c["author-time"], "%Y-%m-%d", 10) or "",
       line = tonumber(final),
     })
     i = i + 1
