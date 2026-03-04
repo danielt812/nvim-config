@@ -26,7 +26,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   desc = "Set coldfusion filetype",
   -- stylua: ignore
   callback = function()
-    vim.cmd("set filetype=cf")
+    vim.bo.filetype = "html"
   end,
 })
 
