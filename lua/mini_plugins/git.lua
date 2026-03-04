@@ -96,7 +96,7 @@ local format_blame = function(data, skip_consecutive)
   local formatted, prev_sha = {}, nil
   for _, entry in ipairs(data) do
     if skip_consecutive and entry.sha == prev_sha then
-      table.insert(formatted, "│")
+      table.insert(formatted, "┃")
     elseif entry.author == "Not Committed Yet" then
       table.insert(formatted, "Not Committed Yet")
     else
@@ -168,7 +168,7 @@ local blame_cb = function(event)
     end
     if data.author == "Not Committed Yet" then
       vim.api.nvim_buf_set_extmark(buf, ns, ln, 0, { end_col = #formatted[i], hl_group = "MiniGitBlameUncommitted" })
-    elseif formatted[i] == "│" then
+    elseif formatted[i] == "┃" then
       -- stylua: ignore
       vim.api.nvim_buf_set_extmark(buf, ns, ln, 0, { end_col = #formatted[i], hl_group = "MiniGitBlameDate" .. sha_colors[data.sha] })
     else
