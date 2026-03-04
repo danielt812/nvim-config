@@ -80,6 +80,10 @@ local format_time = function(timestamp, fmt, rel)
   return ago(math.floor(diff / 31536000), "year")
 end
 
+--- Format parsed blame data into display lines.
+--- @param data {sha: string, date: string, author: string}[]
+--- @param skip_consecutive boolean? Replace consecutive lines with the same sha with "┃"
+--- @return string[]
 local format_blame = function(data, skip_consecutive)
   local max_date = 0
   for _, entry in ipairs(data) do
@@ -202,16 +206,16 @@ local blame_cb = function(event)
   for _, line in ipairs(formatted) do max_len = math.max(max_len, #line) end
   vim.api.nvim_win_set_width(win, max_len + math.max(vim.wo[win].numberwidth, #tostring(#formatted) + 1) + 2)
 
-  -- Keymaps
-  local get_entry = function() return blame_data[vim.api.nvim_win_get_cursor(win)[1]] end
-  local map = function(key, fn, desc) vim.keymap.set("n", key, fn, { buffer = buf, desc = desc }) end
-
+  -- Buffer keymaps
   -- stylua: ignore start
+  local get_entry   = function() return blame_data[vim.api.nvim_win_get_cursor(win)[1]] end
+  local map         = function(key, fn, desc) vim.keymap.set("n", key, fn, { buffer = buf, desc                             =  desc }) end
   local with_commit = function(fn) local entry = get_entry() if entry and entry.author ~= "Not Committed Yet" then fn(entry.sha) end end
-  local show     = function() with_commit(function(sha) vim.cmd("Git show " .. sha) end) end
-  local diff     = function() with_commit(function(sha) vim.cmd("Git diff " .. sha .. "~.." .. sha) end) end
-  local checkout = function() with_commit(function(sha) vim.cmd("Git checkout " .. sha) end) end
-  local yank     = function() with_commit(function(sha) vim.fn.setreg("+", sha) end) end
+
+  local show        = function() with_commit(function(sha) vim.cmd("Git show " .. sha) end) end
+  local diff        = function() with_commit(function(sha) vim.cmd("Git diff " .. sha .. "~.." .. sha) end) end
+  local checkout    = function() with_commit(function(sha) vim.cmd("Git checkout " .. sha) end) end
+  local yank        = function() with_commit(function(sha) vim.fn.setreg("+", sha) end) end
   -- stylua: ignore end
 
   map("s", show, "Show commit")
