@@ -1,4 +1,5 @@
 local operators = require("mini.operators")
+local ts = require("utils.ts")
 
 operators.setup({
   {
@@ -20,5 +21,29 @@ operators.setup({
   },
 })
 
-vim.keymap.set("n", "(", "gxiagxila", { remap = true, desc = "Swap argument left" })
-vim.keymap.set("n", ")", "gxiagxina", { remap = true, desc = "Swap argument right" })
+-- #############################################################################
+-- #                                  Keymaps                                  #
+-- #############################################################################
+
+-- stylua: ignore
+local string_nodes = { "string", "string_content", "string_literal", "template_string", "interpreted_string_literal" }
+
+local swap = function(dir)
+  local keys
+  if ts.in_node({ "attribute", "jsx_attribute" }) then
+    keys = { left = "gxaAgxalA", right = "gxaAgxanA" }
+  elseif ts.in_node(string_nodes) then
+    keys = { left = "gxawgxalw", right = "gxawgxanw" }
+  else
+    keys = { left = "gxiagxila", right = "gxiagxina" }
+  end
+  vim.cmd("normal " .. vim.api.nvim_replace_termcodes(keys[dir], true, true, true))
+end
+
+-- stylua: ignore start
+local swap_left  = function() swap("left") end
+local swap_right = function() swap("right") end
+
+vim.keymap.set("n", "(", swap_left,  { desc = "Swap left" })
+vim.keymap.set("n", ")", swap_right, { desc = "Swap right" })
+-- stylua: ignore end

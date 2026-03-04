@@ -34,4 +34,17 @@ M.if_not_capture = function(capture, value)
   end
 end
 
+---Check if the cursor is inside (or on) a Tree-sitter node of the given type(s)
+---@param node_type string|string[]
+---@return boolean
+M.in_node = function(node_type)
+  node_type = type(node_type) == "table" and node_type or { node_type }
+  local node = vim.treesitter.get_node()
+  while node do
+    if vim.tbl_contains(node_type, node:type()) then return true end
+    node = node:parent()
+  end
+  return false
+end
+
 return M

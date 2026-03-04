@@ -1,4 +1,6 @@
 local treesj = require("treesj")
+local splitjoin = require("mini.splitjoin")
+local ts = require("utils.ts")
 
 treesj.setup({
   use_default_keymaps = false,
@@ -8,19 +10,6 @@ treesj.setup({
   notify = true,
   dot_repeat = true,
 })
-
-local splitjoin = require("mini.splitjoin")
-
-local on_arrow_function = function()
-  local ok, node = pcall(vim.treesitter.get_node)
-  if not ok or not node then return false end
-
-  if node:type() == "arrow_function" then
-    return true
-  end
-
-  return false
-end
 
 local on_pair_char = function()
   local _, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -39,7 +28,7 @@ end
 
 local split_join_toggle = function()
   -- Prefer treesj on arrow functions
-  if on_arrow_function() then
+  if ts.in_node("arrow_function") then
     vim.notify("treesj")
     treesj.toggle()
     return
