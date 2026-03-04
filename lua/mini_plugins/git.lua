@@ -89,11 +89,10 @@ local format_time = function(timestamp, fmt, rel)
 end
 
 local format_blame = function(data, skip_consecutive)
-  local max_date, max_author = 0, 0
+  local max_date = 0
   for _, entry in ipairs(data) do
     if entry.author ~= "Not Committed Yet" then
       max_date = math.max(max_date, #entry.date)
-      max_author = math.max(max_author, #entry.author)
     end
   end
   local formatted, prev_sha = {}, nil
@@ -105,7 +104,7 @@ local format_blame = function(data, skip_consecutive)
     else
       table.insert(
         formatted,
-        string.format("%s %s %s", entry.sha, pad_right(entry.date, max_date), pad_right(entry.author, max_author))
+        string.format("%s %s %s", entry.sha, pad_right(entry.date, max_date), entry.author)
       )
     end
     prev_sha = entry.sha
