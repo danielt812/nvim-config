@@ -190,9 +190,8 @@ local blame_cb = function(event)
   vim.bo[buf].bufhidden = "wipe"
   vim.bo[buf].modifiable = false
 
-  vim.cmd("syncbind")
-  vim.fn.winrestview({ topline = vim.fn.line("w0", win_src) })
   vim.api.nvim_win_set_cursor(0, { vim.fn.line(".", win_src), 0 })
+  vim.cmd("syncbind")
 
   -- Blame window width
   local max_len = 0
