@@ -33,35 +33,27 @@ vim.keymap.set("n", "<leader>gp", patch_log, { desc = "Patch log (file)" })
 
 local group = vim.api.nvim_create_augroup("mini_git", { clear = true })
 
-local blame_palette_count = 15
-
-local gen_blame_palette = function()
+local gen_blame_palette = function(count)
   local dark = vim.o.background == "dark"
   local l = dark and 75 or 45
   local c = dark and 20 or 18
   local offset = vim.uv.hrtime() % 360
   local palette = {}
-  for i = 1, blame_palette_count do
-    -- pick hue on opposite end of color wheel for more contrast between adjacent commits
+  for i = 1, count do
     local hue = (offset + (i - 1) * 137.508) % 360
     palette[i] = colors.convert({ l = l, c = c, h = hue }, "hex")
   end
   return palette
 end
 
-local apply_blame_hl = function()
-  local palette = gen_blame_palette()
+local gen_hl_groups = function()
   vim.api.nvim_set_hl(0, "MiniGitBlameHash", { link = "Comment" })
   vim.api.nvim_set_hl(0, "MiniGitBlameUncommitted", { link = "Conceal" })
-  for i, color in ipairs(palette) do
-    vim.api.nvim_set_hl(0, "MiniGitBlameDate" .. i, { fg = color, italic = true })
-    vim.api.nvim_set_hl(0, "MiniGitBlameAuthor" .. i, { fg = color })
-  end
 end
 
-apply_blame_hl()
+gen_hl_groups()
 
-vim.api.nvim_create_autocmd("ColorScheme", { pattern = "*", group = group, callback = apply_blame_hl })
+vim.api.nvim_create_autocmd("ColorScheme", { pattern = "*", group = group, callback = gen_hl_groups })
 
 local pad_right = function(str, width)
   local pad = width - vim.fn.strwidth(str)
@@ -159,12 +151,23 @@ local blame_cb = function(event)
 
   -- Highlights
   local ns = vim.api.nvim_create_namespace("mini_git_blame")
-  local sha_colors, color_idx = {}, 0
+  local unique_shas, sha_colors, color_idx = {}, {}, 0
+  for _, data in ipairs(blame_data) do
+    if not unique_shas[data.sha] and data.author ~= "Not Committed Yet" then
+      unique_shas[data.sha] = true
+      color_idx = color_idx + 1
+    end
+  end
+  local palette = gen_blame_palette(color_idx)
+  color_idx = 0
   for i, data in ipairs(blame_data) do
     local ln = i - 1
     if not sha_colors[data.sha] and data.author ~= "Not Committed Yet" then
-      color_idx = (color_idx % blame_palette_count) + 1
+      color_idx = color_idx + 1
       sha_colors[data.sha] = color_idx
+      local color = palette[color_idx]
+      vim.api.nvim_set_hl(0, "MiniGitBlameDate" .. color_idx, { fg = color, italic = true })
+      vim.api.nvim_set_hl(0, "MiniGitBlameAuthor" .. color_idx, { fg = color })
     end
     if data.author == "Not Committed Yet" then
       vim.api.nvim_buf_set_extmark(buf, ns, ln, 0, { end_col = #formatted[i], hl_group = "MiniGitBlameUncommitted" })
