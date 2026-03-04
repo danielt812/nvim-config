@@ -1,6 +1,6 @@
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = { "*" },
-  group = vim.api.nvim_create_augroup("comment_new_line", { clear = true }),
+  group = vim.api.nvim_create_augroup("comment_fmt_opts", { clear = true }),
   desc = "No comment on new line",
   -- stylua: ignore
   callback = function()
@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 vim.api.nvim_create_autocmd("BufReadPost", {
   pattern = { "*.cfml", "*.inc" },
-  group = vim.api.nvim_create_augroup("coldfusion_filetype", { clear = true }),
+  group = vim.api.nvim_create_augroup("cf_filetype", { clear = true }),
   desc = "Set coldfusion filetype",
   -- stylua: ignore
   callback = function()
@@ -52,7 +52,7 @@ vim.api.nvim_create_autocmd("VimResized", {
 
 vim.api.nvim_create_autocmd("QuitPre", {
   pattern = { "*" },
-  group = vim.api.nvim_create_augroup("auto_close_windows_on_quit", { clear = true }),
+  group = vim.api.nvim_create_augroup("auto_close_windows", { clear = true }),
   desc = "Auto close plugin windows on quit",
   callback = function()
     for _, win in ipairs(vim.api.nvim_list_wins()) do
@@ -74,7 +74,7 @@ vim.api.nvim_create_autocmd("BufReadPre", {
     if ok and stats and stats.size > max_filesize then
       vim.schedule(function()
         if vim.treesitter.highlighter then vim.treesitter.stop(args.buf) end
-
+        vim.bo[args.buf].syntax = "off"
         vim.notify("Large file detected — deferring Tree-sitter", vim.log.levels.WARN)
       end)
 
