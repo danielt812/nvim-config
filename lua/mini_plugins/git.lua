@@ -39,9 +39,11 @@ local gen_blame_palette = function()
   local dark = vim.o.background == "dark"
   local l = dark and 75 or 45
   local c = dark and 20 or 18
+  local offset = vim.uv.hrtime() % 360
   local palette = {}
-  for i = 1, blame_palette_n do
-    local hue = ((i - 1) * (360 / blame_palette_n)) % 360
+  for i = 1, blame_palette_count do
+    -- pick hue on opposite end of color wheel for more contrast between adjacent commits
+    local hue = (offset + (i - 1) * 137.508) % 360
     palette[i] = colors.convert({ l = l, c = c, h = hue }, "hex")
   end
   return palette
