@@ -12,11 +12,60 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "help", "man" },
   group = vim.api.nvim_create_augroup("open_help_vs", { clear = true }),
   desc = "Open help files in vertical split",
+  -- stylua: ignore
+  callback = vim.schedule_wrap(function()
+    vim.cmd("wincmd L")
+  end),
+})
+
+local term_group = vim.api.nvim_create_augroup("terminal_window", { clear = true })
+
+vim.api.nvim_create_autocmd("TermOpen", {
+  pattern = { "term://*" },
+  group = term_group,
+  desc = "Use Terminal highlight in terminal windows",
+  -- stylua: ignore
+  callback = vim.schedule_wrap(function()
+    if vim.bo.buftype == "terminal" then
+      vim.wo.winhighlight = "Normal:Terminal"
+      vim.cmd("startinsert")
+    end
+  end),
+})
+
+vim.api.nvim_create_autocmd("TermClose", {
+  pattern = { "term://*" },
+  group = term_group,
+  desc = "Clear Terminal highlight on close",
+  -- stylua: ignore
+  callback = vim.schedule_wrap(function()
+    vim.wo.winhighlight = ""
+  end),
+})
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = { "*" },
+  group = term_group,
+  desc = "Set terminal ANSI palette",
   callback = function()
-    -- stylua: ignore
-    vim.schedule(function()
-      vim.cmd("wincmd L")
-    end)
+    -- stylua: ignore start
+    vim.g.terminal_color_0  = "#000000"
+    vim.g.terminal_color_1  = "#ff0000"
+    vim.g.terminal_color_2  = "#00ff00"
+    vim.g.terminal_color_3  = "#ff5f00"
+    vim.g.terminal_color_4  = "#1a8fff"
+    vim.g.terminal_color_5  = "#ff005f"
+    vim.g.terminal_color_6  = "#00ffff"
+    vim.g.terminal_color_7  = "#ffffff"
+    vim.g.terminal_color_8  = "#767676"
+    vim.g.terminal_color_9  = "#ff0000"
+    vim.g.terminal_color_10 = "#00ff00"
+    vim.g.terminal_color_11 = "#ff5f00"
+    vim.g.terminal_color_12 = "#1a8fff"
+    vim.g.terminal_color_13 = "#ff005f"
+    vim.g.terminal_color_14 = "#00ffff"
+    vim.g.terminal_color_15 = "#ffffff"
+    -- stylua: ignore end
   end,
 })
 
