@@ -91,9 +91,7 @@ end
 local format_blame = function(data, skip_consecutive)
   local max_date = 0
   for _, entry in ipairs(data) do
-    if entry.author ~= "Not Committed Yet" then
-      max_date = math.max(max_date, #entry.date)
-    end
+    if entry.author ~= "Not Committed Yet" then max_date = math.max(max_date, #entry.date) end
   end
   local formatted, prev_sha = {}, nil
   for _, entry in ipairs(data) do
@@ -102,10 +100,7 @@ local format_blame = function(data, skip_consecutive)
     elseif entry.author == "Not Committed Yet" then
       table.insert(formatted, "Not Committed Yet")
     else
-      table.insert(
-        formatted,
-        string.format("%s %s %s", entry.sha, pad_right(entry.date, max_date), entry.author)
-      )
+      table.insert(formatted, string.format("%s %s %s", entry.sha, pad_right(entry.date, max_date), entry.author))
     end
     prev_sha = entry.sha
   end
@@ -157,7 +152,6 @@ local blame_cb = function(event)
     vim.wo[win][key] = val
     vim.wo[win_src][key] = val
   end
-  vim.cmd("syncbind")
 
   local blame_data = parse_porcelain(vim.api.nvim_buf_get_lines(buf, 0, -1, false))
   local formatted = format_blame(blame_data, true)
@@ -196,20 +190,15 @@ local blame_cb = function(event)
   vim.bo[buf].bufhidden = "wipe"
   vim.bo[buf].modifiable = false
 
-  -- Width
+  vim.cmd("syncbind")
+  vim.fn.winrestview({ topline = vim.fn.line("w0", win_src) })
+  vim.api.nvim_win_set_cursor(0, { vim.fn.line(".", win_src), 0 })
+
+  -- Blame window width
   local max_len = 0
   -- stylua: ignore
   for _, line in ipairs(formatted) do max_len = math.max(max_len, #line) end
   vim.api.nvim_win_set_width(win, max_len + math.max(vim.wo[win].numberwidth, #tostring(#formatted) + 1) + 2)
-
-  -- Close
-  local close = function()
-    if vim.api.nvim_win_is_valid(win_src) then
-      -- stylua: ignore
-      for opt, val in pairs(saved) do vim.wo[win_src][opt] = val end
-    end
-    if vim.api.nvim_win_is_valid(win) then vim.api.nvim_win_close(win, true) end
-  end
 
   -- Keymaps
   local get_entry = function() return blame_data[vim.api.nvim_win_get_cursor(win)[1]] end
@@ -227,9 +216,19 @@ local blame_cb = function(event)
   map("d", diff, "Diff commit")
   map("c", checkout, "Checkout commit")
   map("y", yank, "Yank sha")
+
+  local close = function()
+    if vim.api.nvim_win_is_valid(win_src) then
+      -- stylua: ignore
+      for opt, val in pairs(saved) do vim.wo[win_src][opt] = val end
+    end
+    if vim.api.nvim_win_is_valid(win) then vim.api.nvim_win_close(win, true) end
+  end
+
   map("q", close)
   map("<esc>", close)
 
+  -- stylua: ignore
   vim.api.nvim_create_autocmd({ "WinLeave", "BufWipeout" }, { buffer = buf, once = true, callback = close })
 end
 
