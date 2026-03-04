@@ -18,6 +18,7 @@ local languages = {
   "diff",
   "dockerfile",
   "git_config",
+  "git_rebase",
   "gitcommit",
   "gitignore",
   "html",
