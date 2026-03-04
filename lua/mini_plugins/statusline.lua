@@ -263,7 +263,7 @@ local apply_hl = function()
     merge_hl("MiniDiffSign" .. suffix, prefix .. "Devinfo", prefix .. "Diff" .. suffix)
   end
   -- Icons
-  for _, suffix in ipairs({ "Azure", "Blue", "Cyan", "Green", "Grey", "Orange", "Magenta", "Red", "Yellow" }) do
+  for _, suffix in ipairs({ "Azure", "Blue", "Cyan", "Green", "Grey", "Orange", "Purple", "Red", "Yellow" }) do
     merge_hl("MiniIcons" .. suffix, prefix .. "Fileinfo", prefix .. "Icons" .. suffix)
   end
   -- Git

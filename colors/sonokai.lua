@@ -856,7 +856,7 @@ local highlights = {
   MiniIconsGreen   = { link = "Green" },
   MiniIconsGrey    = { link = "Grey" },
   MiniIconsOrange  = { link = "Orange" },
-  MiniIconsMagenta = { link = "Purple" },
+  MiniIconsPurple = { link = "Purple" },
   MiniIconsRed     = { link = "Red" },
   MiniIconsYellow  = { link = "Yellow" },
   -- stylua: ignore end
