@@ -33,7 +33,7 @@ vim.keymap.set("n", "<leader>gp", patch_log, { desc = "Patch log (file)" })
 
 local group = vim.api.nvim_create_augroup("mini_git", { clear = true })
 
-local blame_palette_n = 15
+local blame_palette_count = 15
 
 local gen_blame_palette = function()
   local dark = vim.o.background == "dark"
@@ -63,8 +63,58 @@ apply_blame_hl()
 
 vim.api.nvim_create_autocmd("ColorScheme", { pattern = "*", group = group, callback = apply_blame_hl })
 
+local pad_right = function(str, width)
+  local pad = width - vim.fn.strwidth(str)
+  if pad <= 0 then return str end
+  return str .. string.rep(" ", pad)
+end
+
+--- Format unix timestamp
+---@param timestamp integer Unix timestamp (seconds since epoch)
+---@param fmt string os.date format string (e.g. `"%Y-%m-%d"`)
+---@param rel? boolean|integer true = always relative, N = relative within N days then fallback to fmt
+---@return string
+local format_time = function(timestamp, fmt, rel)
+  if not rel then return tostring(os.date(fmt, timestamp)) end
+  local diff = os.time() - timestamp
+  local days = math.floor(diff / 86400)
+  if type(rel) == "number" and days >= rel then return tostring(os.date(fmt, timestamp)) end
+  local ago = function(n, unit) return n .. (n == 1 and " " .. unit .. " ago" or " " .. unit .. "s ago") end
+  if diff < 60 then return ago(diff, "second") end
+  if diff < 3600 then return ago(math.floor(diff / 60), "minute") end
+  if diff < 86400 then return ago(math.floor(diff / 3600), "hour") end
+  if diff < 2592000 then return ago(days, "day") end
+  if diff < 31536000 then return ago(math.floor(diff / 2592000), "month") end
+  return ago(math.floor(diff / 31536000), "year")
+end
+
+local format_blame = function(data, skip_consecutive)
+  local max_date, max_author = 0, 0
+  for _, entry in ipairs(data) do
+    if entry.author ~= "Not Committed Yet" then
+      max_date = math.max(max_date, #entry.date)
+      max_author = math.max(max_author, #entry.author)
+    end
+  end
+  local formatted, prev_sha = {}, nil
+  for _, entry in ipairs(data) do
+    if skip_consecutive and entry.sha == prev_sha then
+      table.insert(formatted, "│")
+    elseif entry.author == "Not Committed Yet" then
+      table.insert(formatted, "Not Committed Yet")
+    else
+      table.insert(
+        formatted,
+        string.format("%s %s %s", entry.sha, pad_right(entry.date, max_date), pad_right(entry.author, max_author))
+      )
+    end
+    prev_sha = entry.sha
+  end
+  return formatted
+end
+
 local parse_porcelain = function(lines)
-  local commits, result = {}, {}
+  local commits, parsed = {}, {}
   local i = 1
   while i <= #lines do
     local sha, _, final = lines[i]:match("^(%x+) (%d+) (%d+)")
@@ -84,30 +134,15 @@ local parse_porcelain = function(lines)
       end
     end
     local c = commits[sha]
-    table.insert(result, {
+    table.insert(parsed, {
       sha = sha:sub(1, 7),
       author = c.author or "",
-      date = c["author-time"] and os.date("%Y-%m-%d %H:%m", tonumber(c["author-time"])) or "",
+      date = c["author-time"] and format_time(c["author-time"], "%m-%d-%Y", 10) or "",
       line = tonumber(final),
     })
     i = i + 1
   end
-  return result
-end
-
-local format_blame = function(data)
-  local formatted, prev_sha = {}, nil
-  for _, entry in ipairs(data) do
-    if entry.sha == prev_sha then
-      table.insert(formatted, "│")
-    elseif entry.author == "Not Committed Yet" then
-      table.insert(formatted, "Not Committed Yet")
-    else
-      table.insert(formatted, string.format("%s %s %s", entry.sha, entry.date, entry.author))
-    end
-    prev_sha = entry.sha
-  end
-  return formatted
+  return parsed
 end
 
 local blame_cb = function(event)
@@ -118,42 +153,41 @@ local blame_cb = function(event)
   -- stylua: ignore
   local settings = { number = false, relativenumber = false, winbar = "", signcolumn = "no", cursorbind = true, scrollbind = true, wrap = false }
   local saved = {}
-  for k, v in pairs(settings) do
-    saved[k] = vim.wo[win_src][k]
-    vim.wo[win][k] = v
-    vim.wo[win_src][k] = v
+  for key, val in pairs(settings) do
+    saved[key] = vim.wo[win_src][key]
+    vim.wo[win][key] = val
+    vim.wo[win_src][key] = val
   end
   vim.cmd("syncbind")
 
   local blame_data = parse_porcelain(vim.api.nvim_buf_get_lines(buf, 0, -1, false))
-  local formatted = format_blame(blame_data)
+  local formatted = format_blame(blame_data, true)
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, formatted)
 
   -- Highlights
   local ns = vim.api.nvim_create_namespace("mini_git_blame")
-  local sha_colors, color_idx, prev_sha = {}, 0, nil
-  for i, entry in ipairs(blame_data) do
+  local sha_colors, color_idx = {}, 0
+  for i, data in ipairs(blame_data) do
     local ln = i - 1
-    if not sha_colors[entry.sha] and entry.author ~= "Not Committed Yet" then
-      color_idx = (color_idx % blame_palette_n) + 1
-      sha_colors[entry.sha] = color_idx
+    if not sha_colors[data.sha] and data.author ~= "Not Committed Yet" then
+      color_idx = (color_idx % blame_palette_count) + 1
+      sha_colors[data.sha] = color_idx
     end
-    if entry.author == "Not Committed Yet" then
+    if data.author == "Not Committed Yet" then
       vim.api.nvim_buf_set_extmark(buf, ns, ln, 0, { end_col = #formatted[i], hl_group = "MiniGitBlameUncommitted" })
-    elseif entry.sha == prev_sha then
+    elseif formatted[i] == "│" then
       -- stylua: ignore
-      vim.api.nvim_buf_set_extmark(buf, ns, ln, 0, { end_col = #formatted[i], hl_group = "MiniGitBlameDate" .. sha_colors[entry.sha] })
+      vim.api.nvim_buf_set_extmark(buf, ns, ln, 0, { end_col = #formatted[i], hl_group = "MiniGitBlameDate" .. sha_colors[data.sha] })
     else
-      local ci = sha_colors[entry.sha]
-      local sha_end = #entry.sha
-      local date_end = sha_end + 1 + #entry.date
+      local ci = sha_colors[data.sha]
+      local sha_end = #data.sha
+      local date_end = sha_end + 1 + #data.date
       -- stylua: ignore start
       vim.api.nvim_buf_set_extmark(buf, ns, ln, 0, { end_col = sha_end, hl_group = "MiniGitBlameHash" })
       vim.api.nvim_buf_set_extmark(buf, ns, ln, sha_end + 1, { end_col = date_end, hl_group = "MiniGitBlameDate" .. ci })
       vim.api.nvim_buf_set_extmark(buf, ns, ln, date_end + 1, { end_row = ln, end_col = #formatted[i], hl_group = "MiniGitBlameAuthor" .. ci })
       -- stylua: ignore end
     end
-    prev_sha = entry.sha
   end
 
   -- Blame window options
@@ -184,10 +218,10 @@ local blame_cb = function(event)
 
   -- stylua: ignore start
   local with_commit = function(fn) local entry = get_entry() if entry and entry.author ~= "Not Committed Yet" then fn(entry.sha) end end
-  local show = function() with_commit(function(sha) vim.cmd("Git show " .. sha) end) end
-  local diff = function() with_commit(function(sha) vim.cmd("Git diff " .. sha .. "~.." .. sha) end) end
+  local show     = function() with_commit(function(sha) vim.cmd("Git show " .. sha) end) end
+  local diff     = function() with_commit(function(sha) vim.cmd("Git diff " .. sha .. "~.." .. sha) end) end
   local checkout = function() with_commit(function(sha) vim.cmd("Git checkout " .. sha) end) end
-  local yank = function() with_commit(function(sha) vim.fn.setreg("+", sha) end) end
+  local yank     = function() with_commit(function(sha) vim.fn.setreg("+", sha) end) end
   -- stylua: ignore end
 
   map("s", show, "Show commit")
@@ -197,10 +231,7 @@ local blame_cb = function(event)
   map("q", close)
   map("<esc>", close)
 
-  vim.api.nvim_create_autocmd(
-    { "WinLeave", "BufWipeout" },
-    { group = group, buffer = buf, once = true, callback = close }
-  )
+  vim.api.nvim_create_autocmd({ "WinLeave", "BufWipeout" }, { buffer = buf, once = true, callback = close })
 end
 
 vim.api.nvim_create_autocmd("User", { pattern = "MiniGitCommandSplit", group = group, callback = blame_cb })
