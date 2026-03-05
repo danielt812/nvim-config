@@ -9,15 +9,21 @@ local ts_table  = { glyph = test_icon, hl = "MiniIconsAzure" }
 icons.setup({
   directory = {
     -- stylua: ignore start
-    [".git"]     = { glyph = "󰊢", hl = "MiniIconsOrange" },
-    [".github"]  = { glyph = "󰊤", hl = "MiniIconsAzure" },
-    ["colors"]   = { glyph = "󱁽", hl = "MiniIconsAzure" },
-    ["config"]   = { glyph = "󱁿", hl = "MiniIconsAzure" },
-    ["icons"]    = { glyph = "󱞊", hl = "MiniIconsAzure" },
-    ["lsp"]      = { glyph = "󱁽", hl = "MiniIconsAzure" },
-    ["schemas"]  = { glyph = "󱁿", hl = "MiniIconsAzure" },
-    ["settings"] = { glyph = "󱁿", hl = "MiniIconsAzure" },
-    ["utils"]    = { glyph = "󱧼", hl = "MiniIconsAzure" },
+    [".git"]         = { glyph = "󰊢", hl = "MiniIconsOrange" },
+    [".github"]      = { glyph = "󰊤", hl = "MiniIconsAzure" },
+    ["colors"]       = { glyph = "󱁽", hl = "MiniIconsAzure" },
+    ["config"]       = { glyph = "󱁿", hl = "MiniIconsAzure" },
+    ["assets"]       = { glyph = "󰉏", hl = "MiniIconsAzure" },
+    ["icons"]        = { glyph = "󰉏", hl = "MiniIconsAzure" },
+    ["images"]       = { glyph = "󰉏", hl = "MiniIconsAzure" },
+    ["lsp"]          = { glyph = "󱁽", hl = "MiniIconsAzure" },
+    ["schemas"]      = { glyph = "󱁿", hl = "MiniIconsAzure" },
+    ["settings"]     = { glyph = "󱁿", hl = "MiniIconsAzure" },
+    ["utils"]        = { glyph = "󱧼", hl = "MiniIconsAzure" },
+    ["recipes"]      = { glyph = "󰭼", hl = "MiniIconsYellow" },
+    ["mini_plugins"] = { glyph = "󰚝", hl = "MiniIconsYellow" },
+    ["modules"]      = { glyph = "󰚝", hl = "MiniIconsYellow" },
+    ["plugins"]      = { glyph = "󰚝", hl = "MiniIconsYellow" },
     -- stylua: ignore end
   },
   extension = {
