@@ -22,7 +22,6 @@ local centered_zoom = function()
   local height = ui.height
 
   misc.zoom(0, {
-    relative = "editor",
     width = width,
     height = height,
     col = math.floor((ui.width - width) / 2),
