@@ -80,14 +80,14 @@ now(function()
   conf("diagnostics")
   conf("quickfix")
 
+  vim.g.colors_variant = "soft"
+  vim.cmd("colorscheme everforest")
+
   -- Mini modules now ------------------------------------------------------------
   mplug("notify")
   mplug("starter")
   mplug("sessions")
   mplug("snippets")
-
-  vim.g.colors_variant = "soft"
-  vim.cmd("colorscheme everforest")
 end)
 
 -- Mini modules later ----------------------------------------------------------
