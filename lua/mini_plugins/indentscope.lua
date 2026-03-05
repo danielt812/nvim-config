@@ -155,7 +155,7 @@ vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI", "TextChangedP", "Wi
 
 vim.api.nvim_create_autocmd("OptionSet", {
   group = group,
-  pattern = { "shiftwidth", "tabstop", "expandtab" },
+  pattern = { "shiftwidth", "tabstop" },
   callback = function() draw_indent_guides({ lazy = false }) end,
   desc = "Redraw when options affect steps",
 })
