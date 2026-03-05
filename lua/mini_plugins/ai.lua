@@ -7,11 +7,18 @@ ai.setup({
       a = "@function.outer",
       i = "@function.inner",
     }),
-    o = ai.gen_spec.treesitter({
-      a = { "@conditional.outer", "@loop.outer" },
-      i = { "@conditional.inner", "@loop.inner" },
+    c = ai.gen_spec.treesitter({
+      a = "@conditional.outer",
+      i = "@conditional.inner",
     }),
-    A = ai.gen_spec.treesitter({ a = "@attribute.outer", i = "@attribute.inner" }),
+    l = ai.gen_spec.treesitter({
+      a = "@loop.outer",
+      i = "@loop.inner",
+    }),
+    r = ai.gen_spec.treesitter({
+      a = "@attribute.outer",
+      i = "@attribute.inner",
+    }),
     w = { "()()%f[%w_][%w_]+()[ \t]*()" }, -- i: word ([%w_]+), a: word + trailing whitespace
     W = { "()()%f[%S]%S+()[ \t]*()" }, -- i: WORD (%S+), a: WORD + trailing whitespace
     N = { "%f[%d]%d+" }, -- number sequence
