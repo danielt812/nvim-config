@@ -43,6 +43,7 @@ icons.setup({
     ["README"]        = { glyph = "󰈙", hl = "MiniIconsYellow" },
     ["README.md"]     = { glyph = "󰈙", hl = "MiniIconsYellow" },
     [".dockerignore"] = { glyph = "󰡨", hl = "MiniIconsAzure" },
+    [".gitignore"]    = { glyph = "󰊢", hl = "MiniIconsOrange" },
     -- stylua: ignore end
   },
   filetype = {},
