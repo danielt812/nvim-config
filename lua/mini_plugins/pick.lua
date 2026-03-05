@@ -1,148 +1,25 @@
 local pick = require("mini.pick")
 local extra = require("mini.extra")
 
--- Side preview
-local preview_state = { win = nil, buf = nil, last_item = nil, hidden = false }
-local preview_cache = {}
-
-local preview_create = function(win_opts)
-  preview_state.buf = vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_buf_set_name(preview_state.buf, "minipick://" .. preview_state.buf .. "/preview")
-  vim.bo[preview_state.buf].bufhidden = "wipe"
-  vim.bo[preview_state.buf].matchpairs = ""
-
-  win_opts = vim.tbl_extend("force", win_opts, { style = "minimal", footer = " Preview ", footer_pos = "left" })
-  preview_state.win = vim.api.nvim_open_win(preview_state.buf, false, win_opts)
-  vim.wo[preview_state.win].linebreak = true
-  vim.wo[preview_state.win].scrolloff = 0
-  vim.wo[preview_state.win].winhighlight = "NormalFloat:MiniPickNormal,FloatBorder:MiniPickBorder"
-end
-
-local preview_close = function()
-  pcall(vim.api.nvim_win_close, preview_state.win, true)
-  pcall(vim.api.nvim_buf_delete, preview_state.buf, { force = true })
-  preview_state.win, preview_state.buf, preview_state.last_item = nil, nil, nil
-  preview_cache = {}
-end
-
-local preview_layout = function(win_config, preview_config)
-  local preview_ratio = 0.618
-  local padding = 2
-  if win_config.width > 70 then
-    local preview_width = math.floor(preview_ratio * win_config.width)
-    local main_width = win_config.width - preview_width - padding
-    win_config.width = main_width
-    preview_config.width = preview_width
-    preview_config.col = win_config.col + main_width + padding
-  else
-    local preview_height = math.floor(preview_ratio * win_config.height)
-    local main_height = win_config.height - preview_height
-    preview_config.height = preview_height
-    win_config.height = main_height
-    preview_config.row = win_config.row - main_height - padding
-  end
-end
-
-local preview_scroll = function(direction)
-  if not preview_state.win then return end
-  local map = { up = "<C-b>", down = "<C-f>", left = "zH", right = "zL" }
-  local keys = vim.api.nvim_replace_termcodes(map[direction], true, true, true)
-  vim.api.nvim_win_call(preview_state.win, function() vim.cmd("normal! " .. keys) end)
-end
-
-local preview_cache_config = function()
-  local picker_state = pick.get_picker_state()
-  if not (picker_state.windows and picker_state.windows.main) then return end
-  local config = vim.api.nvim_win_get_config(picker_state.windows.main)
-  for _, key in ipairs({ "anchor", "border", "col", "height", "relative", "row", "width", "zindex" }) do
-    preview_cache[key] = config[key]
-  end
-end
-
-local preview_update = function()
-  if preview_state.hidden then return preview_close() end
-
-  local picker_state = pick.get_picker_state()
-  if not (picker_state.windows and picker_state.windows.main) then return end
-
-  local win_config = vim.deepcopy(preview_cache)
-  local preview_config = vim.deepcopy(preview_cache)
-  preview_layout(win_config, preview_config)
-  vim.api.nvim_win_set_config(picker_state.windows.main, win_config)
-
-  if not preview_state.win then
-    preview_create(preview_config)
-  else
-    vim.api.nvim_win_set_config(preview_state.win, preview_config)
-  end
-
-  local item = pick.get_picker_matches().current
-  if item ~= preview_state.last_item then
-    preview_state.last_item = item
-    if item then
-      pcall(pick.get_picker_opts().source.preview, preview_state.buf, item)
-    else
-      vim.api.nvim_buf_set_lines(preview_state.buf, 0, -1, false, {})
-    end
-  end
-end
-
--- Wrap pick.refresh to update preview
-local refresh = pick.refresh
-pick.refresh = function()
-  refresh()
-  if pick.is_picker_active() then
-    preview_cache_config()
-    vim.schedule(preview_update)
-  end
-end
-
 pick.setup({
+  window = {
+    config = function()
+      local width = vim.o.columns
+      if width <= 100 then
+        return { width = math.floor(width * 0.8) }
+      end
+      return {}
+    end,
+  },
   mappings = {
-    caret_left = "<C-h>",
-    caret_right = "<C-l>",
-    move_down_picker = {
-      char = "<C-j>",
-      func = function()
-        vim.api.nvim_input("<C-n>")
-        vim.schedule(preview_update)
-      end,
-    },
-    move_up_picker = {
-      char = "<C-k>",
-      func = function()
-        vim.api.nvim_input("<C-p>")
-        vim.schedule(preview_update)
-      end,
-    },
-    scroll_side_preview_left = {
-      char = "<Left>",
-      func = function() preview_scroll("left") end,
-    },
-    scroll_side_preview_right = {
-      char = "<Right>",
-      func = function() preview_scroll("right") end,
-    },
-    scroll_side_preview_up = {
-      char = "<Up>",
-      func = function() preview_scroll("up") end,
-    },
-    scroll_side_preview_down = {
-      char = "<Down>",
-      func = function() preview_scroll("down") end,
-    },
+    mark = "<C-x>",
+    mark_all = "<C-a>",
+    move_down = "<C-j>",
+    move_start = "<C-g>",
+    move_up = "<C-k>",
     sys_paste = {
       char = "<C-v>",
       func = function() pick.set_picker_query({ vim.fn.getreg("+") }) end,
-    },
-    toggle_preview = "",
-    toggle_side_preview = {
-      char = "<Tab>",
-      func = function()
-        pick.refresh()
-        preview_state.hidden = not preview_state.hidden
-        preview_update()
-      end,
     },
   },
 })
@@ -178,36 +55,3 @@ vim.keymap.set("n", "<leader>fk", "<cmd>Pick keymaps<cr>",   { desc = "Keymaps" 
 vim.keymap.set("n", "<leader>fl", "<cmd>Pick buf_lines<cr>", { desc = "Lines" })
 vim.keymap.set("n", "<leader>fm", "<cmd>Pick marks<cr>",     { desc = "Marks" })
 -- stylua: ignore end
-
--- #############################################################################
--- #                            Automatic Commands                             #
--- #############################################################################
-
-local group = vim.api.nvim_create_augroup("mini_pick", { clear = true })
-
-vim.api.nvim_create_autocmd("User", {
-  pattern = "MiniPickStart",
-  group = group,
-  callback = function()
-    preview_cache_config()
-    vim.schedule(preview_update)
-  end,
-})
-
-vim.api.nvim_create_autocmd("User", {
-  pattern = "MiniPickMatch",
-  group = group,
-  callback = function()
-    -- stylua: ignore
-    vim.schedule(preview_update)
-  end,
-})
-
-vim.api.nvim_create_autocmd("User", {
-  pattern = "MiniPickStop",
-  group = group,
-  callback = function()
-    preview_close()
-    preview_state.hidden = false
-  end,
-})
