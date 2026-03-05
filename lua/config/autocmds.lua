@@ -70,16 +70,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 
 vim.api.nvim_create_autocmd("BufReadPost", {
-  pattern = { "*.cfml", "*.inc" },
-  group = vim.api.nvim_create_augroup("cf_filetype", { clear = true }),
-  desc = "Set coldfusion filetype",
-  -- stylua: ignore
-  callback = function()
-    vim.bo.filetype = "html"
-  end,
-})
-
-vim.api.nvim_create_autocmd("BufReadPost", {
   pattern = { "*.env*" },
   group = vim.api.nvim_create_augroup("env_filetype", { clear = true }),
   desc = "Set env filetype",
