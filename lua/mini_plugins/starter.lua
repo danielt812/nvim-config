@@ -19,6 +19,7 @@ starter.setup({
     { name = "Files",    action  = "Pick files",           section = "Actions" },
     { name = "Grep",     action  = "Pick grep_live",       section = "Actions" },
     { name = "Explorer", action  = "lua MiniFiles.open()", section = "Actions" },
+    { name = "Help",     action  = "Pick help",            section = "Actions" },
     { name = "Mason",    action  = "Mason",                section = "Actions" },
     { name = "Visited",  action  = "Pick visit_paths",     section = "Actions" },
     { name = "Quit",     action  = "qa!",                  section = "Actions" },
