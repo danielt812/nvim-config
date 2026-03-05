@@ -206,11 +206,11 @@ end)
 -- Editor ----------------------------------------------------------------------
 later(function()
   -- Folds
-  add({
-    source = "kevinhwang91/nvim-ufo",
-    depends = { "kevinhwang91/promise-async" },
-  })
-  plug("ufo")
+  -- add({
+  --   source = "kevinhwang91/nvim-ufo",
+  --   depends = { "kevinhwang91/promise-async" },
+  -- })
+  -- plug("ufo")
 
   -- Multicursor
   add({ source = "jake-stewart/multicursor.nvim" })
@@ -242,6 +242,7 @@ end)
 later(function()
   -- mod("blame")
   mod("boxes")
+  mod("folds")
   -- mod("indent")
   mod("marks")
   mod("modes")
