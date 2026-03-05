@@ -16,19 +16,14 @@ return {
 
       -- Find upward from the current file
       local path = vim.fs.find(root_files, { upward = true, path = fname })[1]
-      if path then
-        return vim.fs.dirname(path)
-      end
+      if path then return vim.fs.dirname(path) end
 
-      -- fallback: look for a git repo root
+      -- Fallback: look for a git repo root
       local git_root = vim.fs.find(".git", { upward = true, path = fname })[1]
-      if git_root then
-        return vim.fs.dirname(git_root)
-      end
+      if git_root then return vim.fs.dirname(git_root) end
 
-      -- fallback: current working directory
+      -- Fallback: current working directory
       return vim.fn.getcwd()
     end,
   },
 }
-
