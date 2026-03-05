@@ -171,12 +171,6 @@ later(function()
   plug("dap")
 end)
 
--- Git -------------------------------------------------------------------------
-later(function()
-  -- add({ source = "FabijanZulj/blame.nvim" })
-  -- plug("blame")
-end)
-
 -- Executables -----------------------------------------------------------------
 later(function()
   -- Manager
@@ -253,4 +247,10 @@ later(function()
   mod("modes")
   mod("winbar")
   mod("yank")
+end)
+
+-- Work ------------------------------------------------------------------------
+now(function()
+  local mci = vim.fn.stdpath("config") .. "/mci/init.lua"
+  if vim.uv.fs_stat(mci) then dofile(mci) end
 end)
