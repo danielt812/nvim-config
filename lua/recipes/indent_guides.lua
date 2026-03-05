@@ -1,3 +1,4 @@
+local ns = vim.api.nvim_create_namespace("indent_guides")
 local indent_cache = {}
 
 local get_indent = function(buf, lnum)
@@ -9,17 +10,12 @@ local get_indent = function(buf, lnum)
 end
 
 local render = function(buf, win)
-  local ns = vim.api.nvim_create_namespace("indent_guides")
-  if vim.g.miniindentscope_disable or vim.b[buf].miniindentscope_disable then
-    vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
-    return
-  end
   if vim.bo[buf].buftype ~= "" then return end
   local win_config = vim.api.nvim_win_get_config(win)
-  if win_config and win_config.relative ~= "" then return end -- skip floating windows (hover, cmp, doc)
+  if win_config and win_config.relative ~= "" then return end -- Don't render on some floats (hover, cmp, etc...)
 
   local sw = vim.bo[buf].shiftwidth
-  local step = sw > 0 and sw or vim.bo[buf].tabstop -- Fall back to tabstop if shiftwidth not set
+  local step = sw > 0 and sw or vim.bo[buf].tabstop
   if step <= 0 then return end
 
   local top, bot = vim.fn.line("w0", win), vim.fn.line("w$", win)
@@ -51,6 +47,14 @@ local render = function(buf, win)
 end
 
 local draw = function(opts)
+  opts = opts or {}
+  -- Clear highlight when miniindentscope does
+  if vim.g.miniindentscope_disable or vim.b.miniindentscope_disable then
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
+    end
+    return
+  end
   for _, win in ipairs(vim.api.nvim_list_wins()) do
     local buf = vim.api.nvim_win_get_buf(win)
     if opts.lazy then
@@ -63,16 +67,14 @@ local draw = function(opts)
   end
 end
 
-local draw_lazy = function() draw({ lazy = true }) end
-local draw_now = function() draw({ lazy = false }) end
-
-local group = vim.api.nvim_create_augroup("indent_guides", { clear = true })
-
-local au = function(event, pattern, cb)
-  vim.api.nvim_create_autocmd(event, { group = group, pattern = pattern, callback = cb })
+local gr = vim.api.nvim_create_augroup("indent_guidelines", { clear = true })
+local au = function(event, pattern, callback, desc)
+  vim.api.nvim_create_autocmd(event, { group = gr, pattern = pattern, callback = callback, desc = desc })
 end
 
-au({ "CursorMoved", "CursorMovedI", "ModeChanged" }, "*", draw_lazy)
-au({ "TextChanged", "TextChangedI", "TextChangedP", "WinScrolled" }, "*", draw_now)
+local lazy_events = { "CursorMoved", "CursorMovedI", "ModeChanged" }
+au(lazy_events, "*", function() draw({ lazy = true }) end, "Draw indent guides lazily")
+local now_events = { "TextChanged", "TextChangedI", "TextChangedP", "WinScrolled" }
+au(now_events, "*", function() draw() end, "Draw indent guides")
 local opt_patterns = { "shiftwidth", "tabstop", "expandtab" }
-au({ "OptionSet" }, opt_patterns, draw_now)
+au({ "OptionSet" }, opt_patterns, function() draw() end, "Redraw when options affect steps")
