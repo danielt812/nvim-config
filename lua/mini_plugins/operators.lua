@@ -31,7 +31,7 @@ local string_nodes = { "string", "string_content", "string_literal", "template_s
 local swap = function(dir)
   local keys
   if ts.in_node({ "attribute", "jsx_attribute" }) then
-    keys = { left = "gxaAgxalA", right = "gxaAgxanA" }
+    keys = { left = "gxaAgxalr", right = "gxaAgxanr" }
   elseif ts.in_node(string_nodes) then
     keys = { left = "gxawgxalw", right = "gxawgxanw" }
   else
