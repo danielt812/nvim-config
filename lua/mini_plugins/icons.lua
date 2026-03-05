@@ -21,9 +21,9 @@ icons.setup({
     ["settings"]     = { glyph = "󱁿", hl = "MiniIconsAzure" },
     ["utils"]        = { glyph = "󱧼", hl = "MiniIconsAzure" },
     ["recipes"]      = { glyph = "󰭼", hl = "MiniIconsYellow" },
-    ["mini_plugins"] = { glyph = "󰚝", hl = "MiniIconsYellow" },
-    ["modules"]      = { glyph = "󰚝", hl = "MiniIconsYellow" },
-    ["plugins"]      = { glyph = "󰚝", hl = "MiniIconsYellow" },
+    ["mini_plugins"] = { glyph = "󰚝", hl = "MiniIconsAzure" },
+    ["modules"]      = { glyph = "󰚝", hl = "MiniIconsAzure" },
+    ["plugins"]      = { glyph = "󰚝", hl = "MiniIconsAzure" },
     -- stylua: ignore end
   },
   extension = {
