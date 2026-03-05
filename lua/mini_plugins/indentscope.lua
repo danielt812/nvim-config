@@ -54,6 +54,21 @@ indentscope.setup({
   symbol = "│",
 })
 
+-- #############################################################################
+-- #                                  Keymaps                                  #
+-- #############################################################################
+
+local toggle_indentscope = function()
+  vim.b.miniindentscope_disable = not vim.b.miniindentscope_disable
+  vim.cmd("redrawstatus")
+end
+
+vim.keymap.set("n", "<leader>\\i", toggle_indentscope, { desc = "Indentscope" })
+
+-- #############################################################################
+-- #                            Automatic Commands                             #
+-- #############################################################################
+
 local ns = vim.api.nvim_create_namespace("indent_guides")
 local indent_cache = {}
 
@@ -102,8 +117,7 @@ local render = function(buf, win)
   end
 end
 
-local draw = function(opts)
-  opts = opts or {}
+local draw_indent_guides = function(opts)
   -- Clear highlight when miniindentscope does
   if vim.g.miniindentscope_disable or vim.b.miniindentscope_disable then
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
@@ -123,25 +137,25 @@ local draw = function(opts)
   end
 end
 
-local gr = vim.api.nvim_create_augroup("indent_guidelines", { clear = true })
-local au = function(event, pattern, callback, desc)
-  vim.api.nvim_create_autocmd(event, { group = gr, pattern = pattern, callback = callback, desc = desc })
-end
+local group = vim.api.nvim_create_augroup("mini_indentscope", { clear = true })
 
-local lazy_events = { "CursorMoved", "CursorMovedI", "ModeChanged" }
-au(lazy_events, "*", function() draw({ lazy = true }) end, "Draw indent guides lazily")
-local now_events = { "TextChanged", "TextChangedI", "TextChangedP", "WinScrolled" }
-au(now_events, "*", function() draw() end, "Draw indent guides")
-local opt_patterns = { "shiftwidth", "tabstop", "expandtab" }
-au({ "OptionSet" }, opt_patterns, function() draw() end, "Redraw when options affect steps")
+vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "ModeChanged" }, {
+  group = group,
+  pattern = "*",
+  callback = function() draw_indent_guides({ lazy = true }) end,
+  desc = "Draw indent guides lazily",
+})
 
--- #############################################################################
--- #                                  Keymaps                                  #
--- #############################################################################
+vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI", "TextChangedP", "WinScrolled" }, {
+  group = group,
+  pattern = "*",
+  callback = function() draw_indent_guides({ lazy = false }) end,
+  desc = "Draw indent guides",
+})
 
-local toggle_indentscope = function()
-  vim.b.miniindentscope_disable = not vim.b.miniindentscope_disable
-  vim.cmd("redrawstatus")
-end
-
-vim.keymap.set("n", "<leader>\\i", toggle_indentscope, { desc = "Indentscope" })
+vim.api.nvim_create_autocmd("OptionSet", {
+  group = group,
+  pattern = { "shiftwidth", "tabstop", "expandtab" },
+  callback = function() draw_indent_guides({ lazy = false }) end,
+  desc = "Redraw when options affect steps",
+})
