@@ -104,20 +104,22 @@ vim.api.nvim_create_autocmd("QuitPre", {
 
 vim.api.nvim_create_autocmd("BufReadPre", {
   pattern = { "*" },
-  group = vim.api.nvim_create_augroup("defer_treesitter", { clear = true }),
-  desc = "Defer treesitter on large files",
+  group = vim.api.nvim_create_augroup("bigfile", { clear = true }),
+  desc = "Turn off some features on large files",
   callback = function(args)
     local file = args.file
+    local buf = args.buf
     local max_filesize = 1024 * 200 -- 200 KB threshold, adjust as needed
-    local ok, stats = pcall(vim.loop.fs_stat, file)
+    local ok, stats = pcall(vim.uv.fs_stat, file)
     if ok and stats and stats.size > max_filesize then
       vim.schedule(function()
-        if vim.treesitter.highlighter then vim.treesitter.stop(args.buf) end
-        vim.bo[args.buf].syntax = "off"
-        vim.notify("Large file detected — deferring Tree-sitter", vim.log.levels.WARN)
+        if vim.treesitter.highlighter then vim.treesitter.stop(buf) end
+        vim.bo[buf].syntax = "off"
+        vim.b[buf].minianimate_disable = true
+        vim.b[buf].minihipatterns_disable = true
+        vim.b[buf].miniindentscope_disable = true
+        vim.notify("Large file detected", vim.log.levels.WARN)
       end)
-
-      vim.defer_fn(function() vim.treesitter.start(args.buf) end, 3000)
     end
   end,
 })
