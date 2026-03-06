@@ -1,15 +1,7 @@
 local git = require("mini.git")
 local colors = require("mini.colors")
 
-git.setup({
-  job = {
-    git_executable = "git",
-    timeout = 30000,
-  },
-  command = {
-    split = "auto",
-  },
-})
+git.setup()
 
 -- #############################################################################
 -- #                                  Keymaps                                  #
@@ -81,7 +73,7 @@ local format_time = function(timestamp, fmt, rel)
 end
 
 --- Format parsed blame data into display lines.
---- @param data {sha: string, date: string, author: string}[]
+--- @param data {sha: string, sha_short: string, date: string, author: string}[]
 --- @param skip_consecutive boolean? Replace consecutive lines with the same sha with "┃"
 --- @return string[]
 local format_blame = function(data, skip_consecutive)
@@ -96,7 +88,7 @@ local format_blame = function(data, skip_consecutive)
     elseif entry.author == "Not Committed Yet" then
       table.insert(formatted, "Not Committed Yet")
     else
-      table.insert(formatted, string.format("%s %s %s", entry.sha, pad_right(entry.date, max_date), entry.author))
+      table.insert(formatted, string.format("%s %s %s", entry.sha_short, pad_right(entry.date, max_date), entry.author))
     end
     prev_sha = entry.sha
   end
@@ -125,7 +117,8 @@ local parse_porcelain = function(lines)
     end
     local c = commits[sha]
     table.insert(parsed, {
-      sha = sha:sub(1, 7),
+      sha = sha,
+      sha_short = sha:sub(1, 7),
       author = c.author or "",
       date = c["author-time"] and format_time(c["author-time"], "%Y-%m-%d", 10) or "",
       line = tonumber(final),
@@ -180,7 +173,7 @@ local blame_cb = function(event)
       vim.api.nvim_buf_set_extmark(buf, ns, ln, 0, { end_col = #formatted[i], hl_group = "MiniGitBlameDate" .. sha_colors[data.sha] })
     else
       local ci = sha_colors[data.sha]
-      local sha_end = #data.sha
+      local sha_end = #data.sha_short
       local date_end = sha_end + 1 + #data.date
       -- stylua: ignore start
       vim.api.nvim_buf_set_extmark(buf, ns, ln, 0, { end_col = sha_end, hl_group = "MiniGitBlameHash" })
@@ -202,26 +195,35 @@ local blame_cb = function(event)
 
   -- Blame window width
   local max_len = 0
-  -- stylua: ignore
-  for _, line in ipairs(formatted) do max_len = math.max(max_len, #line) end
+  for _, line in ipairs(formatted) do
+    max_len = math.max(max_len, #line)
+  end
+  vim.fn.winrestview({ topline = vim.fn.line('w0', win_src) })
   vim.api.nvim_win_set_width(win, max_len + math.max(vim.wo[win].numberwidth, #tostring(#formatted) + 1) + 2)
 
   -- Buffer keymaps
+  local get_entry = function() return blame_data[vim.api.nvim_win_get_cursor(win)[1]] end
+  local map = function(key, fn, desc) vim.keymap.set("n", key, fn, { buffer = buf, desc = desc }) end
+  local with_commit = function(fn)
+    local entry = get_entry()
+    if entry and entry.author ~= "Not Committed Yet" then fn(entry.sha) end
+  end
+
   -- stylua: ignore start
-  local get_entry   = function() return blame_data[vim.api.nvim_win_get_cursor(win)[1]] end
-  local map         = function(key, fn, desc) vim.keymap.set("n", key, fn, { buffer = buf, desc                             =  desc }) end
-  local with_commit = function(fn) local entry = get_entry() if entry and entry.author ~= "Not Committed Yet" then fn(entry.sha) end end
+  local checkout = function() with_commit(function(sha) vim.cmd("Git checkout " .. sha) end) end
+  local diff     = function() with_commit(function(sha) vim.cmd("Git diff " .. sha .. "^ " .. sha) end) end
+  local files    = function() with_commit(function(sha) vim.cmd("Git show --name-status --format=fuller " .. sha) end) end
+  local show     = function() with_commit(function(sha) vim.cmd("Git show " .. sha) end) end
+  local stat     = function() with_commit(function(sha) vim.cmd("Git show --stat --summary --format=fuller " .. sha) end) end
+  local yank     = function() with_commit(function(sha) vim.fn.setreg("+", sha) vim.notify("Yanked commit " .. sha) end) end
 
-  local show        = function() with_commit(function(sha) vim.cmd("Git show " .. sha) end) end
-  local diff        = function() with_commit(function(sha) vim.cmd("Git diff " .. sha .. "~.." .. sha) end) end
-  local checkout    = function() with_commit(function(sha) vim.cmd("Git checkout " .. sha) end) end
-  local yank        = function() with_commit(function(sha) vim.fn.setreg("+", sha) end) end
-  -- stylua: ignore end
-
-  map("s", show, "Show commit")
-  map("d", diff, "Diff commit")
   map("c", checkout, "Checkout commit")
-  map("y", yank, "Yank sha")
+  map("d", diff,     "Diff commit")
+  map("f", files,    "Show files in commit")
+  map("s", show,     "Show commit")
+  map("t", stat,     "Show commit stats")
+  map("y", yank,     "Yank sha")
+  -- stylua: ignore end
 
   local close = function()
     if vim.api.nvim_win_is_valid(win_src) then
@@ -231,8 +233,8 @@ local blame_cb = function(event)
     if vim.api.nvim_win_is_valid(win) then vim.api.nvim_win_close(win, true) end
   end
 
-  map("q", close)
-  map("<esc>", close)
+  map("q", close, "Close blame")
+  map("<esc>", close, "Close blame")
 
   -- stylua: ignore
   vim.api.nvim_create_autocmd({ "WinLeave", "BufWipeout" }, { buffer = buf, once = true, callback = close })
