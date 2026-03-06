@@ -281,7 +281,7 @@ local highlights = {
   -- stylua: ignore end
 
   -- stylua: ignore start
-  QuickFixLine = { fg = palette.purple },
+  QuickFixLine = {},
   -- stylua: ignore end
 
   -- stylua: ignore start
