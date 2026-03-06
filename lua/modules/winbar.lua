@@ -200,7 +200,7 @@ H.on_cursor_moved = function(args)
 
   -- Cancel any in-flight request before firing a new one
   if H.cache[bufnr].cancel_request then
-    H.cache[bufnr].cancel_request()
+    pcall(H.cache[bufnr].cancel_request)
     H.cache[bufnr].cancel_request = nil
   end
 
