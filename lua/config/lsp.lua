@@ -98,7 +98,7 @@ vim.lsp.enable(servers)
 local lsp_health = function() vim.cmd("checkhealth lsp") end
 local lsp_log = function() vim.cmd("edit " .. vim.lsp.get_log_path()) end
 
-vim.api.nvim_create_user_command("LspInfo", lsp_health, { desc = "Lsp checkhealth"})
+vim.api.nvim_create_user_command("LspInfo", lsp_health, { desc = "Lsp checkhealth" })
 vim.api.nvim_create_user_command("LspLog", lsp_log, { desc = "Lsp log" })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
@@ -107,7 +107,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   desc = "Clear some semantic highlighting",
   callback = function()
     -- :h lsp-semantic-highlight
-    -- Hide semantic highlights for functions
+    -- Hide semantic highlights for variables
     vim.api.nvim_set_hl(0, "@lsp.type.variable", {})
 
     -- Hide all semantic highlights
