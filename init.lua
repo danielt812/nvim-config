@@ -128,17 +128,25 @@ end)
 
 -- Treesitter ------------------------------------------------------------------
 now(function()
+  -- Treesitter
   add({ source = "nvim-treesitter/nvim-treesitter" })
   add({ source = "nvim-treesitter/nvim-treesitter-textobjects" })
   plug("tree-sitter")
-end)
 
-later(function()
+  -- Rainbow delimeters
+  add({ source = "HiPhish/rainbow-delimiters.nvim" })
+  plug("rainbow-delimeters")
+
+  -- Split/join
   add({ source = "Wansmer/treesj" })
   plug("treesj")
 
+  -- Autotag
   add({ source = "windwp/nvim-ts-autotag" })
   plug("autotag")
+end)
+
+later(function()
 end)
 
 -- Filetype rendering ----------------------------------------------------------
@@ -191,10 +199,6 @@ later(function()
   -- Diagnostics
   add({ source = "rachartier/tiny-inline-diagnostic.nvim" })
   plug("tiny-inline-diagnostic")
-
-  -- Rainbow delimeters
-  add({ source = "HiPhish/rainbow-delimiters.nvim" })
-  plug("rainbow-delimeters")
 end)
 
 -- Quickfix --------------------------------------------------------------------
