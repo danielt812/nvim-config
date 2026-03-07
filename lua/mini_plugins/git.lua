@@ -27,13 +27,15 @@ local group = vim.api.nvim_create_augroup("mini_git", { clear = true })
 
 local gen_blame_palette = function(count)
   local dark = vim.o.background == "dark"
-  local l = dark and 75 or 45
-  local c = dark and 20 or 18
-  local offset = vim.uv.hrtime() % 360
+  local lightness = dark and 75 or 45
+  local chroma = dark and 20 or 18
+  local uv = vim.uv or vim.loop
+  local offset = (uv.hrtime() % 360)
   local palette = {}
   for i = 1, count do
+    -- Go to opposite side of color wheel so adjacent commits contrast more
     local hue = (offset + (i - 1) * 137.508) % 360
-    palette[i] = colors.convert({ l = l, c = c, h = hue }, "hex")
+    palette[i] = colors.convert({ l = lightness, c = chroma, h = hue }, "hex")
   end
   return palette
 end
@@ -198,7 +200,7 @@ local blame_cb = function(event)
   for _, line in ipairs(formatted) do
     max_len = math.max(max_len, #line)
   end
-  vim.fn.winrestview({ topline = vim.fn.line('w0', win_src) })
+  vim.fn.winrestview({ topline = vim.fn.line("w0", win_src) })
   vim.api.nvim_win_set_width(win, max_len + math.max(vim.wo[win].numberwidth, #tostring(#formatted) + 1) + 2)
 
   -- Buffer keymaps
