@@ -28,18 +28,18 @@ end
 local preview_layout = function(win_config, preview_config)
   local preview_ratio = 0.618
   local padding = 2
-  if win_config.width > 70 then
+  if win_config.width > 75 then
     local preview_width = math.floor(preview_ratio * win_config.width)
-    local main_width = win_config.width - preview_width - padding
-    win_config.width = main_width
+    local picker_width = win_config.width - preview_width - padding
+    win_config.width = picker_width
     preview_config.width = preview_width
-    preview_config.col = win_config.col + main_width + padding
+    preview_config.col = win_config.col + picker_width + padding
   else
     local preview_height = math.floor(preview_ratio * win_config.height)
-    local main_height = win_config.height - preview_height
+    local picker_height = win_config.height - preview_height
     preview_config.height = preview_height
-    win_config.height = main_height
-    preview_config.row = win_config.row - main_height - padding
+    win_config.height = picker_height
+    preview_config.row = win_config.row - picker_height - padding
   end
 end
 

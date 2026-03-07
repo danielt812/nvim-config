@@ -45,7 +45,7 @@ local gen_hl_groups = function()
   vim.api.nvim_set_hl(0, "MiniGitBlameUncommitted", { link = "Conceal" })
 end
 
-gen_hl_groups()
+gen_hl_groups() -- Call this now if colorscheme was already set
 
 vim.api.nvim_create_autocmd("ColorScheme", { pattern = "*", group = group, callback = gen_hl_groups })
 

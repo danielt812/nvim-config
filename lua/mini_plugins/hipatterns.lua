@@ -173,7 +173,7 @@ vim.keymap.set("n", "<leader>\\h", toggle_hipatterns, { desc = "Hipatterns" })
 -- #                            Automatic Commands                             #
 -- #############################################################################
 
-local apply_hl = function()
+local gen_hl_groups = function()
   local prefix = "MiniHipatterns"
 
   -- Comment keywords
@@ -186,7 +186,7 @@ local apply_hl = function()
   }
 
   for name, hex in pairs(comment_colors) do
-    vim.api.nvim_set_hl(0, prefix .. name, { fg = "#000000", bg = hex, italic = true })
+    vim.api.nvim_set_hl(0, prefix .. name, { fg = hex, reverse = true, italic = true })
     vim.api.nvim_set_hl(0, prefix .. name .. "Mask", { fg = hex, bg = hex, italic = true })
   end
 
@@ -222,13 +222,12 @@ local apply_hl = function()
   end
 end
 
--- Call once when this module is loaded
-apply_hl()
+gen_hl_groups() -- Call this now if colorscheme was already set
 
 local group = vim.api.nvim_create_augroup("mini_hipatterns", { clear = true })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
   group = group,
   desc = "Create custom highlight groups",
-  callback = apply_hl,
+  callback = gen_hl_groups,
 })
