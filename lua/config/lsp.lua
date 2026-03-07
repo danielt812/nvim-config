@@ -13,26 +13,26 @@ local capabilities =
 
 -- Shared on_attach
 local on_attach = function(client, bufnr)
-  local map = function(mode, lhs, rhs, key_opts)
-    key_opts = key_opts or {}
-    key_opts.silent = key_opts.silent ~= false
-    key_opts.buffer = bufnr
-    vim.keymap.set(mode, lhs, rhs, key_opts)
+  local map = function(mode, lhs, rhs, opts)
+    opts = opts or {}
+    opts.silent = opts.silent ~= false
+    opts.buffer = bufnr
+    vim.keymap.set(mode, lhs, rhs, opts)
   end
 
   -- stylua: ignore start
-  map("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
+  map("n", "K",          vim.lsp.buf.hover,           { desc = "Hover" })
 
   -- g mappings
-  map("n", "gd",  vim.lsp.buf.definition,      { desc = "Go to Definition" })
-  map("n", "gla", vim.lsp.buf.code_action,     { desc = "Code Action" })
-  map("n", "gld", vim.lsp.buf.definition,      { desc = "Definition" })
-  map("n", "glh", vim.lsp.buf.hover,           { desc = "Hover" })
-  map("n", "gli", vim.lsp.buf.implementation,  { desc = "Implementation" })
-  map("n", "gln", vim.lsp.buf.rename,          { desc = "Rename" })
-  map("n", "glr", vim.lsp.buf.references,      { desc = "References" })
-  map("n", "gls", vim.lsp.buf.signature_help,  { desc = "Signature Help" })
-  map("n", "glt", vim.lsp.buf.type_definition, { desc = "Type Definition" })
+  map("n", "gd",         vim.lsp.buf.definition,      { desc = "Go to Definition" })
+  map("n", "gla",        vim.lsp.buf.code_action,     { desc = "Code Action" })
+  map("n", "gld",        vim.lsp.buf.definition,      { desc = "Definition" })
+  map("n", "glh",        vim.lsp.buf.hover,           { desc = "Hover" })
+  map("n", "gli",        vim.lsp.buf.implementation,  { desc = "Implementation" })
+  map("n", "gln",        vim.lsp.buf.rename,          { desc = "Rename" })
+  map("n", "glr",        vim.lsp.buf.references,      { desc = "References" })
+  map("n", "gls",        vim.lsp.buf.signature_help,  { desc = "Signature Help" })
+  map("n", "glt",        vim.lsp.buf.type_definition, { desc = "Type Definition" })
 
   -- leader mappings
   map("n", "<leader>la", vim.lsp.buf.code_action,     { desc = "Code Action" })
@@ -72,6 +72,8 @@ local servers = {
   "tsgo",
   "yamlls",
 }
+
+vim.highlight.priorities.semantic_tokens = 100
 
 -- Register each server configuration under vim.lsp.configs
 for _, server in ipairs(servers) do
