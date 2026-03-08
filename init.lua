@@ -48,17 +48,6 @@ local conf = function(config)
   if not ok then delayed_notify("Failed to load config file: config." .. config .. "\n" .. err) end
 end
 
---- Loads a module from the `modules` namespace with error handling.
---- @param plugin string: Name of the plugin module (without the "plugins." prefix).
-local mod = function(plugin)
-  local ok, module = pcall(require, "modules." .. plugin)
-  if not ok then
-    delayed_notify("Failed to load plugin module: modules." .. plugin)
-  else
-    module.setup()
-  end
-end
-
 now(function()
   local built_ins = { "netrwPlugin", "netrw", "netrwSettings", "netrwFileHandlers", "tutor" }
   for _, plugin in ipairs(built_ins) do
@@ -159,7 +148,6 @@ end)
 -- Shared dependencies ---------------------------------------------------------
 later(function()
   add({ source = "nvim-lua/plenary.nvim" })
-  -- add({ source = "MunifTanjim/nui.nvim" })
 end)
 
 -- Window ----------------------------------------------------------------------
@@ -226,32 +214,10 @@ later(function()
   plug("overseer")
 end)
 
--- LSP extras ------------------------------------------------------------------
-later(function()
-  -- Winbar breadcrumbs
-  -- Symbol navigation
-  -- add({ source = "SmiteshP/nvim-navic" })
-  -- add({ source = "SmiteshP/nvim-navbuddy" })
-  -- plug("nav")
-  -- add({ source = "Bekaboo/dropbar.nvim" })
-  -- require("dropbar").setup()
-end)
-
 -- Terminal --------------------------------------------------------------------
 later(function()
   add({ source = "akinsho/toggleterm.nvim" })
   plug("toggleterm")
-end)
-
--- Extras ----------------------------------------------------------------------
-later(function()
-  -- mod("blame")
-  -- mod("boxes")
-  -- mod("indent")
-  -- mod("marks")
-  -- mod("modes")
-  mod("winbar")
-  -- mod("yank")
 end)
 
 -- Work ------------------------------------------------------------------------
