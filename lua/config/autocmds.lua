@@ -1,11 +1,22 @@
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = { "*" },
+  group = vim.api.nvim_create_augroup("comment_fmt_opts", { clear = true }),
+  desc = "No comment on new line",
+  callback = function() vim.opt.formatoptions:remove({ "c", "r", "o" }) end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "gitcommit" },
+  group = vim.api.nvim_create_augroup("auto_spell", { clear = true }),
+  desc = "Enable spell checking",
+  callback = function() vim.cmd("setlocal spell") end,
+})
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "help", "man" },
   group = vim.api.nvim_create_augroup("open_help_vs", { clear = true }),
   desc = "Open help files in vertical split",
-  -- stylua: ignore
-  callback = vim.schedule_wrap(function()
-    vim.cmd("wincmd L")
-  end),
+  callback = function() vim.cmd("wincmd L") end,
 })
 
 local term_group = vim.api.nvim_create_augroup("terminal_window", { clear = true })
@@ -14,23 +25,20 @@ vim.api.nvim_create_autocmd("TermOpen", {
   pattern = { "term://*" },
   group = term_group,
   desc = "Use Terminal highlight in terminal windows",
-  -- stylua: ignore
-  callback = vim.schedule_wrap(function()
+  callback = function()
     if vim.bo.buftype == "terminal" then
+      vim.bo.filetype = "terminal"
       vim.wo.winhighlight = "Normal:Terminal"
       vim.cmd("startinsert")
     end
-  end),
+  end,
 })
 
 vim.api.nvim_create_autocmd("TermClose", {
   pattern = { "term://*" },
   group = term_group,
   desc = "Clear Terminal highlight on close",
-  -- stylua: ignore
-  callback = vim.schedule_wrap(function()
-    vim.wo.winhighlight = ""
-  end),
+  callback = function() vim.wo.winhighlight = "" end,
 })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
@@ -76,20 +84,14 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   pattern = { "*.env*" },
   group = vim.api.nvim_create_augroup("env_filetype", { clear = true }),
   desc = "Set env filetype",
-  -- stylua: ignore
-  callback = function()
-    vim.cmd("set filetype=sh")
-  end,
+  callback = function() vim.cmd("set filetype=sh") end,
 })
 
 vim.api.nvim_create_autocmd("VimResized", {
   pattern = { "*" },
   group = vim.api.nvim_create_augroup("resize_window", { clear = true }),
   desc = "Resize windows evenly on screen resize",
-  -- stylua: ignore
-  callback = function()
-    vim.cmd("wincmd =")
-  end,
+  callback = function() vim.cmd("wincmd =") end,
 })
 
 vim.api.nvim_create_autocmd("QuitPre", {
@@ -110,15 +112,15 @@ vim.api.nvim_create_autocmd("BufReadPre", {
   group = vim.api.nvim_create_augroup("bigfile", { clear = true }),
   desc = "Turn off some features on large files",
   callback = function(args)
-    local buf = args.buf
-    local ok, stats = pcall(vim.uv.fs_stat, args.file) -- 200 KB threshold, adjust as needed
-    if ok and stats and stats.size > 1024 * 200 then
+    local ok, stats = pcall(vim.uv.fs_stat, args.file)
+    if ok and stats and stats.size > 1024 * 200 then -- 200 KB threshold, adjust as needed
       vim.schedule(function()
-        if vim.treesitter.highlighter then vim.treesitter.stop(buf) end
-        vim.bo[buf].syntax = "off"
-        vim.b[buf].minianimate_disable = true
-        vim.b[buf].minihipatterns_disable = true
-        vim.b[buf].miniindentscope_disable = true
+        if vim.bo[args.buf].buftype == "help" then return end
+        if vim.treesitter.highlighter then vim.treesitter.stop(args.buf) end
+        vim.bo[args.buf].syntax = "off"
+        vim.b[args.buf].minianimate_disable = true
+        vim.b[args.buf].minihipatterns_disable = true
+        vim.b[args.buf].miniindentscope_disable = true
         vim.notify("Large file detected", vim.log.levels.WARN)
       end)
     end

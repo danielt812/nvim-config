@@ -49,9 +49,11 @@ vim.opt.foldenable     = true -- Enable folding
 vim.opt.foldlevel      = 99 -- Open folds up to this level
 vim.opt.foldlevelstart = 99 -- Start with folds open
 
+-- INFO: Spell
+vim.opt.spellfile      = vim.fn.stdpath("config") .. "/spell/en.utf-8.add"
+
 -- INFO: System and performance
 vim.opt.clipboard      = "unnamedplus" -- Sync with system clipboard
 vim.opt.updatetime     = 1000 -- CursorHold and swap write interval (ms)
 vim.opt.shortmess:append("S") -- Don't show search count
-vim.opt.formatoptions:remove({ "c", "r", "o" }) -- No auto-comment on new line
 -- stylua: ignore end
