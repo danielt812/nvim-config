@@ -49,7 +49,6 @@ local bufdelete_right  = function() remove_buffers("delete",  "right",   false) 
 local bufwipeout_cur   = function() remove_buffers("wipeout", "current", true)  end
 -- stylua: ignore end
 
-
 -- stylua: ignore start
 vim.keymap.set("n", "<leader>bd", bufdelete_cur,    { desc = "Delete" })
 vim.keymap.set("n", "<leader>ba", bufdelete_all,    { desc = "Delete All" })

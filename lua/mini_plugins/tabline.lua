@@ -1,5 +1,5 @@
 local tabline = require("mini.tabline")
-local buf_utils = require("utils.buffer-pin")
+local pin = require("utils.buffer-pin")
 
 tabline.setup({
   format = function(buf, label)
@@ -9,9 +9,9 @@ tabline.setup({
 
     local suffix = {}
 
-    if vim.bo[buf].modified and buf_utils.is_pinned(buf) then
+    if vim.bo[buf].modified and pin.is_pinned(buf) then
       table.insert(suffix, "")
-    elseif buf_utils.is_pinned(buf) then
+    elseif pin.is_pinned(buf) then
       table.insert(suffix, "")
     elseif vim.bo[buf].modified then
       table.insert(suffix, "●")
@@ -21,7 +21,8 @@ tabline.setup({
       table.insert(suffix, "")
     end
 
-    return tabline.default_format(buf, label) .. table.concat(suffix, " ") .. " " .. sep
+    local pad = #suffix > 0 and " " or ""
+    return tabline.default_format(buf, label) .. table.concat(suffix, " ") .. pad .. sep
   end,
   tabpage_section = "right",
 })
@@ -30,7 +31,7 @@ tabline.setup({
 -- #                                  Keymaps                                  #
 -- #############################################################################
 
-vim.keymap.set("n", "<leader>bp", buf_utils.toggle, { desc = "Pin/Unpin" })
+vim.keymap.set("n", "<leader>bp", pin.toggle, { desc = "Pin/Unpin" })
 
 for i = 1, 9 do
   vim.keymap.set("n", "<leader>b" .. i, function()

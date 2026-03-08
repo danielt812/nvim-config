@@ -9,17 +9,12 @@ local H = {}
 -- Keys are buffer numbers, values are `true`.
 H.pinned = {}
 
---- Redraw tabline so ui updates immediately
-H.redraw = function()
-  vim.cmd("redrawtabline")
-end
-
 --- Pin a buffer.
 --- @param buf? number Optional buffer handle (defaults to current buffer)
 M.pin = function(buf)
   buf = buf or vim.api.nvim_get_current_buf()
   H.pinned[buf] = true
-  H.redraw()
+  vim.cmd("redrawtabline")
 end
 
 --- Unpin a buffer.
@@ -27,7 +22,7 @@ end
 M.unpin = function(buf)
   buf = buf or vim.api.nvim_get_current_buf()
   H.pinned[buf] = nil
-  H.redraw()
+  vim.cmd("redrawtabline")
 end
 
 --- Toggle pin state for a buffer.
@@ -36,7 +31,7 @@ M.toggle = function(buf)
   buf = buf or vim.api.nvim_get_current_buf()
 
   H.pinned[buf] = not H.pinned[buf] or nil
-  H.redraw()
+  vim.cmd("redrawtabline")
 end
 
 --- Check whether a buffer is pinned.
