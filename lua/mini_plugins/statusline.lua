@@ -252,7 +252,22 @@ local merge_hl = function(fg_name, bg_name, new_name)
   vim.api.nvim_set_hl(0, new_name, { fg = fg, bg = bg })
 end
 
-local apply_hl = function()
+local get_mode_suffix = function()
+  local m = vim.fn.mode():lower()
+  local m1 = m:sub(1, 1)
+  if m1 == "v" or m == "\022" then return "Visual" end
+  if m1 == "c" then return "Command" end
+  if m1 == "i" then return "Insert" end
+  if m1 == "n" then return "Normal" end
+  if m1 == "r" then return "Replace" end
+  return "Other"
+end
+
+local link_cursor_line_nr = function()
+  vim.api.nvim_set_hl(0, "CursorLineNr", { link = "CursorLineNr" .. get_mode_suffix() })
+end
+
+local gen_hl_groups = function()
   local prefix = "MiniStatusline"
   -- Diagnostics
   for _, suffix in ipairs({ "Error", "Warn", "Info", "Hint" }) do
@@ -268,10 +283,32 @@ local apply_hl = function()
   end
   -- Git
   merge_hl("Terminal", prefix .. "Devinfo", prefix .. "Git")
+
+  -- Mode line numbers
+  -- stylua: ignore
+  local mode_hl_suffixes = {
+    command = "Command",
+    insert  = "Insert",
+    normal  = "Normal",
+    replace = "Replace",
+    visual  = "Visual",
+    other   = "Other",
+  }
+
+  for _, suffix in pairs(mode_hl_suffixes) do
+    local bg = vim.api.nvim_get_hl(0, { name = "MiniStatuslineMode" .. suffix, link = false }).bg
+    if bg then vim.api.nvim_set_hl(0, "CursorLineNr" .. suffix, { fg = bg }) end
+  end
+
+  link_cursor_line_nr()
 end
 
--- Call once when this module is loaded
-apply_hl()
+gen_hl_groups() -- Call this now if colorscheme was already set
+
+local redraw_status = function()
+  local cmdtype = vim.fn.getcmdtype()
+  if cmdtype == "/" or cmdtype == "?" then vim.cmd("redrawstatus") end
+end
 
 local group = vim.api.nvim_create_augroup("mini_statusline", { clear = true })
 
@@ -279,13 +316,15 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = "*",
   group = group,
   desc = "Generate icon highlights",
-  callback = apply_hl,
+  callback = gen_hl_groups,
 })
 
-local redraw_status = function()
-  local cmdtype = vim.fn.getcmdtype()
-  if cmdtype == "/" or cmdtype == "?" then vim.cmd("redrawstatus") end
-end
+vim.api.nvim_create_autocmd("ModeChanged", {
+  pattern = "*",
+  group = group,
+  desc = "Mode-colored line number",
+  callback = link_cursor_line_nr,
+})
 
 vim.api.nvim_create_autocmd("CmdlineChanged", {
   pattern = "*",
