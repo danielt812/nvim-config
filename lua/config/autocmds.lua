@@ -107,6 +107,15 @@ vim.api.nvim_create_autocmd("QuitPre", {
   end,
 })
 
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  pattern = { "*" },
+  group = vim.api.nvim_create_augroup("clear_winhighlight", { clear = true }),
+  desc = "Clear winhighlight when a normal buffer enters a window",
+  callback = function()
+    if vim.bo.buftype == "" then vim.wo.winhighlight = "" end
+  end,
+})
+
 vim.api.nvim_create_autocmd("BufReadPre", {
   pattern = { "*" },
   group = vim.api.nvim_create_augroup("bigfile", { clear = true }),
