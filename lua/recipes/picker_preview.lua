@@ -46,8 +46,8 @@ end
 local preview_scroll = function(direction)
   if not preview_state.win then return end
   local map = { up = "<C-b>", down = "<C-f>", left = "zH", right = "zL" }
-  local keys = vim.api.nvim_replace_termcodes(map[direction], true, true, true)
-  vim.api.nvim_win_call(preview_state.win, function() vim.cmd("normal! " .. keys) end)
+  vim.api.nvim_set_current_win(preview_state.win)
+  vim.api.nvim_input(map[direction])
 end
 
 local preview_cache_config = function()
