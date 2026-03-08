@@ -13,7 +13,6 @@ H.cache = {}
 --- @param buf? number Optional buffer handle (defaults to current buffer)
 M.toggle = function(buf)
   buf = buf or vim.api.nvim_get_current_buf()
-
   H.cache[buf] = not H.cache[buf] or nil
   vim.cmd("redrawtabline")
 end
