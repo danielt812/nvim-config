@@ -46,7 +46,13 @@ icons.setup({
     [".gitignore"]    = { glyph = "󰊢", hl = "MiniIconsOrange" },
     -- stylua: ignore end
   },
-  filetype = {},
+  filetype = {
+    -- stylua: ignore start
+    ["ghostty"]  = { glyph = "󱙝", hl = "MiniIconsBlue" },
+    ["terminal"] = { glyph = "", hl = "MiniIconsPurple" },
+    ["tmux"]     = { glyph = "", hl = "MiniIconsGreen" },
+    -- stylua: ignore end
+  },
   lsp = {
     -- stylua: ignore start
     ["copilot"] = { glyph = "", hl = "MiniIconsOrange" },
