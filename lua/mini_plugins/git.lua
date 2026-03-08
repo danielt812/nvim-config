@@ -23,6 +23,10 @@ vim.keymap.set("n", "<leader>gp", patch_log, { desc = "Patch log (file)" })
 -- #                            Automatic Commands                             #
 -- #############################################################################
 
+local window_cb = function(event)
+  vim.wo[event.data.win_stdout].winhighlight = "Normal:Terminal"
+end
+
 local group = vim.api.nvim_create_augroup("mini_git", { clear = true })
 
 local gen_blame_palette = function(count)
@@ -242,4 +246,34 @@ local blame_cb = function(event)
   vim.api.nvim_create_autocmd({ "WinLeave", "BufWipeout" }, { buffer = buf, once = true, callback = close })
 end
 
+local status_cb = function(event)
+  if event.data.git_subcommand ~= "status" then return end
+  local buf = event.buf
+  vim.bo[buf].filetype = "git"
+  vim.cmd("retab")
+  local ns = vim.api.nvim_create_namespace("mini_git_status")
+  for i, line in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
+    local ln = i - 1
+    local hl
+    if line:match("^%s+modified:") then
+      hl = "diffChanged"
+    elseif line:match("^%s+new file:") then
+      hl = "diffAdded"
+    elseif line:match("^%s+deleted:") then
+      hl = "diffRemoved"
+    elseif line:match("^%s+renamed:") then
+      hl = "diffChanged"
+    elseif line:match("^%s+%(use ") then
+      hl = "Comment"
+    elseif line:match("^Changes") or line:match("^Untracked") then
+      hl = "Title"
+    elseif line:match("^On branch") or line:match("^Your branch") or line:match("^HEAD") then
+      hl = "Special"
+    end
+    if hl then vim.api.nvim_buf_set_extmark(buf, ns, ln, 0, { end_col = #line, hl_group = hl, priority = 1 }) end
+  end
+end
+
+vim.api.nvim_create_autocmd("User", { pattern = "MiniGitCommandSplit", group = group, callback = window_cb })
 vim.api.nvim_create_autocmd("User", { pattern = "MiniGitCommandSplit", group = group, callback = blame_cb })
+vim.api.nvim_create_autocmd("User", { pattern = "MiniGitCommandSplit", group = group, callback = status_cb })
