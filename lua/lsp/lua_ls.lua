@@ -30,7 +30,7 @@ return {
       },
       diagnostics = {
         -- Get the language server to recognize the `vim` global
-        globals = { "vim" },
+        globals = { "put", "put_text", "vim" },
         workspaceEvent = "OnChange", -- "OnChange", "OnSave", "None"
       },
       hint = {

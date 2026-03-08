@@ -1,11 +1,16 @@
 local misc = require("mini.misc")
 
-misc.setup()
+misc.setup({
+  make_global = { "put", "put_text" },
+})
+
 misc.setup_restore_cursor()
 misc.setup_termbg_sync()
 
--- https://github.com/echasnovski/mini.nvim/issues/1911
--- NOTE: - Zoom without changing background color
+-- #############################################################################
+-- #                                  Keymaps                                  #
+-- #############################################################################
+
 local zoom = function()
   misc.zoom()
   -- stylua: ignore
@@ -27,7 +32,7 @@ local centered_zoom = function()
     col = math.floor((ui.width - width) / 2),
     row = 2,
     style = "minimal",
-    title = " Zoom (centered) "
+    title = " Zoom (centered) ",
   })
 
   vim.wo.number = true
@@ -35,5 +40,10 @@ local centered_zoom = function()
   vim.wo.winhighlight = "NormalFloat:Normal,FloatBorder:Normal,FloatTitle:Normal"
 end
 
+local put_messages = function()
+  put_text(vim.split(vim.api.nvim_exec2("messages", { output = true }).output, "\n"))
+end
+
+vim.keymap.set("n", "<leader>ep", put_messages , { desc = "Put messages" })
 vim.keymap.set("n", "<leader>ez", zoom, { desc = "Zoom" })
 vim.keymap.set("n", "<leader>eZ", centered_zoom, { desc = "Zoom (centered)" })
