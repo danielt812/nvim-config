@@ -19,9 +19,10 @@ jump.setup({
 -- #                                  Keymaps                                  #
 -- #############################################################################
 
+-- stylua: ignore start
 vim.keymap.set({ "n", "x", "o" }, ";", function() jump.jump(nil, false, nil, vim.v.count1) end)
-
-vim.keymap.set({ "n", "x", "o" }, ",", function() jump.jump(nil, true, nil, vim.v.count1) end)
+vim.keymap.set({ "n", "x", "o" }, ",", function() jump.jump(nil, true,  nil, vim.v.count1) end)
+-- stylua: ignore end
 
 vim.on_key(function(_, key)
   if jump.state.jumping and key == vim.keycode("<esc>") then jump.stop_jumping() end
