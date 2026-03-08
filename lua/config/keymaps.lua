@@ -1,25 +1,32 @@
-local move = require("utils.move-lines")
+local get_page_size = function(size)
+  local height = vim.api.nvim_win_get_height(0)
+  if size == "half" then return math.floor(height / 2) end
+  return height - 2
+end
+
+local move_lines = function(count, direction)
+  if count <= 0 then return end
+  vim.cmd("normal! " .. count .. (direction == "down" and "j" or "k"))
+end
+
+local page_down = function() move_lines(get_page_size("full"), "down") end
+local page_up = function() move_lines(get_page_size("full"), "up") end
+local half_page_down = function() move_lines(get_page_size("half"), "down") end
+local half_page_up = function() move_lines(get_page_size("half"), "up") end
 
 -- -- stylua: ignore start
-vim.keymap.set({ "n", "v" }, "<PageDown>", move.page_down, { desc = "Move page down" })
-vim.keymap.set({ "n", "v" }, "<C-f>", move.page_down, { desc = "Move page down" })
-vim.keymap.set({ "n", "v" }, "<C-d>", move.half_page_down, { desc = "Move half page down" })
-vim.keymap.set({ "n", "v" }, "<PageUp>", move.page_up, { desc = "Move page up" })
-vim.keymap.set({ "n", "v" }, "<C-b>", move.page_up, { desc = "Move page up" })
-vim.keymap.set({ "n", "v" }, "<C-u>", move.half_page_up, { desc = "Move half page up" })
+vim.keymap.set({ "n", "v" }, "<PageDown>", page_down,      { desc = "Move page down" })
+vim.keymap.set({ "n", "v" }, "<C-f>",      page_down,      { desc = "Move page down" })
+vim.keymap.set({ "n", "v" }, "<C-d>",      half_page_down, { desc = "Move half page down" })
+vim.keymap.set({ "n", "v" }, "<PageUp>",   page_up,        { desc = "Move page up" })
+vim.keymap.set({ "n", "v" }, "<C-b>",      page_up,        { desc = "Move page up" })
+vim.keymap.set({ "n", "v" }, "<C-u>",      half_page_up,   { desc = "Move half page up" })
 -- -- stylua: ignore end
 
 -- stylua: ignore start
 vim.keymap.set("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Go to previous buffer" })
 vim.keymap.set("n", "<S-l>", "<cmd>bnext<cr>",     { desc = "Go to next buffer" })
 -- stylua: ignore end
-
--- vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Center cursor line on scroll up" })
--- vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Center cursor line on scroll down" })
--- vim.keymap.set("n", "<C-b>", "<C-b>zz", { desc = "Center cursor line on page up" })
--- vim.keymap.set("n", "<C-f>", "<C-f>zz", { desc = "Center cursor line on page down" })
--- vim.keymap.set("n", "<PageUp>", "<PageUp>zz", { desc = "Center cursor line on page up" })
--- vim.keymap.set("n", "<PageDown>", "<PageDown>zz", { desc = "Center cursor line on page down" })
 
 -- Preserve cursor position on yank
 local preserve_cursor = function(key)
