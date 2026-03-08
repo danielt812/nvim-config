@@ -245,7 +245,7 @@ end)
 -- Extras ----------------------------------------------------------------------
 later(function()
   -- mod("blame")
-  mod("boxes")
+  -- mod("boxes")
   -- mod("indent")
   mod("marks")
   mod("modes")

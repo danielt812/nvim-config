@@ -34,6 +34,7 @@ clue.setup({
     -- stylua: ignore start
     { mode = {"n", "v"}, keys = "<leader>\\", desc = "+Toggle" },
     { mode = {"n", "v"}, keys = "<leader>b",  desc = "+Buffer" },
+    { mode = {"n", "v"}, keys = "<leader>c",  desc = "+Comment" },
     { mode = {"n", "v"}, keys = "<leader>d",  desc = "+Debugger" },
     { mode = {"n", "v"}, keys = "<leader>e",  desc = "+Editor" },
     { mode = {"n", "v"}, keys = "<leader>f",  desc = "+Find" },
