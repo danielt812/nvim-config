@@ -22,19 +22,19 @@ local pos_in_range = function(range, row, col)
 end
 
 local find_flat_symbols_at_pos = function(symbols, row, col)
-  local matches = {}
+  local path = {}
   for _, symbol in ipairs(symbols) do
     local range = symbol.location and symbol.location.range
-    if pos_in_range(range, row, col) then table.insert(matches, symbol) end
+    if pos_in_range(range, row, col) then table.insert(path, symbol) end
   end
-  table.sort(matches, function(a, b)
+  table.sort(path, function(a, b)
     local ra, rb = a.location.range, b.location.range
     if ra.start.line ~= rb.start.line then return ra.start.line < rb.start.line end
     if ra.start.character ~= rb.start.character then return ra.start.character < rb.start.character end
     if ra["end"].line ~= rb["end"].line then return ra["end"].line > rb["end"].line end
     return ra["end"].character > rb["end"].character
   end)
-  return matches
+  return path
 end
 
 local find_symbols_at_pos
@@ -91,6 +91,7 @@ local on_attach = function(client, buf)
   -- g mappings
   map("n", "gd",         vim.lsp.buf.definition,      { desc = "Go to Definition" })
   map("n", "gla",        vim.lsp.buf.code_action,     { desc = "Code Action" })
+  map("n", "glc",        vim.lsp.buf.declaration,     { desc = "Declaration" })
   map("n", "gld",        vim.lsp.buf.definition,      { desc = "Definition" })
   map("n", "glh",        vim.lsp.buf.hover,           { desc = "Hover" })
   map("n", "gli",        vim.lsp.buf.implementation,  { desc = "Implementation" })
@@ -101,6 +102,7 @@ local on_attach = function(client, buf)
 
   -- leader mappings
   map("n", "<leader>la", vim.lsp.buf.code_action,     { desc = "Code Action" })
+  map("n", "<leader>lc", vim.lsp.buf.declaration,     { desc = "Declaration" })
   map("n", "<leader>ld", vim.lsp.buf.definition,      { desc = "Definition" })
   map("n", "<leader>lh", vim.lsp.buf.hover,           { desc = "Hover" })
   map("n", "<leader>li", vim.lsp.buf.implementation,  { desc = "Implementation" })
@@ -110,7 +112,14 @@ local on_attach = function(client, buf)
   map("n", "<leader>lt", vim.lsp.buf.type_definition, { desc = "Type Definition" })
   -- stylua: ignore end
 
-  if client:supports_method("textDocument/inlayHint") then vim.lsp.inlay_hint.enable(false) end
+  -- if client:supports_method("textDocument/semanticTokensProvider") then
+  --   client.server_capabilities.semanticTokensProvider = nil
+  -- end
+
+  if client:supports_method("textDocument/inlayHint") then
+    -- stylua: ignore
+    vim.lsp.inlay_hint.enable(false)
+  end
 
   if client:supports_method("textDocument/documentSymbol", buf) then
     cache[buf] = { enabled = true }
@@ -265,7 +274,5 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = "*",
   group = group,
   desc = "Semantic highlighting",
-  callback = function()
-    vim.api.nvim_set_hl(0, "@lsp.type.variable", {})
-  end,
+  callback = function() vim.api.nvim_set_hl(0, "@lsp.type.variable", {}) end,
 })
