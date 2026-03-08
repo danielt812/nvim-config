@@ -286,7 +286,7 @@ local highlights = {
 
   -- stylua: ignore start
   TabLine     = { fg = palette.grey1, bg = palette.bg1 },
-  TabLineFill = { fg = palette.bg2,   bg = palette.bg1 },
+  TabLineFill = { fg = palette.green, bg = palette.bg1 },
   TabLineSel  = { fg = palette.blue,  bg = palette.bg1 },
   -- stylua: ignore end
 
