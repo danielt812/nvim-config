@@ -53,4 +53,5 @@ vim.opt.foldlevelstart = 99 -- Start with folds open
 vim.opt.clipboard      = "unnamedplus" -- Sync with system clipboard
 vim.opt.updatetime     = 1000 -- CursorHold and swap write interval (ms)
 vim.opt.shortmess:append("S") -- Don't show search count
+vim.opt.formatoptions:remove({ "c", "r", "o" }) -- No auto-comment on new line
 -- stylua: ignore end

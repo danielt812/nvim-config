@@ -1,13 +1,3 @@
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = { "*" },
-  group = vim.api.nvim_create_augroup("comment_fmt_opts", { clear = true }),
-  desc = "No comment on new line",
-  -- stylua: ignore
-  callback = function()
-    vim.opt.formatoptions:remove({ "c", "r", "o" })
-  end,
-})
-
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "help", "man" },
   group = vim.api.nvim_create_augroup("open_help_vs", { clear = true }),
@@ -120,11 +110,9 @@ vim.api.nvim_create_autocmd("BufReadPre", {
   group = vim.api.nvim_create_augroup("bigfile", { clear = true }),
   desc = "Turn off some features on large files",
   callback = function(args)
-    local file = args.file
     local buf = args.buf
-    local max_filesize = 1024 * 200 -- 200 KB threshold, adjust as needed
-    local ok, stats = pcall(vim.uv.fs_stat, file)
-    if ok and stats and stats.size > max_filesize then
+    local ok, stats = pcall(vim.uv.fs_stat, args.file) -- 200 KB threshold, adjust as needed
+    if ok and stats and stats.size > 1024 * 200 then
       vim.schedule(function()
         if vim.treesitter.highlighter then vim.treesitter.stop(buf) end
         vim.bo[buf].syntax = "off"
