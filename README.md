@@ -4,30 +4,27 @@
 
 This repository contains my personal Neovim configuration.
 
-## Table of Contents
-
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Configurations](#configurations)
-- [Colorschemes](#colorschemes)
-- [License](#license)
-
 ## Prerequisites
 
 Install neovim with your package manager.
 
 Homebrew:
-```sh
+```bash
 brew install neovim
 ```
 
-DNF:
-```sh
+Pacman:
+```bash
+sudo pacman -S neovim
+```
+
+Dnf:
+```bash
 sudo dnf install neovim
 ```
 
-APT:
-```sh
+Apt:
+```bash
 sudo apt install neovim
 ```
 
