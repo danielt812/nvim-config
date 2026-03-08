@@ -21,6 +21,18 @@ vim.keymap.set("n", "<S-l>", "<cmd>bnext<cr>",     { desc = "Go to next buffer" 
 -- vim.keymap.set("n", "<PageUp>", "<PageUp>zz", { desc = "Center cursor line on page up" })
 -- vim.keymap.set("n", "<PageDown>", "<PageDown>zz", { desc = "Center cursor line on page down" })
 
+-- Preserve cursor position on yank
+local preserve_cursor = function(key)
+  local pos = vim.fn.getpos("v")
+  vim.w._yank_cursor_pos = { pos[2], pos[3] - 1 }
+  return key
+end
+
+-- stylua: ignore start
+vim.keymap.set({ "n", "v" }, "y", function() return preserve_cursor("y") end, { expr = true, desc = "Yank" })
+vim.keymap.set({ "n", "v" }, "Y", function() return preserve_cursor("Y") end, { expr = true, desc = "Yank line" })
+-- stylua: ignore end
+
 -- Prevent some registers from yanking
 -- stylua: ignore start
 vim.keymap.set({ "n", "v" }, "x", '"_x', { desc = "Prevent x from yanking to clipboard" })

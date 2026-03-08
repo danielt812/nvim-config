@@ -250,7 +250,7 @@ later(function()
   mod("marks")
   -- mod("modes")
   mod("winbar")
-  mod("yank")
+  -- mod("yank")
 end)
 
 -- Work ------------------------------------------------------------------------

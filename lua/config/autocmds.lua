@@ -69,6 +69,19 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   end,
 })
 
+vim.api.nvim_create_autocmd("TextYankPost", {
+  pattern = "*",
+  group = vim.api.nvim_create_augroup("preserve_cursor", { clear = true }),
+  desc = "Preserve cursor position on yank",
+  callback = function()
+    local pos = vim.w._yank_cursor_pos
+    if pos then
+      vim.api.nvim_win_set_cursor(0, pos)
+      vim.w._yank_cursor_pos = nil
+    end
+  end,
+})
+
 vim.api.nvim_create_autocmd("BufReadPost", {
   pattern = { "*.env*" },
   group = vim.api.nvim_create_augroup("env_filetype", { clear = true }),
