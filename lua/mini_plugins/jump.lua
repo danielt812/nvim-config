@@ -51,7 +51,6 @@ local find_boundary = function(line, search, backward, ignore_case)
       if l:find(search, 1, true) then return line + i end
     end
   end
-  return line
 end
 
 local clear_dim_matches = function()
@@ -84,6 +83,7 @@ local apply_dim = function()
   local ignore_case = vim.o.ignorecase and (not vim.o.smartcase or target == target:lower())
   local search = ignore_case and target:lower() or target
   local boundary = find_boundary(line, search, backward, ignore_case)
+  if not boundary then return end
 
   dim_match_ids = add_dim_matches(line, boundary, backward)
 end
