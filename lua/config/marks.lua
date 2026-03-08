@@ -103,7 +103,7 @@ vim.keymap.set("n", "<leader>qM", send_marks_to_loc, { desc = "Marks (Loc)" })
 
 local gen_hl_groups = function() vim.api.nvim_set_hl(0, "MarksSign", { link = "Constant" }) end
 
-gen_hl_groups()
+gen_hl_groups() -- Call this now if colorscheme was already set
 
 local group = vim.api.nvim_create_augroup("marks", { clear = true })
 
