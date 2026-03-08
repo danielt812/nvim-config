@@ -1,5 +1,9 @@
 local indentscope = require("mini.indentscope")
 
+local ft_ignore = { "git", "help", "markdown" }
+
+local should_ignore = function(ft) return ft:match("^mini") or vim.tbl_contains(ft_ignore, ft) end
+
 indentscope.setup({
   -- Draw options
   draw = {
@@ -11,6 +15,7 @@ indentscope.setup({
     -- Default draws only fully computed scope (see `options.n_lines`).
     predicate = function(scope)
       if not vim.api.nvim_buf_is_valid(scope.buf_id) then return false end
+      if should_ignore(vim.bo[scope.buf_id].filetype) then return false end
       return not scope.body.is_incomplete
     end,
 
@@ -79,7 +84,7 @@ local get_indent = function(buf, lnum)
 end
 
 local render = function(buf, win)
-  if vim.b[buf].miniindentscope_disable then return end
+  if vim.b[buf].miniindentscope_disable or should_ignore(vim.bo[buf].filetype) then return end
   local win_config = vim.api.nvim_win_get_config(win)
   if win_config and win_config.relative ~= "" then return end -- Don't render on some floats (hover, cmp, etc...)
 
@@ -137,12 +142,6 @@ end
 
 local group = vim.api.nvim_create_augroup("mini_indentscope", { clear = true })
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "mini*", "git", "help", "markdown" },
-  group = group,
-  desc = "Disable indentscope for ignored filetypes",
-  callback = function(args) vim.b[args.buf].miniindentscope_disable = true end,
-})
 
 vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "ModeChanged" }, {
   pattern = "*",
