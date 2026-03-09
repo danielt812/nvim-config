@@ -17,9 +17,8 @@ tabline.setup({
       table.insert(suffix, "●")
     end
 
-    if vim.bo[buf].readonly or not vim.bo[buf].modifiable then
-      table.insert(suffix, "")
-    end
+    if vim.bo[buf].readonly or not vim.bo[buf].modifiable then table.insert(suffix, "") end
+    if vim.bo[buf].buftype == "nofile" then table.insert(suffix, "") end
 
     local pad = #suffix > 0 and " " or ""
     return tabline.default_format(buf, label) .. table.concat(suffix, " ") .. pad .. sep

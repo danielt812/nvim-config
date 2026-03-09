@@ -1,27 +1,19 @@
-local function get_page_size(size)
+local scratch_types = require("lib.scratch")
+
+local function scroll(size, dir)
   local height = vim.api.nvim_win_get_height(0)
-  if size == "half" then return math.floor(height / 2) end
-  return height - 2
+  local count = size == "half" and math.floor(height / 2) or height - 2
+  if count > 0 then vim.cmd("normal! " .. count .. (dir == "down" and "j" or "k")) end
 end
 
-local function move_lines(count, direction)
-  if count <= 0 then return end
-  vim.cmd("normal! " .. count .. (direction == "down" and "j" or "k"))
-end
-
-local function page_down() move_lines(get_page_size("full"), "down") end
-local function page_up() move_lines(get_page_size("full"), "up") end
-local function half_page_down() move_lines(get_page_size("half"), "down") end
-local function half_page_up() move_lines(get_page_size("half"), "up") end
-
--- -- stylua: ignore start
-vim.keymap.set({ "n", "v" }, "<PageDown>", page_down,      { desc = "Move page down" })
-vim.keymap.set({ "n", "v" }, "<C-f>",      page_down,      { desc = "Move page down" })
-vim.keymap.set({ "n", "v" }, "<C-d>",      half_page_down, { desc = "Move half page down" })
-vim.keymap.set({ "n", "v" }, "<PageUp>",   page_up,        { desc = "Move page up" })
-vim.keymap.set({ "n", "v" }, "<C-b>",      page_up,        { desc = "Move page up" })
-vim.keymap.set({ "n", "v" }, "<C-u>",      half_page_up,   { desc = "Move half page up" })
--- -- stylua: ignore end
+-- stylua: ignore start
+vim.keymap.set({ "n", "v" }, "<PageDown>", function() scroll("full", "down") end, { desc = "Move page down" })
+vim.keymap.set({ "n", "v" }, "<C-f>",      function() scroll("full", "down") end, { desc = "Move page down" })
+vim.keymap.set({ "n", "v" }, "<C-d>",      function() scroll("half", "down") end, { desc = "Move half page down" })
+vim.keymap.set({ "n", "v" }, "<PageUp>",   function() scroll("full", "up") end,   { desc = "Move page up" })
+vim.keymap.set({ "n", "v" }, "<C-b>",      function() scroll("full", "up") end,   { desc = "Move page up" })
+vim.keymap.set({ "n", "v" }, "<C-u>",      function() scroll("half", "up") end,   { desc = "Move half page up" })
+-- stylua: ignore end
 
 -- stylua: ignore start
 vim.keymap.set("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Go to previous buffer" })
@@ -71,14 +63,19 @@ vim.keymap.set("n", "yy", function()
   if vim.fn.getline(".") ~= "" then vim.cmd("normal! yy") end
 end, { noremap = true, silent = true })
 
--- Put this into keymaps.lua
-vim.keymap.set("n", "<C-r>", function()
-  package.loaded["modules.blame"] = nil
-  require("modules.blame").setup()
-  vim.notify("modules.blame reloaded")
-end, { desc = "Reload Blame Module" })
-
 -- Create scratch buffer
--- vim.keymap.set("n", "<leader>bs", function()
---   vim.api.nvim_win_set_buf(0, vim.api.nvim_create_buf(true, true))
--- end, { desc = "Scratch" })
+vim.keymap.set("n", "<leader>bs", function()
+  vim.ui.select(scratch_types, {
+    prompt = "Filetype:",
+    format_item = function(item) return item.ft end,
+  }, function(item)
+    if item == nil then return end
+    vim.ui.input({ prompt = "Name: " }, function(name)
+      if name == nil then return end
+      local buf = vim.api.nvim_create_buf(true, true)
+      vim.api.nvim_win_set_buf(0, buf)
+      vim.bo[buf].filetype = item.ft
+      if name ~= "" then vim.api.nvim_buf_set_name(buf, name .. "." .. (item.ext or item.ft)) end
+    end)
+  end)
+end, { desc = "Scratch" })

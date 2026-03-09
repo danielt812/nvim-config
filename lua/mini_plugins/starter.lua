@@ -11,8 +11,12 @@ local header = table.concat({
 
 math.randomseed(os.time())
 local t = tips[math.random(#tips)]
-local parts = { ":" .. t.cmd, "→ " .. t.desc }
-if t.example then table.insert(parts, "  " .. t.example) end
+local parts = {
+  "Tip\n",
+  ":" .. t.cmd,
+  "→ " .. t.desc,
+}
+if t.example then table.insert(parts, t.example) end
 local tip = table.concat(parts, "\n")
 
 starter.setup({

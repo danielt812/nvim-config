@@ -27,7 +27,7 @@ return {
   {
     cmd = "v/<pattern>/d",
     desc = "keep only lines matching pattern",
-    example = ":v/error/d",
+    example = ":v/foo/d",
   },
   {
     cmd = "sor(t) u",
