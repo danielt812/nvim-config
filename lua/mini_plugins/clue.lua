@@ -29,11 +29,11 @@ clue.setup({
     { mode = { "n", "x" }, keys = "z" },
   },
   clues = {
+    { mode = { "n", "v" }, keys = "gb", desc = "Box" },
     { mode = { "n", "v" }, keys = "gl", desc = "Lsp" },
     -- stylua: ignore start
     { mode = { "n", "v" }, keys = "<leader>\\", desc = "+Toggle" },
     { mode = { "n", "v" }, keys = "<leader>b",  desc = "+Buffer" },
-    { mode = { "n", "v" }, keys = "<leader>c",  desc = "+Comment" },
     { mode = { "n", "v" }, keys = "<leader>d",  desc = "+Debugger" },
     { mode = { "n", "v" }, keys = "<leader>e",  desc = "+Editor" },
     { mode = { "n", "v" }, keys = "<leader>f",  desc = "+Find" },

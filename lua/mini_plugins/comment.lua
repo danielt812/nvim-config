@@ -181,6 +181,6 @@ local function comment_line_cb()
 end
 
 -- stylua: ignore start
-vim.keymap.set("n", "<leader>cb", comment_box_cb,  { desc = "Box" })
-vim.keymap.set("n", "<leader>cl", comment_line_cb, { desc = "Line" })
+vim.keymap.set("n", "gbb", comment_box_cb,  { desc = "Box" })
+vim.keymap.set("n", "gbl", comment_line_cb, { desc = "Line" })
 -- stylua: ignore end
