@@ -70,6 +70,7 @@ now(function()
   conf("marks")
   conf("quickfix")
   conf("terminal")
+  conf("tmux")
 
   vim.g.colors_variant = "soft"
   vim.cmd("colorscheme everforest")
@@ -148,12 +149,6 @@ end)
 -- Shared dependencies ---------------------------------------------------------
 later(function() add({ source = "nvim-lua/plenary.nvim" }) end)
 
--- Window ----------------------------------------------------------------------
-later(function()
-  add({ source = "aserowy/tmux.nvim" })
-  plug("tmux")
-end)
-
 -- Debugging -------------------------------------------------------------------
 later(function()
   add({
@@ -206,10 +201,6 @@ later(function()
   -- Multicursor
   add({ source = "jake-stewart/multicursor.nvim" })
   plug("multicursor")
-
-  -- Task runner
-  -- add({ source = "stevearc/overseer.nvim" })
-  -- plug("overseer")
 end)
 
 -- Work ------------------------------------------------------------------------
