@@ -288,7 +288,7 @@ local function gc_stop()
 end
 
 local function gc_start()
-  vim.api.nvim_exec_autocmds("FileType", { buf = 0 })
+  vim.api.nvim_exec_autocmds("FileType", { buffer = 0 })
   cache.gc.stopped = false
 end
 
