@@ -189,32 +189,32 @@ vim.api.nvim_create_user_command(
 
 -- stylua: ignore start
 local kinds = {
-  [1]  = { hl = "Normal",     icon = "" },
-  [2]  = { hl = "Include",    icon = "󰏗" },
-  [3]  = { hl = "Include",    icon = "" },
-  [4]  = { hl = "Include",    icon = "" },
-  [5]  = { hl = "Type",       icon = "" },
-  [6]  = { hl = "Function",   icon = "" },
-  [7]  = { hl = "Identifier", icon = "" },
-  [8]  = { hl = "Identifier", icon = "" },
-  [9]  = { hl = "Function",   icon = "" },
-  [10] = { hl = "Type",       icon = "" },
-  [11] = { hl = "Type",       icon = "" },
-  [12] = { hl = "Function",   icon = "" },
-  [13] = { hl = "Identifier", icon = "" },
-  [14] = { hl = "Constant",   icon = "" },
-  [15] = { hl = "String",     icon = "" },
-  [16] = { hl = "Number",     icon = "" },
-  [17] = { hl = "Boolean",    icon = "" },
-  [18] = { hl = "Type",       icon = "" },
-  [19] = { hl = "Type",       icon = "" },
-  [20] = { hl = "Identifier", icon = "" },
-  [21] = { hl = "Special",    icon = "" },
-  [22] = { hl = "Constant",   icon = "" },
-  [23] = { hl = "Type",       icon = "" },
-  [24] = { hl = "Type",       icon = "" },
-  [25] = { hl = "Operator",   icon = "" },
-  [26] = { hl = "Type",       icon = "" },
+  [1]  = { hl = "Normal",     icon = "" }, -- File
+  [2]  = { hl = "Include",    icon = "󰏗" }, -- Module
+  [3]  = { hl = "Include",    icon = "" }, -- Namespace
+  [4]  = { hl = "Include",    icon = "" }, -- Package
+  [5]  = { hl = "Type",       icon = "" }, -- Class
+  [6]  = { hl = "Function",   icon = "" }, -- Method
+  [7]  = { hl = "Identifier", icon = "" }, -- Property
+  [8]  = { hl = "Identifier", icon = "" }, -- Field
+  [9]  = { hl = "Function",   icon = "" }, -- Constructor
+  [10] = { hl = "Type",       icon = "" }, -- Enum
+  [11] = { hl = "Type",       icon = "" }, -- Interface
+  [12] = { hl = "Function",   icon = "" }, -- Function
+  [13] = { hl = "Identifier", icon = "" }, -- Variable
+  [14] = { hl = "Constant",   icon = "" }, -- Constant
+  [15] = { hl = "String",     icon = "" }, -- String
+  [16] = { hl = "Number",     icon = "" }, -- Number
+  [17] = { hl = "Boolean",    icon = "" }, -- Boolean
+  [18] = { hl = "Type",       icon = "" }, -- Array
+  [19] = { hl = "Type",       icon = "" }, -- Object
+  [20] = { hl = "Identifier", icon = "" }, -- Key
+  [21] = { hl = "Special",    icon = "" }, -- Null
+  [22] = { hl = "Constant",   icon = "" }, -- EnumMember
+  [23] = { hl = "Type",       icon = "" }, -- Struct
+  [24] = { hl = "Type",       icon = "" }, -- Event
+  [25] = { hl = "Operator",   icon = "" }, -- Operator
+  [26] = { hl = "Type",       icon = "" }, -- TypeParameter
 }
 -- stylua: ignore end
 
@@ -282,7 +282,7 @@ cache.gc = { stopped = false, grace = 60, timer = vim.uv.new_timer() }
 
 local function gc_stop()
   for _, client in ipairs(vim.lsp.get_clients()) do
-    client:stop()
+    if client ~= "mini.snippets" then client:stop() end
   end
   cache.gc.stopped = true
 end
