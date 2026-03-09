@@ -987,6 +987,13 @@ local highlights = {
   MasonMuted                       = { fg = palette.grey0 },
   MasonMutedBlock                  = { fg = palette.bg0, bg = palette.grey0 },
   -- stylua: ignore end
+
+  -- https://github.com/igorlfs/nvim-dap-view
+  -- stylua: ignore start
+  NvimDapViewTab         = { fg = palette.grey1, bg = palette.bg0 },
+  NvimDapViewTabSelected = { fg = palette.blue,  bg = palette.bg0 },
+  NvimDapViewTabFill     = { fg = palette.green, bg = palette.bg0 },
+  -- stylua: ignore end
 }
 
 local hl = function(group, opts)
