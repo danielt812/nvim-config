@@ -211,8 +211,8 @@ later(function()
   plug("multicursor")
 
   -- Task runner
-  add({ source = "stevearc/overseer.nvim" })
-  plug("overseer")
+  -- add({ source = "stevearc/overseer.nvim" })
+  -- plug("overseer")
 end)
 
 -- Work ------------------------------------------------------------------------

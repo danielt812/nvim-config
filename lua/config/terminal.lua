@@ -6,6 +6,7 @@
 ---@field width integer|nil remembered across vertical splits
 ---@field prev_buf integer|nil restored when full terminal is hidden or exits
 ---@field prev_showtabline integer|nil
+---@field job_id integer|nil
 
 ---@type table<string, Terminal>
 local terms = {}
@@ -50,7 +51,7 @@ local function create(term)
   end
   local buf = vim.api.nvim_create_buf(false, false)
   switch_buf(0, buf)
-  vim.fn.jobstart(term.cmd or vim.o.shell, { term = true, cwd = vim.fn.getcwd() })
+  term.job_id = vim.fn.jobstart(term.cmd or vim.o.shell, { term = true, cwd = vim.fn.getcwd() })
   term.buf = buf
   vim.bo[buf].buflisted = false
   vim.cmd("startinsert")
@@ -226,6 +227,74 @@ vim.api.nvim_create_autocmd("WinResized", {
   end,
 })
 
+vim.api.nvim_create_autocmd("QuitPre", {
+  group = group,
+  desc = "Kill all managed terminal jobs on quit",
+  callback = function()
+    for _, term in pairs(terms) do
+      if term.job_id then pcall(vim.fn.jobstop, term.job_id) end
+    end
+  end,
+})
+
+-- #############################################################################
+-- #                                 Task Picker                               #
+-- #############################################################################
+
+local function get_package_scripts()
+  local path = vim.fn.getcwd() .. "/package.json"
+  local f = io.open(path, "r")
+  if not f then return {} end
+  local content = f:read("*a")
+  f:close()
+  local ok, decoded = pcall(vim.fn.json_decode, content)
+  if not ok or type(decoded) ~= "table" or type(decoded.scripts) ~= "table" then return {} end
+  local tasks = {}
+  for name, _ in pairs(decoded.scripts) do
+    table.insert(tasks, { label = "npm: " .. name, cmd = "npm run " .. name })
+  end
+  table.sort(tasks, function(a, b) return a.label < b.label end)
+  return tasks
+end
+
+local function get_make_targets()
+  local path = vim.fn.getcwd() .. "/Makefile"
+  local f = io.open(path, "r")
+  if not f then return {} end
+  local tasks = {}
+  for line in f:lines() do
+    local target = line:match("^([%w_%-]+)%s*:")
+    if target and target ~= ".PHONY" then
+      table.insert(tasks, { label = "make: " .. target, cmd = "make " .. target })
+    end
+  end
+  f:close()
+  table.sort(tasks, function(a, b) return a.label < b.label end)
+  return tasks
+end
+
+local function run_task()
+  local tasks = {}
+  vim.list_extend(tasks, get_package_scripts())
+  vim.list_extend(tasks, get_make_targets())
+
+  if #tasks == 0 then
+    vim.notify("No tasks found", vim.log.levels.WARN)
+    return
+  end
+
+  local labels = vim.tbl_map(function(t) return t.label end, tasks)
+  vim.ui.select(labels, { prompt = "Run task" }, function(choice)
+    if not choice then return end
+    for _, task in ipairs(tasks) do
+      if task.label == choice then
+        toggle(choice, { layout = "horizontal", cmd = task.cmd })
+        return
+      end
+    end
+  end)
+end
+
 -- #############################################################################
 -- #                                 Keymaps                                   #
 -- #############################################################################
@@ -246,4 +315,5 @@ vim.keymap.set("n",          "<leader>gd", delta,      { desc = "Delta" })
 vim.keymap.set("n",          "<leader>tc", full,       { desc = "Full Terminal" })
 vim.keymap.set("n",          "<leader>t|", vertical,   { desc = "Vertical Terminal" })
 vim.keymap.set("n",          "<leader>t-", horizontal, { desc = "Horizontal Terminal" })
+vim.keymap.set("n",          "<leader>tt", run_task,   { desc = "Run task" })
 -- stylua: ignore end
