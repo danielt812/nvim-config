@@ -94,10 +94,8 @@ statusline.setup({
       end
 
       local section_filename = function(args)
-        if vim.bo.buftype == "toggleterm" then return "%t" end
-
         local truncate = statusline.is_truncated(args.trunc_width)
-        if truncate then return "%t %h" end
+        if truncate or vim.bo.buftype == "terminal" then return "%t %h" end
 
         return "%f %h"
       end
@@ -107,8 +105,6 @@ statusline.setup({
         if truncate then return "" end
 
         local ft = vim.bo.filetype or "none"
-        if ft == "toggleterm" then return nil end
-
         local icon, icon_hl = icons.get("filetype", ft, { with_hl = true })
         icon_hl = icon_hl:gsub("MiniIcons", "MiniStatuslineIcons")
 
@@ -155,7 +151,7 @@ statusline.setup({
 
       local section_shift_width = function(args)
         local truncate = statusline.is_truncated(args.trunc_width)
-        if truncate then return "" end
+        if truncate or vim.bo.buftype == "terminal" then return "" end
 
         local shiftwidth = "󰌒 " .. vim.bo.shiftwidth
 
@@ -187,23 +183,15 @@ statusline.setup({
 
       local section_location = function(args)
         local truncate = statusline.is_truncated(args.trunc_width)
-        if truncate then return "" end
+        if truncate or vim.bo.buftype == "terminal" then return "" end
 
-        local ft = vim.bo.filetype or "none"
-        if ft == "toggleterm" then return nil end
-
-        local line = vim.fn.line(".")
-        local col = vim.fn.col(".")
-
+        local line, col = vim.fn.line("."), vim.fn.col(".")
         return line .. ":" .. col
       end
 
       local section_progress = function(args)
         local truncate = statusline.is_truncated(args.trunc_width)
-        if truncate then return "" end
-
-        local ft = vim.bo.filetype or "none"
-        if ft == "toggleterm" then return nil end
+        if truncate or vim.bo.buftype == "terminal" then return "" end
 
         return "%P"
       end
