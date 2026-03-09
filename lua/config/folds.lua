@@ -3,6 +3,7 @@ function _G.foldtext()
   local start_line = vim.fn.getbufline(buf, vim.v.foldstart)[1]
   local end_line = vim.fn.getbufline(buf, vim.v.foldend)[1]
   local parts = {}
+  table.insert(parts, { "󰘖 ", "Keyword" })
 
   -- Start line: per-character treesitter highlights
   for p, char in ipairs(vim.fn.split(start_line, "\\zs")) do
@@ -39,8 +40,7 @@ function _G.foldtext()
 
   -- Fold size
   local size = (vim.v.foldend - vim.v.foldstart) + 1
-  table.insert(parts, { " 󰘖 ", "Keyword" })
-  table.insert(parts, { tostring(size) })
+  table.insert(parts, { tostring(" " .. size) })
   table.insert(parts, { " lines", "Folded" })
 
   return parts
