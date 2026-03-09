@@ -48,6 +48,9 @@ vim.opt.foldcolumn     = "0" -- Hide dedicated fold column
 vim.opt.foldenable     = true -- Enable folding
 vim.opt.foldlevel      = 99 -- Open folds up to this level
 vim.opt.foldlevelstart = 99 -- Start with folds open
+vim.opt.foldmethod     = "expr"
+vim.opt.foldexpr       = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldtext       = "v:lua.foldtext()"
 
 -- INFO: Spell
 vim.opt.spellfile      = vim.fn.stdpath("config") .. "/spell/en.utf-8.add"

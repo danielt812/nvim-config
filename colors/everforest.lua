@@ -164,7 +164,7 @@ local highlights = {
 
   -- stylua: ignore start
   EndOfBuffer = {},
-  Folded      = { fg = palette.grey1, bg = palette.bg2 },
+  Folded      = { fg = palette.grey1, bg = palette.bg0 },
   -- stylua: ignore end
 
   -- stylua: ignore start
