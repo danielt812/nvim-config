@@ -157,7 +157,9 @@ local function term_close_cb(args)
 end
 
 local function buf_win_enter_cb()
-  if vim.bo.buftype ~= "terminal" then vim.wo.winhighlight = "" end
+  local win = vim.api.nvim_get_current_win()
+  local is_float = vim.api.nvim_win_get_config(win).relative ~= ""
+  if not is_float and vim.bo.buftype ~= "terminal" then vim.wo.winhighlight = "" end
 end
 
 local function colorscheme_cb()
