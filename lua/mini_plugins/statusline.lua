@@ -13,7 +13,7 @@ statusline.setup({
         return { table.concat(out, separator) }
       end
 
-      local section_git = function(args)
+      local function section_git(args)
         local truncate = statusline.is_truncated(args.trunc_width)
         if truncate then return "" end
 
@@ -27,7 +27,7 @@ statusline.setup({
         return icon .. "%#MiniStatuslineGit#" .. branch .. "%#MiniStatuslineDevinfo#"
       end
 
-      local section_diff = function(args)
+      local function section_diff(args)
         local truncate = statusline.is_truncated(args.trunc_width)
         if truncate then return "" end
 
@@ -93,14 +93,14 @@ statusline.setup({
         return icon .. table.concat(diagnostics, args.symbols and " " or "·")
       end
 
-      local section_filename = function(args)
+      local function section_filename(args)
         local truncate = statusline.is_truncated(args.trunc_width)
         if truncate or vim.bo.buftype == "terminal" then return "%t %h" end
 
         return "%f %h"
       end
 
-      local section_filetype = function(args)
+      local function section_filetype(args)
         local truncate = statusline.is_truncated(args.trunc_width)
         if truncate then return "" end
 
@@ -113,7 +113,7 @@ statusline.setup({
         return str
       end
 
-      local section_disabled = function(args)
+      local function section_disabled(args)
         local truncate = statusline.is_truncated(args.trunc_width)
         if truncate then return "" end
 
@@ -140,7 +140,7 @@ statusline.setup({
         return icon .. "[" .. table.concat(disabled, ",") .. "]"
       end
 
-      local section_spell = function(args)
+      local function section_spell(args)
         local truncate = statusline.is_truncated(args.trunc_width)
         if truncate then return "" end
 
@@ -149,7 +149,7 @@ statusline.setup({
         return spell
       end
 
-      local section_shift_width = function(args)
+      local function section_shift_width(args)
         local truncate = statusline.is_truncated(args.trunc_width)
         if truncate or vim.bo.buftype == "terminal" then return "" end
 
@@ -158,7 +158,7 @@ statusline.setup({
         return shiftwidth
       end
 
-      local section_searchcount = function(args)
+      local function section_searchcount(args)
         local truncate = statusline.is_truncated(args.trunc_width)
         if truncate then return "" end
 
@@ -181,7 +181,7 @@ statusline.setup({
         return current .. "/" .. total
       end
 
-      local section_location = function(args)
+      local function section_location(args)
         local truncate = statusline.is_truncated(args.trunc_width)
         if truncate or vim.bo.buftype == "terminal" then return "" end
 
@@ -189,7 +189,7 @@ statusline.setup({
         return line .. ":" .. col
       end
 
-      local section_progress = function(args)
+      local function section_progress(args)
         local truncate = statusline.is_truncated(args.trunc_width)
         if truncate or vim.bo.buftype == "terminal" then return "" end
 
@@ -233,14 +233,14 @@ statusline.setup({
 --- @param fg_name string
 --- @param bg_name string
 --- @param new_name string
-local merge_hl = function(fg_name, bg_name, new_name)
+local function merge_hl(fg_name, bg_name, new_name)
   local fg_hl = vim.api.nvim_get_hl(0, { name = fg_name, link = false })
   local bg_hl = vim.api.nvim_get_hl(0, { name = bg_name, link = false })
   local fg, bg = fg_hl.fg, bg_hl.bg
   vim.api.nvim_set_hl(0, new_name, { fg = fg, bg = bg })
 end
 
-local get_mode_suffix = function()
+local function get_mode_suffix()
   local m = vim.fn.mode():lower()
   local m1 = m:sub(1, 1)
   if m1 == "v" or m == "\022" then return "Visual" end
@@ -251,11 +251,11 @@ local get_mode_suffix = function()
   return "Other"
 end
 
-local link_cursor_line_nr = function()
+local function link_cursor_line_nr()
   vim.api.nvim_set_hl(0, "CursorLineNr", { link = "CursorLineNr" .. get_mode_suffix() })
 end
 
-local gen_hl_groups = function()
+local function gen_hl_groups()
   local prefix = "MiniStatusline"
   -- Diagnostics
   for _, suffix in ipairs({ "Error", "Warn", "Info", "Hint" }) do
@@ -293,7 +293,7 @@ end
 
 gen_hl_groups() -- Call this now if colorscheme was already set
 
-local redraw_status = function()
+local function redraw_status()
   local cmdtype = vim.fn.getcmdtype()
   if cmdtype == "/" or cmdtype == "?" then vim.cmd("redrawstatus") end
 end

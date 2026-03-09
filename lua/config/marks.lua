@@ -4,9 +4,9 @@
 
 local ns_id = vim.api.nvim_create_namespace("marks")
 
-local clear_ns = function(buf_id) vim.api.nvim_buf_clear_namespace(buf_id, ns_id, 0, -1) end
+local function clear_ns(buf_id) vim.api.nvim_buf_clear_namespace(buf_id, ns_id, 0, -1) end
 
-local place_extmarks = function(marks, buf_id, scope)
+local function place_extmarks(marks, buf_id, scope)
   for _, m in ipairs(marks) do
     local char = m.mark:sub(-1)
     local lnum = m.pos[2]
@@ -20,7 +20,7 @@ local place_extmarks = function(marks, buf_id, scope)
   end
 end
 
-local apply_extmarks = function()
+local function apply_extmarks()
   local buf_id = vim.api.nvim_get_current_buf()
   clear_ns(buf_id)
   -- stylua: ignore start
@@ -31,7 +31,7 @@ local apply_extmarks = function()
   -- stylua: ignore end
 end
 
-local on_mark_command = function()
+local function on_mark_command()
   vim.schedule(function()
     local last_cmd = vim.fn.histget("cmd", -1)
     if last_cmd:match("^m[a-zA-Z0-9]") or last_cmd:match("^delm") then apply_extmarks() end
@@ -42,13 +42,13 @@ end
 -- #                                  Keymaps                                  #
 -- #############################################################################
 
-local delete_mark = function()
+local function delete_mark()
   local char = vim.fn.getcharstr()
   vim.api.nvim_buf_del_mark(vim.api.nvim_get_current_buf(), char)
   apply_extmarks()
 end
 
-local set_mark = function()
+local function set_mark()
   local char = vim.fn.getcharstr()
   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
   vim.api.nvim_buf_set_mark(0, char, row, col, {})
@@ -57,7 +57,7 @@ end
 
 -- Quickfix / Loclist ----------------------------------------------------------
 
-local marks_to_list_items = function()
+local function marks_to_list_items()
   local buf_id = vim.api.nvim_get_current_buf()
   local marks = vim.fn.getmarklist(buf_id)
 
@@ -78,13 +78,13 @@ local marks_to_list_items = function()
   return items
 end
 
-local send_marks_to_qf = function()
+local function send_marks_to_qf()
   local items = marks_to_list_items()
   vim.fn.setqflist({}, "r", { title = "Marks", items = items })
   if #items > 0 then vim.cmd("copen") end
 end
 
-local send_marks_to_loc = function()
+local function send_marks_to_loc()
   local items = marks_to_list_items()
   vim.fn.setloclist(0, {}, "r", { title = "Marks (loclist)", items = items })
   if #items > 0 then vim.cmd("lopen") end
@@ -101,7 +101,7 @@ vim.keymap.set("n", "<leader>qM", send_marks_to_loc, { desc = "Marks (Loc)" })
 -- #                            Automatic Commands                             #
 -- #############################################################################
 
-local gen_hl_groups = function() vim.api.nvim_set_hl(0, "MarksSign", { link = "Constant" }) end
+local function gen_hl_groups() vim.api.nvim_set_hl(0, "MarksSign", { link = "Constant" }) end
 
 gen_hl_groups() -- Call this now if colorscheme was already set
 

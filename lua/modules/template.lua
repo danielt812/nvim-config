@@ -57,7 +57,7 @@ end
 H.create_autocommands = function()
   local group = vim.api.nvim_create_augroup("Module", { clear = true })
 
-  local au = function(event, pattern, callback, desc)
+  local function au(event, pattern, callback, desc)
     vim.api.nvim_create_autocmd(event, { group = group, pattern = pattern, callback = callback, desc = desc })
   end
 end

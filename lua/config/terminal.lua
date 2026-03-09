@@ -125,12 +125,79 @@ local function toggle(name, opts)
   end
 
   local win = find_win(term.buf)
-  if win then hide(term, win) else show(term) end
+  if win then
+    hide(term, win)
+  else
+    show(term)
+  end
 end
 
 -- #############################################################################
 -- #                            Automatic Commands                             #
 -- #############################################################################
+
+local function term_open_cb()
+  vim.bo.filetype = "terminal"
+  vim.wo.winhighlight = "Normal:Terminal"
+  vim.cmd("startinsert")
+end
+
+local function term_close_cb(args)
+  vim.wo.winhighlight = ""
+  for _, term in pairs(terms) do
+    if term.buf == args.buf then
+      if term.layout == "full" then
+        vim.schedule(function() restore_full(term) end)
+      else
+        term.buf = nil
+      end
+      break
+    end
+  end
+end
+
+local function buf_win_enter_cb()
+  if vim.bo.buftype ~= "terminal" then vim.wo.winhighlight = "" end
+end
+
+local function color_scheme_cb()
+  -- stylua: ignore start
+  vim.g.terminal_color_0  = "#000000"
+  vim.g.terminal_color_1  = "#ff0000"
+  vim.g.terminal_color_2  = "#00ff00"
+  vim.g.terminal_color_3  = "#ff5f00"
+  vim.g.terminal_color_4  = "#1a8fff"
+  vim.g.terminal_color_5  = "#ff005f"
+  vim.g.terminal_color_6  = "#00ffff"
+  vim.g.terminal_color_7  = "#ffffff"
+  vim.g.terminal_color_8  = "#767676"
+  vim.g.terminal_color_9  = "#ff0000"
+  vim.g.terminal_color_10 = "#00ff00"
+  vim.g.terminal_color_11 = "#ff5f00"
+  vim.g.terminal_color_12 = "#1a8fff"
+  vim.g.terminal_color_13 = "#ff005f"
+  vim.g.terminal_color_14 = "#00ffff"
+  vim.g.terminal_color_15 = "#ffffff"
+  -- stylua: ignore end
+end
+
+local function win_resized_cb()
+  for _, term in pairs(terms) do
+    if not (term.buf and vim.api.nvim_buf_is_valid(term.buf)) then goto continue end
+    local win = find_win(term.buf)
+    if win then
+      if term.layout == "horizontal" then term.height = vim.api.nvim_win_get_height(win) end
+      if term.layout == "vertical" then term.width = vim.api.nvim_win_get_width(win) end
+    end
+    ::continue::
+  end
+end
+
+local function quit_pre_cb()
+  for _, term in pairs(terms) do
+    if term.job_id then pcall(vim.fn.jobstop, term.job_id) end
+  end
+end
 
 local group = vim.api.nvim_create_augroup("terminal_manager", { clear = true })
 
@@ -138,103 +205,40 @@ vim.api.nvim_create_autocmd("TermOpen", {
   pattern = { "term://*" },
   group = group,
   desc = "Set up terminal windows",
-  callback = function()
-    vim.bo.filetype = "terminal"
-    vim.wo.winhighlight = "Normal:Terminal"
-    vim.cmd("startinsert")
-  end,
+  callback = term_open_cb,
 })
 
 vim.api.nvim_create_autocmd("TermClose", {
   pattern = { "term://*" },
   group = group,
   desc = "Clean up on terminal close",
-  callback = function(args)
-    vim.wo.winhighlight = ""
-    for _, term in pairs(terms) do
-      if term.buf == args.buf then
-        if term.layout == "full" then
-          vim.schedule(function() restore_full(term) end)
-        else
-          term.buf = nil
-        end
-        break
-      end
-    end
-  end,
+  callback = term_close_cb,
 })
 
 vim.api.nvim_create_autocmd("BufWinEnter", {
   pattern = { "*" },
   group = group,
   desc = "Clear winhighlight when a normal buffer enters a window",
-  callback = function()
-    if vim.bo.buftype ~= "terminal" then vim.wo.winhighlight = "" end
-  end,
-})
-
-vim.api.nvim_create_autocmd("VimResized", {
-  pattern = { "*" },
-  group = group,
-  desc = "Resize windows evenly, skip when terminal split is open",
-  callback = function()
-    for _, win in ipairs(vim.api.nvim_list_wins()) do
-      if vim.bo[vim.api.nvim_win_get_buf(win)].buftype == "terminal" then return end
-    end
-    vim.cmd("wincmd =")
-  end,
+  callback = buf_win_enter_cb,
 })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = { "*" },
   group = group,
   desc = "Set terminal ANSI palette",
-  callback = function()
-    -- stylua: ignore start
-    vim.g.terminal_color_0  = "#000000"
-    vim.g.terminal_color_1  = "#ff0000"
-    vim.g.terminal_color_2  = "#00ff00"
-    vim.g.terminal_color_3  = "#ff5f00"
-    vim.g.terminal_color_4  = "#1a8fff"
-    vim.g.terminal_color_5  = "#ff005f"
-    vim.g.terminal_color_6  = "#00ffff"
-    vim.g.terminal_color_7  = "#ffffff"
-    vim.g.terminal_color_8  = "#767676"
-    vim.g.terminal_color_9  = "#ff0000"
-    vim.g.terminal_color_10 = "#00ff00"
-    vim.g.terminal_color_11 = "#ff5f00"
-    vim.g.terminal_color_12 = "#1a8fff"
-    vim.g.terminal_color_13 = "#ff005f"
-    vim.g.terminal_color_14 = "#00ffff"
-    vim.g.terminal_color_15 = "#ffffff"
-    -- stylua: ignore end
-  end,
+  callback = color_scheme_cb,
 })
 
 vim.api.nvim_create_autocmd("WinResized", {
   group = group,
   desc = "Remember split terminal size after manual resize",
-  callback = function()
-    for _, term in pairs(terms) do
-      if not (term.buf and vim.api.nvim_buf_is_valid(term.buf)) then goto continue end
-      local win = find_win(term.buf)
-      if win then
-        if term.layout == "horizontal" then term.height = vim.api.nvim_win_get_height(win) end
-        if term.layout == "vertical" then term.width = vim.api.nvim_win_get_width(win) end
-      end
-      ::continue::
-    end
-  end,
+  callback = win_resized_cb,
 })
 
 vim.api.nvim_create_autocmd("QuitPre", {
   group = group,
   desc = "Kill all managed terminal jobs on quit",
-  callback = function()
-    for _, term in pairs(terms) do
-      if term.job_id then pcall(vim.fn.jobstop, term.job_id) end
-    end
-  end,
+  callback = quit_pre_cb,
 })
 
 -- #############################################################################

@@ -39,6 +39,6 @@ starter.setup({
 -- #                                  Keymaps                                  #
 -- #############################################################################
 
-local open = function() starter.open() end
+local function open() starter.open() end
 
 vim.keymap.set("n", "<leader>e;", open, { desc = "Starter" })

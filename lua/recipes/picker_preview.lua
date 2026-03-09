@@ -5,7 +5,7 @@ local extra = require("mini.extra")
 local preview_state = { win = nil, buf = nil, last_item = nil, hidden = false }
 local preview_cache = {}
 
-local preview_create = function(win_opts)
+local function preview_create(win_opts)
   preview_state.buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_name(preview_state.buf, "minipick://" .. preview_state.buf .. "/preview")
   vim.bo[preview_state.buf].bufhidden = "wipe"
@@ -18,14 +18,14 @@ local preview_create = function(win_opts)
   vim.wo[preview_state.win].winhighlight = "NormalFloat:MiniPickNormal,FloatBorder:MiniPickBorder"
 end
 
-local preview_close = function()
+local function preview_close()
   pcall(vim.api.nvim_win_close, preview_state.win, true)
   pcall(vim.api.nvim_buf_delete, preview_state.buf, { force = true })
   preview_state.win, preview_state.buf, preview_state.last_item = nil, nil, nil
   preview_cache = {}
 end
 
-local preview_layout = function(win_config, preview_config)
+local function preview_layout(win_config, preview_config)
   local preview_ratio = 0.618
   local padding = 2
   if win_config.width > 75 then
@@ -43,14 +43,14 @@ local preview_layout = function(win_config, preview_config)
   end
 end
 
-local preview_scroll = function(direction)
+local function preview_scroll(direction)
   if not preview_state.win then return end
   local map = { up = "<C-b>", down = "<C-f>", left = "zH", right = "zL" }
   vim.api.nvim_set_current_win(preview_state.win)
   vim.api.nvim_input(map[direction])
 end
 
-local preview_cache_config = function()
+local function preview_cache_config()
   local picker_state = pick.get_picker_state()
   if not (picker_state.windows and picker_state.windows.main) then return end
   local config = vim.api.nvim_win_get_config(picker_state.windows.main)
@@ -59,7 +59,7 @@ local preview_cache_config = function()
   end
 end
 
-local preview_update = function()
+local function preview_update()
   if preview_state.hidden then return preview_close() end
 
   local picker_state = pick.get_picker_state()
@@ -152,7 +152,7 @@ pick.setup({
 -- #############################################################################
 
 -- NOTE: Only filter colorschemes in my runtime
-local pick_colorschemes = function()
+local function pick_colorschemes()
   local config = vim.fn.stdpath("config")
   local names = vim.tbl_filter(function(name)
     local files = vim.list_extend(

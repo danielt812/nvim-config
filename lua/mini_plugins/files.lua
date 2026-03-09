@@ -33,7 +33,7 @@ files.setup({
 -- #############################################################################
 
 -- stylua: ignore start
-local open_current = function() files.open(vim.api.nvim_buf_get_name(0)) end
+local function open_current() files.open(vim.api.nvim_buf_get_name(0)) end
 local open_pwd     = function() files.open() end
 
 vim.keymap.set("n", "<leader>ef", open_current, { desc = "Files (current)" })
@@ -46,10 +46,10 @@ vim.keymap.set("n", "<leader>eF", open_pwd,     { desc = "Files (pwd)" })
 
 local show_dotfiles = true
 
-local toggle_dotfiles = function()
+local function toggle_dotfiles()
   show_dotfiles = not show_dotfiles
 
-  local filter = function(fs_entry)
+  local function filter(fs_entry)
     if show_dotfiles then return true end
     return not vim.startswith(fs_entry.name, ".")
   end

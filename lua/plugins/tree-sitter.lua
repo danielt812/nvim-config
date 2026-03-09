@@ -44,7 +44,7 @@ local languages = {
   "zsh",
 }
 
-local isnt_installed = function(lang) return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0 end
+local function isnt_installed(lang) return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0 end
 
 local to_install = vim.tbl_filter(isnt_installed, languages)
 
@@ -59,7 +59,7 @@ for _, language in ipairs(languages) do
   end
 end
 
-local start_treesitter = function(args)
+local function start_treesitter(args)
   local lang = vim.bo[args.buf].filetype
 
   if vim.treesitter.language.get_lang(lang) then

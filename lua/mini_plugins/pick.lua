@@ -29,7 +29,7 @@ pick.setup({
 -- #############################################################################
 
 -- NOTE: Only filter colorschemes in my runtime
-local pick_colorschemes = function()
+local function pick_colorschemes()
   local config = vim.fn.stdpath("config")
   local names = vim.tbl_filter(function(name)
     local files = vim.list_extend(

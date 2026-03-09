@@ -28,7 +28,7 @@ operators.setup({
 -- stylua: ignore
 local string_nodes = { "string", "string_content", "string_literal", "template_string", "interpreted_string_literal" }
 
-local swap = function(dir)
+local function swap(dir)
   local keys
   if ts.in_node({ "attribute", "jsx_attribute" }) then
     keys = { left = "gxargxalr", right = "gxargxanr" }
@@ -42,7 +42,7 @@ end
 
 -- stylua: ignore start
 local swap_left  = function() swap("left") end
-local swap_right = function() swap("right") end
+local function swap_right() swap("right") end
 
 vim.keymap.set("n", "(", swap_left,  { desc = "Swap left" })
 vim.keymap.set("n", ")", swap_right, { desc = "Swap right" })

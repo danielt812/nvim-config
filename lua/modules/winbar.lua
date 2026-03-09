@@ -125,7 +125,7 @@ H.apply_config = function(config) ModWinbar.config = config end
 H.create_autocommands = function()
   H.group = vim.api.nvim_create_augroup("ModWinbar", { clear = true })
 
-  local au = function(event, pattern, callback, desc)
+  local function au(event, pattern, callback, desc)
     vim.api.nvim_create_autocmd(event, { group = H.group, pattern = pattern, callback = callback, desc = desc })
   end
 
@@ -208,7 +208,7 @@ H.on_cursor_moved = function(args)
   local cursor = vim.api.nvim_win_get_cursor(winid)
   local row, col = cursor[1] - 1, cursor[2]
 
-  local lsp_callback = function(err, result)
+  local function lsp_callback(err, result)
     H.cache[bufnr].cancel_request = nil
     if err or not result or #result == 0 then
       H.cache[bufnr].symbol_path = {}

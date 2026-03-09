@@ -27,33 +27,33 @@ local comments = {
 }
 
 --- Return long hex color (#rrggbb)
-local get_hex_long = function(pattern) return pattern end
+local function get_hex_long(pattern) return pattern end
 
 --- Expand a short hex color (#rgb) -> (#rrggbb)
-local get_hex_short = function(pattern)
+local function get_hex_short(pattern)
   local r, g, b = pattern:sub(2, 2), pattern:sub(3, 3), pattern:sub(4, 4)
   return string.format("#%s%s%s%s%s%s", r, r, g, g, b, b):lower()
 end
 
 --- Convert rgb(r, g, b) to hex (#rrggbb)
-local rgb_color = function(pattern)
+local function rgb_color(pattern)
   local r, g, b = pattern:match("rgb%((%d+), ?(%d+), ?(%d+)%)")
   return string.format("#%02x%02x%02x", tonumber(r), tonumber(g), tonumber(b))
 end
 
 --- Convert rgba(r, g, b, a) to hex (#rrggbb), applying alpha
-local rgba_color = function(pattern)
+local function rgba_color(pattern)
   local r, g, b, a = pattern:match("rgba?%((%d+), ?(%d+), ?(%d+), ?(%d*%.?%d*)%)")
   a = tonumber(a)
   if not a or a < 0 or a > 1 then return false end
   return string.format("#%02x%02x%02x", tonumber(r) * a, tonumber(g) * a, tonumber(b) * a)
 end
 
-local get_highlight = function(cb)
+local function get_highlight(cb)
   return function(_, match) return hipatterns.compute_hex_color_group(cb(match), "fg") end
 end
 
-local color_extmark_opts = function(_, _, data)
+local function color_extmark_opts(_, _, data)
   return {
     virt_text = { { "■ ", data.hl_group } },
     virt_text_pos = "inline", -- eol, eol_right_align, overlay, right_align, inline
@@ -93,7 +93,7 @@ local http = {
   delete = { pattern = "%f[%a]DELETE%f[%A]", group = "RedItalic" },
 }
 
-local test_extmark = function(symbol)
+local function test_extmark(symbol)
   return function(_, _, data)
     return {
       hl_group = data.hl_group,
@@ -106,7 +106,7 @@ local test_extmark = function(symbol)
   end
 end
 
-local link_extmark = function(icon)
+local function link_extmark(icon)
   return function(_, _, data)
     return {
       hl_group = data.hl_group,
@@ -162,7 +162,7 @@ hipatterns.setup({
 -- #                                  Keymaps                                  #
 -- #############################################################################
 
-local toggle_hipatterns = function()
+local function toggle_hipatterns()
   vim.b.minihipatterns_disable = not vim.b.minihipatterns_disable
   vim.cmd("redrawstatus")
 end
@@ -173,7 +173,7 @@ vim.keymap.set("n", "<leader>\\h", toggle_hipatterns, { desc = "Hipatterns" })
 -- #                            Automatic Commands                             #
 -- #############################################################################
 
-local gen_hl_groups = function()
+local function gen_hl_groups()
   local prefix = "MiniHipatterns"
 
   -- Comment keywords

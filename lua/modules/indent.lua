@@ -86,7 +86,7 @@ H.apply_config = function(config) ModIndent.config = config end
 H.create_autocommands = function()
   local group = vim.api.nvim_create_augroup("ModIndent", { clear = true })
 
-  local au = function(event, pattern, callback, desc)
+  local function au(event, pattern, callback, desc)
     vim.api.nvim_create_autocmd(event, { group = group, pattern = pattern, callback = callback, desc = desc })
   end
 

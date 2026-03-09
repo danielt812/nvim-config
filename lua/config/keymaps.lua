@@ -1,18 +1,18 @@
-local get_page_size = function(size)
+local function get_page_size(size)
   local height = vim.api.nvim_win_get_height(0)
   if size == "half" then return math.floor(height / 2) end
   return height - 2
 end
 
-local move_lines = function(count, direction)
+local function move_lines(count, direction)
   if count <= 0 then return end
   vim.cmd("normal! " .. count .. (direction == "down" and "j" or "k"))
 end
 
-local page_down = function() move_lines(get_page_size("full"), "down") end
-local page_up = function() move_lines(get_page_size("full"), "up") end
-local half_page_down = function() move_lines(get_page_size("half"), "down") end
-local half_page_up = function() move_lines(get_page_size("half"), "up") end
+local function page_down() move_lines(get_page_size("full"), "down") end
+local function page_up() move_lines(get_page_size("full"), "up") end
+local function half_page_down() move_lines(get_page_size("half"), "down") end
+local function half_page_up() move_lines(get_page_size("half"), "up") end
 
 -- -- stylua: ignore start
 vim.keymap.set({ "n", "v" }, "<PageDown>", page_down,      { desc = "Move page down" })
@@ -29,7 +29,7 @@ vim.keymap.set("n", "<S-l>", "<cmd>bnext<cr>",     { desc = "Go to next buffer" 
 -- stylua: ignore end
 
 -- Preserve cursor position on yank
-local preserve_cursor = function(key)
+local function preserve_cursor(key)
   local pos = vim.fn.getpos("v")
   vim.w._yank_cursor_pos = { pos[2], pos[3] - 1 }
   return key

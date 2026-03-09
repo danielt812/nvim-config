@@ -63,8 +63,8 @@ H.apply_config = function(config)
   ModuleYank.config = config
 
   if config.yank.preserve_cursor then
-    local preserve_y = function() return H.preserve_cursor("y") end
-    local preserve_Y = function() return H.preserve_cursor("Y") end
+    local function preserve_y() return H.preserve_cursor("y") end
+    local function preserve_Y() return H.preserve_cursor("Y") end
     H.map({ "n", "v" }, "y", preserve_y, { expr = true })
     H.map({ "n", "v" }, "Y", preserve_Y, { expr = true })
   end
@@ -127,12 +127,12 @@ H.is_yank_event = function() return vim.v.event.operator == "y" end
 H.apply_autocommands = function(config)
   local group = vim.api.nvim_create_augroup("ModuleYank", { clear = true })
 
-  local au = function(event, pattern, callback, desc)
+  local function au(event, pattern, callback, desc)
     vim.api.nvim_create_autocmd(event, { group = group, pattern = pattern, callback = callback, desc = desc })
   end
 
   if config.yank.preserve_cursor then
-    local preserve_cursor = function()
+    local function preserve_cursor()
       if H.is_yank_event and H.cache.cursor_position then
         vim.api.nvim_win_set_cursor(0, H.cache.cursor_position)
         H.cache.cursor_position = nil
@@ -142,7 +142,7 @@ H.apply_autocommands = function(config)
   end
 
   if config.keyring.only_meaningful then
-    local update_history = function()
+    local function update_history()
       if H.is_yank_event then H.append_yank() end
     end
     au("TextYankPost", "*", update_history, "Save yank to history file")

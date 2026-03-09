@@ -27,7 +27,7 @@ pairs.setup({
 -- #                                  Keymaps                                  #
 -- #############################################################################
 
-local toggle_pairs = function()
+local function toggle_pairs()
   vim.b.minipairs_disable = not vim.b.minipairs_disable
   vim.cmd("redrawstatus")
 end
@@ -40,7 +40,7 @@ vim.keymap.set("n", "<leader>\\p", toggle_pairs, { desc = "Pairs" })
 
 local group = vim.api.nvim_create_augroup("mini_pairs", { clear = true })
 
-local disable_pairs = function()
+local function disable_pairs()
   local cmdtype = vim.fn.getcmdtype()
   if cmdtype == "/" or cmdtype == "?" then vim.g.minipairs_disable = true end
 end
@@ -52,7 +52,7 @@ vim.api.nvim_create_autocmd("CmdlineEnter", {
   callback = disable_pairs,
 })
 
-local enable_pairs = function() vim.g.minipairs_disable = false end
+local function enable_pairs() vim.g.minipairs_disable = false end
 
 vim.api.nvim_create_autocmd("CmdlineLeave", {
   pattern = "*",

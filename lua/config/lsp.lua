@@ -13,7 +13,7 @@ local capabilities =
     },
   })
 
-local pos_in_range = function(range, row, col)
+local function pos_in_range(range, row, col)
   if not range or not range.start or not range["end"] then return false end
   if row < range.start.line or row > range["end"].line then return false end
   if row == range.start.line and col < range.start.character then return false end
@@ -21,7 +21,7 @@ local pos_in_range = function(range, row, col)
   return true
 end
 
-local find_flat_symbols_at_pos = function(symbols, row, col)
+local function find_flat_symbols_at_pos(symbols, row, col)
   local path = {}
   for _, symbol in ipairs(symbols) do
     local range = symbol.location and symbol.location.range
@@ -37,8 +37,7 @@ local find_flat_symbols_at_pos = function(symbols, row, col)
   return path
 end
 
-local find_symbols_at_pos
-find_symbols_at_pos = function(symbols, row, col)
+local function find_symbols_at_pos(symbols, row, col)
   if #symbols > 0 and not symbols[1].range then return find_flat_symbols_at_pos(symbols, row, col) end
   local path = {}
   for _, symbol in ipairs(symbols) do
@@ -51,7 +50,7 @@ find_symbols_at_pos = function(symbols, row, col)
   return path
 end
 
-local request_symbols = function(buf)
+local function request_symbols(buf)
   if cache[buf].cancel_request then
     pcall(cache[buf].cancel_request)
     cache[buf].cancel_request = nil
@@ -59,7 +58,7 @@ local request_symbols = function(buf)
 
   local method = "textDocument/documentSymbol"
   local params = { textDocument = vim.lsp.util.make_text_document_params(buf) }
-  local request_symbols_cb = function(err, result)
+  local function request_symbols_cb(err, result)
     cache[buf].cancel_request = nil
     cache[buf].lsp_result = (not err and result and #result > 0) and result or nil
     local winid = vim.fn.win_findbuf(buf)[1]
@@ -77,8 +76,8 @@ local request_symbols = function(buf)
 end
 
 -- Shared on_attach
-local on_attach = function(client, buf)
-  local map = function(mode, lhs, rhs, opts)
+local function on_attach(client, buf)
+  local function map(mode, lhs, rhs, opts)
     opts = opts or {}
     opts.silent = opts.silent ~= false
     opts.buffer = buf
@@ -237,9 +236,7 @@ _G.render_symbols = function()
   return " " .. table.concat(parts, "%#SpecialKey# > %*")
 end
 
-local group = vim.api.nvim_create_augroup("lsp", { clear = true })
-
-local moved_cb = function(args)
+local function moved_cb(args)
   if not cache[args.buf] or not cache[args.buf].enabled then return end
   if not cache[args.buf].lsp_result then return end
   local cursor = vim.api.nvim_win_get_cursor(0)
@@ -249,10 +246,12 @@ local moved_cb = function(args)
   cache[args.buf].symbol_path = find_symbols_at_pos(cache[args.buf].lsp_result, row, col)
 end
 
-local text_changed_cb = function(args)
+local function text_changed_cb(args)
   if not cache[args.buf] or not cache[args.buf].enabled then return end
   request_symbols(args.buf)
 end
+
+local group = vim.api.nvim_create_augroup("lsp", { clear = true })
 
 vim.api.nvim_create_autocmd("CursorMoved", {
   pattern = "*",

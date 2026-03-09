@@ -13,13 +13,13 @@ local conflict_au = vim.api.nvim_create_augroup("git_conflict", {})
 -- 6: local a = "feature"
 -- 7: >>>>>>> xxxxxxx (xxx)
 --
-local find_conflicts = function(buf)
+local function find_conflicts(buf)
   buf = buf or 0
   local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, true)
   local ours, base, theirs = {}, {}, {}
   local conflicts = {}
-  local on_end_mark = function()
-    local full = function(val)
+  local function on_end_mark()
+    local function full(val)
       return val[1] and val[2]
     end
     if full(ours) and full(theirs) then
@@ -39,7 +39,7 @@ local find_conflicts = function(buf)
 end
 
 local conflict_state = {}
-local toggle_conflicts = function(buf)
+local function toggle_conflicts(buf)
   buf = buf or 0
   if not vim.api.nvim_buf_is_valid(buf) then
     vim.notify(string.format("Invalid buffer: %d", buf), vim.log.levels.ERROR)
@@ -51,11 +51,11 @@ local toggle_conflicts = function(buf)
     vim.api.nvim_buf_clear_namespace(buf, conflict_ns, 0, -1)
     vim.b[buf].minigit_conflicts = nil
   else
-    local update = function() ---@diagnostic disable-line: redefined-local
+    local function update() ---@diagnostic disable-line: redefined-local
       local conflicts = find_conflicts(buf)
       vim.b[buf].minigit_conflicts = conflicts
       vim.api.nvim_buf_clear_namespace(buf, conflict_ns, 0, -1)
-      local hi = function(from, to, hl)
+      local function hi(from, to, hl)
         vim.api.nvim_buf_set_extmark(buf, conflict_ns, from - 1, 0, {
           end_row = to,
           hl_group = hl,
@@ -80,7 +80,7 @@ end
 
 local conflict_actions = {}
 do
-  local get_conflict = function()
+  local function get_conflict()
     local lnum = vim.api.nvim_win_get_cursor(0)[1]
     for _, conflict in ipairs(vim.b.minigit_conflicts or {}) do
       local ours, _, theirs = unpack(conflict)
@@ -89,15 +89,15 @@ do
       end
     end
   end
-  local replace_conflict = function(conflict, lines)
+  local function replace_conflict(conflict, lines)
     local ours, _, theirs = unpack(conflict)
     vim.api.nvim_buf_set_lines(0, ours[1] - 1, theirs[2], true, lines)
     vim.api.nvim_win_set_cursor(0, { ours[1], 0 })
   end
-  local get_lines = function(from, to)
+  local function get_lines(from, to)
     return vim.api.nvim_buf_get_lines(0, from - 1, to - 1, true)
   end
-  local search = function(line, pattern, ...)
+  local function search(line, pattern, ...)
     line = type(line) == "number" and line or vim.fn.line(line)
     local saved_pos = vim.fn.getpos(".")
     vim.fn.cursor(line, 0)
@@ -156,7 +156,7 @@ do
   end
 end
 
-local minigit_is_merge = function(buf)
+local function minigit_is_merge(buf)
   buf = buf or 0
   local git_summary = vim.b[buf].minigit_summary or {}
   local in_progress = git_summary.in_progress

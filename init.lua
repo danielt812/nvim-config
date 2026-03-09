@@ -21,7 +21,7 @@ local add, now, later = deps.add, deps.now, deps.later
 
 --- Safely notifies an error message after a short delay to allow notify plugin to initialize.
 --- @param msg string: The error message to display.
-local delayed_notify = function(msg)
+local function delayed_notify(msg)
   vim.schedule(function()
     vim.defer_fn(function() vim.notify(msg, vim.log.levels.ERROR) end, 100) -- delay in ms; adjust if needed
   end)
@@ -29,21 +29,21 @@ end
 
 --- Loads a module from the `plugins` namespace with error handling.
 --- @param plugin string: Name of the plugin module (without the "plugins." prefix).
-local plug = function(plugin)
+local function plug(plugin)
   local ok, err = pcall(require, "plugins." .. plugin)
   if not ok then delayed_notify("Failed to load plugin module: plugins." .. plugin .. "\n" .. err) end
 end
 
 --- Loads a module from the `mini_plugins` namespace with error handling.
 --- @param plugin string: Name of the plugin module (without the "mini_plugins." prefix).
-local mplug = function(plugin)
+local function mplug(plugin)
   local ok, err = pcall(require, "mini_plugins." .. plugin)
   if not ok then delayed_notify("Failed to load plugin module: mini_plugins." .. plugin .. "\n" .. err) end
 end
 
 --- Loads a configuration module from the `config` namespace with error handling.
 --- @param config string: Name of the config module (without the "config." prefix).
-local conf = function(config)
+local function conf(config)
   local ok, err = pcall(require, "config." .. config)
   if not ok then delayed_notify("Failed to load config file: config." .. config .. "\n" .. err) end
 end
@@ -137,8 +137,7 @@ now(function()
   plug("autotag")
 end)
 
-later(function()
-end)
+later(function() end)
 
 -- Filetype rendering ----------------------------------------------------------
 now(function()
@@ -147,9 +146,7 @@ now(function()
 end)
 
 -- Shared dependencies ---------------------------------------------------------
-later(function()
-  add({ source = "nvim-lua/plenary.nvim" })
-end)
+later(function() add({ source = "nvim-lua/plenary.nvim" }) end)
 
 -- Window ----------------------------------------------------------------------
 later(function()

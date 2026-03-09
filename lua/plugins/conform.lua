@@ -77,7 +77,7 @@ end
 -- yamlfmt ---------------------------------------------------------------------
 conform.formatters_by_ft.yaml = { "yamlfmt" }
 
-local format = function()
+local function format()
   conform.format()
   vim.notify("Formatting " .. vim.fn.expand("%:t"), vim.log.levels.INFO)
 end

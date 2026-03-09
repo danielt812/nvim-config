@@ -7,7 +7,7 @@ local paren  = { brackets = { "%b()" } }
 -- stylua: ignore end
 
 -- Disable hooks for specific filetypes
-local ft_condition = function(hook, disabled)
+local function ft_condition(hook, disabled)
   return function(...)
     local ft = vim.bo.filetype
     if disabled[ft] then return ... end

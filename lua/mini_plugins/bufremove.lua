@@ -8,7 +8,7 @@ local pin = require("utils.buffer-pin")
 
 _G.open_starter = function() starter.open() end
 
-local open_starter_if_empty_buffer = function()
+local function open_starter_if_empty_buffer()
   local buf_id = vim.api.nvim_get_current_buf()
   local is_empty = vim.api.nvim_buf_get_name(buf_id) == "" and vim.bo[buf_id].filetype == ""
   if not is_empty then return end
@@ -21,7 +21,7 @@ end
 --- @param action? '"delete"'|'"wipeout"'
 --- @param selection? '"all"'|'"current"'|'"others"'|'"left"'|'"right"'|'"unpinned"'
 --- @param force boolean?
-local remove_buffers = function(action, selection, force)
+local function remove_buffers(action, selection, force)
   action = action or "delete"
   selection = selection or "current"
   force = force or false
@@ -44,7 +44,7 @@ end
 
 -- stylua: ignore start
 local bufdelete_cur    = function() remove_buffers("delete",  "current", false) end
-local bufdelete_others = function() remove_buffers("delete",  "others",  false) end
+local function bufdelete_others() remove_buffers("delete",  "others",  false) end
 local bufdelete_all    = function() remove_buffers("delete",  "all",     false) end
 local bufdelete_left   = function() remove_buffers("delete",  "left",    false) end
 local bufdelete_right  = function() remove_buffers("delete",  "right",   false) end

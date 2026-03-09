@@ -83,32 +83,32 @@ comment.setup({
 -- #                                  Keymaps                                  #
 -- #############################################################################
 
-local get_comment_parts = function()
+local function get_comment_parts()
   local cs = custom_commentstring() or vim.bo.commentstring or "%s"
   local cs_left, cs_right = cs:match("^(.-)%%s(.-)$")
   return (cs_left or ""):gsub("%s+$", ""), (cs_right or ""):gsub("^%s+", "")
 end
 
-local get_body_width = function(width, prefix, suffix)
+local function get_body_width(width, prefix, suffix)
   local left_gap = prefix ~= "" and 1 or 0
   local right_gap = suffix ~= "" and 1 or 0
   return width - #prefix - #suffix - left_gap - right_gap
 end
 
-local wrap_body = function(body, prefix, suffix)
+local function wrap_body(body, prefix, suffix)
   if prefix ~= "" then body = " " .. body end
   if suffix ~= "" then body = body .. " " end
   return prefix .. body .. suffix
 end
 
-local calc_pads = function(remaining, justify)
+local function calc_pads(remaining, justify)
   if justify == "left" then return 0, remaining end
   if justify == "right" then return remaining, 0 end
   local left = math.floor(remaining / 2)
   return left, remaining - left
 end
 
-local comment_box = function(text, char, justify, width)
+local function comment_box(text, char, justify, width)
   char = char or "#"
   justify = justify or "center"
   width = width or 80
@@ -136,7 +136,7 @@ local comment_box = function(text, char, justify, width)
   vim.api.nvim_buf_set_lines(0, row, row + 1, false, { border, middle, border })
 end
 
-local comment_line = function(text, char, justify, width)
+local function comment_line(text, char, justify, width)
   char = char or "-"
   justify = justify or "left"
   width = width or 80
@@ -166,14 +166,14 @@ local comment_line = function(text, char, justify, width)
   vim.api.nvim_buf_set_lines(0, row, row + 1, false, { wrap_body(body, prefix, suffix) })
 end
 
-local comment_box_cb = function()
+local function comment_box_cb()
   vim.ui.input({ prompt = "Box text: " }, function(text)
     if not text then return end
     comment_box(text)
   end)
 end
 
-local comment_line_cb = function()
+local function comment_line_cb()
   vim.ui.input({ prompt = "Line text: " }, function(text)
     if not text then return end
     comment_line(text)

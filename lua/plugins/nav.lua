@@ -82,6 +82,6 @@ vim.api.nvim_create_autocmd({ "CursorMoved", "WinEnter", "WinResized" }, {
 })
 
 -- stylua: ignore
-local open = function() navbuddy.open() end
+local function open() navbuddy.open() end
 
 vim.keymap.set("n", "<leader>en", open, { desc = "Navbuddy" })

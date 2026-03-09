@@ -11,7 +11,7 @@ git.setup()
 local blame     = function() vim.cmd("vertical Git blame --porcelain -- %") end
 local log_file  = function() vim.cmd("Git log --follow -- %") end
 local log_repo  = function() vim.cmd("Git log --oneline") end
-local patch_log = function() vim.cmd("Git log --follow --patch -- %") end
+local function patch_log() vim.cmd("Git log --follow --patch -- %") end
 
 vim.keymap.set("n", "<leader>gb", blame,     { desc = "Blame" })
 vim.keymap.set("n", "<leader>gl", log_file,  { desc = "Log (file)" })
@@ -23,13 +23,13 @@ vim.keymap.set("n", "<leader>gp", patch_log, { desc = "Patch log (file)" })
 -- #                            Automatic Commands                             #
 -- #############################################################################
 
-local window_cb = function(event)
+local function window_cb(event)
   vim.wo[event.data.win_stdout].winhighlight = "Normal:Terminal"
 end
 
 local group = vim.api.nvim_create_augroup("mini_git", { clear = true })
 
-local gen_blame_palette = function(count)
+local function gen_blame_palette(count)
   local dark = vim.o.background == "dark"
   local lightness = dark and 75 or 45
   local chroma = dark and 20 or 18
@@ -44,7 +44,7 @@ local gen_blame_palette = function(count)
   return palette
 end
 
-local gen_hl_groups = function()
+local function gen_hl_groups()
   vim.api.nvim_set_hl(0, "MiniGitBlameHash", { link = "Comment" })
   vim.api.nvim_set_hl(0, "MiniGitBlameUncommitted", { link = "Conceal" })
 end
@@ -53,7 +53,7 @@ gen_hl_groups() -- Call this now if colorscheme was already set
 
 vim.api.nvim_create_autocmd("ColorScheme", { pattern = "*", group = group, callback = gen_hl_groups })
 
-local pad_right = function(str, width)
+local function pad_right(str, width)
   local pad = width - vim.fn.strwidth(str)
   if pad <= 0 then return str end
   return str .. string.rep(" ", pad)
@@ -64,12 +64,12 @@ end
 ---@param fmt string os.date format string (e.g. `"%Y-%m-%d"`)
 ---@param rel? boolean|integer true = always relative, N = relative within N days then fallback to fmt
 ---@return string
-local format_time = function(timestamp, fmt, rel)
+local function format_time(timestamp, fmt, rel)
   if not rel then return tostring(os.date(fmt, timestamp)) end
   local diff = os.time() - timestamp
   local days = math.floor(diff / 86400)
   if type(rel) == "number" and days >= rel then return tostring(os.date(fmt, timestamp)) end
-  local ago = function(n, unit) return n .. (n == 1 and " " .. unit .. " ago" or " " .. unit .. "s ago") end
+  local function ago(n, unit) return n .. (n == 1 and " " .. unit .. " ago" or " " .. unit .. "s ago") end
   if diff < 60 then return ago(diff, "second") end
   if diff < 3600 then return ago(math.floor(diff / 60), "minute") end
   if diff < 86400 then return ago(math.floor(diff / 3600), "hour") end
@@ -82,7 +82,7 @@ end
 --- @param data {sha: string, sha_short: string, date: string, author: string}[]
 --- @param skip_consecutive boolean? Replace consecutive lines with the same sha with "┃"
 --- @return string[]
-local format_blame = function(data, skip_consecutive)
+local function format_blame(data, skip_consecutive)
   local max_date = 0
   for _, entry in ipairs(data) do
     if entry.author ~= "Not Committed Yet" then max_date = math.max(max_date, #entry.date) end
@@ -101,7 +101,7 @@ local format_blame = function(data, skip_consecutive)
   return formatted
 end
 
-local parse_porcelain = function(lines)
+local function parse_porcelain(lines)
   local commits, parsed = {}, {}
   local i = 1
   while i <= #lines do
@@ -134,7 +134,7 @@ local parse_porcelain = function(lines)
   return parsed
 end
 
-local blame_cb = function(event)
+local function blame_cb(event)
   if event.data.git_subcommand ~= "blame" or not event.data.cmd_input.mods:match("vertical") then return end
   vim.cmd("wincmd H")
   local win_src, buf, win = event.data.win_source, event.buf, event.data.win_stdout
@@ -208,15 +208,15 @@ local blame_cb = function(event)
   vim.api.nvim_win_set_width(win, max_len + math.max(vim.wo[win].numberwidth, #tostring(#formatted) + 1) + 2)
 
   -- Buffer keymaps
-  local get_entry = function() return blame_data[vim.api.nvim_win_get_cursor(win)[1]] end
-  local map = function(key, fn, desc) vim.keymap.set("n", key, fn, { buffer = buf, desc = desc }) end
-  local with_commit = function(fn)
+  local function get_entry() return blame_data[vim.api.nvim_win_get_cursor(win)[1]] end
+  local function map(key, fn, desc) vim.keymap.set("n", key, fn, { buffer = buf, desc = desc }) end
+  local function with_commit(fn)
     local entry = get_entry()
     if entry and entry.author ~= "Not Committed Yet" then fn(entry.sha) end
   end
 
   -- stylua: ignore start
-  local checkout = function() with_commit(function(sha) vim.cmd("Git checkout " .. sha) end) end
+  local function checkout() with_commit(function(sha) vim.cmd("Git checkout " .. sha) end) end
   local diff     = function() with_commit(function(sha) vim.cmd("Git diff " .. sha .. "^ " .. sha) end) end
   local files    = function() with_commit(function(sha) vim.cmd("Git show --name-status --format=fuller " .. sha) end) end
   local show     = function() with_commit(function(sha) vim.cmd("Git show " .. sha) end) end
@@ -231,7 +231,7 @@ local blame_cb = function(event)
   map("y", yank,     "Yank sha")
   -- stylua: ignore end
 
-  local close = function()
+  local function close()
     if vim.api.nvim_win_is_valid(win_src) then
       -- stylua: ignore
       for opt, val in pairs(saved) do vim.wo[win_src][opt] = val end
@@ -246,7 +246,7 @@ local blame_cb = function(event)
   vim.api.nvim_create_autocmd({ "WinLeave", "BufWipeout" }, { buffer = buf, once = true, callback = close })
 end
 
-local status_cb = function(event)
+local function status_cb(event)
   if event.data.git_subcommand ~= "status" then return end
   local buf = event.buf
   vim.bo[buf].filetype = "git"

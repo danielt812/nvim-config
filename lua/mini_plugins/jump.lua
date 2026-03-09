@@ -32,13 +32,13 @@ end, vim.api.nvim_create_namespace("mini_jump_esc"))
 -- #                            Automatic Commands                             #
 -- #############################################################################
 
-local gen_hl_groups = function() vim.api.nvim_set_hl(0, "MiniJumpDim", { link = "NonText" }) end
+local function gen_hl_groups() vim.api.nvim_set_hl(0, "MiniJumpDim", { link = "NonText" }) end
 
 gen_hl_groups() -- Call this now if colorscheme was already set
 
 local dim_match_ids = {}
 
-local find_boundary = function(line, search, backward, ignore_case)
+local function find_boundary(line, search, backward, ignore_case)
   if backward then
     local lines = vim.api.nvim_buf_get_lines(0, 0, line - 1, false)
     for i = #lines, 1, -1 do
@@ -54,14 +54,14 @@ local find_boundary = function(line, search, backward, ignore_case)
   end
 end
 
-local clear_dim_matches = function()
+local function clear_dim_matches()
   for _, id in ipairs(dim_match_ids) do
     pcall(vim.fn.matchdelete, id)
   end
   dim_match_ids = {}
 end
 
-local add_dim_matches = function(line, boundary, backward)
+local function add_dim_matches(line, boundary, backward)
   local ids = {}
   local function add(pat) ids[#ids + 1] = vim.fn.matchadd("MiniJumpDim", pat, 11) end
   if backward then
@@ -74,7 +74,7 @@ local add_dim_matches = function(line, boundary, backward)
   return ids
 end
 
-local apply_dim = function()
+local function apply_dim()
   clear_dim_matches()
   local line = vim.fn.line(".")
   local target = jump.state.target
@@ -89,11 +89,11 @@ local apply_dim = function()
   dim_match_ids = add_dim_matches(line, boundary, backward)
 end
 
-local jump_dim_cb = function() vim.schedule(apply_dim) end
+local function jump_dim_cb() vim.schedule(apply_dim) end
 
 local jump_undim_cb = clear_dim_matches
 
-local jump_stop_cb = function()
+local function jump_stop_cb()
   if jump.state.jumping then jump.stop_jumping() end
 end
 

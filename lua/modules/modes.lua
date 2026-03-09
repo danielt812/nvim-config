@@ -147,19 +147,19 @@ end
 H.apply_autocmds = function(config)
   local group = vim.api.nvim_create_augroup("ModModes", { clear = true })
 
-  local au = function(event, pattern, callback, desc)
+  local function au(event, pattern, callback, desc)
     vim.api.nvim_create_autocmd(event, { group = group, pattern = pattern, callback = callback, desc = desc })
   end
 
   if config.mode.number == true then
-    local hl_number = function()
+    local function hl_number()
       -- stylua: ignore
       H.link_mode_highlights(vim.fn.mode(), "CursorLineNr")
     end
     au("ModeChanged", "*", hl_number, "Modes cursor line number")
   end
 
-  local ensure_colors = function()
+  local function ensure_colors()
     if config.mode.number then H.cache_hl_group("CursorLineNr", true) end
     H.apply_highlights(config)
   end

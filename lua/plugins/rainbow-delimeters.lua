@@ -25,13 +25,13 @@ local color_schemes = {
   sonokai = { "Yellow", "Violet", "Blue", "Orange", "Green", "Red", "Cyan" },
 }
 
-local normalize_hl = function(name)
+local function normalize_hl(name)
   if type(name) ~= "string" then return name end
   if name:match("^RainbowDelimiter") then return name end
   return "RainbowDelimiter" .. name
 end
 
-local set_rainbow_order_for_current_colorscheme = function()
+local function set_rainbow_order_for_current_colorscheme()
   local cs = vim.g.colors_name or ""
   local order = color_schemes[cs]
   if not order then return end

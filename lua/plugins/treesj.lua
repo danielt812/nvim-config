@@ -11,7 +11,7 @@ treesj.setup({
   dot_repeat = true,
 })
 
-local on_pair_char = function()
+local function on_pair_char()
   local _, col = unpack(vim.api.nvim_win_get_cursor(0))
   local line = vim.api.nvim_get_current_line()
 
@@ -26,7 +26,7 @@ local on_pair_char = function()
   return pairs[c1] == true or pairs[c0] == true
 end
 
-local split_join_toggle = function()
+local function split_join_toggle()
   -- Prefer treesj on arrow functions
   if ts.in_node("arrow_function") then
     vim.notify("treesj")

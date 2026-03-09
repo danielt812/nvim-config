@@ -2,7 +2,7 @@ local indentscope = require("mini.indentscope")
 
 local ft_ignore = { "git", "help", "markdown", "terminal" }
 
-local should_ignore = function(ft) return ft:match("^mini") or vim.tbl_contains(ft_ignore, ft) end
+local function should_ignore(ft) return ft:match("^mini") or vim.tbl_contains(ft_ignore, ft) end
 
 indentscope.setup({
   -- Draw options
@@ -61,7 +61,7 @@ indentscope.setup({
 -- #                                  Keymaps                                  #
 -- #############################################################################
 
-local toggle_indentscope = function()
+local function toggle_indentscope()
   vim.b.miniindentscope_disable = not vim.b.miniindentscope_disable
   vim.cmd("redrawstatus")
 end
@@ -75,7 +75,7 @@ vim.keymap.set("n", "<leader>\\i", toggle_indentscope, { desc = "Indentscope" })
 local ns = vim.api.nvim_create_namespace("indent_guides")
 local indent_cache = {}
 
-local get_indent = function(buf, lnum)
+local function get_indent(buf, lnum)
   return vim.api.nvim_buf_call(buf, function()
     if vim.fn.getline(lnum):match("^%s*$") == nil then return vim.fn.indent(lnum) end
     local p, n = vim.fn.prevnonblank(lnum), vim.fn.nextnonblank(lnum)
@@ -83,7 +83,7 @@ local get_indent = function(buf, lnum)
   end)
 end
 
-local render = function(buf, win)
+local function render(buf, win)
   if vim.b[buf].miniindentscope_disable or should_ignore(vim.bo[buf].filetype) then return end
   local win_config = vim.api.nvim_win_get_config(win)
   if win_config and win_config.relative ~= "" then return end -- Don't render on some floats (hover, cmp, etc...)
@@ -120,7 +120,7 @@ local render = function(buf, win)
   end
 end
 
-local draw_indent_guides = function(opts)
+local function draw_indent_guides(opts)
   -- Clear highlight when miniindentscope does
   if vim.g.miniindentscope_disable or vim.b.miniindentscope_disable then
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do

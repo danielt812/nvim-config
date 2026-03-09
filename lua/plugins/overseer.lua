@@ -155,7 +155,7 @@ local open        = function() overseer.open() end
 -- local close       = function() overseer.close() end
 -- local toggle      = function() overseer.toggle() end
 local run         = function() overseer.run_task() end
-local task_action = function() overseer.run_action() end
+local function task_action() overseer.run_action() end
 -- stylua: ignore end
 
 -- stylua: ignore start

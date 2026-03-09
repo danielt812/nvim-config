@@ -133,7 +133,7 @@ ModBlame.file = function()
   local blame_win = H.create_window()
   H.cache.window[buf] = blame_win
 
-  local close = function() H.close_window(buf) end
+  local function close() H.close_window(buf) end
   vim.keymap.set("n", "q", close, { buffer = blame_win.buf, silent = true })
   vim.keymap.set("n", "<Esc>", close, { buffer = blame_win.buf, silent = true })
 
@@ -291,7 +291,7 @@ end
 H.create_autocommands = function()
   local group = vim.api.nvim_create_augroup("ModBlame", { clear = true })
 
-  local au = function(event, pattern, callback, desc)
+  local function au(event, pattern, callback, desc)
     vim.api.nvim_create_autocmd(event, { group = group, pattern = pattern, callback = callback, desc = desc })
   end
 

@@ -43,7 +43,7 @@ animate.setup({
 -- #                                  Keymaps                                  #
 -- #############################################################################
 
-local toggle_animate = function()
+local function toggle_animate()
   vim.b.minianimate_disable = not vim.b.minianimate_disable
   vim.cmd("redrawstatus")
 end

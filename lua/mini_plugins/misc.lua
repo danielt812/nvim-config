@@ -11,7 +11,7 @@ misc.setup_termbg_sync()
 -- #                                  Keymaps                                  #
 -- #############################################################################
 
-local zoom = function()
+local function zoom()
   misc.zoom()
   -- stylua: ignore
   if vim.api.nvim_win_get_config(0).relative == "" then return end
@@ -21,7 +21,7 @@ local zoom = function()
   vim.wo.winhighlight = "NormalFloat:Normal,FloatBorder:Normal,FloatTitle:Normal"
 end
 
-local centered_zoom = function()
+local function centered_zoom()
   local ui = vim.api.nvim_list_uis()[1]
   local width = math.ceil(ui.width / 2)
   local height = ui.height
@@ -40,7 +40,7 @@ local centered_zoom = function()
   vim.wo.winhighlight = "NormalFloat:Normal,FloatBorder:Normal,FloatTitle:Normal"
 end
 
-local put_messages = function()
+local function put_messages()
   put_text(vim.split(vim.api.nvim_exec2("messages", { output = true }).output, "\n"))
 end
 

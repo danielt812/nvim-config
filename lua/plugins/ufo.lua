@@ -1,6 +1,6 @@
 local ufo = require("ufo")
 
-local handler = function(virtText, lnum, endLnum, width, truncate, ctx)
+local function handler(virtText, lnum, endLnum, width, truncate, ctx)
   local filling = " ... "
   local suffix = (" %d lines "):format(endLnum - lnum)
   local suffixWidth = vim.fn.strdisplaywidth(suffix)

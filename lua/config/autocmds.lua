@@ -42,8 +42,13 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 vim.api.nvim_create_autocmd("VimResized", {
   pattern = { "*" },
   group = vim.api.nvim_create_augroup("resize_window", { clear = true }),
-  desc = "Resize windows evenly on screen resize",
-  callback = function() vim.cmd("wincmd =") end,
+  desc = "Resize windows evenly, skip when terminal split is open",
+  callback = function()
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      if vim.bo[vim.api.nvim_win_get_buf(win)].buftype == "terminal" then return end
+    end
+    vim.cmd("wincmd =")
+  end,
 })
 
 vim.api.nvim_create_autocmd("QuitPre", {

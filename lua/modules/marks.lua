@@ -79,7 +79,7 @@ H.apply_config = function(config)
 end
 
 H.create_default_hl = function()
-  local hi = function(name, opts)
+  local function hi(name, opts)
     opts.default = true
     vim.api.nvim_set_hl(0, name, opts)
   end
@@ -242,7 +242,7 @@ end
 H.create_autocmds = function()
   local group = vim.api.nvim_create_augroup("ModMarks", { clear = true })
 
-  local au = function(event, pattern, callback, desc)
+  local function au(event, pattern, callback, desc)
     vim.api.nvim_create_autocmd(event, { group = group, pattern = pattern, callback = callback, desc = desc })
   end
 
