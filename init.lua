@@ -119,9 +119,6 @@ later(function()
   mplug("trailspace")
 end)
 
--- Shared dependencies ---------------------------------------------------------
-later(function() add({ source = "nvim-lua/plenary.nvim" }) end)
-
 -- Treesitter ------------------------------------------------------------------
 now(function()
   -- Treesitter
