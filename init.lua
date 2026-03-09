@@ -118,6 +118,9 @@ later(function()
   mplug("trailspace")
 end)
 
+-- Shared dependencies ---------------------------------------------------------
+later(function() add({ source = "nvim-lua/plenary.nvim" }) end)
+
 -- Treesitter ------------------------------------------------------------------
 now(function()
   -- Treesitter
@@ -138,16 +141,11 @@ now(function()
   plug("autotag")
 end)
 
-later(function() end)
-
 -- Filetype rendering ----------------------------------------------------------
 now(function()
   add({ source = "OXY2DEV/markview.nvim" })
   add({ source = "OXY2DEV/helpview.nvim" })
 end)
-
--- Shared dependencies ---------------------------------------------------------
-later(function() add({ source = "nvim-lua/plenary.nvim" }) end)
 
 -- Debugging -------------------------------------------------------------------
 later(function()
