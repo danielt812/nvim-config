@@ -19,7 +19,7 @@ vim.g.rainbow_delimiters = {
   },
 }
 
-local color_schemes = {
+local colorschemes = {
   everforest = { "Red", "Yellow", "Green", "Blue", "Orange", "Violet", "Cyan" },
   gruvbox = { "Violet", "Blue", "Cyan", "Green", "Yellow", "Orange", "Red" },
   sonokai = { "Yellow", "Violet", "Blue", "Orange", "Green", "Red", "Cyan" },
@@ -31,9 +31,9 @@ local function normalize_hl(name)
   return "RainbowDelimiter" .. name
 end
 
-local function set_rainbow_order_for_current_colorscheme()
+local function colorscheme_cb()
   local cs = vim.g.colors_name or ""
-  local order = color_schemes[cs]
+  local order = colorschemes[cs]
   if not order then return end
 
   local resolved = {}
@@ -46,9 +46,9 @@ local function set_rainbow_order_for_current_colorscheme()
   vim.g.rainbow_delimiters = config
 end
 
-set_rainbow_order_for_current_colorscheme()
+colorscheme_cb()
 
 vim.api.nvim_create_autocmd("ColorScheme", {
   group = vim.api.nvim_create_augroup("rainbow_delimiters", { clear = true }),
-  callback = set_rainbow_order_for_current_colorscheme,
+  callback = colorscheme_cb,
 })

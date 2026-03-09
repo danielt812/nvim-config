@@ -160,7 +160,7 @@ local function buf_win_enter_cb()
   if vim.bo.buftype ~= "terminal" then vim.wo.winhighlight = "" end
 end
 
-local function color_scheme_cb()
+local function colorscheme_cb()
   -- stylua: ignore start
   vim.g.terminal_color_0  = "#000000"
   vim.g.terminal_color_1  = "#ff0000"
@@ -226,7 +226,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = { "*" },
   group = group,
   desc = "Set terminal ANSI palette",
-  callback = color_scheme_cb,
+  callback = colorscheme_cb,
 })
 
 vim.api.nvim_create_autocmd("WinResized", {

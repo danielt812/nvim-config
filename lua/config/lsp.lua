@@ -251,6 +251,8 @@ local function text_changed_cb(args)
   request_symbols(args.buf)
 end
 
+local function colorscheme_cb() vim.api.nvim_set_hl(0, "@lsp.type.variable", {}) end
+
 local group = vim.api.nvim_create_augroup("lsp", { clear = true })
 
 vim.api.nvim_create_autocmd("CursorMoved", {
@@ -271,5 +273,42 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = "*",
   group = group,
   desc = "Semantic highlighting",
-  callback = function() vim.api.nvim_set_hl(0, "@lsp.type.variable", {}) end,
+  callback = colorscheme_cb,
+})
+
+-- Lsp Garbage Collection ------------------------------------------------------
+
+cache.gc = { stopped = false, grace = 60, timer = vim.uv.new_timer() }
+
+local function gc_stop()
+  for _, client in ipairs(vim.lsp.get_clients()) do
+    client:stop()
+  end
+  cache.gc.stopped = true
+end
+
+local function gc_start()
+  vim.api.nvim_exec_autocmds("FileType", { buf = 0 })
+  cache.gc.stopped = false
+end
+
+local function focus_lost_cb() cache.gc.timer:start(cache.gc.grace * 1000, 0, vim.schedule_wrap(gc_stop)) end
+
+local function focus_gained_cb()
+  cache.gc.timer:stop()
+  if cache.gc.stopped then gc_start() end
+end
+
+vim.api.nvim_create_autocmd("FocusLost", {
+  pattern = "*",
+  group = group,
+  desc = "Stop LSP clients after grace period",
+  callback = focus_lost_cb,
+})
+
+vim.api.nvim_create_autocmd("FocusGained", {
+  pattern = "*",
+  group = group,
+  desc = "Restart LSP clients on focus gain",
+  callback = focus_gained_cb,
 })
