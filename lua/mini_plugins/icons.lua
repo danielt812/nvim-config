@@ -49,6 +49,7 @@ icons.setup({
   },
   filetype = {
     -- stylua: ignore start
+    ["dap-view"] = { glyph = "", hl = "MiniIconsRed" },
     ["ghostty"]  = { glyph = "󱙝", hl = "MiniIconsBlue" },
     ["terminal"] = { glyph = "", hl = "MiniIconsPurple" },
     ["tmux"]     = { glyph = "", hl = "MiniIconsGreen" },

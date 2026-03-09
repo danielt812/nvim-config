@@ -150,13 +150,8 @@ end)
 
 -- Debugging -------------------------------------------------------------------
 later(function()
-  add({
-    source = "igorlfs/nvim-dap-view",
-    depends = {
-      "mfussenegger/nvim-dap",
-      "theHamsta/nvim-dap-virtual-text",
-    },
-  })
+  add({ source = "mfussenegger/nvim-dap" })
+  add({ source = "igorlfs/nvim-dap-view" })
   plug("dap")
 end)
 
