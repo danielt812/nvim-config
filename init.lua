@@ -71,6 +71,7 @@ now(function()
   conf("quickfix")
   conf("terminal")
   conf("tmux")
+  -- conf("folds")
 
   vim.g.colors_variant = "soft"
   vim.cmd("colorscheme everforest")
@@ -190,11 +191,14 @@ end)
 -- Editor ----------------------------------------------------------------------
 later(function()
   -- Folds
-  add({
-    source = "kevinhwang91/nvim-ufo",
-    depends = { "kevinhwang91/promise-async" },
-  })
-  plug("ufo")
+  -- add({
+  --   source = "kevinhwang91/nvim-ufo",
+  --   depends = { "kevinhwang91/promise-async" },
+  -- })
+  -- plug("ufo")
+
+  add({ source = "OXY2DEV/foldtext.nvim" })
+  plug("foldtext")
 
   -- Multicursor
   add({ source = "jake-stewart/multicursor.nvim" })
