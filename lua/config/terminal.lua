@@ -102,7 +102,7 @@ local function show(term)
       vim.api.nvim_buf_call(term.buf, function() job_id = vim.b.terminal_job_id end)
       if job_id then
         vim.fn.jobresize(job_id, vim.api.nvim_win_get_width(win), vim.api.nvim_win_get_height(win))
-        vim.fn.chansend(job_id, "\x0c")
+        if term.cmd then vim.fn.chansend(job_id, "\x0c") end
       end
     end)
   else
