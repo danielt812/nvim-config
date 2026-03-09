@@ -69,6 +69,7 @@ now(function()
   conf("diagnostics")
   conf("marks")
   conf("quickfix")
+  conf("terminal")
 
   vim.g.colors_variant = "soft"
   vim.cmd("colorscheme everforest")
@@ -216,8 +217,8 @@ end)
 
 -- Terminal --------------------------------------------------------------------
 later(function()
-  add({ source = "akinsho/toggleterm.nvim" })
-  plug("toggleterm")
+  -- add({ source = "akinsho/toggleterm.nvim" })
+  -- plug("toggleterm")
 end)
 
 -- Work ------------------------------------------------------------------------

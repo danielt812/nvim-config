@@ -1,6 +1,6 @@
 local indentscope = require("mini.indentscope")
 
-local ft_ignore = { "git", "help", "markdown" }
+local ft_ignore = { "git", "help", "markdown", "terminal" }
 
 local should_ignore = function(ft) return ft:match("^mini") or vim.tbl_contains(ft_ignore, ft) end
 

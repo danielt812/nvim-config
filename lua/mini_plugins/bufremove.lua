@@ -1,17 +1,19 @@
 local bufremove = require("mini.bufremove")
+local starter = require("mini.starter")
 local pin = require("utils.buffer-pin")
 
 -- #############################################################################
 -- #                                  Keymaps                                  #
 -- #############################################################################
 
+_G.open_starter = function() starter.open() end
+
 local open_starter_if_empty_buffer = function()
   local buf_id = vim.api.nvim_get_current_buf()
   local is_empty = vim.api.nvim_buf_get_name(buf_id) == "" and vim.bo[buf_id].filetype == ""
   if not is_empty then return end
 
-  local starter = require("mini.starter")
-  starter.open()
+  open_starter()
   bufremove.wipeout(buf_id, true)
 end
 
@@ -57,3 +59,23 @@ vim.keymap.set("n", "<leader>bl", bufdelete_right,  { desc = "Delete Right" })
 vim.keymap.set("n", "<leader>bo", bufdelete_others, { desc = "Delete Others" })
 vim.keymap.set("n", "<leader>bw", bufwipeout_cur,   { desc = "Wipeout!" })
 -- stylua: ignore end
+
+-- #############################################################################
+-- #                            Automatic commands                             #
+-- #############################################################################
+
+local group = vim.api.nvim_create_augroup("mini_bufremove", { clear = true })
+
+vim.api.nvim_create_autocmd("TermClose", {
+  pattern = { "term://*" },
+  group = group,
+  desc = "Silently wipe terminal buffer on process exit",
+  callback = function(args)
+    vim.schedule(function()
+      if vim.api.nvim_buf_is_valid(args.buf) then
+        vim.api.nvim_buf_delete(args.buf, { force = true })
+        open_starter_if_empty_buffer()
+      end
+    end)
+  end,
+})
