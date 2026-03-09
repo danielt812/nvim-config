@@ -189,6 +189,6 @@ end)
 
 -- Work ------------------------------------------------------------------------
 now(function()
-  local mci = vim.fn.stdpath("config") .. "/mci/init.lua"
-  if vim.uv.fs_stat(mci) then dofile(mci) end
+  local work = vim.fn.stdpath("config") .. "/work/init.lua"
+  if vim.uv.fs_stat(work) then dofile(work) end
 end)
