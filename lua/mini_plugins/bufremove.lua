@@ -61,7 +61,7 @@ vim.keymap.set("n", "<leader>bw", bufwipeout_cur,   { desc = "Wipeout!" })
 -- stylua: ignore end
 
 -- #############################################################################
--- #                            Automatic commands                             #
+-- #                            Automatic Commands                             #
 -- #############################################################################
 
 local group = vim.api.nvim_create_augroup("mini_bufremove", { clear = true })

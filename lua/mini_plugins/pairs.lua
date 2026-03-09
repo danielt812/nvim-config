@@ -35,7 +35,7 @@ end
 vim.keymap.set("n", "<leader>\\p", toggle_pairs, { desc = "Pairs" })
 
 -- #############################################################################
--- #                            Automatic commands                             #
+-- #                            Automatic Commands                             #
 -- #############################################################################
 
 local group = vim.api.nvim_create_augroup("mini_pairs", { clear = true })
