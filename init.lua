@@ -215,12 +215,6 @@ later(function()
   plug("overseer")
 end)
 
--- Terminal --------------------------------------------------------------------
-later(function()
-  -- add({ source = "akinsho/toggleterm.nvim" })
-  -- plug("toggleterm")
-end)
-
 -- Work ------------------------------------------------------------------------
 now(function()
   local mci = vim.fn.stdpath("config") .. "/mci/init.lua"
