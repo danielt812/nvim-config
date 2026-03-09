@@ -45,3 +45,13 @@ function _G.foldtext()
 
   return parts
 end
+
+vim.keymap.set("n", "zT", function()
+  if vim.w.folds_closed then
+    vim.cmd("normal! zR")
+    vim.w.folds_closed = false
+  else
+    vim.cmd("normal! zM")
+    vim.w.folds_closed = true
+  end
+end, { desc = "Toggle all folds" })
