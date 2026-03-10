@@ -102,7 +102,7 @@ diagnostic.setup({
     -- Virtual text display priority
     -- Higher values appear above other plugins (e.g., GitBlame)
     virt_texts = {
-      priority = 9999,
+      priority = 3,
     },
 
     -- Filter diagnostics by severity levels
