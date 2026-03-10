@@ -1,5 +1,6 @@
 local statusline = require("mini.statusline")
 local icons = require("mini.icons")
+local util_hl = require("utils.highlight")
 
 statusline.setup({
   content = {
@@ -229,17 +230,6 @@ statusline.setup({
 -- #                            Automatic Commands                             #
 -- #############################################################################
 
---- Create new highlight with inherited fg and bg of two existing groups
---- @param fg_name string
---- @param bg_name string
---- @param new_name string
-local function merge_hl(fg_name, bg_name, new_name)
-  local fg_hl = vim.api.nvim_get_hl(0, { name = fg_name, link = false })
-  local bg_hl = vim.api.nvim_get_hl(0, { name = bg_name, link = false })
-  local fg, bg = fg_hl.fg, bg_hl.bg
-  vim.api.nvim_set_hl(0, new_name, { fg = fg, bg = bg })
-end
-
 local function get_mode_suffix()
   local m = vim.fn.mode():lower()
   local m1 = m:sub(1, 1)
@@ -259,18 +249,18 @@ local function gen_hl_groups()
   local prefix = "MiniStatusline"
   -- Diagnostics
   for _, suffix in ipairs({ "Error", "Warn", "Info", "Hint" }) do
-    merge_hl("Diagnostic" .. suffix, prefix .. "Devinfo", prefix .. "Diagnostic" .. suffix)
+    util_hl.merge_hl("Diagnostic" .. suffix, prefix .. "Devinfo", prefix .. "Diagnostic" .. suffix)
   end
   -- Diff
   for _, suffix in ipairs({ "Add", "Change", "Delete" }) do
-    merge_hl("MiniDiffSign" .. suffix, prefix .. "Devinfo", prefix .. "Diff" .. suffix)
+    util_hl.merge_hl("MiniDiffSign" .. suffix, prefix .. "Devinfo", prefix .. "Diff" .. suffix)
   end
   -- Icons
   for _, suffix in ipairs({ "Azure", "Blue", "Cyan", "Green", "Grey", "Orange", "Purple", "Red", "Yellow" }) do
-    merge_hl("MiniIcons" .. suffix, prefix .. "Fileinfo", prefix .. "Icons" .. suffix)
+    util_hl.merge_hl("MiniIcons" .. suffix, prefix .. "Fileinfo", prefix .. "Icons" .. suffix)
   end
   -- Git
-  merge_hl("Terminal", prefix .. "Devinfo", prefix .. "Git")
+  util_hl.merge_hl("Terminal", prefix .. "Devinfo", prefix .. "Git")
 
   -- Mode line numbers
   -- stylua: ignore
