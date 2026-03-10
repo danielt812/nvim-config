@@ -148,7 +148,7 @@ local servers = {
   "taplo",
   "tailwindcss",
   "ts_ls",
-  "tsgo",
+  -- "tsgo",
   "yamlls",
 }
 
