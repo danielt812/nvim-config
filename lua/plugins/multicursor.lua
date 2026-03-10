@@ -11,7 +11,7 @@ vim.keymap.set({ "n", "x" }, "<Up>", function() multicursor.lineAddCursor(-1) en
 vim.keymap.set({ "n", "x" }, "<C-p>", function() multicursor.matchAddCursor(-1) end)
 -- vim.keymap.set({ "n", "x" }, "<C-p>", function() multicursor.matchSkipCursor(-1) end)
 vim.keymap.set({ "n", "x" }, "<C-n>", function() multicursor.matchAddCursor(1) end)
-vim.keymap.set({ "n", "x" }, "<C-s>", function() multicursor.matchSkipCursor(1) end)
+-- vim.keymap.set({ "n", "x" }, "<C-s>", function() multicursor.matchSkipCursor(1) end)
 
 -- Cursor navigation layer (your existing pattern is good)
 multicursor.addKeymapLayer(function(layerSet)
