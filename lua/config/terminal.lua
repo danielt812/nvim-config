@@ -294,7 +294,7 @@ local function run_task()
     if not choice then return end
     for _, task in ipairs(tasks) do
       if task.label == choice then
-        toggle(choice, { layout = "horizontal", cmd = task.cmd })
+        toggle(choice, { layout = "horizontal", cmd = task.cmd .. "; sleep 3" })
         return
       end
     end
@@ -306,20 +306,22 @@ end
 -- #############################################################################
 
 -- stylua: ignore start
-local lazygit   = function() toggle("lazygit",    { layout = "full", cmd = "lazygit" }) end
-local delta     = function() toggle("delta",      { layout = "full", cmd = "git diff | delta --diff-so-fancy --side-by-side --line-numbers" }) end
+local lazygit   = function() toggle("lazygit",    { layout = "full",     cmd = "lazygit" }) end
+local claude    = function() toggle("claude",     { layout = "vertical", cmd = "claude" }) end
+local delta     = function() toggle("delta",      { layout = "full",     cmd = "git diff | delta --diff-so-fancy --side-by-side --line-numbers" }) end
 local vertical  = function() toggle("vertical",   { layout = "vertical"   }) end
 local horizontal= function() toggle("horizontal", { layout = "horizontal" }) end
 local full      = function() toggle("full",       { layout = "full"       }) end
 
 vim.keymap.set({ "n", "t" }, "<C-t>",      full,       { desc = "Full Terminal" })
+vim.keymap.set({ "n", "t" }, "<C-s>",      vertical,   { desc = "Split Terminal" })
 vim.keymap.set({ "n", "t" }, "<C-g>",      lazygit,    { desc = "Lazygit" })
-vim.keymap.set("n",          "<C-\\>",     vertical,   { desc = "Vertical Terminal" })
+vim.keymap.set({ "n", "t" }, "<C-\\>",     claude,     { desc = "Claude" })
 
 vim.keymap.set("n",          "<leader>gg", lazygit,    { desc = "Lazygit" })
 vim.keymap.set("n",          "<leader>gd", delta,      { desc = "Delta" })
-vim.keymap.set("n",          "<leader>tc", full,       { desc = "Full Terminal" })
-vim.keymap.set("n",          "<leader>t|", vertical,   { desc = "Vertical Terminal" })
-vim.keymap.set("n",          "<leader>t-", horizontal, { desc = "Horizontal Terminal" })
+vim.keymap.set("n",          "<leader>tf", full,       { desc = "Full" })
+vim.keymap.set("n",          "<leader>th", horizontal, { desc = "Horizontal" })
+vim.keymap.set("n",          "<leader>tv", vertical,   { desc = "Vertical" })
 vim.keymap.set("n",          "<leader>tt", run_task,   { desc = "Run task" })
 -- stylua: ignore end
