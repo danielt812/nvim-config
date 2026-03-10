@@ -13,17 +13,9 @@ treesj.setup({
 
 local function on_pair_char()
   local _, col = unpack(vim.api.nvim_win_get_cursor(0))
-  local line = vim.api.nvim_get_current_line()
-
-  -- char under cursor
-  local c1 = line:sub(col + 1, col + 1)
-  -- char just left of cursor (useful when cursor is between chars)
-  local c0 = (col > 0) and line:sub(col, col) or ""
-
-  -- treat these as "pair chars"
+  local char = vim.api.nvim_get_current_line():sub(col + 1, col + 1)
   local pairs = { ["("] = true, [")"] = true, ["{"] = true, ["}"] = true, ["["] = true, ["]"] = true }
-
-  return pairs[c1] == true or pairs[c0] == true
+  return pairs[char] == true
 end
 
 local function split_join_toggle()
@@ -45,5 +37,11 @@ local function split_join_toggle()
   treesj.toggle()
 end
 
+-- #############################################################################
+-- #                                  Keymaps                                  #
+-- #############################################################################
+
+-- stylua: ignore start
 vim.keymap.set({ "n" }, "J", split_join_toggle, { desc = "Split/Join" })
-vim.keymap.set({ "x" }, "J", treesj.toggle, { desc = "Split/Join" })
+vim.keymap.set({ "x" }, "J", treesj.toggle,     { desc = "Split/Join" })
+-- stylua: ignore end
