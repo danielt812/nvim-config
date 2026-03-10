@@ -212,7 +212,7 @@ local highlights = {
   -- stylua: ignore end
 
   -- stylua: ignore start
-  DiffText   = { fg = palette.bg0, bg = palette.blue },
+  DiffText   = { bg = palette.bg_blue },
   DiffAdd    = { bg = palette.bg_green },
   DiffChange = { bg = palette.bg_blue },
   DiffDelete = { bg = palette.bg_red },

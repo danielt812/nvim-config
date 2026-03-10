@@ -83,8 +83,8 @@ local dark_soft = {
   bg_red    = "#59464c",
   bg_orange = "#4a3a2f",
   bg_yellow = "#55544a",
-  bg_green  = "#58484e",
-  bg_blue   = "#3f5865",
+  bg_green  = "#3c4f4b",
+  bg_blue   = "#3c4d54",
   bg_aqua   = "#3b4f4c",
   bg_purple = "#4b3f52",
 }
@@ -212,7 +212,7 @@ local highlights = {
   -- stylua: ignore end
 
   -- stylua: ignore start
-  DiffText   = { fg = palette.bg0, bg = palette.blue },
+  DiffText   = { bg = palette.bg_blue },
   DiffAdd    = { bg = palette.bg_green },
   DiffChange = { bg = palette.bg_blue },
   DiffDelete = { bg = palette.bg_red },
