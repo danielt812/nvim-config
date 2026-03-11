@@ -3,13 +3,14 @@ local completion = require("mini.completion")
 local function process_items(items, base)
   local opts = {
     filtersort = "fuzzy",
+     -- NOTE: higher = first, unlisted kinds default to 100, negative = filtered out
     kind_priority = {
       Text = -1,
-      Variable = -1,
-      Snippet = 1,
-      Emmet = 2,
-      Keyword = 3,
-      Function = 4,
+      Function = 101,
+      Keyword = 102,
+      Emmet = 103,
+      Snippet = 104,
+      Variable = 105,
     },
   }
   local processed = completion.default_process_items(items, base, opts)
