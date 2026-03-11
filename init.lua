@@ -77,11 +77,11 @@ now(function()
   vim.cmd("colorscheme everforest")
 
   -- Mini modules now ------------------------------------------------------------
-  mplug("notify")
-  mplug("starter")
-  mplug("sessions")
   mplug("completion")
+  mplug("notify")
+  mplug("sessions")
   mplug("snippets")
+  mplug("starter")
 end)
 
 -- Mini modules later ----------------------------------------------------------
