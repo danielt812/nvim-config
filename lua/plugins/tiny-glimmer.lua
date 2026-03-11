@@ -13,8 +13,8 @@ glimmer.setup({
         settings = {
           from_color = "BgYellow",
           to_color = "Normal",
-          max_duration = 400,
-          min_duration = 300,
+          max_duration = 800,
+          min_duration = 500,
         },
       },
     },
