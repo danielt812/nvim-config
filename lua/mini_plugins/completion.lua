@@ -6,11 +6,11 @@ local function process_items(items, base)
      -- NOTE: higher = first, unlisted kinds default to 100, negative = filtered out
     kind_priority = {
       Text = -1,
-      Function = 101,
-      Keyword = 102,
-      Emmet = 103,
-      Snippet = 104,
-      Variable = 105,
+      Variable = 101,
+      Function = 102,
+      Keyword = 103,
+      Emmet = 104,
+      Snippet = 105,
     },
   }
   local processed = completion.default_process_items(items, base, opts)
