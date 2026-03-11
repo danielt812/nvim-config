@@ -59,4 +59,5 @@ vim.opt.spellfile      = vim.fn.stdpath("config") .. "/spell/en.utf-8.add"
 vim.opt.clipboard      = "unnamedplus" -- Sync with system clipboard
 vim.opt.updatetime     = 1000 -- CursorHold and swap write interval (ms)
 vim.opt.shortmess:append("S") -- Don't show search count
+vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:ver25-TermCursor"
 -- stylua: ignore end
