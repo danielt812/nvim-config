@@ -8,7 +8,6 @@ local map_combo     = keymap.map_combo
 local tab_steps = {
   "minisnippets_next",
   "increase_indent",
-  "minisnippets_expand",
   "jump_after_tsnode",
   "jump_after_close",
 }
