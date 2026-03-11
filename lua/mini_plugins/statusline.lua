@@ -293,7 +293,7 @@ local group = vim.api.nvim_create_augroup("mini_statusline", { clear = true })
 vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = "*",
   group = group,
-  desc = "Generate icon highlights",
+  desc = "Create highlight groups",
   callback = gen_hl_groups,
 })
 

@@ -1,9 +1,9 @@
-local cache = {}
-
 -- https://github.com/mfussenegger/nvim-dap
 local dap = require("dap")
 -- https://github.com/igorlfs/nvim-dap-view
 local dap_view = require("dap-view")
+
+local cache = {}
 
 vim.fn.sign_define("DapBreakpoint", {
   text = "",
@@ -290,7 +290,7 @@ local group = vim.api.nvim_create_augroup("dap", { clear = true })
 vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = "*",
   group = group,
-  desc = "Generate dap highlight groups",
+  desc = "Create highlight groups",
   callback = gen_hl_groups,
 })
 

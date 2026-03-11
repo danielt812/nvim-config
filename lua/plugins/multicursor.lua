@@ -33,4 +33,4 @@ local gen_hl_groups = function()
   -- stylua: ignore end
 end
 
-gen_hl_groups()
+gen_hl_groups() -- Call this now if colorscheme was already set

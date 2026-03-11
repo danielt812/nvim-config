@@ -131,7 +131,7 @@ vim.api.nvim_create_autocmd("CmdlineLeave", {
 vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = "*",
   group = group,
-  desc = "Generate Mark highlight groups",
+  desc = "Create highlight groups",
   callback = gen_hl_groups,
 })
 

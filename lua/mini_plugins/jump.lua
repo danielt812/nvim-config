@@ -99,17 +99,18 @@ end
 
 local group = vim.api.nvim_create_augroup("mini_jump", { clear = true })
 
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  group = group,
+  desc = "Create highlight groups",
+  callback = gen_hl_groups,
+})
+
 vim.api.nvim_create_autocmd("ModeChanged", {
   pattern = "no*:*",
   group = group,
   desc = "Stop jump mode after operator-pending mode keymaps",
   callback = jump_stop_cb,
-})
-
-vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "*",
-  group = group,
-  callback = gen_hl_groups,
 })
 
 vim.api.nvim_create_autocmd("User", {
