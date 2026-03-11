@@ -12,11 +12,16 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function() vim.cmd("setlocal spell") end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "help", "man" },
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  pattern = { "*" },
   group = vim.api.nvim_create_augroup("open_help_vs", { clear = true }),
-  desc = "Open help files in vertical split",
-  callback = function() vim.cmd("wincmd L") end,
+  desc = "Open help/man files in vertical split",
+  callback = vim.schedule_wrap(function()
+    if vim.o.columns <= 110 then return end
+    if vim.bo.buftype == "help" or vim.bo.filetype == "man" then
+      vim.cmd("wincmd L")
+    end
+  end),
 })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -62,6 +67,13 @@ vim.api.nvim_create_autocmd("QuitPre", {
       if ft == "dap-view" or ft == "qf" then pcall(vim.api.nvim_win_close, win, true) end
     end
   end,
+})
+
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
+  pattern = { "*" },
+  group = vim.api.nvim_create_augroup("auto_checktime", { clear = true }),
+  desc = "Reload files changed outside of Neovim",
+  callback = function() vim.cmd("checktime") end,
 })
 
 vim.api.nvim_create_autocmd("BufReadPre", {
