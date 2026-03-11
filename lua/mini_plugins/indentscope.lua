@@ -1,6 +1,6 @@
 local indentscope = require("mini.indentscope")
 
-local ft_ignore = { "git", "help", "markdown", "terminal" }
+local ft_ignore = { "git", "help", "man", "markdown", "terminal" }
 
 local function should_ignore(ft) return ft:match("^mini") or vim.tbl_contains(ft_ignore, ft) end
 
@@ -92,9 +92,12 @@ local function render(buf, win)
   local step = sw > 0 and sw or vim.bo[buf].tabstop
   if step <= 0 then return end
 
-  local top, bot = vim.fn.line("w0", win), vim.fn.line("w$", win)
+  -- NOTE: rendering just the visible range is more performant, but lines outside the viewport won't have guides
+  -- local top, bot = vim.fn.line("w0", win), vim.fn.line("w$", win)
+  -- vim.api.nvim_buf_clear_namespace(buf, ns, top - 1, bot)
+  local top, bot = 1, vim.api.nvim_buf_line_count(buf)
   local leftcol = vim.api.nvim_win_call(win, function() return vim.fn.winsaveview().leftcol end)
-  vim.api.nvim_buf_clear_namespace(buf, ns, top - 1, bot)
+  vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
 
   for lnum = top, bot do
     local indent = get_indent(buf, lnum)
@@ -142,15 +145,14 @@ end
 
 local group = vim.api.nvim_create_augroup("mini_indentscope", { clear = true })
 
-
-vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "ModeChanged" }, {
+vim.api.nvim_create_autocmd({ "BufWinEnter", "CursorMoved", "CursorMovedI", "ModeChanged" }, {
   pattern = "*",
   group = group,
   callback = function() draw_indent_guides({ lazy = true }) end,
   desc = "Draw indent guides lazily",
 })
 
-vim.api.nvim_create_autocmd({ "BufEnter", "TextChanged", "TextChangedI", "TextChangedP", "WinScrolled" }, {
+vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI", "TextChangedP", "WinScrolled" }, {
   pattern = "*",
   group = group,
   callback = function() draw_indent_guides({ lazy = false }) end,
