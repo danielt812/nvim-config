@@ -98,3 +98,11 @@ vim.keymap.set("n", "<leader>qQ", H.toggle_loc,          { desc = "Loclist" })
 vim.keymap.set("n", "<leader>qc", H.clear_qf,            { desc = "Quickfix clear" })
 vim.keymap.set("n", "<leader>qC", H.clear_loc,           { desc = "Loclist clear" })
 -- stylua: ignore end
+
+vim.api.nvim_create_autocmd("WinLeave", {
+  group = vim.api.nvim_create_augroup("auto_close_qf", { clear = true }),
+  desc = "Close quickfix/loclist when leaving its window",
+  callback = function()
+    if vim.bo.buftype == "quickfix" then vim.schedule(function() vim.cmd("cclose") vim.cmd("lclose") end) end
+  end,
+})
