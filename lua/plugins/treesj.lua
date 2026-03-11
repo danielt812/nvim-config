@@ -1,6 +1,5 @@
 local treesj = require("treesj")
 local splitjoin = require("mini.splitjoin")
-local ts = require("utils.ts")
 
 treesj.setup({
   use_default_keymaps = false,
@@ -19,13 +18,6 @@ local function on_pair_char()
 end
 
 local function split_join_toggle()
-  -- Prefer treesj on arrow functions
-  if ts.in_node("arrow_function") then
-    vim.notify("treesj")
-    treesj.toggle()
-    return
-  end
-
   -- Prefer mini for bracket-based constructs
   if on_pair_char() and splitjoin.toggle() then
     vim.notify("splitjoin")
