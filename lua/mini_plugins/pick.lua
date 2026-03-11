@@ -5,7 +5,7 @@ pick.setup({
   window = {
     config = function()
       local width = vim.o.columns
-      if width <= 100 then
+      if width <= 110 then
         return { width = math.floor(width * 0.8) }
       end
       return {}
