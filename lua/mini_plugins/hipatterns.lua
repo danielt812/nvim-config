@@ -127,6 +127,7 @@ local links = {
   azure         = { pattern = "https://[%w%-%._]*azure[%w%-%._]*[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",    group = in_comment("Azure"),     extmark_opts = link_extmark("") },
   fedora        = { pattern = "https://[%w%-%._]*fedoraproject%.org[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*", group = in_comment("Fedora"),    extmark_opts = link_extmark("") },
   github        = { pattern = "https://[%w%-%._]*github%.com[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",        group = in_comment("Github"),    extmark_opts = link_extmark("󰊤") },
+  kulala        = { pattern = "https://[%w%-%._]*getkulala%.net[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",     group = in_comment("Kulala"),    extmark_opts = link_extmark("󰏚") },
   mdn           = { pattern = "https://[%w%-%._]*mozilla%.org[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",       group = in_comment("Mdn"),       extmark_opts = link_extmark("󰖟") },
   reddit        = { pattern = "https://[%w%-%._]*reddit%.com[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",        group = in_comment("Reddit"),    extmark_opts = link_extmark("󰑍") },
   redhat        = { pattern = "https://[%w%-%._]*redhat%.com[%w%-%._~:/%?#%[%]@!$&'()*+,;=]*",        group = in_comment("Redhat"),    extmark_opts = link_extmark("") },
@@ -201,6 +202,7 @@ local function gen_hl_groups()
     Azure         = "#0078d4", -- https://azure.com/foo/bar
     Fedora        = "#65a0d6", -- https://fedoraproject.org/foo/bar
     Github        = "#f2f5f3", -- https://github.com/foo/bar
+    Kulala        = "#dc4551", -- https://neovim.getkulala.net/foo/bar
     Mdn           = "#54ffbd", -- https://developer.mozilla.org/foo/bar
     Reddit        = "#ff4500", -- https://reddit.com/foo/bar
     Redhat        = "#da2f21", -- https://redhat.com/foo/bar

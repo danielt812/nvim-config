@@ -22,6 +22,7 @@ local languages = {
   "gitcommit",
   "gitignore",
   "html",
+  "http",
   "javascript",
   "jsdoc",
   "json",
