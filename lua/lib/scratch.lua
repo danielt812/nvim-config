@@ -1,4 +1,5 @@
 local scratch_types = {
+  { ft = "html" },
   { ft = "javascript", ext = "js" },
   { ft = "json" },
   { ft = "lua" },
