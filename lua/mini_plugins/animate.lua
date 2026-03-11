@@ -48,7 +48,7 @@ local function toggle_animate()
   vim.cmd("redrawstatus")
 end
 
-vim.keymap.set("n", "<leader>\\a", toggle_animate, { desc = "Animate" })
+vim.keymap.set("n", "\\1", toggle_animate, { desc = "Toggle 'mini.animate'" })
 
 -- #############################################################################
 -- #                            Automatic Commands                             #

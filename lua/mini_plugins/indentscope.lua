@@ -66,7 +66,7 @@ local function toggle_indentscope()
   vim.cmd("redrawstatus")
 end
 
-vim.keymap.set("n", "<leader>\\i", toggle_indentscope, { desc = "Indentscope" })
+vim.keymap.set("n", "\\2", toggle_indentscope, { desc = "Toggle 'mini.indentscope'" })
 
 -- #############################################################################
 -- #                            Automatic Commands                             #
@@ -150,7 +150,7 @@ vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "ModeChanged" }, {
   desc = "Draw indent guides lazily",
 })
 
-vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI", "TextChangedP", "WinScrolled" }, {
+vim.api.nvim_create_autocmd({ "BufEnter", "TextChanged", "TextChangedI", "TextChangedP", "WinScrolled" }, {
   pattern = "*",
   group = group,
   callback = function() draw_indent_guides({ lazy = false }) end,

@@ -167,7 +167,7 @@ local function toggle_hipatterns()
   vim.cmd("redrawstatus")
 end
 
-vim.keymap.set("n", "<leader>\\h", toggle_hipatterns, { desc = "Hipatterns" })
+vim.keymap.set("n", "\\3", toggle_hipatterns, { desc = "Toggle 'mini.hipatterns'" })
 
 -- #############################################################################
 -- #                            Automatic Commands                             #
@@ -186,7 +186,7 @@ local function gen_hl_groups()
   }
 
   for name, hex in pairs(comment_colors) do
-    vim.api.nvim_set_hl(0, prefix .. name, { fg = hex, reverse = true, italic = true })
+    vim.api.nvim_set_hl(0, prefix .. name, { fg = "#000000", bg = hex, italic = true })
     vim.api.nvim_set_hl(0, prefix .. name .. "Mask", { fg = hex, bg = hex, italic = true })
   end
 

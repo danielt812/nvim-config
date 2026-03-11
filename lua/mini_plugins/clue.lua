@@ -27,12 +27,14 @@ clue.setup({
 
     -- `z` key
     { mode = { "n", "x" }, keys = "z" },
+
+    -- Toggle (mini.basics)
+    { mode = "n", keys = "\\" },
   },
   clues = {
     { mode = { "n", "v" }, keys = "gb", desc = "Box" },
     { mode = { "n", "v" }, keys = "gl", desc = "Lsp" },
     -- stylua: ignore start
-    { mode = { "n", "v" }, keys = "<leader>\\", desc = "+Toggle" },
     { mode = { "n", "v" }, keys = "<leader>b",  desc = "+Buffer" },
     { mode = { "n", "v" }, keys = "<leader>d",  desc = "+Debugger" },
     { mode = { "n", "v" }, keys = "<leader>e",  desc = "+Editor" },

@@ -32,7 +32,7 @@ local function toggle_pairs()
   vim.cmd("redrawstatus")
 end
 
-vim.keymap.set("n", "<leader>\\p", toggle_pairs, { desc = "Pairs" })
+vim.keymap.set("n", "\\4", toggle_pairs, { desc = "Toggle 'mini.pairs'" })
 
 -- #############################################################################
 -- #                            Automatic Commands                             #
