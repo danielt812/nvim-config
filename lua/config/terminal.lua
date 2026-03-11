@@ -20,10 +20,10 @@ end
 local function open_split(term)
   if term.layout == "horizontal" then
     vim.cmd("botright split")
-    vim.api.nvim_win_set_height(0, term.height or 10)
+    vim.api.nvim_win_set_height(0, term.height or math.ceil(vim.o.lines * 0.2))
   elseif term.layout == "vertical" then
     vim.cmd("rightbelow vsplit")
-    vim.api.nvim_win_set_width(0, term.width or math.floor(vim.o.columns * 0.5))
+    vim.api.nvim_win_set_width(0, term.width or math.ceil(vim.o.columns * 0.5))
   end
 end
 
@@ -51,7 +51,18 @@ local function create(term)
   end
   local buf = vim.api.nvim_create_buf(false, false)
   switch_buf(0, buf)
-  term.job_id = vim.fn.jobstart(term.cmd or vim.o.shell, { term = true, cwd = vim.fn.getcwd() })
+  local on_exit = term.cmd
+      and function(_, code)
+        local name = term.name or term.cmd
+        local stopped = code == 130 or code == 143 -- SIGINT / SIGTERM
+        local msg = stopped and ("Stopped: " .. name)
+          or code == 0 and ("Finished: " .. name)
+          or ("Failed (" .. code .. "): " .. name)
+        local level = (code == 0 or stopped) and vim.log.levels.INFO or vim.log.levels.ERROR
+        vim.schedule(function() vim.notify(msg, level) end)
+      end
+    or nil
+  term.job_id = vim.fn.jobstart(term.cmd or vim.o.shell, { term = true, cwd = vim.fn.getcwd(), on_exit = on_exit })
   term.buf = buf
   vim.bo[buf].buflisted = false
   vim.cmd("startinsert")
@@ -109,13 +120,13 @@ local function show(term)
     open_split(term)
     switch_buf(0, term.buf)
   end
-  vim.cmd("startinsert")
+  vim.schedule(function() vim.cmd("startinsert") end)
 end
 
-local function toggle(name, opts)
+local function toggle_term(name, opts)
   local term = terms[name]
   if not term then
-    term = vim.tbl_extend("force", { layout = "horizontal" }, opts or {})
+    term = vim.tbl_extend("force", { layout = "horizontal", name = name }, opts or {})
     terms[name] = term
   end
 
@@ -130,6 +141,18 @@ local function toggle(name, opts)
   else
     show(term)
   end
+end
+
+local toggle_smart = function()
+  local buf = vim.api.nvim_get_current_buf()
+  for _, term in pairs(terms) do
+    if term.buf and term.buf == buf then
+      local win = find_win(term.buf)
+      if win then hide(term, win) end
+      return
+    end
+  end
+  vim.cmd("Term horizontal")
 end
 
 -- #############################################################################
@@ -159,7 +182,11 @@ end
 local function buf_win_enter_cb()
   local win = vim.api.nvim_get_current_win()
   local is_float = vim.api.nvim_win_get_config(win).relative ~= ""
-  if not is_float and vim.bo.buftype ~= "terminal" then vim.wo.winhighlight = "" end
+  if vim.bo.buftype == "terminal" then
+    vim.cmd("startinsert")
+  elseif not is_float then
+    vim.wo.winhighlight = ""
+  end
 end
 
 local function colorscheme_cb()
@@ -217,10 +244,9 @@ vim.api.nvim_create_autocmd("TermClose", {
   callback = term_close_cb,
 })
 
-vim.api.nvim_create_autocmd("BufWinEnter", {
-  pattern = { "*" },
+vim.api.nvim_create_autocmd("WinEnter", {
   group = group,
-  desc = "Clear winhighlight when a normal buffer enters a window",
+  desc = "Auto insert for terminals, clear winhighlight for normal buffers",
   callback = buf_win_enter_cb,
 })
 
@@ -247,7 +273,13 @@ vim.api.nvim_create_autocmd("QuitPre", {
 -- #                                 Task Picker                               #
 -- #############################################################################
 
+local function rg_has_match(glob)
+  local result = vim.fn.systemlist({ "rg", "--files", "--glob", glob, "--max-count", "1", vim.fn.getcwd() })
+  return #result > 0
+end
+
 local function get_package_scripts()
+  if not rg_has_match("package.json") then return {} end
   local path = vim.fn.getcwd() .. "/package.json"
   local f = io.open(path, "r")
   if not f then return {} end
@@ -264,6 +296,7 @@ local function get_package_scripts()
 end
 
 local function get_make_targets()
+  if not rg_has_match("Makefile") then return {} end
   local path = vim.fn.getcwd() .. "/Makefile"
   local f = io.open(path, "r")
   if not f then return {} end
@@ -279,10 +312,91 @@ local function get_make_targets()
   return tasks
 end
 
+local function get_scss_watch()
+  if not rg_has_match("*.scss") then return {} end
+  local cwd = vim.fn.getcwd()
+  return { { label = "sass: watch", cmd = "sass --watch --no-source-map " .. cwd .. ":" .. cwd } }
+end
+
+local function get_running_tasks()
+  local running = {}
+  for name, term in pairs(terms) do
+    if term.buf and vim.api.nvim_buf_is_valid(term.buf) and term.cmd then table.insert(running, name) end
+  end
+  table.sort(running)
+  return running
+end
+
+local function select_task(prompt, callback)
+  local running = get_running_tasks()
+  if #running == 0 then
+    vim.notify("No running tasks", vim.log.levels.WARN)
+    return
+  end
+  if #running == 1 then
+    callback(running[1])
+    return
+  end
+  vim.ui.select(running, { prompt = prompt }, function(choice)
+    if choice then callback(choice) end
+  end)
+end
+
+local function kill_task()
+  select_task("Kill task", function(name)
+    local term = terms[name]
+    if not term then return end
+    if term.job_id then pcall(vim.fn.jobstop, term.job_id) end
+    if term.buf and vim.api.nvim_buf_is_valid(term.buf) then
+      local win = find_win(term.buf)
+      if win then vim.api.nvim_win_close(win, true) end
+      vim.api.nvim_buf_delete(term.buf, { force = true })
+    end
+    term.buf = nil
+    term.job_id = nil
+    vim.notify("Killed: " .. name)
+  end)
+end
+
+local function open_task()
+  select_task("Open task", function(name)
+    local term = terms[name]
+    if not term then return end
+    local win = find_win(term.buf)
+    if not win then show(term) end
+  end)
+end
+
+local runners = {
+  python = "python3 %s",
+  sh = "sh %s",
+  bash = "bash %s",
+  zsh = "zsh %s",
+  javascript = "node %s",
+  typescript = "npx ts-node %s",
+  go = "go run %s",
+  lua = "lua %s",
+  rust = "cargo run",
+}
+
+local function run_file()
+  local ft = vim.bo.filetype
+  local runner = runners[ft]
+  if not runner then
+    vim.notify("No runner for filetype: " .. ft, vim.log.levels.WARN)
+    return
+  end
+  local file = vim.fn.expand("%:p")
+  local cmd = runner:format(file)
+  local name = "run: " .. vim.fn.expand("%:t")
+  toggle_term(name, { layout = "vertical", cmd = cmd })
+end
+
 local function run_task()
   local tasks = {}
   vim.list_extend(tasks, get_package_scripts())
   vim.list_extend(tasks, get_make_targets())
+  vim.list_extend(tasks, get_scss_watch())
 
   if #tasks == 0 then
     vim.notify("No tasks found", vim.log.levels.WARN)
@@ -294,7 +408,11 @@ local function run_task()
     if not choice then return end
     for _, task in ipairs(tasks) do
       if task.label == choice then
-        toggle(choice, { layout = "horizontal", cmd = task.cmd .. "; sleep 3" })
+        toggle_term(choice, { layout = "horizontal", cmd = task.cmd })
+        vim.cmd("stopinsert")
+        vim.cmd("wincmd p")
+        toggle_term(choice, { layout = "horizontal" })
+        vim.notify("Running: " .. choice)
         return
       end
     end
@@ -306,22 +424,47 @@ end
 -- #############################################################################
 
 -- stylua: ignore start
-local lazygit   = function() toggle("lazygit",    { layout = "full",     cmd = "lazygit" }) end
-local claude    = function() toggle("claude",     { layout = "vertical", cmd = "claude" }) end
-local delta     = function() toggle("delta",      { layout = "full",     cmd = "git diff | delta --diff-so-fancy --side-by-side --line-numbers" }) end
-local vertical  = function() toggle("vertical",   { layout = "vertical"   }) end
-local horizontal= function() toggle("horizontal", { layout = "horizontal" }) end
-local full      = function() toggle("full",       { layout = "full"       }) end
+local lazygit    = function() toggle_term("lazygit",    { layout = "full", cmd = "lazygit" }) end
+local delta      = function() toggle_term("delta",      { layout = "full", cmd = "git diff | delta --diff-so-fancy --side-by-side --line-numbers" }) end
+local vertical   = function() toggle_term("vertical",   { layout = "vertical"   }) end
+local horizontal = function() toggle_term("horizontal", { layout = "horizontal" }) end
+local full       = function() toggle_term("full",       { layout = "full"       }) end
 
-vim.keymap.set({ "n", "t" }, "<C-t>",      full,       { desc = "Full Terminal" })
-vim.keymap.set({ "n", "t" }, "<C-s>",      vertical,   { desc = "Split Terminal" })
-vim.keymap.set({ "n", "t" }, "<C-g>",      lazygit,    { desc = "Lazygit" })
-vim.keymap.set({ "n", "t" }, "<C-\\>",     claude,     { desc = "Claude" })
+vim.keymap.set({ "n", "t" }, "<C-t>",  full,         { desc = "Full Terminal" })
+vim.keymap.set({ "n", "t" }, "<C-s>",  vertical,     { desc = "Split Terminal" })
+vim.keymap.set({ "n", "t" }, "<C-g>",  lazygit,      { desc = "Lazygit" })
+vim.keymap.set({ "n", "t" }, "<C-\\>", toggle_smart, { desc = "Toggle terminal" })
 
-vim.keymap.set("n",          "<leader>gg", lazygit,    { desc = "Lazygit" })
-vim.keymap.set("n",          "<leader>gd", delta,      { desc = "Delta" })
-vim.keymap.set("n",          "<leader>tf", full,       { desc = "Full" })
-vim.keymap.set("n",          "<leader>th", horizontal, { desc = "Horizontal" })
-vim.keymap.set("n",          "<leader>tv", vertical,   { desc = "Vertical" })
-vim.keymap.set("n",          "<leader>tt", run_task,   { desc = "Run task" })
+vim.keymap.set("n", "<leader>gg", lazygit, { desc = "Lazygit" })
+vim.keymap.set("n", "<leader>gd", delta,   { desc = "Delta" })
+
+vim.keymap.set("n", "<leader>tf", full,       { desc = "Full" })
+vim.keymap.set("n", "<leader>th", horizontal, { desc = "Horizontal" })
+vim.keymap.set("n", "<leader>tv", vertical,   { desc = "Vertical" })
+
+vim.keymap.set("n", "<leader>\\t", run_task,  { desc = "Run task" })
+vim.keymap.set("n", "<leader>\\f", run_file, { desc = "Run file" })
+
+vim.keymap.set("n", "<leader>\\o", open_task, { desc = "Open" })
+vim.keymap.set("n", "<leader>\\k", kill_task, { desc = "Kill" })
 -- stylua: ignore end
+
+-- #############################################################################
+-- #                               User Commands                               #
+-- #############################################################################
+
+-- stylua: ignore start
+local term_commands = {
+  horizontal = horizontal,
+  vertical   = vertical,
+  full       = full,
+  lazygit    = lazygit,
+  delta      = delta,
+  toggle     = toggle_smart,
+}
+-- stylua: ignore end
+
+vim.api.nvim_create_user_command("Term", function(opts)
+  local fn = term_commands[opts.args]
+  if fn then fn() end
+end, { nargs = 1, complete = function() return vim.tbl_keys(term_commands) end })
