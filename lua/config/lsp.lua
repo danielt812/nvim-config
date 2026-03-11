@@ -1,6 +1,6 @@
-local cache = {}
-
 local completion = require("mini.completion")
+
+local cache = {}
 
 -- Shared capabilities
 local capabilities =
@@ -254,6 +254,15 @@ end
 local function colorscheme_cb() vim.api.nvim_set_hl(0, "@lsp.type.variable", {}) end
 
 local group = vim.api.nvim_create_augroup("lsp", { clear = true })
+
+vim.api.nvim_create_autocmd("WinNew", {
+  group = group,
+  desc = "Clear winbar on floating windows",
+  callback = function()
+    local win = vim.api.nvim_get_current_win()
+    if vim.api.nvim_win_get_config(win).relative ~= "" then vim.wo[win].winbar = "" end
+  end,
+})
 
 vim.api.nvim_create_autocmd("CursorMoved", {
   pattern = "*",
