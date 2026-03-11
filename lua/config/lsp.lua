@@ -291,7 +291,7 @@ cache.gc = { stopped = false, grace = 60, timer = vim.uv.new_timer() }
 
 local function gc_stop()
   for _, client in ipairs(vim.lsp.get_clients()) do
-    if client ~= "mini.snippets" then client:stop() end
+    if client.name ~= "mini.snippets" then client:stop() end
   end
   cache.gc.stopped = true
 end
