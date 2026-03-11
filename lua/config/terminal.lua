@@ -438,15 +438,11 @@ vim.keymap.set({ "n", "t" }, "<C-\\>", toggle_smart, { desc = "Toggle terminal" 
 vim.keymap.set("n", "<leader>gg", lazygit, { desc = "Lazygit" })
 vim.keymap.set("n", "<leader>gd", delta,   { desc = "Delta" })
 
-vim.keymap.set("n", "<leader>tf", full,       { desc = "Full" })
-vim.keymap.set("n", "<leader>th", horizontal, { desc = "Horizontal" })
-vim.keymap.set("n", "<leader>tv", vertical,   { desc = "Vertical" })
+vim.keymap.set("n", "<leader>tt", run_task, { desc = "Run task" })
+vim.keymap.set("n", "<leader>tf", run_file, { desc = "Run file" })
 
-vim.keymap.set("n", "<leader>\\t", run_task,  { desc = "Run task" })
-vim.keymap.set("n", "<leader>\\f", run_file, { desc = "Run file" })
-
-vim.keymap.set("n", "<leader>\\o", open_task, { desc = "Open" })
-vim.keymap.set("n", "<leader>\\k", kill_task, { desc = "Kill" })
+vim.keymap.set("n", "<leader>to", open_task, { desc = "Open" })
+vim.keymap.set("n", "<leader>tk", kill_task, { desc = "Kill" })
 -- stylua: ignore end
 
 -- #############################################################################
