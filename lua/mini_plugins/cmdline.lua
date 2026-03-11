@@ -39,12 +39,16 @@ cmdline.setup({
       -- Floating window config
       config = function()
         local peek_mark = vim.g.peek_mark
-        if peek_mark then return { title = " Peek (mark) " .. peek_mark .. " " } end
+        if peek_mark then return { title = " Peek mark " .. peek_mark .. " " } end
         return {}
       end,
 
       -- Function to render statuscolumn
-      statuscolumn = nil,
+      statuscolumn = function(data)
+        local n, l, r = vim.v.lnum, data.left, data.right
+        local hl = (n >= l and n <= r) and "MiniCmdlinePeekSign" or "LineNr"
+        return "%#" .. hl .. "#" .. n .. " "
+      end,
     },
   },
 })
