@@ -12,7 +12,7 @@ git.setup()
 local blame     = function() vim.cmd("vertical Git blame --porcelain -- %") end
 local log_file  = function() vim.cmd("Git log --follow -- %") end
 local log_repo  = function() vim.cmd("Git log --oneline") end
-local function patch_log() vim.cmd("Git log --follow --patch -- %") end
+local patch_log = function() vim.cmd("Git log --follow --patch -- %") end
 
 vim.keymap.set("n", "<leader>gb", blame,     { desc = "Blame" })
 vim.keymap.set("n", "<leader>gl", log_file,  { desc = "Log (file)" })
@@ -44,20 +44,10 @@ end
 local function gen_conflict_palette()
   local sk_fg = (vim.api.nvim_get_hl(0, { name = "SpecialKey", link = false })).fg
   for _, cfg in ipairs({
-    {
-      src = "DiffText",
-      header = "ConflictOursHeader",
-      marker = "ConflictMarker_Ours",
-      label = "ConflictLabel_Ours",
-      virt = "ConflictOursVirt",
-    },
-    {
-      src = "DiffAdd",
-      header = "ConflictTheirsHeader",
-      marker = "ConflictMarker_Theirs",
-      label = "ConflictLabel_Theirs",
-      virt = "ConflictTheirsVirt",
-    },
+    -- stylua: ignore start
+    { src = "DiffText", header = "ConflictOursHeader",   marker = "ConflictOursMarker",   label = "ConflictOursLabel",   virt = "ConflictOursVirt" },
+    { src = "DiffAdd",  header = "ConflictTheirsHeader", marker = "ConflictTheirsMarker", label = "ConflictTheirsLabel", virt = "ConflictTheirsVirt" },
+    -- stylua: ignore end
   }) do
     local darker = darken_bg(cfg.src, 2)
     if darker then
@@ -70,6 +60,8 @@ local function gen_conflict_palette()
 end
 
 local function gen_blame_palette(count)
+  vim.api.nvim_set_hl(0, "MiniGitBlameHash", { link = "Comment" })
+  vim.api.nvim_set_hl(0, "MiniGitBlameUncommitted", { link = "Conceal" })
   local dark = vim.o.background == "dark"
   local lightness = dark and 75 or 45
   local chroma = dark and 20 or 18
@@ -77,43 +69,39 @@ local function gen_blame_palette(count)
   local offset = (uv.hrtime() % 360)
   local palette = {}
   for i = 1, count do
-    -- Go to opposite side of color wheel so adjacent commits contrast more
     local hue = (offset + (i - 1) * 137.508) % 360
     palette[i] = colors.convert({ l = lightness, c = chroma, h = hue }, "hex")
   end
   return palette
 end
 
-local function gen_hl_groups()
-  vim.api.nvim_set_hl(0, "MiniGitBlameHash", { link = "Comment" })
-  vim.api.nvim_set_hl(0, "MiniGitBlameUncommitted", { link = "Conceal" })
-end
-
-gen_hl_groups() -- Call this now if colorscheme was already set
-
-vim.api.nvim_create_autocmd("ColorScheme", { pattern = "*", group = group, callback = gen_hl_groups })
-
 -- #############################################################################
 -- #                                 Conflict                                  #
 -- #############################################################################
 
 local function find_conflicts(buf)
-  local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, true)
-  local ours, base, theirs = {}, {}, {}
   local conflicts = {}
-  -- stylua: ignore
-  for ln, line in ipairs(lines) do
-    if vim.startswith(line, "<<<<<<<") then ours[1] = ln end
-    if vim.startswith(line, "|||||||") then base[1] = ln end
-    if vim.startswith(line, "=======") then ours[2], base[2], theirs[1] = ln, ln, ln end
-    if vim.startswith(line, ">>>>>>>") then
-      theirs[2] = ln
-      if ours[1] and ours[2] and theirs[1] and theirs[2] then
-        table.insert(conflicts, { ours, (base[1] and base[2]) and base or nil, theirs })
+  local ours, base, theirs
+
+  for ln, line in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, true)) do
+    if vim.startswith(line, "<<<<<<<") then
+      ours = { ln }
+    elseif vim.startswith(line, "|||||||") then
+      base = { ln }
+    elseif vim.startswith(line, "=======") then
+      if ours then ours[2] = ln end
+      if base then base[2] = ln end
+      theirs = { ln }
+    elseif vim.startswith(line, ">>>>>>>") then
+      if theirs then theirs[2] = ln end
+      if ours and ours[1] and ours[2] and theirs and theirs[1] and theirs[2] then
+        base = base and base[1] and base[2] and base or nil
+        table.insert(conflicts, { ours, base, theirs })
       end
-      ours, base, theirs = {}, {}, {}
+      ours, base, theirs = nil, nil, nil
     end
   end
+
   return conflicts
 end
 
@@ -133,19 +121,21 @@ local function highlight_conflicts(buf)
     extmark(ln - 1, 0, { end_col = marker_end, hl_group = marker_hl, priority = 200 })
     if marker_end < #line then extmark(ln - 1, marker_end, { end_col = #line, hl_group = label_hl, priority = 200 }) end
   end
+
   for _, conflict in ipairs(conflicts) do
     local ours, base, theirs = unpack(conflict)
-
-    set_marker_hl(ours[1], "ConflictOursHeader", "ConflictMarker_Ours", "ConflictLabel_Ours")
-    set_marker_hl(theirs[2], "ConflictTheirsHeader", "ConflictMarker_Theirs", "ConflictLabel_Theirs")
-    extmark(ours[1] - 1, 0, { virt_text = { { "(Ours)", "ConflictOursVirt" } }, virt_text_pos = "eol" })
+    set_marker_hl(ours[1], "ConflictOursHeader", "ConflictOursMarker", "ConflictOursLabel")
+    set_marker_hl(theirs[2], "ConflictTheirsHeader", "ConflictTheirsMarker", "ConflictTheirsLabel")
     extmark(ours[1], 0, { end_row = ours[2] - 1, hl_group = "DiffText", hl_eol = true })
     extmark(ours[2] - 1, 0, { line_hl_group = "SpecialKey" })
+    extmark(ours[1] - 1, 0, { virt_text = { { "(Ours)", "ConflictOursVirt" } }, virt_text_pos = "eol" })
+
     extmark(theirs[1], 0, { end_row = theirs[2] - 1, hl_group = "DiffAdd", hl_eol = true })
     extmark(theirs[2] - 1, 0, { virt_text = { { "(Theirs)", "ConflictTheirsVirt" } }, virt_text_pos = "eol" })
-    if type(base) == "table" then
-      extmark(base[1] - 1, 0, { end_row = base[2] - 1, hl_group = "DiffDelete", hl_eol = true })
-    end
+
+    extmark(base[1] - 1, 0, { end_row = base[2] - 1, hl_group = "DiffDelete", hl_eol = true })
+    -- if type(base) == "table" then
+    -- end
 
     -- stylua: ignore
     local hint_line = {
@@ -159,8 +149,6 @@ local function highlight_conflicts(buf)
     extmark(theirs[2] - 1, 0, { virt_lines = { hint_line } })
   end
 end
-
-local function get_conflict_lines(from, to) return vim.api.nvim_buf_get_lines(0, from - 1, to - 1, true) end
 
 -- #############################################################################
 -- #                                   Blame                                   #
@@ -179,10 +167,17 @@ end
 ---@return string
 local function format_time(timestamp, fmt, rel)
   if not rel then return tostring(os.date(fmt, timestamp)) end
+
   local diff = os.time() - timestamp
   local days = math.floor(diff / 86400)
+
   if type(rel) == "number" and days >= rel then return tostring(os.date(fmt, timestamp)) end
-  local function ago(n, unit) return n .. (n == 1 and " " .. unit .. " ago" or " " .. unit .. "s ago") end
+
+  local function ago(n, unit)
+    local suffix = n == 1 and "" or "s"
+    return string.format("%d %s%s ago", n, unit, suffix)
+  end
+
   if diff < 60 then return ago(diff, "second") end
   if diff < 3600 then return ago(math.floor(diff / 60), "minute") end
   if diff < 86400 then return ago(math.floor(diff / 3600), "hour") end
@@ -200,7 +195,9 @@ local function format_blame(data, skip_consecutive)
   for _, entry in ipairs(data) do
     if entry.author ~= "Not Committed Yet" then max_date = math.max(max_date, #entry.date) end
   end
+
   local formatted, prev_sha = {}, nil
+
   for _, entry in ipairs(data) do
     if skip_consecutive and entry.sha == prev_sha then
       table.insert(formatted, "┃")
@@ -216,36 +213,52 @@ end
 
 local function parse_porcelain(lines)
   local commits, parsed = {}, {}
+
+  local function parse_header(line)
+    local sha, _, final = line:match("^(%x+) (%d+) (%d+)")
+    if not sha then return nil end
+    return sha, tonumber(final)
+  end
+
+  local function consume_metadata(start_idx, commit)
+    local i = start_idx
+    while i <= #lines and not lines[i]:match("^\t") do
+      local key, val = lines[i]:match("^(%S+)%s?(.*)")
+      if key then commit[key] = val end
+      i = i + 1
+    end
+    return i
+  end
+
   local i = 1
   while i <= #lines do
-    local sha, _, final = lines[i]:match("^(%x+) (%d+) (%d+)")
+    local sha, final = parse_header(lines[i])
     if not sha then break end
-    if not commits[sha] then
-      commits[sha] = {}
-      i = i + 1
-      while i <= #lines and not lines[i]:match("^\t") do
-        local key, val = lines[i]:match("^(%S+)%s?(.*)")
-        if key then commits[sha][key] = val end
-        i = i + 1
-      end
-    else
-      i = i + 1
-      while i <= #lines and not lines[i]:match("^\t") do
-        i = i + 1
-      end
+
+    local commit = commits[sha]
+    i = i + 1
+
+    if not commit then
+      commit = {}
+      commits[sha] = commit
     end
-    local c = commits[sha]
+
+    i = consume_metadata(i, commit)
+
     table.insert(parsed, {
       sha = sha,
       sha_short = sha:sub(1, 7),
-      author = c.author or "",
-      date = c["author-time"] and format_time(c["author-time"], "%Y-%m-%d", 10) or "",
-      line = tonumber(final),
+      author = commit.author or "",
+      date = commit["author-time"] and format_time(commit["author-time"], "%Y-%m-%d", 10) or "",
+      line = final,
     })
+
     i = i + 1
   end
+
   return parsed
 end
+
 -- #############################################################################
 -- #                                 Callbacks                                 #
 -- #############################################################################
@@ -262,18 +275,17 @@ local function conflict_cb(args)
     vim.diagnostic.enable(false, { bufnr = buf })
     highlight_conflicts(buf)
 
+    -- stylua: ignore
     vim.api.nvim_create_autocmd("ModeChanged", {
       pattern = "i:*",
       group = group,
-      callback = function(a)
-        if a.buf == buf then highlight_conflicts(buf) end
-      end,
+      callback = function(a) if a.buf == buf then highlight_conflicts(buf) end end,
     })
 
     vim.api.nvim_create_autocmd("TextChanged", {
       group = group,
       buffer = buf,
-      callback = highlight_conflicts,
+      callback = function() highlight_conflicts(buf) end,
     })
 
     local function with_conflict(fn)
@@ -300,6 +312,8 @@ local function conflict_cb(args)
         vim.fn.cursor(saved[2], saved[3])
       end
     end
+
+    local function get_conflict_lines(from, to) return vim.api.nvim_buf_get_lines(0, from - 1, to - 1, true) end
 
     local function map(lhs, rhs, desc) vim.keymap.set("n", lhs, rhs, { buffer = buf, desc = desc }) end
     local function base_or(base, fallback) return type(base) == "table" and base[1] or fallback end
@@ -353,13 +367,12 @@ local function conflict_cb(args)
     map("[x", prev_conflict,   "Prev conflict")
     map("]X", last_conflict,   "Last conflict")
     map("[X", first_conflict,  "First conflict")
-    -- stylua: ignore end
   elseif vim.b[buf].minigit_conflicts then
     vim.diagnostic.enable(true, { bufnr = buf })
     vim.api.nvim_clear_autocmds({ group = group, buffer = buf })
     vim.api.nvim_buf_clear_namespace(buf, ns.conflict, 0, -1)
     vim.b[buf].minigit_conflicts = nil
-    for _, lhs in ipairs({ "co", "ct", "cb", "cn", "cc", "]x", "[x", "]X", "[X" }) do
+    for _, lhs in ipairs({ "co", "ct", "cb", "cn", "cd", "]x", "[x", "]X", "[X" }) do
       pcall(vim.keymap.del, "n", lhs, { buffer = buf })
     end
   end
@@ -367,110 +380,148 @@ end
 
 local function blame_cb(event)
   if event.data.git_subcommand ~= "blame" or not event.data.cmd_input.mods:match("vertical") then return end
+
   vim.cmd("wincmd H")
-  local win_src, buf, win = event.data.win_source, event.buf, event.data.win_stdout
-  local extmark = function(ln, col, opts) vim.api.nvim_buf_set_extmark(buf, ns.blame, ln, col, opts) end
+
+  local win_src = event.data.win_source
+  local win_blame = event.data.win_stdout
+  local buf = event.buf
+
+  local function extmark(line, col, opts) vim.api.nvim_buf_set_extmark(buf, ns.blame, line, col, opts) end
+
+  local function map(lhs, rhs, desc) vim.keymap.set("n", lhs, rhs, { buffer = buf, desc = desc }) end
+
+  local function set_win_opts(winids, opts)
+    local saved = {}
+    for _, winid in ipairs(winids) do
+      saved[winid] = {}
+      for key, val in pairs(opts) do
+        saved[winid][key] = vim.wo[winid][key]
+        vim.wo[winid][key] = val
+      end
+    end
+    return saved
+  end
+
+  local function restore_win_opts(saved, winid)
+    if not vim.api.nvim_win_is_valid(winid) or not saved[winid] then return end
+    for key, val in pairs(saved[winid]) do
+      vim.wo[winid][key] = val
+    end
+  end
+
+  local function apply_blame_highlights(blame_data, formatted)
+    local sha_idx, idx = {}, 0
+
+    for _, entry in ipairs(blame_data) do
+      if entry.author ~= "Not Committed Yet" and not sha_idx[entry.sha] then
+        idx = idx + 1
+        sha_idx[entry.sha] = idx
+      end
+    end
+
+    local palette = gen_blame_palette(idx)
+
+    for i, entry in ipairs(blame_data) do
+      local line = i - 1
+      local text = formatted[i]
+
+      if entry.author == "Not Committed Yet" then
+        extmark(line, 0, { end_col = #text, hl_group = "MiniGitBlameUncommitted" })
+      else
+        local ci = sha_idx[entry.sha]
+        local date_hl = "MiniGitBlameDate" .. ci
+        local author_hl = "MiniGitBlameAuthor" .. ci
+
+        if palette[ci] then
+          local color = palette[ci]
+          vim.api.nvim_set_hl(0, date_hl, { fg = color, italic = true })
+          vim.api.nvim_set_hl(0, author_hl, { fg = color })
+          palette[ci] = nil
+        end
+
+        if text == "┃" then
+          extmark(line, 0, { end_col = #text, hl_group = date_hl })
+        else
+          local sha_end = #entry.sha_short
+          local date_end = sha_end + 1 + #entry.date
+          extmark(line, 0, { end_col = sha_end, hl_group = "MiniGitBlameHash" })
+          extmark(line, sha_end + 1, { end_col = date_end, hl_group = date_hl })
+          extmark(line, date_end + 1, { end_col = #text, hl_group = author_hl })
+        end
+      end
+    end
+  end
 
   -- stylua: ignore
-  local settings = { number = false, relativenumber = false, winbar = "", signcolumn = "no", cursorbind = true, scrollbind = true, wrap = false }
-  local saved = {}
-  for key, val in pairs(settings) do
-    saved[key] = vim.wo[win_src][key]
-    vim.wo[win][key] = val
-    vim.wo[win_src][key] = val
-  end
+  local win_opts = {
+    number = false,
+    relativenumber = false,
+    winbar = "",
+    signcolumn = "no",
+    cursorbind = true,
+    scrollbind = true,
+    wrap = false,
+  }
+
+  local saved = set_win_opts({ win_src, win_blame }, win_opts)
 
   local blame_data = parse_porcelain(vim.api.nvim_buf_get_lines(buf, 0, -1, false))
   local formatted = format_blame(blame_data, true)
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, formatted)
+  apply_blame_highlights(blame_data, formatted)
 
-  -- Highlights
-  local unique_shas, sha_colors, color_idx = {}, {}, 0
-  for _, data in ipairs(blame_data) do
-    if not unique_shas[data.sha] and data.author ~= "Not Committed Yet" then
-      unique_shas[data.sha] = true
-      color_idx = color_idx + 1
-    end
-  end
-  local palette = gen_blame_palette(color_idx)
-  color_idx = 0
-  for i, data in ipairs(blame_data) do
-    local line = i - 1
-    if not sha_colors[data.sha] and data.author ~= "Not Committed Yet" then
-      color_idx = color_idx + 1
-      sha_colors[data.sha] = color_idx
-      local color = palette[color_idx]
-      vim.api.nvim_set_hl(0, "MiniGitBlameDate" .. color_idx, { fg = color, italic = true })
-      vim.api.nvim_set_hl(0, "MiniGitBlameAuthor" .. color_idx, { fg = color })
-    end
-    if data.author == "Not Committed Yet" then
-      extmark(line, 0, { end_col = #formatted[i], hl_group = "MiniGitBlameUncommitted" })
-    elseif formatted[i] == "┃" then
-      extmark(line, 0, { end_col = #formatted[i], hl_group = "MiniGitBlameDate" .. sha_colors[data.sha] })
-    else
-      local ci = sha_colors[data.sha]
-      local sha_end = #data.sha_short
-      local date_end = sha_end + 1 + #data.date
-      extmark(line, 0, { end_col = sha_end, hl_group = "MiniGitBlameHash" })
-      extmark(line, sha_end + 1, { end_col = date_end, hl_group = "MiniGitBlameDate" .. ci })
-      extmark(line, date_end + 1, { end_row = line, end_col = #formatted[i], hl_group = "MiniGitBlameAuthor" .. ci })
-    end
-  end
-
-  -- Blame window options
-  vim.wo[win].number = true
-  vim.wo[win].winfixwidth = true
-  vim.wo[win].winfixbuf = true
+  vim.wo[win_blame].number = true
+  vim.wo[win_blame].winfixwidth = true
+  vim.wo[win_blame].winfixbuf = true
   vim.bo[buf].bufhidden = "wipe"
   vim.bo[buf].modifiable = false
 
   vim.api.nvim_win_set_cursor(0, { vim.fn.line(".", win_src), 0 })
   vim.cmd("syncbind")
 
-  -- Blame window width
-  local max_len = 0
+  local max_width = 0
   for _, line in ipairs(formatted) do
-    max_len = math.max(max_len, #line)
+    max_width = math.max(max_width, vim.fn.strdisplaywidth(line))
   end
-  vim.fn.winrestview({ topline = vim.fn.line("w0", win_src) })
-  vim.api.nvim_win_set_width(win, max_len + math.max(vim.wo[win].numberwidth, #tostring(#formatted) + 1) + 2)
 
-  -- Buffer keymaps --------------------------------------------------------------
-  local function get_entry() return blame_data[vim.api.nvim_win_get_cursor(win)[1]] end
-  local function map(key, fn, desc) vim.keymap.set("n", key, fn, { buffer = buf, desc = desc }) end
+  vim.fn.winrestview({ topline = vim.fn.line("w0", win_src) })
+  vim.api.nvim_win_set_width(
+    win_blame,
+    max_width + math.max(vim.wo[win_blame].numberwidth, #tostring(#formatted) + 1) + 2
+  )
+
+  local function get_entry() return blame_data[vim.api.nvim_win_get_cursor(win_blame)[1]] end
+
   local function with_commit(fn)
     local entry = get_entry()
     if entry and entry.author ~= "Not Committed Yet" then fn(entry.sha) end
   end
 
-  -- stylua: ignore start
-  local checkout = function() with_commit(function(sha) vim.cmd("Git checkout " .. sha) end) end
-  local diff     = function() with_commit(function(sha) vim.cmd("Git diff " .. sha .. "^ " .. sha) end) end
-  local files    = function() with_commit(function(sha) vim.cmd("Git show --name-status --format=fuller " .. sha) end) end
-  local show     = function() with_commit(function(sha) vim.cmd("Git show " .. sha) end) end
-  local stat     = function() with_commit(function(sha) vim.cmd("Git show --stat --summary --format=fuller " .. sha) end) end
-  local yank     = function() with_commit(function(sha) vim.fn.setreg("+", sha) vim.notify("Yanked commit " .. sha) end) end
+  local function git_cmd(cmd)
+    return function()
+      with_commit(function(sha) vim.cmd("Git " .. cmd(sha)) end)
+    end
+  end
 
-  map("c", checkout, "Checkout commit")
-  map("d", diff,     "Diff commit")
-  map("f", files,    "Show files in commit")
-  map("s", show,     "Show commit")
-  map("t", stat,     "Show commit stats")
-  map("y", yank,     "Yank sha")
+  -- stylua: ignore start
+  map("c", git_cmd(function(sha) return "checkout " .. sha end), "Checkout commit")
+  map("d", git_cmd(function(sha) return "diff " .. sha .. "^ " .. sha end), "Diff commit")
+  map("f", git_cmd(function(sha) return "show --name-status --format=fuller " .. sha end), "Show files in commit")
+  map("s", git_cmd(function(sha) return "show " .. sha end), "Show commit")
+  map("t", git_cmd(function(sha) return "show --stat --summary --format=fuller " .. sha end), "Show commit stats")
+  map("y", function() with_commit(function(sha) vim.fn.setreg("+", sha) vim.notify("Yanked commit " .. sha) end) end, "Yank sha")
   -- stylua: ignore end
 
   local function close()
-    if vim.api.nvim_win_is_valid(win_src) then
-      -- stylua: ignore
-      for opt, val in pairs(saved) do vim.wo[win_src][opt] = val end
-    end
-    if vim.api.nvim_win_is_valid(win) then vim.api.nvim_win_close(win, true) end
+    -- stylua: ignore
+    for _, win in pairs({ win_src, win_blame }) do restore_win_opts(saved, win) end
+    if vim.api.nvim_win_is_valid(win_blame) then vim.api.nvim_win_close(win_blame, true) end
   end
 
   map("q", close, "Close blame")
   map("<esc>", close, "Close blame")
 
-  -- stylua: ignore
   vim.api.nvim_create_autocmd({ "WinLeave", "BufWipeout" }, { buffer = buf, once = true, callback = close })
 end
 
