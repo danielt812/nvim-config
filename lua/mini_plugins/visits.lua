@@ -1,37 +1,35 @@
 local visits = require("mini.visits")
 
 visits.setup({
-  -- How visit index is converted to list of paths
   list = {
-    -- Predicate for which paths to include (all by default)
     filter = nil,
-
-    -- Sort paths based on the visit data (robust frecency by default)
-    sort = nil,
+    sort = visits.gen_sort.z(),
   },
 
-  -- Whether to disable showing non-error feedback
   silent = false,
 
-  -- How visit index is stored
   store = {
-    -- Whether to write all visits before Neovim is closed
     autowrite = true,
-
-    -- Function to ensure that written index is relevant
     normalize = nil,
-
-    -- Path to store visit index
     path = vim.fn.stdpath("data") .. "/mini-visits-index",
   },
 
-  -- How visit tracking is done
   track = {
-    -- Start visit register timer at this event
-    -- Supply empty string (`''`) to not do this automatically
     event = "BufEnter",
-
-    -- Debounce delay after event to register a visit
     delay = 1000,
   },
 })
+
+-- #############################################################################
+-- #                                  Keymaps                                  #
+-- #############################################################################
+
+-- stylua: ignore start
+local add_label    = function() visits.add_label() end
+local remove_label = function() visits.remove_label() end
+local select_label = function() visits.select_label() end
+
+vim.keymap.set("n", "<leader>va", add_label,    { desc = "Add label" })
+vim.keymap.set("n", "<leader>vr", remove_label, { desc = "Remove label" })
+vim.keymap.set("n", "<leader>vs", select_label, { desc = "Select label" })
+-- stylua: ignore end
