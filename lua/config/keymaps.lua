@@ -1,18 +1,12 @@
 local scratch_types = require("lib.scratch")
 
-local function scroll(size, dir)
-  local height = vim.api.nvim_win_get_height(0)
-  local count = size == "half" and math.floor(height / 2) or height - 2
-  if count > 0 then vim.cmd("normal! " .. count .. (dir == "down" and "j" or "k")) end
-end
-
 -- stylua: ignore start
-vim.keymap.set({ "n", "v" }, "<PageDown>", function() scroll("full", "down") end, { desc = "Move page down" })
-vim.keymap.set({ "n", "v" }, "<C-f>",      function() scroll("full", "down") end, { desc = "Move page down" })
-vim.keymap.set({ "n", "v" }, "<C-d>",      function() scroll("half", "down") end, { desc = "Move half page down" })
-vim.keymap.set({ "n", "v" }, "<PageUp>",   function() scroll("full", "up") end,   { desc = "Move page up" })
-vim.keymap.set({ "n", "v" }, "<C-b>",      function() scroll("full", "up") end,   { desc = "Move page up" })
-vim.keymap.set({ "n", "v" }, "<C-u>",      function() scroll("half", "up") end,   { desc = "Move half page up" })
+vim.keymap.set({ "n", "v" }, "<PageDown>", "<PageDown>gvzz", { desc = "Scroll down full page" })
+vim.keymap.set({ "n", "v" }, "<C-f>",      "<C-f>gvzz",      { desc = "Scroll down full page" })
+vim.keymap.set({ "n", "v" }, "<C-d>",      "<C-d>gvzz",      { desc = "Scroll down half page" })
+vim.keymap.set({ "n", "v" }, "<PageUp>",   "<PageUp>gvzz",   { desc = "Scroll up full page" })
+vim.keymap.set({ "n", "v" }, "<C-b>",      "<C-b>gvzz",      { desc = "Scroll up full page" })
+vim.keymap.set({ "n", "v" }, "<C-u>",      "<C-u>gvzz",      { desc = "Scroll up half page" })
 -- stylua: ignore end
 
 -- stylua: ignore start
