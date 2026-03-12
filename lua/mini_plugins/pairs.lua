@@ -8,17 +8,17 @@ pairs.setup({
   },
   mappings = {
     -- stylua: ignore start
-    ["("] = { action = "open", pair = "()", neigh_pattern = "[^\\][%s>)%]},:]" },
-    ["["] = { action = "open", pair = "[]", neigh_pattern = "[^\\][%s>)%]},:]" },
-    ["{"] = { action = "open", pair = "{}", neigh_pattern = "[^\\][%s>)%]},:]" },
+    ["("] = { action = "open", pair = "()", neigh_pattern = ".[^%w_\\]" },
+    ["["] = { action = "open", pair = "[]", neigh_pattern = ".[^%w_\\]" },
+    ["{"] = { action = "open", pair = "{}", neigh_pattern = ".[^%w_\\]" },
 
     [")"] = { action = "close", pair = "()", neigh_pattern = "[^\\]." },
     ["]"] = { action = "close", pair = "[]", neigh_pattern = "[^\\]." },
     ["}"] = { action = "close", pair = "{}", neigh_pattern = "[^\\]." },
 
-    ['"'] = { action = "closeopen", pair = '""', neigh_pattern = "[%s<(%[{][%s>)%]},:]", register = { cr = false } },
-    ["'"] = { action = "closeopen", pair = "''", neigh_pattern = "[%s<(%[{][%s>)%]},:]", register = { cr = false } },
-    ["`"] = { action = "closeopen", pair = "``", neigh_pattern = "[%s<(%[{][%s>)%]},:]", register = { cr = false } },
+    ['"'] = { action = "closeopen", pair = '""', neigh_pattern = "[^%w_\\][^%w_]", register = { cr = false } },
+    ["'"] = { action = "closeopen", pair = "''", neigh_pattern = "[^%w_\\][^%w_]", register = { cr = false } },
+    ["`"] = { action = "closeopen", pair = "``", neigh_pattern = "[^%w_][^%w_]",   register = { cr = false } },
     -- stylua: ignore end
   },
 })
