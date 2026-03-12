@@ -176,12 +176,33 @@ end
 -- Enable them all
 vim.lsp.enable(servers)
 
-vim.api.nvim_create_user_command("LspInfo", function() vim.cmd("checkhealth lsp") end, { desc = "Lsp checkhealth" })
-vim.api.nvim_create_user_command(
-  "LspLog",
-  function() vim.cmd("edit " .. vim.lsp.get_log_path()) end,
-  { desc = "Lsp log" }
-)
+-- #############################################################################
+-- #                               User Commands                               #
+-- #############################################################################
+
+local function lsp_restart_cb(opts)
+  local filter = { bufnr = 0 }
+  if opts.args ~= "" then filter = { name = opts.args } end
+  for _, client in ipairs(vim.lsp.get_clients(filter)) do
+    local name = client.name
+    client:stop()
+    vim.defer_fn(function() vim.lsp.enable(name) end, 500)
+    vim.notify("Restarting " .. name)
+  end
+end
+
+local function lsp_restart_cmp()
+  return vim.tbl_map(function(c) return c.name end, vim.lsp.get_clients({ bufnr = 0 }))
+end
+
+local function lsp_info_cb() vim.cmd("checkhealth lsp") end
+
+local function lsp_log_cb() vim.cmd("edit " .. vim.lsp.get_log_path()) end
+
+-- stylua: ignore
+vim.api.nvim_create_user_command("LspRestart", lsp_restart_cb, { nargs = "?", desc = "Restart LSP client(s) for current buffer", complete = lsp_restart_cmp })
+vim.api.nvim_create_user_command("LspInfo", lsp_info_cb, { desc = "Lsp checkhealth" })
+vim.api.nvim_create_user_command("LspLog", lsp_log_cb, { desc = "Lsp log" })
 
 -- #############################################################################
 -- #                                Breadcrumbs                                #
@@ -285,15 +306,15 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   callback = colorscheme_cb,
 })
 
--- Lsp Garbage Collection ------------------------------------------------------
+-- #############################################################################
+-- #                            Garbage Collection                             #
+-- #############################################################################
 
 cache.gc = { stopped = false, grace = 60, timer = vim.uv.new_timer() }
 
 local function gc_stop()
   for _, client in ipairs(vim.lsp.get_clients()) do
-    if client.name ~= "mini.snippets" and client.name ~= "kulala" then
-      client:stop()
-    end
+    if client.name ~= "mini.snippets" and client.name ~= "kulala" then client:stop() end
   end
   cache.gc.stopped = true
 end
