@@ -1,6 +1,6 @@
 local indentscope = require("mini.indentscope")
 
-local ft_ignore = { "git", "help", "man", "markdown", "terminal" }
+local ft_ignore = { "checkhealth", "git", "help", "man", "markdown", "terminal" }
 
 local function should_ignore(ft) return ft:match("^mini") or vim.tbl_contains(ft_ignore, ft) end
 
@@ -86,17 +86,16 @@ end
 local function render(buf, win)
   if vim.b[buf].miniindentscope_disable or should_ignore(vim.bo[buf].filetype) then return end
   local win_config = vim.api.nvim_win_get_config(win)
-  if win_config and win_config.relative ~= "" then return end -- Don't render on some floats (hover, cmp, etc...)
+  if win_config and win_config.relative ~= "" and win ~= vim.api.nvim_get_current_win() then return end
 
   local sw = vim.bo[buf].shiftwidth
   local step = sw > 0 and sw or vim.bo[buf].tabstop
   if step <= 0 then return end
 
-  -- NOTE: rendering just the visible range is more performant, but lines outside the viewport won't have guides
-  -- local top, bot = vim.fn.line("w0", win), vim.fn.line("w$", win)
-  -- vim.api.nvim_buf_clear_namespace(buf, ns, top - 1, bot)
-  local top, bot = 1, vim.api.nvim_buf_line_count(buf)
-  local leftcol = vim.api.nvim_win_call(win, function() return vim.fn.winsaveview().leftcol end)
+  local view = vim.api.nvim_win_call(win, function() return vim.fn.winsaveview() end)
+  local top = view.topline
+  local bot = math.min(top + vim.api.nvim_win_get_height(win) - 1, vim.api.nvim_buf_line_count(buf))
+  local leftcol = view.leftcol
   vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
 
   for lnum = top, bot do
