@@ -16,7 +16,7 @@ local dark = {
   bg_red    = "#4c3743",
   bg_orange = "#4a3f3a",
   bg_green  = "#48584e",
-  bg_aqua   = "#435a57",
+  bg_cyan   = "#435a57",
   bg_blue   = "#3f5865",
   bg_yellow = "#55544a",
   bg_purple = "#4a425c",
@@ -31,7 +31,7 @@ local dark = {
   orange    = "#f39660",
   yellow    = "#e7c664",
   green     = "#9ed072",
-  aqua      = "#83c092",
+  cyan      = "#83c092",
   blue      = "#76cce9",
   purple    = "#b39df3",
 }
@@ -50,7 +50,7 @@ local light = {
   bg_orange = "#f9e2d6",
   bg_yellow = "#f9e0b0",
   bg_green  = "#dde5c2",
-  bg_aqua   = "#d0e3d7",
+  bg_cyan   = "#d0e3d7",
   bg_blue   = "#cdd8d8",
   bg_purple = "#ead9e3",
 
@@ -64,7 +64,7 @@ local light = {
   orange    = "#c37a4a",
   yellow    = "#b89b4c",
   green     = "#7aa85d",
-  aqua      = "#5c9a78",
+  cyan      = "#5c9a78",
   blue      = "#4e8ca6",
   purple    = "#8b7ad1",
 }
@@ -84,7 +84,7 @@ local dark_soft = {
   bg_orange = "#514641",
   bg_yellow = "#5c5b51",
   bg_green  = "#4f5f55",
-  bg_aqua   = "#4a615e",
+  bg_cyan   = "#4a615e",
   bg_blue   = "#465f6c",
   bg_purple = "#514963",
 }
@@ -102,7 +102,7 @@ local dark_hard = {
   bg_orange = "#433833",
   bg_yellow = "#4e4d43",
   bg_green  = "#415147",
-  bg_aqua   = "#3c5350",
+  bg_cyan   = "#3c5350",
   bg_blue   = "#38515e",
   bg_purple = "#433b55",
 }
@@ -120,7 +120,7 @@ local light_soft = {
   bg_orange = "#fee7db",
   bg_yellow = "#fee5b5",
   bg_green  = "#e2eac7",
-  bg_aqua   = "#d5e8dc",
+  bg_cyan   = "#d5e8dc",
   bg_blue   = "#d2dddd",
   bg_purple = "#efdee8",
 }
@@ -138,7 +138,7 @@ local light_hard = {
   bg_orange = "#f2dbcf",
   bg_yellow = "#f2d9a9",
   bg_green  = "#d6debb",
-  bg_aqua   = "#c9dcd0",
+  bg_cyan   = "#c9dcd0",
   bg_blue   = "#c6d1d1",
   bg_purple = "#e3d2dc",
 }
@@ -264,7 +264,7 @@ local highlights = {
   -- stylua: ignore start
   SpellBad   = { undercurl = true, sp = palette.red },
   SpellCap   = { undercurl = true, sp = palette.blue },
-  SpellLocal = { undercurl = true, sp = palette.aqua },
+  SpellLocal = { undercurl = true, sp = palette.cyan },
   SpellRare  = { undercurl = true, sp = palette.purple },
   -- stylua: ignore end
 
@@ -305,16 +305,16 @@ local highlights = {
 
   -- stylua: ignore start
   DiagnosticError = { fg = palette.red },
-  DiagnosticHint  = { fg = palette.blue },
-  DiagnosticInfo  = { fg = palette.green },
+  DiagnosticHint  = { fg = palette.cyan },
+  DiagnosticInfo  = { fg = palette.blue },
   DiagnosticOk    = { fg = palette.purple },
   DiagnosticWarn  = { fg = palette.yellow },
   -- stylua: ignore end
 
   -- stylua: ignore start
   DiagnosticUnderlineError = { undercurl = true, sp = palette.red },
-  DiagnosticUnderlineHint  = { undercurl = true, sp = palette.blue },
-  DiagnosticUnderlineInfo  = { undercurl = true, sp = palette.green },
+  DiagnosticUnderlineHint  = { undercurl = true, sp = palette.cyan },
+  DiagnosticUnderlineInfo  = { undercurl = true, sp = palette.blue },
   DiagnosticUnderlineOk    = { undercurl = true, sp = palette.purple },
   DiagnosticUnderlineWarn  = { undercurl = true, sp = palette.yellow },
   -- stylua: ignore end
@@ -337,7 +337,7 @@ local highlights = {
 
   -- stylua: ignore start
   DiagnosticSignError = { link = "Red" },
-  DiagnosticSignHint  = { link = "Green" },
+  DiagnosticSignHint  = { link = "Cyan" },
   DiagnosticSignInfo  = { link = "Blue" },
   DiagnosticSignOk    = { link = "Purple" },
   DiagnosticSignWarn  = { link = "Yellow" },
@@ -402,8 +402,8 @@ local highlights = {
   Type         = { link = "Yellow" },
   Character    = { link = "Green" },
   Function     = { link = "Green" },
-  Constant     = { link = "Aqua" },
-  Macro        = { link = "Aqua" },
+  Constant     = { link = "Cyan" },
+  Macro        = { link = "Cyan" },
   String       = { link = "Yellow" },
   Identifier   = { link = "Blue"},
   Todo         = {},
@@ -428,7 +428,7 @@ local highlights = {
   Orange = { fg = palette.orange },
   Yellow = { fg = palette.yellow },
   Green  = { fg = palette.green },
-  Aqua   = { fg = palette.aqua },
+  Cyan   = { fg = palette.cyan },
   Blue   = { fg = palette.blue },
   Purple = { fg = palette.purple },
   -- stylua: ignore end
@@ -441,7 +441,7 @@ local highlights = {
   OrangeItalic = { fg = palette.orange, italic = true },
   YellowItalic = { fg = palette.yellow, italic = true },
   GreenItalic  = { fg = palette.green,  italic = true },
-  AquaItalic   = { fg = palette.aqua,   italic = true },
+  CyanItalic   = { fg = palette.cyan,   italic = true },
   BlueItalic   = { fg = palette.blue,   italic = true },
   PurpleItalic = { fg = palette.purple, italic = true },
   -- stylua: ignore end
@@ -458,7 +458,7 @@ local highlights = {
   BgOrange = { bg = palette.bg_orange },
   BgYellow = { bg = palette.bg_yellow },
   BgGreen  = { bg = palette.bg_green },
-  BgAqua   = { bg = palette.bg_aqua },
+  BgCyan   = { bg = palette.bg_cyan },
   BgBlue   = { bg = palette.bg_blue },
   BgPurple = { bg = palette.bg_purple },
   -- stylua: ignore end
@@ -470,15 +470,15 @@ local highlights = {
   -- stylua: ignore end
 
   -- stylua: ignore start
-  ErrorText   = { bg = palette.bg_red, undercurl    = true },
-  HintText    = { bg = palette.bg_purple, undercurl = true },
-  InfoText    = { bg = palette.bg_blue, undercurl   = true },
+  ErrorText   = { bg = palette.bg_red,    undercurl = true },
+  HintText    = { bg = palette.bg_cyan,   undercurl = true },
+  InfoText    = { bg = palette.bg_blue,   undercurl = true },
   WarningText = { bg = palette.bg_yellow, undercurl = true },
   -- stylua: ignore end
 
   -- stylua: ignore start
   VirtualTextError   = { link = "Red" },
-  VirtualTextHint    = { link = "Purple" },
+  VirtualTextHint    = { link = "Cyan" },
   VirtualTextInfo    = { link = "Blue" },
   VirtualTextOk      = { link = "Green" },
   VirtualTextWarning = { link = "Yellow" },
@@ -488,7 +488,7 @@ local highlights = {
   ErrorFloat   = { fg = palette.red,    bg = palette.bg2 },
   WarningFloat = { fg = palette.yellow, bg = palette.bg2 },
   InfoFloat    = { fg = palette.blue,   bg = palette.bg2 },
-  HintFloat    = { fg = palette.green,  bg = palette.bg2 },
+  HintFloat    = { fg = palette.cyan,  bg = palette.bg2 },
   OkFloat      = { fg = palette.purple, bg = palette.bg2 },
   -- stylua: ignore end
 
@@ -512,7 +512,7 @@ local highlights = {
   TSAnnotation           = { link = "Purple" },
   TSAttribute            = { link = "Purple" },
   TSBoolean              = { link = "Purple" },
-  TSCharacter            = { link = "Aqua" },
+  TSCharacter            = { link = "Cyan" },
   TSCharacterSpecial     = { link = "SpecialChar" },
   TSComment              = { link = "Comment" },
   TSConditional          = { link = "Red" },
@@ -741,7 +741,7 @@ local highlights = {
   RainbowDelimiterOrange = { link = "Orange" },
   RainbowDelimiterYellow = { link = "Yellow" },
   RainbowDelimiterGreen  = { link = "Green" },
-  RainbowDelimiterCyan   = { link = "Aqua" },
+  RainbowDelimiterCyan   = { link = "Cyan" },
   RainbowDelimiterBlue   = { link = "Blue" },
   RainbowDelimiterViolet = { link = "Purple" },
   -- stylua: ignore end
@@ -852,7 +852,7 @@ local highlights = {
   -- stylua: ignore start
   MiniIconsAzure   = { link = "Blue" },
   MiniIconsBlue    = { link = "Blue" },
-  MiniIconsCyan    = { link = "Aqua" },
+  MiniIconsCyan    = { link = "Cyan" },
   MiniIconsGreen   = { link = "Green" },
   MiniIconsGrey    = { link = "Grey" },
   MiniIconsOrange  = { link = "Orange" },
@@ -871,7 +871,7 @@ local highlights = {
   -- stylua: ignore start
   MiniJump2dDim        = { link = "Comment" },
   MiniJump2dSpot       = { link = "Orange" },
-  MiniJump2dSpotAhead  = { link = "Aqua" },
+  MiniJump2dSpotAhead  = { link = "Cyan" },
   MiniJump2dSpotUnique = { link = "Yellow" },
   -- stylua: ignore end
 
@@ -914,7 +914,7 @@ local highlights = {
   -- stylua: ignore end
 
   -- stylua: ignore start
-  MiniStatuslineModeCommand = { fg = palette.bg0, bg = palette.aqua },
+  MiniStatuslineModeCommand = { fg = palette.bg0, bg = palette.cyan },
   MiniStatuslineModeInsert  = { fg = palette.bg0, bg = palette.fg },
   MiniStatuslineModeNormal  = { fg = palette.bg0, bg = palette.green },
   MiniStatuslineModeOther   = { fg = palette.bg0, bg = palette.purple },
@@ -980,8 +980,8 @@ local highlights = {
   MasonHeaderSecondary             = { fg = palette.green, reverse = true },
   MasonHighlight                   = { fg = palette.green },
   MasonHighlightSecondary          = { fg = palette.green },
-  MasonHighlightBlock              = { fg = palette.aqua,   bg = palette.bg0, reverse = true },
-  MasonHighlightBlockBold          = { fg = palette.aqua,   bg = palette.bg0, reverse = true },
+  MasonHighlightBlock              = { fg = palette.cyan,   bg = palette.bg0, reverse = true },
+  MasonHighlightBlockBold          = { fg = palette.cyan,   bg = palette.bg0, reverse = true },
   MasonHighlightBlockSecondary     = { fg = palette.yellow, bg = palette.bg0, reverse = true },
   MasonHighlightBlockBoldSecondary = { fg = palette.yellow, bg = palette.bg0, reverse = true },
   MasonMuted                       = { fg = palette.grey0 },

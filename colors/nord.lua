@@ -17,7 +17,7 @@ local dark = {
   bg_orange = "#3d332b",
   bg_yellow = "#3b3a2c",
   bg_green  = "#2e3d35",
-  bg_aqua   = "#2b3c3e",
+  bg_cyan   = "#2b3c3e",
   bg_blue   = "#2c3848",
   bg_purple = "#372d42",
 
@@ -31,7 +31,7 @@ local dark = {
   orange    = "#d08770",
   yellow    = "#ebcb8b",
   green     = "#a3be8c",
-  aqua      = "#8fbcbb",
+  cyan      = "#8fbcbb",
   blue      = "#81a1c1",
   purple    = "#b48ead",
 }
@@ -50,7 +50,7 @@ local light = {
   bg_orange = "#f0e0d4",
   bg_yellow = "#f0ead4",
   bg_green  = "#d4e8d0",
-  bg_aqua   = "#cde0e0",
+  bg_cyan   = "#cde0e0",
   bg_blue   = "#cdd8e8",
   bg_purple = "#e0d4e8",
 
@@ -64,7 +64,7 @@ local light = {
   orange    = "#b06040",
   yellow    = "#9a7a10",
   green     = "#5e8c48",
-  aqua      = "#4e9090",
+  cyan      = "#4e9090",
   blue      = "#5272a0",
   purple    = "#7e60a0",
 }
@@ -84,7 +84,7 @@ local dark_soft = {
   bg_orange = "#443a32",
   bg_yellow = "#424133",
   bg_green  = "#35443c",
-  bg_aqua   = "#324345",
+  bg_cyan   = "#324345",
   bg_blue   = "#333f4f",
   bg_purple = "#3e3449",
 }
@@ -102,7 +102,7 @@ local dark_hard = {
   bg_orange = "#362c24",
   bg_yellow = "#343325",
   bg_green  = "#27362e",
-  bg_aqua   = "#243537",
+  bg_cyan   = "#243537",
   bg_blue   = "#253141",
   bg_purple = "#30263b",
 }
@@ -120,7 +120,7 @@ local light_soft = {
   bg_orange = "#f5e5d9",
   bg_yellow = "#f5efd9",
   bg_green  = "#d9edd5",
-  bg_aqua   = "#d2e5e5",
+  bg_cyan   = "#d2e5e5",
   bg_blue   = "#d2dded",
   bg_purple = "#e5d9ed",
 }
@@ -138,7 +138,7 @@ local light_hard = {
   bg_orange = "#e9d9cd",
   bg_yellow = "#e9e3cd",
   bg_green  = "#cde1c9",
-  bg_aqua   = "#c6d9d9",
+  bg_cyan   = "#c6d9d9",
   bg_blue   = "#c6d1e1",
   bg_purple = "#d9cde1",
 }
@@ -264,7 +264,7 @@ local highlights = {
   -- stylua: ignore start
   SpellBad   = { undercurl = true, sp = palette.red },
   SpellCap   = { undercurl = true, sp = palette.blue },
-  SpellLocal = { undercurl = true, sp = palette.aqua },
+  SpellLocal = { undercurl = true, sp = palette.cyan },
   SpellRare  = { undercurl = true, sp = palette.purple },
   -- stylua: ignore end
 
@@ -305,16 +305,16 @@ local highlights = {
 
   -- stylua: ignore start
   DiagnosticError = { fg = palette.red },
-  DiagnosticHint  = { fg = palette.blue },
-  DiagnosticInfo  = { fg = palette.aqua },
+  DiagnosticHint  = { fg = palette.cyan },
+  DiagnosticInfo  = { fg = palette.blue },
   DiagnosticOk    = { fg = palette.green },
   DiagnosticWarn  = { fg = palette.yellow },
   -- stylua: ignore end
 
   -- stylua: ignore start
   DiagnosticUnderlineError = { undercurl = true, sp = palette.red },
-  DiagnosticUnderlineHint  = { undercurl = true, sp = palette.blue },
-  DiagnosticUnderlineInfo  = { undercurl = true, sp = palette.aqua },
+  DiagnosticUnderlineHint  = { undercurl = true, sp = palette.cyan },
+  DiagnosticUnderlineInfo  = { undercurl = true, sp = palette.blue },
   DiagnosticUnderlineOk    = { undercurl = true, sp = palette.green },
   DiagnosticUnderlineWarn  = { undercurl = true, sp = palette.yellow },
   -- stylua: ignore end
@@ -337,8 +337,8 @@ local highlights = {
 
   -- stylua: ignore start
   DiagnosticSignError = { link = "Red" },
-  DiagnosticSignHint  = { link = "Blue" },
-  DiagnosticSignInfo  = { link = "Aqua" },
+  DiagnosticSignHint  = { link = "Cyan" },
+  DiagnosticSignInfo  = { link = "Cyan" },
   DiagnosticSignOk    = { link = "Green" },
   DiagnosticSignWarn  = { link = "Yellow" },
   -- stylua: ignore end
@@ -392,7 +392,7 @@ local highlights = {
   Statement    = { link = "Blue" },
   Typedef      = { link = "Blue" },
   Operator     = { link = "Blue" },
-  Label        = { link = "Aqua" },
+  Label        = { link = "Cyan" },
   StorageClass = { link = "Orange" },
   Structure    = { link = "Orange" },
   Tag          = { link = "Orange" },
@@ -400,8 +400,8 @@ local highlights = {
   Special      = { link = "Yellow" },
   SpecialChar  = { link = "Yellow" },
   Type         = { link = "Green" },
-  Character    = { link = "Aqua" },
-  Function     = { link = "Aqua" },
+  Character    = { link = "Cyan" },
+  Function     = { link = "Cyan" },
   Constant     = { link = "Purple" },
   Macro        = { link = "Purple" },
   String       = { link = "Green" },
@@ -428,7 +428,7 @@ local highlights = {
   Orange = { fg = palette.orange },
   Yellow = { fg = palette.yellow },
   Green  = { fg = palette.green },
-  Aqua   = { fg = palette.aqua },
+  Cyan   = { fg = palette.cyan },
   Blue   = { fg = palette.blue },
   Purple = { fg = palette.purple },
   -- stylua: ignore end
@@ -441,7 +441,7 @@ local highlights = {
   OrangeItalic = { fg = palette.orange, italic = true },
   YellowItalic = { fg = palette.yellow, italic = true },
   GreenItalic  = { fg = palette.green,  italic = true },
-  AquaItalic   = { fg = palette.aqua,   italic = true },
+  CyanItalic   = { fg = palette.cyan,   italic = true },
   BlueItalic   = { fg = palette.blue,   italic = true },
   PurpleItalic = { fg = palette.purple, italic = true },
   -- stylua: ignore end
@@ -458,7 +458,7 @@ local highlights = {
   BgOrange = { bg = palette.bg_orange },
   BgYellow = { bg = palette.bg_yellow },
   BgGreen  = { bg = palette.bg_green },
-  BgAqua   = { bg = palette.bg_aqua },
+  BgCyan   = { bg = palette.bg_cyan },
   BgBlue   = { bg = palette.bg_blue },
   BgPurple = { bg = palette.bg_purple },
   -- stylua: ignore end
@@ -471,15 +471,15 @@ local highlights = {
 
   -- stylua: ignore start
   ErrorText   = { bg = palette.bg_red,    undercurl = true },
-  HintText    = { bg = palette.bg_blue,   undercurl = true },
-  InfoText    = { bg = palette.bg_aqua,   undercurl = true },
+  HintText    = { bg = palette.bg_cyan,   undercurl = true },
+  InfoText    = { bg = palette.bg_blue,   undercurl = true },
   WarningText = { bg = palette.bg_yellow, undercurl = true },
   -- stylua: ignore end
 
   -- stylua: ignore start
   VirtualTextError   = { link = "Red" },
-  VirtualTextHint    = { link = "Blue" },
-  VirtualTextInfo    = { link = "Aqua" },
+  VirtualTextHint    = { link = "Cyan" },
+  VirtualTextInfo    = { link = "Cyan" },
   VirtualTextOk      = { link = "Green" },
   VirtualTextWarning = { link = "Yellow" },
   -- stylua: ignore end
@@ -487,8 +487,8 @@ local highlights = {
   -- stylua: ignore start
   ErrorFloat   = { fg = palette.red,    bg = palette.bg2 },
   WarningFloat = { fg = palette.yellow, bg = palette.bg2 },
-  InfoFloat    = { fg = palette.aqua,   bg = palette.bg2 },
-  HintFloat    = { fg = palette.blue,   bg = palette.bg2 },
+  InfoFloat    = { fg = palette.blue,   bg = palette.bg2 },
+  HintFloat    = { fg = palette.cyan,   bg = palette.bg2 },
   OkFloat      = { fg = palette.green,  bg = palette.bg2 },
   -- stylua: ignore end
 
@@ -512,14 +512,14 @@ local highlights = {
   TSAnnotation           = { link = "Purple" },
   TSAttribute            = { link = "Purple" },
   TSBoolean              = { link = "Purple" },
-  TSCharacter            = { link = "Aqua" },
+  TSCharacter            = { link = "Cyan" },
   TSCharacterSpecial     = { link = "SpecialChar" },
   TSComment              = { link = "Comment" },
   TSConditional          = { link = "Blue" },
   TSConstBuiltin         = { link = "Purple" },
   TSConstMacro           = { link = "Purple" },
   TSConstant             = { link = "Constant" },
-  TSConstructor          = { link = "Aqua" },
+  TSConstructor          = { link = "Cyan" },
   TSDebug                = { link = "Debug" },
   TSDefine               = { link = "Define" },
   TSEnvironment          = { link = "Macro" },
@@ -528,20 +528,20 @@ local highlights = {
   TSException            = { link = "Red" },
   TSField                = { link = "Fg" },
   TSFloat                = { link = "Purple" },
-  TSFuncBuiltin          = { link = "Aqua" },
-  TSFuncMacro            = { link = "Aqua" },
-  TSFunction             = { link = "Aqua" },
-  TSFunctionCall         = { link = "Aqua" },
+  TSFuncBuiltin          = { link = "Cyan" },
+  TSFuncMacro            = { link = "Cyan" },
+  TSFunction             = { link = "Cyan" },
+  TSFunctionCall         = { link = "Cyan" },
   TSInclude              = { link = "Blue" },
   TSKeyword              = { link = "Blue" },
   TSKeywordFunction      = { link = "Blue" },
   TSKeywordOperator      = { link = "Blue" },
   TSKeywordReturn        = { link = "Blue" },
-  TSLabel                = { link = "Aqua" },
+  TSLabel                = { link = "Cyan" },
   TSLiteral              = { link = "String" },
   TSMath                 = { link = "Blue" },
-  TSMethod               = { link = "Aqua" },
-  TSMethodCall           = { link = "Aqua" },
+  TSMethod               = { link = "Cyan" },
+  TSMethodCall           = { link = "Cyan" },
   TSModuleInfoGood       = { link = "Green" },
   TSModuleInfoBad        = { link = "Red" },
   TSNamespace            = { link = "Blue" },
@@ -559,13 +559,13 @@ local highlights = {
   TSStorageClass         = { link = "Orange" },
   TSStorageClassLifetime = { link = "Orange" },
   TSString               = { link = "Green" },
-  TSStringEscape         = { link = "Aqua" },
-  TSStringRegex          = { link = "Aqua" },
+  TSStringEscape         = { link = "Cyan" },
+  TSStringRegex          = { link = "Cyan" },
   TSStringSpecial        = { link = "SpecialChar" },
   TSSymbol               = { link = "Fg" },
   TSTag                  = { link = "Blue" },
-  TSTagAttribute         = { link = "Aqua" },
-  TSTagDelimiter         = { link = "Aqua" },
+  TSTagAttribute         = { link = "Cyan" },
+  TSTagDelimiter         = { link = "Cyan" },
   TSText                 = { link = "Green" },
   TSTextReference        = { link = "Constant" },
   TSTitle                = { link = "Title" },
@@ -741,7 +741,7 @@ local highlights = {
   RainbowDelimiterOrange = { link = "Orange" },
   RainbowDelimiterYellow = { link = "Yellow" },
   RainbowDelimiterGreen  = { link = "Green" },
-  RainbowDelimiterCyan   = { link = "Aqua" },
+  RainbowDelimiterCyan   = { link = "Cyan" },
   RainbowDelimiterBlue   = { link = "Blue" },
   RainbowDelimiterViolet = { link = "Purple" },
   -- stylua: ignore end
@@ -753,13 +753,13 @@ local highlights = {
   NavicIconsNamespace     = { link = "Fg" },
   NavicIconsPackage       = { link = "Fg" },
   NavicIconsClass         = { link = "Green" },
-  NavicIconsMethod        = { link = "Aqua" },
+  NavicIconsMethod        = { link = "Cyan" },
   NavicIconsProperty      = { link = "Fg" },
   NavicIconsField         = { link = "Fg" },
-  NavicIconsConstructor   = { link = "Aqua" },
+  NavicIconsConstructor   = { link = "Cyan" },
   NavicIconsEnum          = { link = "Green" },
   NavicIconsInterface     = { link = "Green" },
-  NavicIconsFunction      = { link = "Aqua" },
+  NavicIconsFunction      = { link = "Cyan" },
   NavicIconsVariable      = { link = "Purple" },
   NavicIconsConstant      = { link = "Purple" },
   NavicIconsString        = { link = "Green" },
@@ -852,7 +852,7 @@ local highlights = {
   -- stylua: ignore start
   MiniIconsAzure   = { link = "Blue" },
   MiniIconsBlue    = { link = "Blue" },
-  MiniIconsCyan    = { link = "Aqua" },
+  MiniIconsCyan    = { link = "Cyan" },
   MiniIconsGreen   = { link = "Green" },
   MiniIconsGrey    = { link = "Grey" },
   MiniIconsOrange  = { link = "Orange" },
@@ -871,7 +871,7 @@ local highlights = {
   -- stylua: ignore start
   MiniJump2dDim        = { link = "Comment" },
   MiniJump2dSpot       = { link = "Orange" },
-  MiniJump2dSpotAhead  = { link = "Aqua" },
+  MiniJump2dSpotAhead  = { link = "Cyan" },
   MiniJump2dSpotUnique = { link = "Yellow" },
   -- stylua: ignore end
 
@@ -904,17 +904,17 @@ local highlights = {
   -- stylua: ignore start
   MiniStarterCurrent    = { link = "Normal" },
   MiniStarterFooter     = { link = "Blue" },
-  MiniStarterHeader     = { link = "Aqua" },
+  MiniStarterHeader     = { link = "Cyan" },
   MiniStarterInactive   = { link = "Comment" },
   MiniStarterItem       = { link = "Normal" },
   MiniStarterItemBullet = { link = "Grey" },
   MiniStarterItemPrefix = { link = "Blue" },
-  MiniStarterQuery      = { link = "Aqua" },
+  MiniStarterQuery      = { link = "Cyan" },
   MiniStarterSection    = { link = "Title" },
   -- stylua: ignore end
 
   -- stylua: ignore start
-  MiniStatuslineModeCommand = { fg = palette.bg0, bg = palette.aqua },
+  MiniStatuslineModeCommand = { fg = palette.bg0, bg = palette.cyan },
   MiniStatuslineModeInsert  = { fg = palette.bg0, bg = palette.fg },
   MiniStatuslineModeNormal  = { fg = palette.bg0, bg = palette.blue },
   MiniStatuslineModeOther   = { fg = palette.bg0, bg = palette.purple },
@@ -980,8 +980,8 @@ local highlights = {
   MasonHeaderSecondary             = { fg = palette.blue,  reverse = true },
   MasonHighlight                   = { fg = palette.blue },
   MasonHighlightSecondary          = { fg = palette.blue },
-  MasonHighlightBlock              = { fg = palette.aqua,  bg = palette.bg0, reverse = true },
-  MasonHighlightBlockBold          = { fg = palette.aqua,  bg = palette.bg0, reverse = true },
+  MasonHighlightBlock              = { fg = palette.cyan,  bg = palette.bg0, reverse = true },
+  MasonHighlightBlockBold          = { fg = palette.cyan,  bg = palette.bg0, reverse = true },
   MasonHighlightBlockSecondary     = { fg = palette.green, bg = palette.bg0, reverse = true },
   MasonHighlightBlockBoldSecondary = { fg = palette.green, bg = palette.bg0, reverse = true },
   MasonMuted                       = { fg = palette.grey0 },
