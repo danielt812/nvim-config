@@ -2,26 +2,18 @@ local notify = require("mini.notify")
 
 local n_progress = 0
 
-local function in_lsp_progress()
-  return n_progress > 0
-end
+local function in_lsp_progress() return n_progress > 0 end
 
-local function lsp_progress_plus()
-  n_progress = n_progress + 1
-end
+local function lsp_progress_plus() n_progress = n_progress + 1 end
 
 local function lsp_progress_minus()
-  vim.defer_fn(function()
-    n_progress = n_progress - 1
-  end, notify.config.lsp_progress.duration_last + 1)
+  vim.defer_fn(function() n_progress = n_progress - 1 end, notify.config.lsp_progress.duration_last + 1)
 end
 
 vim.api.nvim_create_autocmd("LspProgress", { pattern = "begin", callback = lsp_progress_plus })
 vim.api.nvim_create_autocmd("LspProgress", { pattern = "end", callback = lsp_progress_minus })
 
-local function format(notif)
-  return notif.data.source == "lsp_progress" and notif.msg or notify.default_format(notif)
-end
+local function format(notif) return notif.data.source == "lsp_progress" and notif.msg or notify.default_format(notif) end
 vim.api.nvim_set_hl(0, "notifyLspProgress", { link = "Comment" })
 
 local function window_config()
@@ -32,12 +24,10 @@ local function window_config()
   local notify_pad = 0 + has_winbar + has_tabline
 
   -- Notifications in top right
-  if not in_lsp_progress() then
-    return {
-      anchor = "NE",
-      row = notify_pad,
-    }
-  end
+  if not in_lsp_progress() then return {
+    anchor = "NE",
+    row = notify_pad,
+  } end
 
   -- Lsp progress in bottom right
   local lsp_pad = vim.o.cmdheight + has_status
@@ -60,12 +50,10 @@ notify.setup({
 
 vim.notify = notify.make_notify()
 
--- stylua: ignore start
-local clear   = function() notify.clear() end
-local function history() notify.show_history() end
--- stylua: ignore end
+-- #############################################################################
+-- #                                  Keymaps                                  #
+-- #############################################################################
 
--- stylua: ignore start
-vim.keymap.set("n", "<leader>nc", clear,   { desc = "Clear" })
-vim.keymap.set("n", "<leader>nh", history, { desc = "History" })
--- stylua: ignore end
+local function history() notify.show_history() end
+
+vim.keymap.set("n", "<leader>en", history, { desc = "Notifications" })
