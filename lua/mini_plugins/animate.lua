@@ -50,15 +50,23 @@ end
 
 vim.keymap.set("n", "\\1", toggle_animate, { desc = "Toggle 'mini.animate'" })
 
--- #############################################################################
--- #                            Automatic Commands                             #
--- #############################################################################
+--- Move the cursor by a full page or half page of lines in the given direction.
+--- Uses `j`/`k` motions so mini.animate can animate the cursor, then
+--- opens any folds under the cursor and centers the screen (`zvzz`).
+--- @param size "full"|"half" full page or half page
+--- @param dir "up"|"down" scroll direction
+local function move_lines(size, dir)
+  local height = vim.api.nvim_win_get_height(0)
+  local count = size == "half" and math.floor(height / 2) or height - 2
+  if count > 0 then vim.cmd("normal! " .. count .. (dir == "down" and "j" or "k")) end
+  vim.cmd("normal! zvzz")
+end
 
-local group = vim.api.nvim_create_augroup("mini_animate", { clear = true })
-
-vim.api.nvim_create_autocmd("User", {
-  pattern = "MiniAnimateDoneScroll",
-  group = group,
-  desc = "Center after scroll",
-  callback = function() vim.cmd("normal! zvzz") end,
-})
+-- stylua: ignore start
+vim.keymap.set({ "n", "v" }, "<PageDown>", function() move_lines("full", "down") end, { desc = "Move page down" })
+vim.keymap.set({ "n", "v" }, "<C-f>",      function() move_lines("full", "down") end, { desc = "Move page down" })
+vim.keymap.set({ "n", "v" }, "<C-d>",      function() move_lines("half", "down") end, { desc = "Move half page down" })
+vim.keymap.set({ "n", "v" }, "<PageUp>",   function() move_lines("full", "up") end,   { desc = "Move page up" })
+vim.keymap.set({ "n", "v" }, "<C-b>",      function() move_lines("full", "up") end,   { desc = "Move page up" })
+vim.keymap.set({ "n", "v" }, "<C-u>",      function() move_lines("half", "up") end,   { desc = "Move half page up" })
+-- stylua: ignore end
