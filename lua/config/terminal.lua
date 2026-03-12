@@ -143,7 +143,7 @@ local function toggle_term(name, opts)
   end
 end
 
-local toggle_smart = function()
+local function toggle_smart()
   local buf = vim.api.nvim_get_current_buf()
   for _, term in pairs(terms) do
     if term.buf and term.buf == buf then
