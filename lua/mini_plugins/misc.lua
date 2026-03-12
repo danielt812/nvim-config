@@ -81,7 +81,7 @@ local function centered_zoom()
 
   vim.wo.winhighlight = "NormalFloat:Normal,FloatBorder:Normal,FloatTitle:Normal"
 
-  vim.api.nvim_set_hl(0, "None", { blend = 100 })
+  vim.api.nvim_set_hl(0, "None", { fg = bg, bg = bg, blend = 100 })
 
   -- Minimalize the source window after zoom opens the float
   local w = cache.dim_win
@@ -94,7 +94,17 @@ local function centered_zoom()
   vim.wo[w].colorcolumn = ""
   vim.wo[w].statuscolumn = ""
   vim.wo[w].winbar = ""
-  vim.wo[w].winhighlight = "MiniIndentscopeSymbol:None,MiniAnimateCursor:None,NonText:None"
+  -- stylua: ignore
+  local mask = {
+    "MiniAnimateCursor",
+    "MiniIndentscopeSymbol",
+    "MiniIndentscopeSymbolOff",
+    "MiniJump2dSpot",
+    "MiniJump2dSpotAhead",
+    "MiniJump2dSpotUnique",
+    "NonText",
+  }
+  vim.wo[w].winhighlight = table.concat(vim.tbl_map(function(hl) return hl .. ":None" end, mask), ",")
   vim.wo[cache.zoom_win].winbar = cache.dim_opts.winbar
   cache.laststatus = vim.opt.laststatus
   vim.opt.laststatus = 3
