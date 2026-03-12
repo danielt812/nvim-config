@@ -33,6 +33,10 @@ local ns = {
 
 local group = vim.api.nvim_create_augroup("mini_git", { clear = true })
 
+-- #############################################################################
+-- #                                 Conflict                                  #
+-- #############################################################################
+
 local function darken_bg(hl_name, amount)
   local hl = vim.api.nvim_get_hl(0, { name = hl_name, link = false })
   if not hl.bg then return end
@@ -58,26 +62,6 @@ local function gen_conflict_palette()
     end
   end
 end
-
-local function gen_blame_palette(count)
-  vim.api.nvim_set_hl(0, "MiniGitBlameHash", { link = "Comment" })
-  vim.api.nvim_set_hl(0, "MiniGitBlameUncommitted", { link = "Conceal" })
-  local dark = vim.o.background == "dark"
-  local lightness = dark and 75 or 45
-  local chroma = dark and 20 or 18
-  local uv = vim.uv or vim.loop
-  local offset = (uv.hrtime() % 360)
-  local palette = {}
-  for i = 1, count do
-    local hue = (offset + (i - 1) * 137.508) % 360
-    palette[i] = colors.convert({ l = lightness, c = chroma, h = hue }, "hex")
-  end
-  return palette
-end
-
--- #############################################################################
--- #                                 Conflict                                  #
--- #############################################################################
 
 local function find_conflicts(buf)
   local conflicts = {}
@@ -133,9 +117,9 @@ local function highlight_conflicts(buf)
     extmark(theirs[1], 0, { end_row = theirs[2] - 1, hl_group = "DiffAdd", hl_eol = true })
     extmark(theirs[2] - 1, 0, { virt_text = { { "(Theirs)", "ConflictTheirsVirt" } }, virt_text_pos = "eol" })
 
-    extmark(base[1] - 1, 0, { end_row = base[2] - 1, hl_group = "DiffDelete", hl_eol = true })
-    -- if type(base) == "table" then
-    -- end
+    if base then
+      extmark(base[1] - 1, 0, { end_row = base[2] - 1, hl_group = "DiffDelete", hl_eol = true })
+    end
 
     -- stylua: ignore
     local hint_line = {
@@ -153,6 +137,22 @@ end
 -- #############################################################################
 -- #                                   Blame                                   #
 -- #############################################################################
+
+local function gen_blame_palette(count)
+  vim.api.nvim_set_hl(0, "MiniGitBlameHash", { link = "Comment" })
+  vim.api.nvim_set_hl(0, "MiniGitBlameUncommitted", { link = "Conceal" })
+  local dark = vim.o.background == "dark"
+  local lightness = dark and 75 or 45
+  local chroma = dark and 20 or 18
+  local uv = vim.uv or vim.loop
+  local offset = (uv.hrtime() % 360)
+  local palette = {}
+  for i = 1, count do
+    local hue = (offset + (i - 1) * 137.508) % 360
+    palette[i] = colors.convert({ l = lightness, c = chroma, h = hue }, "hex")
+  end
+  return palette
+end
 
 local function pad_right(str, width)
   local pad = width - vim.fn.strwidth(str)
@@ -525,6 +525,10 @@ local function blame_cb(event)
   vim.api.nvim_create_autocmd({ "WinLeave", "BufWipeout" }, { buffer = buf, once = true, callback = close })
 end
 
+-- #############################################################################
+-- #                                Git Status                                 #
+-- #############################################################################
+
 local function status_cb(event)
   if event.data.git_subcommand ~= "status" then return end
   local buf = event.buf
@@ -533,20 +537,20 @@ local function status_cb(event)
   for i, line in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
     local ln = i - 1
     local hl
-    if line:match("^%s+modified:") then
+    if line:match("^%s+modified") then
+      hl = "MiniDiffSignAdd"
+    elseif line:match("^%s+new file") then
+      hl = "MiniDiffSignAdd"
+    elseif line:match("^%s+deleted") then
+      hl = "MiniDiffSignDelete"
+    elseif line:match("^%s+renamed") then
       hl = "DiffChange"
-    elseif line:match("^%s+new file:") then
-      hl = "DiffAdd"
-    elseif line:match("^%s+deleted:") then
-      hl = "DiffDelete"
-    elseif line:match("^%s+renamed:") then
-      hl = "DiffChange"
-    elseif line:match("^%s+%(use ") then
+    elseif line:match("^%s+%(use") or line:match("^%s+%(fix") or line:match("^%s+%(all") then
       hl = "Comment"
-    elseif line:match("^Changes") or line:match("^Untracked") then
+    elseif line:match("^Changes") or line:match("^Untracked") or line:match("^Unmerged") then
       hl = "Title"
-    elseif line:match("^On branch") or line:match("^Your branch") or line:match("^HEAD") then
-      hl = "Special"
+    elseif line:match("^On branch") then
+      hl = "Title"
     end
     if hl then vim.api.nvim_buf_set_extmark(buf, ns.status, ln, 0, { end_col = #line, hl_group = hl, priority = 1 }) end
   end
