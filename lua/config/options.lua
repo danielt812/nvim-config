@@ -27,17 +27,16 @@ vim.opt.infercase      = true -- Infer letter cases for a richer built-in keywor
 vim.opt.pumheight      = 10 -- Max popup menu height
 
 -- INFO: UI and display
-vim.opt.cursorline     = true -- Highlight current line
-vim.opt.fillchars      = { eob = " ", fold = " ", foldopen = "", foldsep = " ", foldclose = "", lastline = " " } -- Custom UI glyphs
-vim.opt.list           = true -- Show invisible characters
-vim.opt.number         = true -- Show absolute line numbers
-vim.opt.relativenumber = true -- Show relative line numbers
-vim.opt.ruler          = false -- Don't show cursor position in command line
-vim.opt.scrolloff      = 10 -- Keep context lines above/below cursor
-vim.opt.showmode       = false -- Don't show mode in command line
-vim.opt.signcolumn     = "yes" -- Always show sign column (otherwise it will shift text)
+vim.opt.cursorline     = true      -- Highlight current line
+vim.opt.list           = true      -- Show invisible characters
+vim.opt.number         = true      -- Show absolute line numbers
+vim.opt.relativenumber = true      -- Show relative line numbers
+vim.opt.ruler          = false     -- Don't show cursor position in command line
+vim.opt.scrolloff      = 10        -- Keep context lines above/below cursor
+vim.opt.showmode       = false     -- Don't show mode in command line
+vim.opt.signcolumn     = "auto"    -- "yes", "no", "auto", "number"
 vim.opt.winborder      = "rounded" -- Use rounded floating window borders
-vim.opt.wrap           = false -- Display long lines as just one line
+vim.opt.wrap           = false     -- Display long lines as just one line
 
 -- INFO: Window splits
 vim.opt.splitbelow     = true -- Horizontal splits will be below
