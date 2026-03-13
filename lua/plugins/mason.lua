@@ -45,6 +45,7 @@ local ensure_installed = {
   "html-lsp",
   "json-lsp",
   "lua-language-server",
+  "marksman",
   "tailwindcss-language-server",
   "taplo",
   "tsgo",

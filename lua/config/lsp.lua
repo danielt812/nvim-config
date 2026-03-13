@@ -73,6 +73,7 @@ local servers = {
   "html",
   "jsonls",
   "lua_ls",
+  "marksman",
   "taplo",
   "tailwindcss",
   "ts_ls",
@@ -80,7 +81,7 @@ local servers = {
   "yamlls",
 }
 
-vim.highlight.priorities.semantic_tokens = 100
+vim.hl.priorities.semantic_tokens = 100
 
 -- Register each server configuration under vim.lsp.configs
 for _, server in ipairs(servers) do
@@ -129,6 +130,8 @@ do
 
   local function lsp_log() vim.cmd("edit " .. vim.lsp.get_log_path()) end
 
+  local function lsp_semantic_hl() vim.api.nvim_set_hl(0, "@lsp.type.variable", {}) end
+
   vim.api.nvim_create_user_command(
     "LspRestart",
     lsp_restart,
@@ -140,7 +143,7 @@ do
   vim.api.nvim_create_autocmd("ColorScheme", {
     group = group,
     desc = "Semantic highlighting",
-    callback = function() vim.api.nvim_set_hl(0, "@lsp.type.variable", {}) end,
+    callback = lsp_semantic_hl,
   })
 end
 
@@ -195,7 +198,9 @@ do
     end
 
     local method = "textDocument/documentSymbol"
+    local skip = { ["mini.snippets"] = true, kulala = true }
     local clients = vim.lsp.get_clients({ bufnr = buf, method = method })
+    clients = vim.tbl_filter(function(c) return not skip[c.name] end, clients)
     if #clients == 0 then return end
 
     local params = { textDocument = vim.lsp.util.make_text_document_params(buf) }

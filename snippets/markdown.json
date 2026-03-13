@@ -1,7 +1,76 @@
 {
   "Code Block": {
-    "prefix": ["code", "block", "cb"],
+    "prefix": "codeblock",
     "body": "```${1:language}\n\t$0\n```",
     "description": "Fenced code block"
+  },
+  "Image": {
+    "prefix": "image",
+    "body": "![${1:alt}](${2:url})$0",
+    "description": "Image"
+  },
+  "Bold": {
+    "prefix": "bold",
+    "body": "**${1:text}**$0",
+    "description": "Bold text"
+  },
+  "Italic": {
+    "prefix": "italic",
+    "body": "*${1:text}*$0",
+    "description": "Italic text"
+  },
+  "Strikethrough": {
+    "prefix": "strike",
+    "body": "~~${1:text}~~$0",
+    "description": "Strikethrough text"
+  },
+  "Link": {
+    "prefix": "link",
+    "body": "[${1:text}](${2:url})$0",
+    "description": "Link"
+  },
+  "Heading 1": {
+    "prefix": "h1",
+    "body": "# $0"
+  },
+  "Heading 2": {
+    "prefix": "h2",
+    "body": "## $0"
+  },
+  "Heading 3": {
+    "prefix": "h3",
+    "body": "### $0"
+  },
+  "Heading 4": {
+    "prefix": "h4",
+    "body": "#### $0"
+  },
+  "Heading 5": {
+    "prefix": "h5",
+    "body": "##### $0"
+  },
+  "Heading 6": {
+    "prefix": "h6",
+    "body": "###### $0"
+  },
+  "Table": {
+    "prefix": "table",
+    "body": "| ${1:Header 1} | ${2:Header 2} |\n| --- | --- |\n| $0 |  |"
+  },
+  "Task": {
+    "prefix": "task",
+    "body": "- [ ] $0"
+  },
+  "Blockquote": {
+    "prefix": ["quote", "block"],
+    "body": "> $0"
+  },
+  "Horizontal Rule": {
+    "prefix": "hr",
+    "body": "---\n$0"
+  },
+  "Footnote": {
+    "prefix": "footnote",
+    "body": "[^${1:id}]: $0"
   }
 }
