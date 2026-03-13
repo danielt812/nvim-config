@@ -10,6 +10,7 @@ local tab_steps = {
   "increase_indent",
   "jump_after_tsnode",
   "jump_after_close",
+  "minisnippets_expand",
 }
 map_multistep("i", "<tab>", tab_steps)
 
