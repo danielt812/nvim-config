@@ -74,16 +74,28 @@ vim.api.nvim_create_autocmd("CmdlineLeave", {
 -- #############################################################################
 
 vim.api.nvim_create_user_command("Peek", function(opts)
-  local char = opts.args
-  if not char:match("^[a-z]$") then
-    vim.notify("Peek requires a local mark (a-z)", vim.log.levels.WARN)
+  local args = vim.split(opts.args, "%s+", { trimempty = true })
+  if #args < 1 or #args > 2 then
+    vim.notify("Peek requires 1 or 2 local marks (a-z)", vim.log.levels.WARN)
     return
   end
-  local pos = vim.api.nvim_buf_get_mark(0, char)
-  if pos[1] == 0 then
-    vim.notify("Mark '" .. char .. "' not set", vim.log.levels.WARN)
-    return
+  for _, char in ipairs(args) do
+    if not char:match("^[a-z]$") then
+      vim.notify("Peek requires local marks (a-z), got '" .. char .. "'", vim.log.levels.WARN)
+      return
+    end
+    if vim.api.nvim_buf_get_mark(0, char)[1] == 0 then
+      vim.notify("Mark '" .. char .. "' not set", vim.log.levels.WARN)
+      return
+    end
   end
-  vim.g.peek_mark = char
-  vim.api.nvim_input(":" .. pos[1])
-end, { nargs = 1 })
+  local pos1 = vim.api.nvim_buf_get_mark(0, args[1])[1]
+  if #args == 1 then
+    vim.g.peek_mark = args[1]
+    vim.api.nvim_input(":" .. pos1)
+  else
+    local pos2 = vim.api.nvim_buf_get_mark(0, args[2])[1]
+    vim.g.peek_mark = args[1] .. "-" .. args[2]
+    vim.api.nvim_input(":" .. pos1 .. "," .. pos2)
+  end
+end, { nargs = "+" })
