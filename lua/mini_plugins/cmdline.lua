@@ -60,7 +60,6 @@ cmdline.setup({
 local group = vim.api.nvim_create_augroup("mini_cmdline", { clear = true })
 
 vim.api.nvim_create_autocmd("CmdlineLeave", {
-  pattern = "*",
   group = group,
   desc = "Clear peek_mark",
   callback = function() vim.g.peek_mark = nil end,

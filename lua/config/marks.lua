@@ -108,28 +108,24 @@ gen_hl_groups() -- Call this now if colorscheme was already set
 local group = vim.api.nvim_create_augroup("marks", { clear = true })
 
 vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
-  pattern = "*",
   group = group,
   desc = "Refresh mark signs after edits",
   callback = apply_extmarks,
 })
 
 vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
-  pattern = "*",
   group = group,
   desc = "Set mark extmarks",
   callback = apply_extmarks,
 })
 
 vim.api.nvim_create_autocmd("CmdlineLeave", {
-  pattern = "*",
   group = group,
   desc = "Refresh mark extmarks after ex command",
   callback = on_mark_command,
 })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "*",
   group = group,
   desc = "Create highlight groups",
   callback = gen_hl_groups,

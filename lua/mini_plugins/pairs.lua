@@ -46,7 +46,6 @@ local function disable_pairs()
 end
 
 vim.api.nvim_create_autocmd("CmdlineEnter", {
-  pattern = "*",
   group = group,
   desc = "Disable minipairs in search",
   callback = disable_pairs,
@@ -55,7 +54,6 @@ vim.api.nvim_create_autocmd("CmdlineEnter", {
 local function enable_pairs() vim.g.minipairs_disable = false end
 
 vim.api.nvim_create_autocmd("CmdlineLeave", {
-  pattern = "*",
   group = group,
   desc = "Restore minipairs state",
   callback = enable_pairs,

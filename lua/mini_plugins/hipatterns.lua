@@ -229,7 +229,6 @@ gen_hl_groups() -- Call this now if colorscheme was already set
 local group = vim.api.nvim_create_augroup("mini_hipatterns", { clear = true })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "*",
   group = group,
   desc = "Create highlight groups",
   callback = gen_hl_groups,

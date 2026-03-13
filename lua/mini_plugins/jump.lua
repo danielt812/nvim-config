@@ -100,7 +100,6 @@ end
 local group = vim.api.nvim_create_augroup("mini_jump", { clear = true })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "*",
   group = group,
   desc = "Create highlight groups",
   callback = gen_hl_groups,
