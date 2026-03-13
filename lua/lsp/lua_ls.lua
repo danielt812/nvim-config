@@ -1,20 +1,20 @@
 return {
-  cmd = {
-    "lua-language-server",
-  },
-  filetypes = {
-    "lua",
-  },
-  root_markers = {
-    ".git",
-    ".luacheckrc",
-    ".luarc.json",
-    ".luarc.jsonc",
-    ".stylua.toml",
-    "selene.toml",
-    "selene.yml",
-    "stylua.toml",
-  },
+  cmd = { "lua-language-server" },
+  filetypes = { "lua" },
+  root_dir = function(bufnr, cb)
+    local fname = vim.api.nvim_buf_get_name(bufnr)
+    local root = vim.fs.root(fname, {
+      ".luarc.json",
+      ".luarc.jsonc",
+      ".luacheckrc",
+      ".stylua.toml",
+      "stylua.toml",
+      "selene.toml",
+      "selene.yml",
+      ".git",
+    })
+    if root then cb(root) end
+  end,
   settings = {
     Lua = {
       completion = {

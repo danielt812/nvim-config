@@ -119,7 +119,11 @@ end
 return {
   cmd = { "texlab" },
   filetypes = { "tex", "plaintex", "bib" },
-  root_markers = { ".git", ".latexmkrc", "latexmkrc", ".texlabroot", "texlabroot", "Tectonic.toml" },
+  root_dir = function(bufnr, cb)
+    local fname = vim.api.nvim_buf_get_name(bufnr)
+    local root = vim.fs.root(fname, { ".latexmkrc", "latexmkrc", ".texlabroot", "texlabroot", "Tectonic.toml", ".git" })
+    if root then cb(root) end
+  end,
   settings = {
     texlab = {
       rootDirectory = nil,

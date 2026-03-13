@@ -18,15 +18,14 @@ return {
       { filename:gsub("%.tsx?$", ".module.scss"), filename:gsub("%.tsx?$", ".module.css") },
       { path = filename }
     )
-    if #has_module == 0 then
-      return nil
-    end
+    if #has_module == 0 then return nil end
 
     -- Only attach if there's some package.json in the root directory.
-    local root_dir = vim.fs.dirname(vim.fs.find("package.json", { path = filename, upward = true })[1])
-    if not root_dir then
-      return nil
-    end
+    local root_dir = vim.fs.dirname(vim.fs.find("package.json", {
+      path = filename,
+      upward = true,
+    })[1])
+    if not root_dir then return nil end
 
     on_dir(root_dir)
   end,

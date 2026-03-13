@@ -1,6 +1,6 @@
 -- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/eslint.lua
 
-local ROOT_MARKERS = {
+local root_markers = {
   ".eslintrc",
   ".eslintrc.cjs",
   ".eslintrc.js",
@@ -17,19 +17,12 @@ local ROOT_MARKERS = {
 
 return {
   cmd = { "vscode-eslint-language-server", "--stdio" },
-  filetypes = {
-    "javascript",
-    "javascript.jsx",
-    "javascriptreact",
-    "typescript",
-    "typescript.tsx",
-    "typescriptreact",
-  },
-  root_markers = ROOT_MARKERS,
+  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+  root_markers = root_markers,
   root_dir = function(bufnr, cb)
     local filename = vim.api.nvim_buf_get_name(bufnr)
     -- Only attach if there's some eslint config file in the root directory.
-    local root_dir = vim.fs.dirname(vim.fs.find(ROOT_MARKERS, { path = filename, upward = true })[1])
+    local root_dir = vim.fs.dirname(vim.fs.find(root_markers, { path = filename, upward = true })[1])
     if not root_dir then
       return nil
     end

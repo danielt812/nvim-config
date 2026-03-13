@@ -3,17 +3,14 @@ return {
   filetypes = {
     "javascript",
     "javascriptreact",
-    "javascript.jsx",
     "typescript",
     "typescriptreact",
-    "typescript.tsx",
   },
-  root_markers = {
-    ".git",
-    "jsconfig.json",
-    "package.json",
-    "tsconfig.json",
-  },
+  root_dir = function(bufnr, cb)
+    local fname = vim.api.nvim_buf_get_name(bufnr)
+    local root = vim.fs.root(fname, { "tsconfig.json", "jsconfig.json", "package.json", ".git" })
+    if root then cb(root) end
+  end,
   init_options = { hostInfo = "neovim" },
   single_file_support = true,
   settings = {

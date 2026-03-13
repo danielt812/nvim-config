@@ -31,19 +31,13 @@
 -- resolve_cmd_shim('C:/Users/user/project/node_modules/.bin/ngserver.cmd')
 -- => 'C:/Users/user/project/node_modules/@angular/language-server/bin/ngserver'
 local function resolve_cmd_shim(cmd_path)
-  if not cmd_path:lower():match('%ngserver.cmd$') then
-    return cmd_path
-  end
+  if not cmd_path:lower():match("%ngserver.cmd$") then return cmd_path end
 
   local ok, content = pcall(vim.fn.readblob, cmd_path)
-  if not ok or not content then
-    return cmd_path
-  end
+  if not ok or not content then return cmd_path end
 
   local target = content:match('%s%"%%dp0%%\\([^\r\n]-ngserver[^\r\n]-)%"')
-  if not target then
-    return cmd_path
-  end
+  if not target then return cmd_path end
 
   local full = vim.fs.normalize(vim.fs.joinpath(vim.fs.dirname(cmd_path), target))
 
@@ -53,39 +47,31 @@ end
 local function collect_node_modules(root_dir)
   local results = {}
 
-  local project_node = vim.fs.joinpath(root_dir, 'node_modules')
-  if vim.uv.fs_stat(project_node) then
-    table.insert(results, project_node)
-  end
+  local project_node = vim.fs.joinpath(root_dir, "node_modules")
+  if vim.uv.fs_stat(project_node) then table.insert(results, project_node) end
 
-  local ngserver_exe = vim.fn.exepath('ngserver')
+  local ngserver_exe = vim.fn.exepath("ngserver")
   if ngserver_exe and #ngserver_exe > 0 then
     local realpath = vim.uv.fs_realpath(ngserver_exe) or ngserver_exe
     realpath = resolve_cmd_shim(realpath)
-    local candidate = vim.fs.normalize(vim.fs.joinpath(vim.fs.dirname(realpath), '../../..'))
-    if vim.uv.fs_stat(candidate) then
-      table.insert(results, candidate)
-    end
+    local candidate = vim.fs.normalize(vim.fs.joinpath(vim.fs.dirname(realpath), "../../.."))
+    if vim.uv.fs_stat(candidate) then table.insert(results, candidate) end
   end
 
   return results
 end
 
 local function get_angular_core_version(root_dir)
-  local package_json = vim.fs.joinpath(root_dir, 'package.json')
-  if not vim.uv.fs_stat(package_json) then
-    return ''
-  end
+  local package_json = vim.fs.joinpath(root_dir, "package.json")
+  if not vim.uv.fs_stat(package_json) then return "" end
 
   local ok, content = pcall(vim.fn.readblob, package_json)
-  if not ok or not content then
-    return ''
-  end
+  if not ok or not content then return "" end
 
   local json = vim.json.decode(content) or {}
 
-  local version = (json.dependencies or {})['@angular/core'] or ''
-  return version:match('%d+%.%d+%.%d+') or ''
+  local version = (json.dependencies or {})["@angular/core"] or ""
+  return version:match("%d+%.%d+%.%d+") or ""
 end
 
 ---@type vim.lsp.Config
@@ -94,29 +80,32 @@ return {
     local root_dir = (config and config.root_dir) or vim.fn.getcwd()
     local node_paths = collect_node_modules(root_dir)
 
-    local ts_probe = table.concat(node_paths, ',')
+    local ts_probe = table.concat(node_paths, ",")
     local ng_probe = table.concat(
       vim
         .iter(node_paths)
-        :map(function(p)
-          return vim.fs.joinpath(p, '@angular/language-server/node_modules')
-        end)
+        :map(function(p) return vim.fs.joinpath(p, "@angular/language-server/node_modules") end)
         :totable(),
-      ','
+      ","
     )
+    -- stylua: ignore
     local cmd = {
-      'ngserver',
-      '--stdio',
-      '--tsProbeLocations',
+      "ngserver",
+      "--stdio",
+      "--tsProbeLocations",
       ts_probe,
-      '--ngProbeLocations',
+      "--ngProbeLocations",
       ng_probe,
-      '--angularCoreVersion',
+      "--angularCoreVersion",
       get_angular_core_version(root_dir),
     }
     return vim.lsp.rpc.start(cmd, dispatchers)
   end,
 
-  filetypes = { 'typescript', 'html', 'typescriptreact',  'htmlangular' },
-  root_markers = { 'angular.json', 'nx.json' },
+  filetypes = { "typescript", "html", "htmlangular" },
+  root_dir = function(bufnr, cb)
+    local fname = vim.api.nvim_buf_get_name(bufnr)
+    local root = vim.fs.root(fname, { "angular.json", "nx.json" })
+    if root then cb(root) end
+  end,
 }

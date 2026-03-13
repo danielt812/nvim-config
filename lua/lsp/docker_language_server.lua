@@ -18,15 +18,19 @@ return {
       return ft
     end
   end,
-  root_markers = {
-    "Dockerfile",
-    "docker-compose.yaml",
-    "docker-compose.yml",
-    "compose.yaml",
-    "compose.yml",
-    "docker-bake.json",
-    "docker-bake.hcl",
-    "docker-bake.override.json",
-    "docker-bake.override.hcl",
-  },
+  root_dir = function(bufnr, cb)
+    local fname = vim.api.nvim_buf_get_name(bufnr)
+    local root = vim.fs.root(fname, {
+      "Dockerfile",
+      "docker-compose.yaml",
+      "docker-compose.yml",
+      "compose.yaml",
+      "compose.yml",
+      "docker-bake.json",
+      "docker-bake.hcl",
+      "docker-bake.override.json",
+      "docker-bake.override.hcl",
+    })
+    if root then cb(root) end
+  end,
 }

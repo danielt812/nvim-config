@@ -3,60 +3,44 @@ return {
   -- filetypes copied and adjusted from tailwindcss-intellisense
   filetypes = {
     -- html
-    "aspnetcorerazor",
     "astro",
-    "astro-markdown",
-    "blade",
-    "clojure",
-    "django-html",
-    "htmldjango",
-    "edge",
-    "eelixir", -- vim ft
     "elixir",
-    "ejs",
-    "erb",
-    "eruby", -- vim ft
-    "gohtml",
-    "gohtmltmpl",
+    "eruby",
     "haml",
-    "handlebars",
-    "hbs",
+    "heex",
     "html",
     "htmlangular",
-    "html-eex",
-    "heex",
-    "jade",
-    "leaf",
+    "htmldjango",
     "liquid",
     "markdown",
-    "mdx",
-    "mustache",
-    "njk",
-    "nunjucks",
     "php",
-    "razor",
-    "slim",
-    "twig",
+    "svelte",
+    "vue",
     -- css
     "css",
     "less",
-    "postcss",
     "sass",
     "scss",
     "stylus",
-    "sugarss",
     -- js
     "javascript",
     "javascriptreact",
-    "reason",
     "rescript",
     "typescript",
     "typescriptreact",
-    "vue",
-    "svelte",
-    "templ",
   },
-  root_markers = { ".git" },
+  root_dir = function(bufnr, cb)
+    local fname = vim.api.nvim_buf_get_name(bufnr)
+    local root = vim.fs.root(fname, {
+      "tailwind.config.js",
+      "tailwind.config.cjs",
+      "tailwind.config.mjs",
+      "tailwind.config.ts",
+      "tailwind.config.mts",
+      "tailwind.config.cts",
+    })
+    if root then cb(root) end
+  end,
   tailwindCSS = {
     validate = true,
     lint = {
@@ -76,12 +60,10 @@ return {
       "ngClass",
     },
     includeLanguages = {
-      eelixir = "html-eex",
       elixir = "phoenix-heex",
       eruby = "erb",
       heex = "phoenix-heex",
       htmlangular = "html",
-      templ = "html",
     },
   },
 }
