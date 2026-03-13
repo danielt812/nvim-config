@@ -195,6 +195,9 @@ do
     end
 
     local method = "textDocument/documentSymbol"
+    local clients = vim.lsp.get_clients({ bufnr = buf, method = method })
+    if #clients == 0 then return end
+
     local params = { textDocument = vim.lsp.util.make_text_document_params(buf) }
     local function request_symbols_cb(err, result)
       state[buf].cancel_request = nil
