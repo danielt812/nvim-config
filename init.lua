@@ -119,7 +119,6 @@ later(function()
   mplug("tabline")
   mplug("trailspace")
   mplug("visits")
-
 end)
 
 -- Treesitter ------------------------------------------------------------------
