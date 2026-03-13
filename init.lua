@@ -171,10 +171,6 @@ later(function()
   -- Animated highlights
   add({ source = "rachartier/tiny-glimmer.nvim" })
   plug("tiny-glimmer")
-
-  -- Diagnostics
-  add({ source = "rachartier/tiny-inline-diagnostic.nvim" })
-  plug("tiny-inline-diagnostic")
 end)
 
 -- Quickfix --------------------------------------------------------------------
