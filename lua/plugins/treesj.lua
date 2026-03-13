@@ -6,7 +6,7 @@ treesj.setup({
   check_syntax_error = true,
   max_join_length = 10000,
   cursor_behavior = "hold",
-  notify = true,
+  notify = false,
   dot_repeat = true,
 })
 
