@@ -1,4 +1,4 @@
-vim.api.nvim_create_autocmd("BufEnter", {
+vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("comment_fmt_opts", { clear = true }),
   desc = "No comment on new line",
   callback = function() vim.opt.formatoptions:remove({ "c", "r", "o" }) end,
