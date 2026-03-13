@@ -106,12 +106,12 @@ statusline.setup({
         if truncate then return "" end
 
         local ft = vim.bo.filetype or "none"
-        local icon, icon_hl = icons.get("filetype", ft, { with_hl = true })
-        icon_hl = icon_hl:gsub("MiniIcons", "MiniStatuslineIcons")
+        local icon, hl = icons.get("filetype", ft)
+        hl = hl:gsub("MiniIcons", "MiniStatuslineIcons")
 
-        local str = "%#" .. icon_hl .. "#" .. icon .. " %#MiniStatuslineFileinfo#" .. ft
+        local sw = "󰌒 " .. vim.bo.shiftwidth .. " "
 
-        return str
+        return sw .. "%#" .. hl .. "#" .. icon .. " %#MiniStatuslineFileinfo#" .. ft
       end
 
       local function section_disabled(args)
@@ -141,22 +141,18 @@ statusline.setup({
         return icon .. "[" .. table.concat(disabled, ",") .. "]"
       end
 
-      local function section_spell(args)
+      local function section_options(args)
         local truncate = statusline.is_truncated(args.trunc_width)
         if truncate then return "" end
 
-        local spell = vim.wo.spell and "󰓆" or ""
+        local hl = "%#MiniStatuslineFileinfo#"
+        local parts = {}
+        if vim.wo.spell then parts[#parts + 1] = "%#MiniStatuslineSpell#󰓆" .. hl end
+        if vim.wo.wrap then parts[#parts + 1] = "%#MiniStatuslineWrap#󰖶" .. hl end
 
-        return spell
-      end
+        if #parts == 0 then return "" end
 
-      local function section_shift_width(args)
-        local truncate = statusline.is_truncated(args.trunc_width)
-        if truncate or vim.bo.buftype == "terminal" then return "" end
-
-        local shiftwidth = "󰌒 " .. vim.bo.shiftwidth
-
-        return shiftwidth
+        return table.concat(parts, "  ")
       end
 
       local function section_searchcount(args)
@@ -205,9 +201,8 @@ statusline.setup({
       local diagnostics = section_diagnostics({ trunc_width = 70, icon = true, symbols = false })
       local filename    = section_filename   ({ trunc_width = 120 })
       local filetype    = section_filetype   ({ trunc_width = 30 })
-      local shiftwidth  = section_shift_width({ trunc_width = 120 })
       local disabled    = section_disabled   ({ trunc_width = 70, icon = true })
-      local spell       = section_spell      ({ trunc_width = 120 })
+      local options     = section_options    ({ trunc_width = 70 })
       local searchcount = section_searchcount({ trunc_width = 70 })
       local location    = section_location   ({ trunc_width = 70 })
       local progress    = section_progress   ({ trunc_width = 70 })
@@ -219,7 +214,7 @@ statusline.setup({
         "%<", -- Mark general truncate point
         { hl = "MiniStatuslineFilename", strings = combine_strings({ filename }, "│") },
         "%=", -- End left alignment
-        { hl = "MiniStatuslineFileinfo", strings = combine_strings({ disabled, spell, shiftwidth, filetype }, "│") },
+        { hl = "MiniStatuslineFileinfo", strings = combine_strings({ disabled, options, filetype }, "│") },
         { hl = mode_hl, strings = combine_strings({ searchcount, location, progress }, "│") },
       })
     end,
@@ -261,6 +256,9 @@ local function gen_hl_groups()
   end
   -- Git
   util_hl.merge_hl("Terminal", prefix .. "Devinfo", prefix .. "Git")
+  -- Options
+  util_hl.merge_hl("MiniIconsGreen", prefix .. "Fileinfo", prefix .. "Spell")
+  util_hl.merge_hl("MiniIconsOrange", prefix .. "Fileinfo", prefix .. "Wrap")
 
   -- Mode line numbers
   -- stylua: ignore
@@ -291,7 +289,6 @@ end
 local group = vim.api.nvim_create_augroup("mini_statusline", { clear = true })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "*",
   group = group,
   desc = "Create highlight groups",
   callback = gen_hl_groups,
