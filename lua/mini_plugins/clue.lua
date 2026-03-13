@@ -45,6 +45,7 @@ clue.setup({
     { mode = { "n", "v" }, keys = "<leader>r",  desc = "+Rest" },
     { mode = { "n", "v" }, keys = "<leader>s",  desc = "+Session" },
     { mode = { "n", "v" }, keys = "<leader>t",  desc = "+Task" },
+    { mode = { "n", "v" }, keys = "<leader>v",  desc = "+Visits" },
 
     -- stylua: ignore end
     clue.gen_clues.square_brackets(),
