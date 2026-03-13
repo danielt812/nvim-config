@@ -32,7 +32,11 @@ cmdline.setup({
     n_context = 5,
 
     -- Custom rule of when to show peek window
-    predicate = nil,
+    predicate = function(data)
+      local line = vim.fn.getcmdline()
+      if not line:match("%d") then return false end
+      return cmdline.default_autopeek_predicate(data)
+    end,
 
     -- Window options
     window = {
