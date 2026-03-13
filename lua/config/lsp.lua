@@ -215,32 +215,32 @@ do
 
   -- stylua: ignore start
   local kinds = {
-    [1]  = { hl = "Normal",     icon = "" }, -- File
+    [1]  = { hl = "Normal",     icon = "" }, -- File
     [2]  = { hl = "Include",    icon = "󰏗" }, -- Module
-    [3]  = { hl = "Include",    icon = "" }, -- Namespace
-    [4]  = { hl = "Include",    icon = "" }, -- Package
-    [5]  = { hl = "Type",       icon = "" }, -- Class
-    [6]  = { hl = "Function",   icon = "" }, -- Method
-    [7]  = { hl = "Identifier", icon = "" }, -- Property
-    [8]  = { hl = "Identifier", icon = "" }, -- Field
-    [9]  = { hl = "Function",   icon = "" }, -- Constructor
-    [10] = { hl = "Type",       icon = "" }, -- Enum
-    [11] = { hl = "Type",       icon = "" }, -- Interface
-    [12] = { hl = "Function",   icon = "" }, -- Function
-    [13] = { hl = "Identifier", icon = "" }, -- Variable
-    [14] = { hl = "Constant",   icon = "" }, -- Constant
-    [15] = { hl = "String",     icon = "" }, -- String
-    [16] = { hl = "Number",     icon = "" }, -- Number
-    [17] = { hl = "Boolean",    icon = "" }, -- Boolean
-    [18] = { hl = "Type",       icon = "" }, -- Array
-    [19] = { hl = "Type",       icon = "" }, -- Object
-    [20] = { hl = "Identifier", icon = "" }, -- Key
-    [21] = { hl = "Special",    icon = "" }, -- Null
-    [22] = { hl = "Constant",   icon = "" }, -- EnumMember
-    [23] = { hl = "Type",       icon = "" }, -- Struct
-    [24] = { hl = "Type",       icon = "" }, -- Event
-    [25] = { hl = "Operator",   icon = "" }, -- Operator
-    [26] = { hl = "Type",       icon = "" }, -- TypeParameter
+    [3]  = { hl = "Include",    icon = "" }, -- Namespace
+    [4]  = { hl = "Include",    icon = "" }, -- Package
+    [5]  = { hl = "Type",       icon = "" }, -- Class
+    [6]  = { hl = "Function",   icon = "" }, -- Method
+    [7]  = { hl = "Identifier", icon = "" }, -- Property
+    [8]  = { hl = "Identifier", icon = "" }, -- Field
+    [9]  = { hl = "Function",   icon = "" }, -- Constructor
+    [10] = { hl = "Type",       icon = "" }, -- Enum
+    [11] = { hl = "Type",       icon = "" }, -- Interface
+    [12] = { hl = "Function",   icon = "" }, -- Function
+    [13] = { hl = "Identifier", icon = "" }, -- Variable
+    [14] = { hl = "Constant",   icon = "" }, -- Constant
+    [15] = { hl = "String",     icon = "" }, -- String
+    [16] = { hl = "Number",     icon = "" }, -- Number
+    [17] = { hl = "Boolean",    icon = "" }, -- Boolean
+    [18] = { hl = "Type",       icon = "" }, -- Array
+    [19] = { hl = "Type",       icon = "" }, -- Object
+    [20] = { hl = "Identifier", icon = "" }, -- Key
+    [21] = { hl = "Special",    icon = "" }, -- Null
+    [22] = { hl = "Constant",   icon = "" }, -- EnumMember
+    [23] = { hl = "Type",       icon = "" }, -- Struct
+    [24] = { hl = "Type",       icon = "" }, -- Event
+    [25] = { hl = "Operator",   icon = "" }, -- Operator
+    [26] = { hl = "Type",       icon = "" }, -- TypeParameter
   }
   -- stylua: ignore end
 
@@ -321,7 +321,7 @@ do
   local pack = vim.fn.stdpath("data") .. "/site/pack/deps"
   local pack_dirs = { pack .. "/start", pack .. "/opt" }
 
-  local state = { mod_map = nil, libs = {} }
+  local state = { mod_map = nil, libs = {}, timer = vim.uv.new_timer() }
 
   local function get_mod_map()
     if state.mod_map then return state.mod_map end
@@ -392,11 +392,16 @@ do
 
   local group = vim.api.nvim_create_augroup("lua_libs", { clear = true })
 
+  local function debounced_update(delay)
+    state.timer:stop()
+    state.timer:start(delay, 0, vim.schedule_wrap(update))
+  end
+
   vim.api.nvim_create_autocmd({ "BufReadPost", "BufEnter" }, {
     pattern = "*.lua",
     group = group,
     desc = "Update lua_ls workspace libraries from require() calls",
-    callback = function() vim.defer_fn(update, 100) end,
+    callback = function() debounced_update(100) end,
   })
 
   vim.api.nvim_create_autocmd("LspAttach", {
@@ -404,7 +409,7 @@ do
     desc = "Initial lua_ls library scan",
     callback = function(args)
       local client = vim.lsp.get_client_by_id(args.data.client_id)
-      if client and client.name == "lua_ls" then vim.defer_fn(update, 200) end
+      if client and client.name == "lua_ls" then debounced_update(200) end
     end,
   })
 end
