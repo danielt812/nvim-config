@@ -118,6 +118,8 @@ later(function()
   mplug("surround")
   mplug("tabline")
   mplug("trailspace")
+  mplug("visits")
+
 end)
 
 -- Treesitter ------------------------------------------------------------------
