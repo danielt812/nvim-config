@@ -197,16 +197,16 @@ local function gen_hl_groups()
   -- Vendor links
   -- stylua: ignore
   local link_colors = {
-    Arch          = "#4591cb", -- https://archlinux.org/foo/bar
-    Atlassian     = "#356bd6", -- https://atlassian.net/foo/bar
-    Azure         = "#0078d4", -- https://azure.com/foo/bar
-    Fedora        = "#65a0d6", -- https://fedoraproject.org/foo/bar
-    Github        = "#f2f5f3", -- https://github.com/foo/bar
-    Kulala        = "#dc4551", -- https://neovim.getkulala.net/foo/bar
-    Mdn           = "#54ffbd", -- https://developer.mozilla.org/foo/bar
-    Reddit        = "#ff4500", -- https://reddit.com/foo/bar
-    Redhat        = "#da2f21", -- https://redhat.com/foo/bar
-    SO            = "#f48024", -- https://stackoverflow.com/foo/bar
+    Arch      = "#4591cb", -- https://archlinux.org/foo/bar
+    Atlassian = "#356bd6", -- https://atlassian.net/foo/bar
+    Azure     = "#0078d4", -- https://azure.com/foo/bar
+    Fedora    = "#65a0d6", -- https://fedoraproject.org/foo/bar
+    Github    = "#f2f5f3", -- https://github.com/foo/bar
+    Kulala    = "#dc4551", -- https://neovim.getkulala.net/foo/bar
+    Mdn       = "#54ffbd", -- https://developer.mozilla.org/foo/bar
+    Reddit    = "#ff4500", -- https://reddit.com/foo/bar
+    Redhat    = "#da2f21", -- https://redhat.com/foo/bar
+    SO        = "#f48024", -- https://stackoverflow.com/foo/bar
   }
 
   for name, hex in pairs(link_colors) do
