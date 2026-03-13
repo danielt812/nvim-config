@@ -12,6 +12,7 @@ snippets.setup({
         zsh = { "shell.json" },
         bash = { "shell.json" },
         markdown = { "markdown.json" },
+        markdown_inline = { "markdown.json" },
         dockerfile = { "docker_file.json" },
       },
     }),
