@@ -59,7 +59,13 @@ local function create(term)
           or code == 0 and ("Finished: " .. name)
           or ("Failed (" .. code .. "): " .. name)
         local level = (code == 0 or stopped) and vim.log.levels.INFO or vim.log.levels.ERROR
-        vim.schedule(function() vim.notify(msg, level) end)
+        local failed = code ~= 0 and not stopped
+        vim.schedule(function()
+          vim.notify(msg, level)
+          if failed and term.buf and vim.api.nvim_buf_is_valid(term.buf) and not find_win(term.buf) then
+            show(term)
+          end
+        end)
       end
     or nil
   term.job_id = vim.fn.jobstart(term.cmd or vim.o.shell, { term = true, cwd = vim.fn.getcwd(), on_exit = on_exit })
