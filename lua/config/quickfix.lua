@@ -2,32 +2,18 @@
 -- #                             Quickfix/LocList                              #
 -- #############################################################################
 
-local H = {}
-
-H.grep = function(opts, use_loclist)
-  local escaped = vim.tbl_map(vim.fn.shellescape, opts.fargs)
-  local base = use_loclist and "lgrep!" or "grep!"
-  vim.cmd("silent " .. base .. " " .. table.concat(escaped, " "))
-
-  if use_loclist then
-    vim.cmd("lopen")
-  else
-    vim.cmd("copen")
-  end
-end
-
-H.clear_qf = function()
+local function clear_qf()
   vim.cmd("cexpr []")
   vim.cmd("cclose")
 end
 
-H.clear_loc = function()
+local function clear_loc()
   local win = vim.api.nvim_get_current_win()
-  vim.fn.setloclist(win, {}, "r") -- replace with empty
+  vim.fn.setloclist(win, {}, "r")
   vim.cmd("lclose")
 end
 
-H.toggle_qf = function()
+local function toggle_qf()
   for _, win in ipairs(vim.fn.getwininfo()) do
     if win.quickfix == 1 and win.loclist == 0 then
       vim.cmd("cclose")
@@ -37,20 +23,18 @@ H.toggle_qf = function()
   vim.cmd("copen")
 end
 
-H.toggle_loc = function()
+local function toggle_loc()
   for _, win in ipairs(vim.fn.getwininfo()) do
     if win.loclist == 1 then
       vim.cmd("lclose")
       return
     end
   end
-  vim.cmd("lopen")
+  if #vim.fn.getloclist(0) > 0 then vim.cmd("lopen") end
 end
 
-H.set_diagnostics_qf = function()
+local function set_diagnostics_qf()
   vim.diagnostic.setqflist({ bufnr = 0 })
-  -- open/close handled by autocmd because this is QuickFixCmdPost? (it isn't)
-  -- so do it explicitly:
   local items = vim.fn.getqflist()
   if #items > 0 then
     vim.cmd("copen")
@@ -59,7 +43,7 @@ H.set_diagnostics_qf = function()
   end
 end
 
-H.set_diagnostics_loc = function()
+local function set_diagnostics_loc()
   vim.diagnostic.setloclist({ bufnr = 0 })
   local win = vim.api.nvim_get_current_win()
   local items = vim.fn.getloclist(win)
@@ -71,36 +55,41 @@ H.set_diagnostics_loc = function()
 end
 
 -- #############################################################################
--- #                                 Commands                                  #
--- #############################################################################
-
-vim.api.nvim_create_user_command("Grep", function(opts) H.grep(opts, false) end, {
-  nargs = "+",
-  desc = "ripgrep -> quickfix (safe, supports flags, respects ripgrep.conf)",
-})
-
-vim.api.nvim_create_user_command("LGrep", function(opts) H.grep(opts, true) end, {
-  nargs = "+",
-  desc = "ripgrep -> loclist (safe, supports flags, respects ripgrep.conf)",
-})
-
--- #############################################################################
 -- #                                  Keymaps                                  #
 -- #############################################################################
 
 -- stylua: ignore start
-vim.keymap.set("n", "<leader>qd", H.set_diagnostics_qf,  { desc = "Diagnostics (QF)" })
-vim.keymap.set("n", "<leader>qD", H.set_diagnostics_loc, { desc = "Diagnostics (Loc)" })
+vim.keymap.set("n", "<leader>qd", set_diagnostics_qf,  { desc = "Diagnostics (QF)" })
+vim.keymap.set("n", "<leader>qD", set_diagnostics_loc, { desc = "Diagnostics (Loc)" })
 
-vim.keymap.set("n", "<leader>qq", H.toggle_qf,           { desc = "Quickfix" })
-vim.keymap.set("n", "<leader>qQ", H.toggle_loc,          { desc = "Loclist" })
+vim.keymap.set("n", "<leader>qq", toggle_qf,           { desc = "Quickfix" })
+vim.keymap.set("n", "<leader>qQ", toggle_loc,          { desc = "Loclist" })
 
-vim.keymap.set("n", "<leader>qc", H.clear_qf,            { desc = "Quickfix clear" })
-vim.keymap.set("n", "<leader>qC", H.clear_loc,           { desc = "Loclist clear" })
+vim.keymap.set("n", "<leader>qc", clear_qf,            { desc = "Quickfix clear" })
+vim.keymap.set("n", "<leader>qC", clear_loc,           { desc = "Loclist clear" })
 -- stylua: ignore end
 
+-- #############################################################################
+-- #                            Automatic Commands                             #
+-- #############################################################################
+
+local group = vim.api.nvim_create_augroup("quickfix", { clear = true })
+
+vim.api.nvim_create_autocmd("QuickFixCmdPost", {
+  group = group,
+  pattern = { "grep", "lgrep" },
+  desc = "Auto-open quickfix/loclist after grep",
+  callback = function(args)
+    if args.match == "lgrep" then
+      vim.cmd("lopen")
+    else
+      vim.cmd("copen")
+    end
+  end,
+})
+
 vim.api.nvim_create_autocmd("WinLeave", {
-  group = vim.api.nvim_create_augroup("auto_close_qf", { clear = true }),
+  group = group,
   desc = "Close quickfix/loclist when leaving its window",
   callback = function()
     if vim.bo.buftype == "quickfix" then vim.schedule(function() vim.cmd("cclose") vim.cmd("lclose") end) end
