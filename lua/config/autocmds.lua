@@ -1,5 +1,4 @@
 vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = { "*" },
   group = vim.api.nvim_create_augroup("comment_fmt_opts", { clear = true }),
   desc = "No comment on new line",
   callback = function() vim.opt.formatoptions:remove({ "c", "r", "o" }) end,
@@ -13,7 +12,6 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("BufWinEnter", {
-  pattern = { "*" },
   group = vim.api.nvim_create_augroup("open_help_vs", { clear = true }),
   desc = "Open help/man files in vertical split",
   callback = vim.schedule_wrap(function()
@@ -25,7 +23,6 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
-  pattern = "*",
   group = vim.api.nvim_create_augroup("preserve_cursor", { clear = true }),
   desc = "Preserve cursor position on yank",
   callback = function()
@@ -45,7 +42,6 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 vim.api.nvim_create_autocmd("VimResized", {
-  pattern = { "*" },
   group = vim.api.nvim_create_augroup("resize_window", { clear = true }),
   desc = "Resize windows evenly, skip when terminal split is open",
   callback = function()
@@ -57,7 +53,6 @@ vim.api.nvim_create_autocmd("VimResized", {
 })
 
 vim.api.nvim_create_autocmd("QuitPre", {
-  pattern = { "*" },
   group = vim.api.nvim_create_augroup("auto_close_windows", { clear = true }),
   desc = "Auto close plugin windows on quit",
   callback = function()
@@ -70,14 +65,12 @@ vim.api.nvim_create_autocmd("QuitPre", {
 })
 
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
-  pattern = { "*" },
   group = vim.api.nvim_create_augroup("auto_checktime", { clear = true }),
   desc = "Reload files changed outside of Neovim",
   callback = function() vim.cmd("checktime") end,
 })
 
 vim.api.nvim_create_autocmd("BufReadPre", {
-  pattern = { "*" },
   group = vim.api.nvim_create_augroup("bigfile", { clear = true }),
   desc = "Turn off some features on large files",
   callback = function(args)
