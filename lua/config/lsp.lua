@@ -354,11 +354,13 @@ do
     return mods
   end
 
-  local function update_lua_ls_libs()
+  local function update()
     local clients = vim.lsp.get_clients({ name = "lua_ls" })
     if #clients == 0 then return end
 
     local map = get_mod_map()
+    if not map then return end
+
     local changed = false
 
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
@@ -394,7 +396,7 @@ do
     pattern = "*.lua",
     group = group,
     desc = "Update lua_ls workspace libraries from require() calls",
-    callback = function() vim.defer_fn(update_lua_ls_libs, 100) end,
+    callback = function() vim.defer_fn(update, 100) end,
   })
 
   vim.api.nvim_create_autocmd("LspAttach", {
@@ -402,7 +404,7 @@ do
     desc = "Initial lua_ls library scan",
     callback = function(args)
       local client = vim.lsp.get_client_by_id(args.data.client_id)
-      if client and client.name == "lua_ls" then vim.defer_fn(update_lua_ls_libs, 200) end
+      if client and client.name == "lua_ls" then vim.defer_fn(update, 200) end
     end,
   })
 end
