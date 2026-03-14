@@ -34,6 +34,13 @@ M.if_not_capture = function(capture, value)
   end
 end
 
+---Check if the current buffer has a Tree-sitter parser
+---@return boolean
+M.has_parser = function()
+  local ok, parser = pcall(vim.treesitter.get_parser, 0, nil, { error = false })
+  return ok and parser ~= nil
+end
+
 ---Check if the cursor is inside (or on) a Tree-sitter node of the given type(s)
 ---@param node_type string|string[]
 ---@return boolean

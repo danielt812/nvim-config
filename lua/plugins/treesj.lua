@@ -1,5 +1,8 @@
 local treesj = require("treesj")
 local splitjoin = require("mini.splitjoin")
+local utils_ts = require("utils.ts")
+
+local html = require("treesj.langs.html")
 
 treesj.setup({
   use_default_keymaps = false,
@@ -8,6 +11,7 @@ treesj.setup({
   cursor_behavior = "hold",
   notify = false,
   dot_repeat = true,
+  langs = { htmlangular = html, },
 })
 
 local function on_pair_char()
@@ -17,16 +21,19 @@ local function on_pair_char()
   return pairs[char] == true
 end
 
+
 local function split_join_toggle()
   -- Prefer mini for bracket-based constructs
-  if on_pair_char() and splitjoin.toggle() then
-    vim.notify("splitjoin")
+  if on_pair_char() and splitjoin.toggle() then return end
+
+  -- Otherwise, let treesj try if treesitter is available
+  if utils_ts.has_parser() then
+    treesj.toggle()
     return
   end
 
-  -- Otherwise, let treesj try (keywords, params, JSX, etc.)
-  vim.notify("treesj")
-  treesj.toggle()
+  -- Fallback to normal J
+  vim.cmd("normal! J")
 end
 
 -- #############################################################################
