@@ -1,3 +1,8 @@
+vim.api.nvim_create_autocmd("VimEnter", {
+  once = true,
+  callback = function() vim.opt.fillchars:append({ fold = " " }) end,
+})
+
 function _G.foldtext()
   local buf = vim.api.nvim_get_current_buf()
   local start_line = vim.fn.getbufline(buf, vim.v.foldstart)[1]
