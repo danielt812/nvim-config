@@ -63,9 +63,7 @@ local function pick_git_checkout(remote)
     local branch = line:match("^%*?%s*(.+)$")
     if branch and not line:match("^%*") and not branch:match("^%S+ %->") then
       if remote then branch = branch:gsub("^%S+/", "", 1) end
-      if not local_branches[branch] then
-        table.insert(branches, branch)
-      end
+      if not local_branches[branch] then table.insert(branches, branch) end
     end
   end
 
@@ -118,11 +116,16 @@ local function pick_git_delete(remote)
   })
 end
 
-pick.registry.colorschemes = pick_colorschemes
-pick.registry.git_checkout_local  = function() pick_git_checkout(false) end
+local function history_cmd() extra.pickers.history({ scope = ":" }) end
+local function history_search() extra.pickers.history({ scope = "/" }) end
+
+pick.registry.colorschemes = function() pick_colorschemes() end
+pick.registry.git_checkout_local = function() pick_git_checkout(false) end
 pick.registry.git_checkout_remote = function() pick_git_checkout(true) end
-pick.registry.git_delete_local    = function() pick_git_delete(false) end
-pick.registry.git_delete_remote   = function() pick_git_delete(true) end
+pick.registry.git_delete_local = function() pick_git_delete(false) end
+pick.registry.git_delete_remote = function() pick_git_delete(true) end
+pick.registry.history_cmd = function() history_cmd() end
+pick.registry.history_search = function() history_search() end
 
 -- stylua: ignore start
 vim.keymap.set("n", "<leader>fc", "<cmd>Pick colorschemes<cr>",        { desc = "Colorschemes" })
@@ -139,4 +142,6 @@ vim.keymap.set("n", "<leader>gc", "<cmd>Pick git_checkout_local<cr>",  { desc = 
 vim.keymap.set("n", "<leader>gC", "<cmd>Pick git_checkout_remote<cr>", { desc = "Checkout (remote)" })
 vim.keymap.set("n", "<leader>gd", "<cmd>Pick git_delete_local<cr>",    { desc = "Delete branch (local)" })
 vim.keymap.set("n", "<leader>gD", "<cmd>Pick git_delete_remote<cr>",   { desc = "Delete branch (remote)" })
+vim.keymap.set("n", "<C-r>",      "<cmd>Pick history_cmd<cr>",         { desc = "Command history" })
+vim.keymap.set("n", "<C-e>",      "<cmd>Pick history_search<cr>",      { desc = "Search history" })
 -- stylua: ignore end

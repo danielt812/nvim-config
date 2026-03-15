@@ -136,7 +136,7 @@ do
     local buf = args.buf
     local in_progress = (vim.b[buf or 0].minigit_summary or {}).in_progress
     local conflicting = in_progress
-      and (in_progress:find("merge") or in_progress:find("cherry") or in_progress:find("rebase"))
+      and (in_progress:find("merge") or in_progress:find("cherry") or in_progress:find("rebase") or in_progress:find("stash"))
 
     if conflicting then
       if vim.b[buf].minigit_conflicts then return end
