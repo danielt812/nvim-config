@@ -4,35 +4,56 @@ colors.setup()
 local ns = vim.api.nvim_create_namespace("on_highlight")
 local group = vim.api.nvim_create_augroup("mini_colors", { clear = true })
 
---- Quadratic ease-out: fast start, slow finish
-local function ease_out_quad(time) return time * (2 - time) end
-
 local function hl_bg(name)
   local hl = vim.api.nvim_get_hl(0, { name = name, link = false })
   return hl.bg and string.format("#%06X", hl.bg) or "#000000"
 end
 
---- @param progress number
---- @param from_hex string
---- @param to_hex string
---- @return string
-local function fade(progress, from_hex, to_hex)
+--- Interpolate between two hex colors in oklab space
+--- @param factor number 0 = from_hex, 1 = to_hex
+local function lerp_color(factor, from_hex, to_hex)
   local from = colors.convert(from_hex, "oklab")
   local to = colors.convert(to_hex, "oklab")
   if not (from and to and from.l and to.l) then return to_hex end
-  local eased = ease_out_quad(progress)
   return colors.convert({
-    l = from.l + (to.l - from.l) * eased,
-    a = from.a + (to.a - from.a) * eased,
-    b = from.b + (to.b - from.b) * eased,
+    l = from.l + (to.l - from.l) * factor,
+    a = from.a + (to.a - from.a) * factor,
+    b = from.b + (to.b - from.b) * factor,
   }, "hex") --[[@as string]]
 end
 
-local function animate(buf, from_hl, to_hl, ranges, max_dur, min_dur)
+local function out_quad(t) return t * (2 - t) end
+local function out_back(t)
+  t = t - 1
+  return t * t * (2.70158 * t + 1.70158) + 1
+end
+
+local function effect_fade() return out_quad end
+local function effect_reverse_fade() return out_back end
+local function effect_pulse(count)
+  count = count or 1
+  return function(p) return math.sin(p * math.pi * count) end
+end
+local function effect_bounce(count)
+  count = count or 2
+  return function(p) return math.abs(math.sin(p * math.pi * count)) end
+end
+
+local function effect_ltr(sweep_end)
+  sweep_end = sweep_end or 0.85
+  return function(p)
+    local ltr = math.min(p / sweep_end, 1.0)
+    local factor = p < sweep_end and 0 or out_quad((p - sweep_end) / (1 - sweep_end))
+    return factor, ltr
+  end
+end
+
+local function animate(buf, from_hl, to_hl, ranges, max_dur, min_dur, effect)
   if not vim.api.nvim_buf_is_valid(buf) then return end
   if vim.bo[buf].filetype == "ministarter" then return end
   if #ranges == 0 then return end
 
+  effect = effect or effect_fade()
   local from = hl_bg(from_hl)
   local to = hl_bg(to_hl)
   local hl = "On_" .. vim.uv.now()
@@ -67,7 +88,8 @@ local function animate(buf, from_hl, to_hl, ranges, max_dur, min_dur)
       end
 
       local progress = math.min((vim.uv.now() - start_time) / dur, 1)
-      vim.api.nvim_set_hl(0, hl, { bg = fade(progress, from, to) })
+      local factor, ltr = effect(progress)
+      vim.api.nvim_set_hl(0, hl, { bg = lerp_color(factor, from, to) })
 
       for _, range in ipairs(ranges) do
         vim.api.nvim_buf_clear_namespace(buf, ns, range.start_row, range.end_row + 1)
@@ -84,11 +106,13 @@ local function animate(buf, from_hl, to_hl, ranges, max_dur, min_dur)
           local start_col, end_col
           if line == range.start_row then
             start_col = range.start_col
-            end_col = (range.end_col - range.start_col == 0 or multi) and 99999 or (range.end_col - range.start_col)
+            local full = (range.end_col - range.start_col == 0 or multi) and 99999 or (range.end_col - range.start_col)
+            end_col = ltr and math.floor(full * ltr) or full
           elseif line < range.end_row then
             start_col, end_col = 0, 99999
           else
-            start_col, end_col = 0, range.end_col
+            start_col = 0
+            end_col = ltr and math.floor(range.end_col * ltr) or range.end_col
           end
           pcall(vim.api.nvim_buf_set_extmark, buf, ns, line, math.max(0, start_col), {
             end_col = start_col + end_col,
@@ -195,7 +219,7 @@ local function on_paste()
   local function finish()
     done = true
     paste_attached[buf] = nil
-    if #ranges > 0 then animate(buf, "OnPaste", "Normal", merge_ranges(ranges), 400, 300) end
+    if #ranges > 0 then animate(buf, "OnPaste", "Normal", merge_ranges(ranges), 800, 500) end
   end
 
   paste_attached[buf] = true
@@ -223,7 +247,7 @@ end
 
 -- Undo / Redo --------------------------------------------------------------------
 
-local function on_undo_redo(from_hl, to_hl, max_dur, min_dur)
+local function on_undo_redo(from_hl, to_hl, max_dur, min_dur, effect)
   local function offset_to_range(start_row, start_col, delta_rows, delta_cols)
     return {
       start_row = start_row,
@@ -315,35 +339,16 @@ local function on_undo_redo(from_hl, to_hl, max_dur, min_dur)
       if #guard > 2 then
         table.remove(guard, 1)
         table.remove(guard, #guard)
-        animate(buf, from_hl, to_hl, guard, max_dur, min_dur)
+        animate(buf, from_hl, to_hl, guard, max_dur, min_dur, effect)
       end
     end)
   end
 end
 
--- Search -------------------------------------------------------------------------
-local function on_search()
-  local buf = vim.api.nvim_get_current_buf()
-  local pattern = vim.fn.getreg("/")
-  vim.defer_fn(function()
-    local pos = vim.api.nvim_win_get_cursor(0)
-    local matches = vim.fn.matchbufline(buf, pattern, pos[1], pos[1])
-    if vim.tbl_isempty(matches) then return end
-    animate(buf, "OnSearch", "Normal", {
-      {
-        start_row = pos[1] - 1,
-        start_col = pos[2],
-        end_row = pos[1] - 1,
-        end_col = pos[2] + #matches[1].text,
-      },
-    }, 800, 500)
-  end, 5)
-end
-
 -- Keymap Wrappers ----------------------------------------------------------------
 -- stylua: ignore start
-local function on_undo() vim.schedule(on_undo_redo("OnUndo", "Normal", 400, 300)) end
-local function on_redo() vim.schedule(on_undo_redo("OnRedo", "Normal", 400, 300)) end
+local function on_undo() vim.schedule(on_undo_redo("OnUndo", "Normal", 800, 500)) end
+local function on_redo() vim.schedule(on_undo_redo("OnRedo", "Normal", 800, 500)) end
 
 -- stylua: ignore end
 
@@ -351,9 +356,6 @@ wrap_keymap("n", "p", on_paste)
 wrap_keymap("n", "P", on_paste)
 wrap_keymap("n", "u", on_undo)
 wrap_keymap("n", "U", on_redo)
-wrap_keymap("n", "<C-r>", on_redo)
-wrap_keymap("n", "n", on_search)
-wrap_keymap("n", "N", on_search)
 
 -- #############################################################################
 -- #                            Automatic Commands                             #
@@ -364,8 +366,7 @@ local function gen_hl_groups()
     OnYank = "BgYellow",
     OnPaste = "BgGreen",
     OnUndo = "BgRed",
-    OnRedo = "BgGreen",
-    OnSearch = "BgBlue",
+    OnRedo = "BgBlue",
   }
 
   for target_hl, source_hl in pairs(map) do
@@ -382,10 +383,6 @@ local function gen_hl_groups()
       end
     end
   end
-
-  -- Clear CurSearch bg so it doesn't cover search animations
-  local normal = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
-  vim.api.nvim_set_hl(0, "CurSearch", { bg = "None", fg = normal.fg })
 end
 
 gen_hl_groups() -- Call this now if colorscheme was already set
@@ -394,13 +391,4 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   group = group,
   desc = "Create highlight groups",
   callback = gen_hl_groups,
-})
-
-vim.api.nvim_create_autocmd("CmdlineLeave", {
-  group = group,
-  desc = "Animate search highlight on cmdline search",
-  callback = function()
-    local cmd_type = vim.fn.getcmdtype()
-    if cmd_type == "/" or cmd_type == "?" then on_search() end
-  end,
 })

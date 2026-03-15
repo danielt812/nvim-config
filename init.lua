@@ -184,13 +184,6 @@ later(function()
   plug("kulala")
 end)
 
--- UI --------------------------------------------------------------------------
-later(function()
-  -- Animated highlights
-  -- add({ source = "rachartier/tiny-glimmer.nvim" })
-  -- plug("tiny-glimmer")
-end)
-
 -- Work ------------------------------------------------------------------------
 now(function()
   local work = vim.fn.stdpath("config") .. "/work/init.lua"
