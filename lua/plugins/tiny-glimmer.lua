@@ -3,6 +3,7 @@ local glimmer = require("tiny-glimmer")
 glimmer.setup({
   -- Disable this if you wants to debug highlighting issues
   disable_warnings = false,
+  autoreload = true,
   overwrite = {
     auto_map = true,
 
@@ -40,8 +41,8 @@ glimmer.setup({
         settings = {
           from_color = "BgGreen",
           to_color = "Normal",
-          max_duration = 400,
-          min_duration = 300,
+          max_duration = 800,
+          min_duration = 500,
         },
       },
       paste_mapping = "p",
@@ -49,15 +50,14 @@ glimmer.setup({
     },
     undo = {
       enabled = true,
-
       default_animation = {
         name = "fade",
 
         settings = {
           from_color = "BgRed",
           to_color = "Normal",
-          max_duration = 400,
-          min_duration = 300,
+          max_duration = 800,
+          min_duration = 500,
         },
       },
       undo_mapping = "u",
@@ -71,12 +71,12 @@ glimmer.setup({
         settings = {
           from_color = "BgGreen",
           to_color = "Normal",
-          max_duration = 400,
-          min_duration = 300,
+          max_duration = 800,
+          min_duration = 500,
         },
       },
 
-      redo_mapping = "<c-r>",
+      redo_mapping = "U",
     },
   },
   hijack_ft_disabled = {

@@ -165,13 +165,6 @@ later(function()
   plug("conform")
 end)
 
--- UI --------------------------------------------------------------------------
-later(function()
-  -- Animated highlights
-  add({ source = "rachartier/tiny-glimmer.nvim" })
-  plug("tiny-glimmer")
-end)
-
 -- Quickfix --------------------------------------------------------------------
 later(function()
   add({ source = "stevearc/quicker.nvim" })
