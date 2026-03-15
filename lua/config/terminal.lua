@@ -442,7 +442,7 @@ vim.keymap.set({ "n", "t" }, "<C-g>",  lazygit,      { desc = "Lazygit" })
 vim.keymap.set({ "n", "t" }, "<C-\\>", toggle_smart, { desc = "Toggle terminal" })
 
 vim.keymap.set("n", "<leader>gg", lazygit, { desc = "Lazygit" })
-vim.keymap.set("n", "<leader>gd", delta,   { desc = "Delta" })
+vim.keymap.set("n", "<leader>gf", delta,   { desc = "Delta" })
 
 vim.keymap.set("n", "<leader>tt", run_task, { desc = "Run task" })
 vim.keymap.set("n", "<leader>tf", run_file, { desc = "Run file" })
