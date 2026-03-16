@@ -34,5 +34,3 @@ map_multistep("i", "<cr>", { "nvimautopairs_cr", "minipairs_cr" })
 map_multistep("i", "<bs>", { "nvimautopairs_bs", "minipairs_bs" })
 
 map_combo("n", "<esc>", "<cmd>nohlsearch<cr>", { desc = "Clear highlight" })
--- Exit from insert mode by Esc in Terminal
-map_combo("t", "<esc><esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })

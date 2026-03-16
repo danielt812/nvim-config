@@ -1,5 +1,3 @@
-local scratch_types = require("lib.scratch")
-
 -- stylua: ignore start
 vim.keymap.set({ "n", "v" }, "<PageDown>", "<PageDown>gvzz", { desc = "Scroll down full page" })
 vim.keymap.set({ "n", "v" }, "<C-f>",      "<C-f>gvzz",      { desc = "Scroll down full page" })
@@ -48,6 +46,9 @@ vim.keymap.set("n", ">", ">>",  { desc = "Indent line to right",  silent = true 
 
 vim.keymap.set("n", "U", "<c-r>", { desc = "Redo", silent = true })
 
+-- Exit from insert mode by Esc in Terminal
+vim.keymap.set("t", "<esc><esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
 vim.keymap.set("n", "dd", function()
   if vim.fn.getline("."):match("^%s*$") then return '"_dd' end
   return "dd"
@@ -56,20 +57,3 @@ end, { expr = true })
 vim.keymap.set("n", "yy", function()
   if vim.fn.getline(".") ~= "" then vim.cmd("normal! yy") end
 end, { noremap = true, silent = true })
-
--- Create scratch buffer
-vim.keymap.set("n", "<leader>bs", function()
-  vim.ui.select(scratch_types, {
-    prompt = "Filetype:",
-    format_item = function(item) return item.ft end,
-  }, function(item)
-    if item == nil then return end
-    vim.ui.input({ prompt = "Name: " }, function(name)
-      if name == nil then return end
-      local buf = vim.api.nvim_create_buf(true, true)
-      vim.api.nvim_win_set_buf(0, buf)
-      vim.bo[buf].filetype = item.ft
-      if name ~= "" then vim.api.nvim_buf_set_name(buf, name .. "." .. (item.ext or item.ft)) end
-    end)
-  end)
-end, { desc = "Scratch" })

@@ -119,7 +119,7 @@ local function put_messages() put_text(vim.split(vim.api.nvim_exec2("messages", 
 -- stylua: ignore start
 vim.keymap.set("n", "<C-z>",      zoom,          { desc = "Zoom" })
 vim.keymap.set("n", "<leader>ep", put_messages,  { desc = "Put messages" })
-vim.keymap.set("n", "<leader>ez", zoom,          { desc = "Zoom" })
+vim.keymap.set("n", "<leader>ez", zoom,          { desc = "Zoom (full)" })
 vim.keymap.set("n", "<leader>eZ", centered_zoom, { desc = "Zoom (centered)" })
 -- stylua: ignore end
 

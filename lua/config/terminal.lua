@@ -395,7 +395,8 @@ local function run_file()
   local file = vim.fn.expand("%:p")
   local cmd = runner:format(file)
   local name = "run: " .. vim.fn.expand("%:t")
-  toggle_term(name, { layout = "vertical", cmd = cmd })
+  local shell = vim.o.shell
+  toggle_term(name, { layout = "vertical", cmd = shell .. " -c " .. vim.fn.shellescape(cmd .. "; exec " .. shell) })
 end
 
 local function run_task()
