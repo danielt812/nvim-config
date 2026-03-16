@@ -46,6 +46,27 @@ local languages = {
   "zsh",
 }
 
+-- Parsers bundled with plugins: not on nvim-treesitter repo, skip install/update
+local bundled = { kulala_http = true }
+
+-- Override TSUpdate to exclude bundled parsers (they're not in the official registry
+-- so nvim-treesitter would warn "skipping unsupported language" for each one)
+vim.api.nvim_create_autocmd("VimEnter", {
+  once = true,
+  callback = function()
+    vim.api.nvim_create_user_command("TSUpdate", function(args)
+      local langs = args.fargs
+      if #langs == 0 then
+        langs = vim.tbl_filter(
+          function(l) return not bundled[l] end,
+          treesitter.get_installed()
+        )
+      end
+      treesitter.update(langs, { summary = true })
+    end, { nargs = "*", bar = true, desc = "Update installed treesitter parsers" })
+  end,
+})
+
 local function isnt_installed(lang) return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0 end
 
 local to_install = vim.tbl_filter(isnt_installed, languages)
