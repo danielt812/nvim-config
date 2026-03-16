@@ -21,6 +21,7 @@ local languages = {
   "git_rebase",
   "gitcommit",
   "gitignore",
+  "go",
   "html",
   "http",
   "javascript",
