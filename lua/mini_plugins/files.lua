@@ -65,7 +65,11 @@ local function os_open() vim.ui.open(files.get_fs_entry().path) end
 local function set_cwd()
   local path = (files.get_fs_entry() or {}).path
   if path == nil then return vim.notify("Cursor is not on valid entry") end
-  vim.fn.chdir(vim.fs.dirname(path))
+  local entry = files.get_fs_entry()
+  if not entry then return end
+  local dir = entry.fs_type == "directory" and path or vim.fs.dirname(path)
+  vim.fn.chdir(dir)
+  vim.notify("cwd: " .. dir)
 end
 
 -- Yank in register full path of entry under cursor
@@ -79,8 +83,8 @@ vim.api.nvim_create_autocmd("User", {
   pattern = "MiniFilesBufferCreate",
   group = group,
   callback = function(args)
-    local buf_id = args.data.buf_id
-    local function map(lhs, rhs, desc) vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = desc }) end
+    local buf = args.data.buf_id
+    local function map(lhs, rhs, desc) vim.keymap.set("n", lhs, rhs, { buffer = buf, desc = desc }) end
     -- stylua: ignore start
     map("g.", toggle_dotfiles, "Toggle dotfiles")
     map("g~", set_cwd,         "Set cwd")
