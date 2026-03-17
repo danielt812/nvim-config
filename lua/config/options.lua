@@ -37,6 +37,7 @@ vim.opt.showmode       = false     -- Don't show mode in command line
 vim.opt.signcolumn     = "yes"     -- Always show sign column
 vim.opt.winborder      = "rounded" -- Use rounded floating window borders
 vim.opt.wrap           = false     -- Display long lines as just one line
+vim.opt.conceallevel   = 0         -- Show text normally, no concealing
 
 -- INFO: Window splits
 vim.opt.splitbelow     = true -- Horizontal splits will be below
