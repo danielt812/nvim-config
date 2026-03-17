@@ -3,17 +3,17 @@ local colors = require("mini.colors")
 local signs = { E = "", W = "", I = "", H = "" }
 
 vim.diagnostic.config({
-  signs = false,
-  -- signs = {
-  --   priority = 2,
-  --   severity = { min = "HINT", max = "ERROR" },
-  --   text = {
-  --     [vim.diagnostic.severity.ERROR] = signs.E,
-  --     [vim.diagnostic.severity.WARN]  = signs.W,
-  --     [vim.diagnostic.severity.INFO]  = signs.I,
-  --     [vim.diagnostic.severity.HINT]  = signs.H,
-  --   },
-  -- },
+  -- signs = false,
+  signs = {
+    priority = 2,
+    severity = { min = "HINT", max = "ERROR" },
+    text = {
+      [vim.diagnostic.severity.ERROR] = signs.E,
+      [vim.diagnostic.severity.WARN]  = signs.W,
+      [vim.diagnostic.severity.INFO]  = signs.I,
+      [vim.diagnostic.severity.HINT]  = signs.H,
+    },
+  },
   virtual_text = false,
 })
 
