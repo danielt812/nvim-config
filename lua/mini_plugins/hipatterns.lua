@@ -140,12 +140,14 @@ local tests = {
 }
 
 local strings = {
-  double_quote_open = { pattern = '()"()[^"]*"', group = in_string("Grey") },
+  -- stylua: ignore start
+  double_quote_open  = { pattern = '()"()[^"]*"', group = in_string("Grey") },
   double_quote_close = { pattern = '"[^"]*()"()', group = in_string("Grey") },
-  single_quote_open = { pattern = "()'()[^']*'", group = in_string("Grey") },
+  single_quote_open  = { pattern = "()'()[^']*'", group = in_string("Grey") },
   single_quote_close = { pattern = "'[^']*()'()", group = in_string("Grey") },
-  backtick_open = { pattern = "()`()[^`]*`", group = in_string("Grey") },
-  backtick_close = { pattern = "`[^`]*()`()", group = in_string("Grey") },
+  backtick_open      = { pattern = "()`()[^`]*`", group = in_string("Grey") },
+  backtick_close     = { pattern = "`[^`]*()`()", group = in_string("Grey") },
+  -- stylua: ignore end
 }
 
 local highlighters = {}
