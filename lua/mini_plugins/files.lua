@@ -17,7 +17,7 @@ files.setup({
     reset = "<bs>",
     reveal_cwd = "@",
     show_help = "g?",
-    synchronize = "<cr>",
+    synchronize = "=",
     trim_left = "<",
     trim_right = ">",
   },
