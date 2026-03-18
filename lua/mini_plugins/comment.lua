@@ -2,13 +2,14 @@ local comment = require("mini.comment")
 
 local comment_strings = {
   default = {
-    html = "<!-- %s -->",
     css = "/* %s */",
-    scss = "/* %s */",
-    less = "/* %s */",
+    html = "<!-- %s -->",
+    http = "// %s",
     javascript = "// %s",
-    typescript = "// %s",
+    less = "/* %s */",
+    scss = "/* %s */",
     tsx = "// %s",
+    typescript = "// %s",
   },
 
   overrides = {},
@@ -59,7 +60,7 @@ local function custom_commentstring()
   local override = node and override_cs(lang, node)
   if override then return override end
 
-  return comment_strings.default[lang] or vim.bo.commentstring
+  return comment_strings.default[lang] or comment_strings.default[ft] or vim.bo.commentstring
 end
 
 comment.setup({
