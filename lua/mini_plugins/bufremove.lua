@@ -43,12 +43,12 @@ local function remove_buffers(action, selection, force)
 end
 
 -- stylua: ignore start
-local bufdelete_cur    = function() remove_buffers("delete",  "current", false) end
+local function bufdelete_cur()    remove_buffers("delete",  "current", false) end
 local function bufdelete_others() remove_buffers("delete",  "others",  false) end
-local bufdelete_all    = function() remove_buffers("delete",  "all",     false) end
-local bufdelete_left   = function() remove_buffers("delete",  "left",    false) end
-local bufdelete_right  = function() remove_buffers("delete",  "right",   false) end
-local bufwipeout_cur   = function() remove_buffers("wipeout", "current", true)  end
+local function bufdelete_all()    remove_buffers("delete",  "all",     false) end
+local function bufdelete_left()   remove_buffers("delete",  "left",    false) end
+local function bufdelete_right()  remove_buffers("delete",  "right",   false) end
+local function bufwipeout_cur()   remove_buffers("wipeout", "current", true)  end
 -- stylua: ignore end
 
 -- stylua: ignore start
