@@ -994,6 +994,12 @@ local highlights = {
   NvimDapViewTabSelected = { fg = palette.blue,  bg = palette.bg0 },
   NvimDapViewTabFill     = { fg = palette.green, bg = palette.bg0 },
   -- stylua: ignore end
+
+  -- https://github.com/mistweaverco/kulala.nvim
+  -- stylua: ignore start
+  KulalaTab    = { fg = palette.grey1, bg = palette.bg2 },
+  KulalaTabSel = { fg = palette.blue,  bg = palette.bg2 },
+  -- stylua: ignore end
 }
 
 local hl = function(group, opts)
