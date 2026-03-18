@@ -49,10 +49,12 @@ icons.setup({
   },
   filetype = {
     -- stylua: ignore start
-    ["dap-view"] = { glyph = "", hl = "MiniIconsRed" },
-    ["ghostty"]  = { glyph = "󱙝", hl = "MiniIconsBlue" },
-    ["terminal"] = { glyph = "", hl = "MiniIconsPurple" },
-    ["tmux"]     = { glyph = "", hl = "MiniIconsGreen" },
+    ["dap-view"]       = { glyph = "", hl = "MiniIconsRed" },
+    ["ghostty"]        = { glyph = "󱙝", hl = "MiniIconsBlue" },
+    ["json.kulala_ui"] = { glyph = "󰏚", hl = "MiniIconsWhite" },
+    ["text.kulala_ui"] = { glyph = "󰏚", hl = "MiniIconsWhite" },
+    ["terminal"]       = { glyph = "", hl = "MiniIconsPurple" },
+    ["tmux"]           = { glyph = "", hl = "MiniIconsGreen" },
     -- stylua: ignore end
   },
   lsp = {
@@ -66,3 +68,19 @@ icons.setup({
 
 icons.mock_nvim_web_devicons()
 icons.tweak_lsp_kind()
+
+-- #############################################################################
+-- #                            Automatic Commands                             #
+-- #############################################################################
+
+local function gen_hl_groups() vim.api.nvim_set_hl(0, "MiniIconsWhite", { link = "White" }) end
+
+gen_hl_groups() -- Call this now if colorscheme was already set
+
+local group = vim.api.nvim_create_augroup("mini_icons", { clear = true })
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  group = group,
+  desc = "Create highlight groups",
+  callback = gen_hl_groups,
+})
