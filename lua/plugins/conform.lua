@@ -89,6 +89,9 @@ vim.api.nvim_create_user_command("ConformLog", function()
   vim.cmd("split " .. log_path)
 end, { desc = "Open Conform log file" })
 
+-- kulala-fmt ----------------------------------------------------------------
+conform.formatters_by_ft.http = { "kulala-fmt" }
+
 -- vim.api.nvim_create_autocmd("BufWritePre", {
 --   group = vim.api.nvim_create_augroup("format_on_save", { clear = true }),
 --   desc = "Format on save",
