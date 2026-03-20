@@ -106,18 +106,15 @@ do
 
       for col = 0, indent - 1, step do
         local win_col = col - leftcol
-        if win_col >= 0 then
-          local ch = line:sub(col + 1, col + 1)
-          if is_blank or ch == " " or ch == "\t" then -- Remove \t check if you want ext mark over tabs (:h retab)
-            vim.api.nvim_buf_set_extmark(buf, ns, lnum - 1, 0, {
-              virt_text = { { "│", "NonText" } },
-              virt_text_pos = "overlay",
-              virt_text_win_col = win_col,
-              virt_text_repeat_linebreak = true, -- Requires v0.10.0 or greater
-              hl_mode = "combine",
-              priority = 1, -- This should be lower than mini.indentscope ext mark priority
-            })
-          end
+        if win_col >= 0 and (is_blank or col < indent) then
+          vim.api.nvim_buf_set_extmark(buf, ns, lnum - 1, 0, {
+            virt_text = { { "│", "NonText" } },
+            virt_text_pos = "overlay",
+            virt_text_win_col = win_col,
+            virt_text_repeat_linebreak = true, -- Requires v0.10.0 or greater
+            hl_mode = "combine",
+            priority = 1, -- This should be lower than mini.indentscope ext mark priority
+          })
         end
       end
     end
