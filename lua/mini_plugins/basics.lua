@@ -34,7 +34,7 @@ local scratch_types = {
 }
 
 -- Create scratch buffer
-vim.keymap.set("n", "<leader>bs", function()
+local function scratch_buffer()
   vim.ui.select(scratch_types, {
     prompt = "Filetype:",
     format_item = function(item) return item.ft end,
@@ -48,4 +48,17 @@ vim.keymap.set("n", "<leader>bs", function()
       if name ~= "" then vim.api.nvim_buf_set_name(buf, name .. "." .. (item.ext or item.ft)) end
     end)
   end)
-end, { desc = "Scratch" })
+end
+
+
+local function rename_buffer()
+  local current = vim.api.nvim_buf_get_name(0)
+  vim.ui.input({ prompt = "Buffer name: ", default = current }, function(name)
+    if name and name ~= "" then vim.api.nvim_buf_set_name(0, name) end
+  end)
+end
+
+-- stylua: ignore start
+vim.keymap.set("n", "<leader>bs", scratch_buffer, { desc = "Scratch" })
+vim.keymap.set("n", "<leader>br", rename_buffer,  { desc = "Rename" })
+-- stylua: ignore end
