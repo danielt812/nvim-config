@@ -10,6 +10,7 @@ pick.setup({
     end,
   },
   mappings = {
+    choose_in_vsplit = "",
     mark = "<C-x>",
     mark_all = "<C-a>",
     move_down = "<C-j>",
@@ -143,5 +144,5 @@ vim.keymap.set("n", "<leader>gC", "<cmd>Pick git_checkout_remote<cr>", { desc = 
 vim.keymap.set("n", "<leader>gd", "<cmd>Pick git_delete_local<cr>",    { desc = "Delete branch (local)" })
 vim.keymap.set("n", "<leader>gD", "<cmd>Pick git_delete_remote<cr>",   { desc = "Delete branch (remote)" })
 vim.keymap.set("n", "<C-r>",      "<cmd>Pick history_cmd<cr>",         { desc = "Command history" })
-vim.keymap.set("n", "<C-e>",      "<cmd>Pick history_search<cr>",      { desc = "Search history" })
+-- vim.keymap.set("n", "<C-s>",      "<cmd>Pick history_search<cr>",      { desc = "Search history" })
 -- stylua: ignore end
