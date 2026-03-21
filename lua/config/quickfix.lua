@@ -87,11 +87,3 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
     end
   end,
 })
-
-vim.api.nvim_create_autocmd("WinLeave", {
-  group = group,
-  desc = "Close quickfix/loclist when leaving its window",
-  callback = function()
-    if vim.bo.buftype == "quickfix" then vim.schedule(function() vim.cmd("cclose") vim.cmd("lclose") end) end
-  end,
-})

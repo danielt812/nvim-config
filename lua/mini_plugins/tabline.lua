@@ -30,7 +30,9 @@ tabline.setup({
 -- #                                  Keymaps                                  #
 -- #############################################################################
 
-vim.keymap.set("n", "<leader>bp", pin.toggle, { desc = "Pin/Unpin" })
+local function toggle_pin() pin.toggle(0) end
+
+vim.keymap.set("n", "<leader>bp", toggle_pin, { desc = "Pin/Unpin" })
 
 -- for i = 1, 9 do
 --   vim.keymap.set("n", "<leader>b" .. i, function()

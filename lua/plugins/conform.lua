@@ -19,7 +19,7 @@ conform.formatters.stylua = {
 conform.formatters_by_ft.lua = { "stylua" }
 
 -- gofmt -----------------------------------------------------------------------
-conform.formatters_by_ft.go = { "gofmt" }
+conform.formatters_by_ft.go = { "goimports" }
 
 -- prettier --------------------------------------------------------------------
 local prettier_args = {

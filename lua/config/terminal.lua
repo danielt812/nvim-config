@@ -149,16 +149,24 @@ local function toggle_term(name, opts)
   end
 end
 
+local last_term_name = nil
+
 local function toggle_smart()
   local buf = vim.api.nvim_get_current_buf()
-  for _, term in pairs(terms) do
+  for name, term in pairs(terms) do
     if term.buf and term.buf == buf then
       local win = find_win(term.buf)
       if win then hide(term, win) end
+      last_term_name = name
       return
     end
   end
-  vim.cmd("Term horizontal")
+
+  if last_term_name and terms[last_term_name] and terms[last_term_name].buf and vim.api.nvim_buf_is_valid(terms[last_term_name].buf) then
+    show(terms[last_term_name])
+  else
+    vim.cmd("Term full")
+  end
 end
 
 -- #############################################################################
@@ -431,6 +439,7 @@ end
 -- #############################################################################
 
 -- stylua: ignore start
+local claude     = function() toggle_term("claude",     { layout = "full", cmd = "claude" }) end
 local lazygit    = function() toggle_term("lazygit",    { layout = "full", cmd = "lazygit" }) end
 local delta      = function() toggle_term("delta",      { layout = "full", cmd = "git diff | delta --diff-so-fancy --side-by-side --line-numbers" }) end
 local vertical   = function() toggle_term("vertical",   { layout = "vertical"   }) end
@@ -440,6 +449,7 @@ local full       = function() toggle_term("full",       { layout = "full"       
 vim.keymap.set({ "n", "t" }, "<C-t>",  full,         { desc = "Full Terminal" })
 vim.keymap.set({ "n", "t" }, "<C-s>",  vertical,     { desc = "Split Terminal" })
 vim.keymap.set({ "n", "t" }, "<C-g>",  lazygit,      { desc = "Lazygit" })
+vim.keymap.set({ "n", "t" }, "<C-e>",  claude,       { desc = "Claude Code" })
 vim.keymap.set({ "n", "t" }, "<C-\\>", toggle_smart, { desc = "Toggle terminal" })
 
 vim.keymap.set("n", "<leader>gg", lazygit, { desc = "Lazygit" })

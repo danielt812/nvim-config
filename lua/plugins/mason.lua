@@ -52,6 +52,7 @@ local ensure_installed = {
   "typescript-language-server",
   "yaml-language-server",
   -- Formatters/Linters --------------------------------------------------------
+  "goimports",
   "kulala-fmt",
   "prettier",
   "prettierd",

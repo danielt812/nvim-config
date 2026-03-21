@@ -1,14 +1,7 @@
-vim.api.nvim_create_autocmd("FileType", {
+vim.api.nvim_create_autocmd("BufEnter", {
   group = vim.api.nvim_create_augroup("comment_fmt_opts", { clear = true }),
   desc = "No comment on new line",
   callback = function() vim.opt.formatoptions:remove({ "c", "r", "o" }) end,
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown", "gitcommit" },
-  group = vim.api.nvim_create_augroup("auto_spell", { clear = true }),
-  desc = "Enable spell checking",
-  callback = function() vim.cmd("setlocal spell") end,
 })
 
 vim.api.nvim_create_autocmd("BufWinEnter", {
@@ -35,7 +28,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 vim.api.nvim_create_autocmd("BufReadPost", {
-  pattern = { "*.env*" },
+  pattern = { ".env*" },
   group = vim.api.nvim_create_augroup("env_filetype", { clear = true }),
   desc = "Set env filetype",
   callback = function() vim.cmd("set filetype=sh") end,
@@ -75,7 +68,7 @@ vim.api.nvim_create_autocmd("BufReadPre", {
   desc = "Turn off some features on large files",
   callback = function(args)
     local ok, stats = pcall(vim.uv.fs_stat, args.file)
-    if ok and stats and stats.size > 1024 * 200 then -- 200 KB threshold, adjust as needed
+    if ok and stats and stats.size > 1024 * 1024 then -- 1 MB
       vim.schedule(function()
         if vim.bo[args.buf].buftype == "help" then return end
         if vim.treesitter.highlighter then vim.treesitter.stop(args.buf) end

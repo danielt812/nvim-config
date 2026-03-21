@@ -7,46 +7,33 @@ local config = require("kulala.config")
 local ui = require("kulala.ui")
 local bufremove = require("mini.bufremove")
 
+local function ijq()
+  local body_file = vim.fn.stdpath("cache") .. "/kulala/body.txt"
+  if vim.fn.filereadable(body_file) ~= 1 then return vim.notify("No response body", vim.log.levels.WARN) end
+  vim.cmd("only | enew")
+  vim.fn.jobstart("ijq < " .. vim.fn.shellescape(body_file), { term = true })
+end
+
 -- stylua: ignore start
-local scratchpad       = function() kulala.scratchpad() end
-local open             = function() kulala.open() end
-local close            = function() kulala.close() end
-local copy             = function() kulala.copy() end
-local from_curl        = function() kulala.from_curl() end
-local inspect          = function() kulala.inspect() end
-local open_cookies_jar = function() kulala.open_cookies_jar() end
-local function run_auth()
-  local auth_file = vim.fs.find("1_auth.http", { upward = true, path = vim.fn.expand("%:p:h") })[1]
-  if not auth_file then return end
+local function scratchpad() kulala.scratchpad() end
+local function open() kulala.open() end
+local function close() kulala.close() end
+local function copy() kulala.copy() end
+local function from_curl() kulala.from_curl() end
+local function inspect() kulala.inspect() end
+local function open_cookies_jar() kulala.open_cookies_jar() end
+local function set_selected_env() kulala.set_selected_env() end
+local function run_all() kulala.run_all() end
+local function download_gql() kulala.download_graphql_schema() end
+local function jump_next() kulala.jump_next() end
+local function jump_prev() kulala.jump_prev() end
+local function search() kulala.search() end
+local function toggle_view() kulala.toggle_view() end
+local function show_stats() kulala.show_stats() end
+local function clear_globals() kulala.scripts_clear_global() end
+local function clear_cached() kulala.clear_cached_files() end
+local function run() kulala.run() end
 
-  local cur_buf = vim.api.nvim_get_current_buf()
-  vim.cmd.edit(auth_file)
-  vim.cmd("normal! gg")
-  kulala.run()
-
-  vim.defer_fn(function()
-    if vim.api.nvim_buf_is_valid(cur_buf) then vim.api.nvim_set_current_buf(cur_buf) end
-  end, 2000)
-end
-
-local set_selected_env = function()
-  local prev_env = vim.g.kulala_selected_env
-  kulala.set_selected_env()
-
-  vim.defer_fn(function()
-    if vim.g.kulala_selected_env ~= prev_env then run_auth() end
-  end, 100)
-end
-local run_all          = function() kulala.run_all() end
-local download_gql     = function() kulala.download_graphql_schema() end
-local jump_next        = function() kulala.jump_next() end
-local jump_prev        = function() kulala.jump_prev() end
-local search           = function() kulala.search() end
-local toggle_view      = function() kulala.toggle_view() end
-local show_stats       = function() kulala.show_stats() end
-local clear_globals    = function() kulala.scripts_clear_global() end
-local clear_cached     = function() kulala.clear_cached_files() end
-local run              = function() kulala.run() end
 -- stylua: ignore end
 
 kulala.setup({
@@ -68,11 +55,12 @@ kulala.setup({
     -- ["Show stats"]               = { "<leader>rS", show_stats,       ft = { "http", "rest" }, prefix = false },
     ["Clear globals"]            = { "<leader>rx", clear_globals,    ft = { "http", "rest" }, prefix = false },
     ["Clear cached files"]       = { "<leader>rX", clear_cached,     ft = { "http", "rest" }, prefix = false },
+    ["Open ijq"]                 = { "<leader>rJ", ijq,              ft = { "http", "rest" }, prefix = false },
     ["Send all requests"]        = { "<leader>ra", run_all,          mode = { "n", "v" }, prefix = false },
-    ["Send request <cr>"]        = { "<CR>",       run,              mode = { "n", "v" }, ft = { "http", "rest" }, prefix = false },
+    ["Send request"]             = { "<cr>", run, mode = { "n", "v" }, ft = { "http", "rest" }, prefix = false },
     ["Show stats"]               = false,
     ["Manage Auth Config"]       = false,
-    ["Send request"]             = false,
+    ["Send request <cr>"]        = false,
     ["Replay the last request"]  = false,
     -- stylua: ignore end
   },
@@ -82,9 +70,26 @@ kulala.setup({
   ui = {
     max_response_size = 1048576 * 2, -- 2 MB
     winbar_labels_keymaps = true,
+    display_mode = "float",
     win_opts = {
       wo = { number = true },
     },
+  },
+  lsp = {
+    enable = true,
+    filetypes = { "http", "rest", "json", "yaml", "bruno" },
+    formatter = {
+      split_params = 4, -- split query/form parameters onto multiple lines if number of params exceeds this value
+      sort = { -- enable/disable alphabetical sorting
+        metadata = true,
+        variables = true,
+        commands = false,
+        json = true,
+      },
+      quote_json_variables = true, -- add quotes around {{variable}} in JSON bodies
+      indent = 2, -- base indentation for scripts
+    },
+    on_attach = nil,
   },
 })
 
