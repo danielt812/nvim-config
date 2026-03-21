@@ -4,7 +4,7 @@ pairs.setup({
   modes = {
     insert = true,
     command = true,
-    terminal = true,
+    terminal = false,
   },
   mappings = {
     -- stylua: ignore start
