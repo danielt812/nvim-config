@@ -135,8 +135,8 @@ local links = {
 }
 
 local tests = {
-  pass = { pattern = "%f[%a]PASS%f[%A]", group = in_comment("Pass"), extmark_opts = test_extmark("✓") },
-  fail = { pattern = "%f[%a]FAIL%f[%A]", group = in_comment("Fail"), extmark_opts = test_extmark("✗") },
+  pass = { pattern = "%s()PASS()%f[%A]", group = in_comment("Pass"), extmark_opts = test_extmark("✓") },
+  fail = { pattern = "%s()FAIL()%f[%A]", group = in_comment("Fail"), extmark_opts = test_extmark("✗") },
 }
 
 local strings = {
