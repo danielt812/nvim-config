@@ -109,9 +109,11 @@ statusline.setup({
         local icon, hl = icons.get("filetype", ft)
         hl = hl:gsub("MiniIcons", "MiniStatuslineIcons")
 
-        local sw = "󰌒 " .. vim.bo.shiftwidth .. " "
+        local sw = vim.bo.shiftwidth
+        local ts = vim.bo.tabstop
+        local indent = "󰌒 " .. (sw > 0 and sw or ts) .. " "
 
-        return sw .. "%#" .. hl .. "#" .. icon .. " %#MiniStatuslineFileinfo#" .. ft
+        return indent .. "%#" .. hl .. "#" .. icon .. " %#MiniStatuslineFileinfo#" .. ft
       end
 
       local function section_disabled(args)
