@@ -59,6 +59,7 @@ local ensure_installed = {
   "shellcheck",
   "shfmt",
   "stylua",
+  "xmlformatter",
   "yamlfmt",
   -- DAP -----------------------------------------------------------------------
   "bash-debug-adapter",
