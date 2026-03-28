@@ -452,6 +452,37 @@ vim.keymap.set({ "n", "t" }, "<C-g>",  lazygit,      { desc = "Lazygit" })
 vim.keymap.set({ "n", "t" }, "<C-e>",  claude,       { desc = "Claude Code" })
 vim.keymap.set({ "n", "t" }, "<C-\\>", toggle_smart, { desc = "Toggle terminal" })
 
+-- Ctrl-HJKL Window Navigation ------------------------------------------------
+local tui_cmds = { "lazygit", "claude" }
+
+local function is_tui_term()
+  local buf = vim.api.nvim_get_current_buf()
+  for _, term in pairs(terms) do
+    if term.buf == buf and term.cmd then
+      for _, tui in ipairs(tui_cmds) do
+        if term.cmd:find(tui, 1, true) then return true end
+      end
+    end
+  end
+  return false
+end
+
+local function term_wincmd(key)
+  return function()
+    if is_tui_term() then
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-" .. key .. ">", true, false, true), "n", false)
+    else
+      vim.cmd("stopinsert")
+      vim.cmd("wincmd " .. key)
+    end
+  end
+end
+
+vim.keymap.set("t", "<C-h>", term_wincmd("h"), { desc = "Move to left window" })
+vim.keymap.set("t", "<C-j>", term_wincmd("j"), { desc = "Move to below window" })
+vim.keymap.set("t", "<C-k>", term_wincmd("k"), { desc = "Move to above window" })
+vim.keymap.set("t", "<C-l>", term_wincmd("l"), { desc = "Move to right window" })
+
 vim.keymap.set("n", "<leader>gg", lazygit, { desc = "Lazygit" })
 vim.keymap.set("n", "<leader>gf", delta,   { desc = "Delta" })
 
