@@ -70,7 +70,7 @@ kulala.setup({
   ui = {
     max_response_size = 1048576 * 2, -- 2 MB
     winbar_labels_keymaps = true,
-    display_mode = "float",
+    -- display_mode = "float",
     win_opts = {
       wo = { number = true },
     },
