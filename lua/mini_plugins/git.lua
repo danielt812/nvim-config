@@ -136,7 +136,13 @@ do
     local buf = args.buf
     local in_progress = (vim.b[buf or 0].minigit_summary or {}).in_progress
     local conflicting = in_progress
-      and (in_progress:find("merge") or in_progress:find("cherry") or in_progress:find("rebase") or in_progress:find("stash"))
+      and (
+        in_progress:find("merge")
+        or in_progress:find("cherry")
+        or in_progress:find("rebase")
+        or in_progress:find("stash")
+        or in_progress:find("revert")
+      )
 
     if conflicting then
       if vim.b[buf].minigit_conflicts then return end
@@ -565,9 +571,7 @@ do
       elseif line:match("^On branch") then
         hl = "Title"
       end
-      if hl then
-        vim.api.nvim_buf_set_extmark(buf, ns, ln, 0, { end_col = #line, hl_group = hl, priority = 1 })
-      end
+      if hl then vim.api.nvim_buf_set_extmark(buf, ns, ln, 0, { end_col = #line, hl_group = hl, priority = 1 }) end
     end
   end
 
