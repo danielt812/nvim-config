@@ -99,8 +99,7 @@ for _, server in ipairs(servers) do
   vim.lsp.config(server, conf)
 end
 
-local kinds = vim.lsp.protocol.CompletionItemKind
-kinds.Emmet = "󰅴 Emmet Abbreviation"
+vim.lsp.protocol.CompletionItemKind.Emmet = "󰅴 Emmet Abbreviation"
 
 -- Enable them all
 vim.lsp.enable(servers)
@@ -128,7 +127,7 @@ do
 
   local function lsp_info() vim.cmd("checkhealth lsp") end
 
-  local function lsp_log() vim.cmd("edit " .. vim.lsp.get_log_path()) end
+  local function lsp_log() vim.cmd("edit " .. vim.lsp.log.get_filename()) end
 
   local function lsp_semantic_hl() vim.api.nvim_set_hl(0, "@lsp.type.variable", {}) end
 
