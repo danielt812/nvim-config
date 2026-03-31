@@ -21,7 +21,7 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "af5f75c9ce572a4d1f0c77d6fb4ea764d16c1b3c",
+      "rev": "90c402eaf6c923b0c169b7325d7143a8766e8905",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "multicursor.nvim": {
