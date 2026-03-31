@@ -31,13 +31,6 @@ local function apply_extmarks()
   -- stylua: ignore end
 end
 
-local function on_mark_command()
-  vim.schedule(function()
-    local last_cmd = vim.fn.histget("cmd", -1)
-    if last_cmd:match("^m[a-zA-Z0-9]") or last_cmd:match("^delm") then apply_extmarks() end
-  end)
-end
-
 -- #############################################################################
 -- #                                  Keymaps                                  #
 -- #############################################################################
@@ -52,7 +45,6 @@ local function set_mark()
   local char = vim.fn.getcharstr()
   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
   vim.api.nvim_buf_set_mark(0, char, row, col, {})
-  apply_extmarks()
 end
 
 -- Quickfix / Loclist ----------------------------------------------------------
@@ -107,22 +99,17 @@ gen_hl_groups() -- Call this now if colorscheme was already set
 
 local group = vim.api.nvim_create_augroup("marks", { clear = true })
 
-vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+vim.api.nvim_create_autocmd("MarkSet", {
   group = group,
-  desc = "Refresh mark signs after edits",
-  callback = apply_extmarks,
+  pattern = "*",
+  desc = "Refresh mark signs when a mark is set",
+  callback = function() vim.schedule(apply_extmarks) end,
 })
 
-vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
+vim.api.nvim_create_autocmd("BufEnter", {
   group = group,
-  desc = "Set mark extmarks",
+  desc = "Set mark extmarks on buffer enter",
   callback = apply_extmarks,
-})
-
-vim.api.nvim_create_autocmd("CmdlineLeave", {
-  group = group,
-  desc = "Refresh mark extmarks after ex command",
-  callback = on_mark_command,
 })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
