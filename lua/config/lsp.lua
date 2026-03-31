@@ -47,10 +47,6 @@ local function on_attach(client, buf)
   map("n", "<leader>lt", vim.lsp.buf.type_definition, { desc = "Type Definition" })
   -- stylua: ignore end
 
-  -- if client:supports_method("textDocument/semanticTokensProvider") then
-  --   client.server_capabilities.semanticTokensProvider = nil
-  -- end
-
   if client:supports_method("textDocument/inlayHint") then
     -- stylua: ignore
     vim.lsp.inlay_hint.enable(false)
@@ -87,24 +83,24 @@ local servers = {
 
 vim.hl.priorities.semantic_tokens = 100
 
--- Register each server configuration under vim.lsp.configs
+-- Shared config for all servers
+vim.lsp.config("*", {
+  on_attach = on_attach,
+  capabilities = capabilities,
+})
+
+-- Register per-server overrides
 for _, server in ipairs(servers) do
   local ok, conf = pcall(require, "lsp." .. server)
   if not ok then
     vim.notify("Failed to load LSP config: lsp." .. server, vim.log.levels.WARN)
     conf = {}
   end
-
-  if server == "emmet_language_server" then
-    local kinds = vim.lsp.protocol.CompletionItemKind
-    kinds.Emmet = "󰅴 Emmet Abbreviation"
-  end
-
-  vim.lsp.config[server] = vim.tbl_deep_extend("force", {
-    on_attach = on_attach,
-    capabilities = capabilities,
-  }, conf)
+  vim.lsp.config(server, conf)
 end
+
+local kinds = vim.lsp.protocol.CompletionItemKind
+kinds.Emmet = "󰅴 Emmet Abbreviation"
 
 -- Enable them all
 vim.lsp.enable(servers)
@@ -425,41 +421,3 @@ do
     end,
   })
 end
-
--- #############################################################################
--- #                               Auto Suspend                                #
--- #############################################################################
-
--- TODO: Re-enable once Neovim 0.12 document_color assertion bug is fixed
--- do
---   local state = { stopped = false, grace = 60, timer = vim.uv.new_timer() }
---
---   local function stop()
---     for _, client in ipairs(vim.lsp.get_clients()) do
---       if client.name ~= "mini.snippets" and client.name ~= "kulala" then client:stop() end
---     end
---     state.stopped = true
---   end
---
---   local function start()
---     vim.api.nvim_exec_autocmds("FileType", { buffer = 0 })
---     state.stopped = false
---   end
---
---   local group = vim.api.nvim_create_augroup("auto_suspend", { clear = true })
---
---   vim.api.nvim_create_autocmd("FocusLost", {
---     group = group,
---     desc = "Stop LSP clients after grace period",
---     callback = function() state.timer:start(state.grace * 1000, 0, vim.schedule_wrap(stop)) end,
---   })
---
---   vim.api.nvim_create_autocmd("FocusGained", {
---     group = group,
---     desc = "Restart LSP clients on focus gain",
---     callback = function()
---       state.timer:stop()
---       if state.stopped then start() end
---     end,
---   })
--- end
