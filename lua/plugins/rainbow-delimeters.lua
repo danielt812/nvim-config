@@ -8,6 +8,9 @@ vim.g.rainbow_delimiters = {
   query = {
     [""] = "rainbow-delimiters",
   },
+  priority = {
+    [""] = 110,
+  },
   highlight = {
     "RainbowDelimiterRed",
     "RainbowDelimiterYellow",
