@@ -1,23 +1,11 @@
--- Clone 'mini.nvim' manually in a way that it gets managed by 'mini.deps'
--- Put this at the top of 'init.lua'
-local path_package = vim.fn.stdpath("data") .. "/site"
-local mini_path = path_package .. "/pack/deps/start/mini.nvim"
-if not vim.loop.fs_stat(mini_path) then
-  vim.cmd('echo "Installing `mini.nvim`" | redraw')
-  local clone_cmd = { "git", "clone", "--filter=blob:none", "https://github.com/nvim-mini/mini.nvim", mini_path }
-  vim.fn.system(clone_cmd)
-  vim.cmd("packadd mini.nvim | helptags ALL")
-  vim.cmd('echo "Installed `mini.nvim`" | redraw')
-end
+vim.pack.add({ "https://github.com/nvim-mini/mini.nvim" })
 
-local deps = require("mini.deps")
+local misc = require("mini.misc")
 
--- Set up 'mini.deps' (customize to your liking)
-deps.setup({ path = { package = path_package } })
-
--- Use 'mini.deps'. `now()` and `later()` are helpers for a safe two-stage
--- startup and are optional.
-local add, now, later = deps.add, deps.now, deps.later
+-- stylua: ignore start
+local now   = function(cb) misc.safely("now", cb) end
+local later = function(cb) misc.safely("later", cb) end
+-- stylua: ignore end
 
 --- Safely notifies an error message after a short delay to allow notify plugin to initialize.
 --- @param msg string: The error message to display.
@@ -72,6 +60,7 @@ now(function()
   conf("terminal")
   conf("tmux")
   conf("folds")
+  conf("pack")
 
   vim.g.colors_variant = "soft"
   vim.cmd("colorscheme everforest")
@@ -123,64 +112,59 @@ end)
 
 -- Treesitter ------------------------------------------------------------------
 now(function()
-  -- Treesitter
-  add({ source = "nvim-treesitter/nvim-treesitter" })
-  add({ source = "nvim-treesitter/nvim-treesitter-textobjects" })
+  vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter" })
+  vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" })
   plug("tree-sitter")
 
   -- Rainbow delimeters
-  add({ source = "HiPhish/rainbow-delimiters.nvim" })
+  vim.pack.add({ "https://github.com/HiPhish/rainbow-delimiters.nvim" })
   plug("rainbow-delimeters")
 
   -- Split/join
-  add({ source = "Wansmer/treesj" })
+  vim.pack.add({ "https://github.com/Wansmer/treesj" })
   plug("treesj")
-
-  -- Autotag
-  add({ source = "windwp/nvim-ts-autotag" })
-  plug("autotag")
 end)
 
 -- Filetype rendering ----------------------------------------------------------
 now(function()
-  add({ source = "OXY2DEV/markview.nvim" })
-  add({ source = "OXY2DEV/helpview.nvim" })
+  vim.pack.add({ "https://github.com/OXY2DEV/markview.nvim" })
+  vim.pack.add({ "https://github.com/OXY2DEV/helpview.nvim" })
 end)
 
 -- Debugging -------------------------------------------------------------------
 later(function()
-  add({ source = "mfussenegger/nvim-dap" })
-  add({ source = "igorlfs/nvim-dap-view" })
+  vim.pack.add({ "https://github.com/mfussenegger/nvim-dap" })
+  vim.pack.add({ "https://github.com/igorlfs/nvim-dap-view" })
   plug("dap")
 end)
 
 -- Executables -----------------------------------------------------------------
 later(function()
   -- Manager
-  add({ source = "mason-org/mason.nvim" })
+  vim.pack.add({ "https://github.com/mason-org/mason.nvim" })
   plug("mason")
 
   -- Formatter
-  add({ source = "stevearc/conform.nvim" })
+  vim.pack.add({ "https://github.com/stevearc/conform.nvim" })
   plug("conform")
 end)
 
 -- Quickfix --------------------------------------------------------------------
 later(function()
-  add({ source = "stevearc/quicker.nvim" })
+  vim.pack.add({ "https://github.com/stevearc/quicker.nvim" })
   plug("quicker")
 end)
 
 -- Editor ----------------------------------------------------------------------
 later(function()
   -- Multicursor
-  add({ source = "jake-stewart/multicursor.nvim" })
+  vim.pack.add({ "https://github.com/jake-stewart/multicursor.nvim" })
   plug("multicursor")
 end)
 
 -- Rest Client -----------------------------------------------------------------
 later(function()
-  add({ source = "mistweaverco/kulala.nvim" })
+  vim.pack.add({ "https://github.com/mistweaverco/kulala.nvim" })
   plug("kulala")
 end)
 

@@ -55,6 +55,10 @@ local function on_attach(client, buf)
     -- stylua: ignore
     vim.lsp.inlay_hint.enable(false)
   end
+
+  if client:supports_method("textDocument/linkedEditingRange") then
+    vim.lsp.linked_editing_range.enable(true, { client_id = client.id })
+  end
 end
 
 -- List of servers to enable
@@ -426,35 +430,36 @@ end
 -- #                               Auto Suspend                                #
 -- #############################################################################
 
-do
-  local state = { stopped = false, grace = 60, timer = vim.uv.new_timer() }
-
-  local function stop()
-    for _, client in ipairs(vim.lsp.get_clients()) do
-      if client.name ~= "mini.snippets" and client.name ~= "kulala" then client:stop() end
-    end
-    state.stopped = true
-  end
-
-  local function start()
-    vim.api.nvim_exec_autocmds("FileType", { buffer = 0 })
-    state.stopped = false
-  end
-
-  local group = vim.api.nvim_create_augroup("auto_suspend", { clear = true })
-
-  vim.api.nvim_create_autocmd("FocusLost", {
-    group = group,
-    desc = "Stop LSP clients after grace period",
-    callback = function() state.timer:start(state.grace * 1000, 0, vim.schedule_wrap(stop)) end,
-  })
-
-  vim.api.nvim_create_autocmd("FocusGained", {
-    group = group,
-    desc = "Restart LSP clients on focus gain",
-    callback = function()
-      state.timer:stop()
-      if state.stopped then start() end
-    end,
-  })
-end
+-- TODO: Re-enable once Neovim 0.12 document_color assertion bug is fixed
+-- do
+--   local state = { stopped = false, grace = 60, timer = vim.uv.new_timer() }
+--
+--   local function stop()
+--     for _, client in ipairs(vim.lsp.get_clients()) do
+--       if client.name ~= "mini.snippets" and client.name ~= "kulala" then client:stop() end
+--     end
+--     state.stopped = true
+--   end
+--
+--   local function start()
+--     vim.api.nvim_exec_autocmds("FileType", { buffer = 0 })
+--     state.stopped = false
+--   end
+--
+--   local group = vim.api.nvim_create_augroup("auto_suspend", { clear = true })
+--
+--   vim.api.nvim_create_autocmd("FocusLost", {
+--     group = group,
+--     desc = "Stop LSP clients after grace period",
+--     callback = function() state.timer:start(state.grace * 1000, 0, vim.schedule_wrap(stop)) end,
+--   })
+--
+--   vim.api.nvim_create_autocmd("FocusGained", {
+--     group = group,
+--     desc = "Restart LSP clients on focus gain",
+--     callback = function()
+--       state.timer:stop()
+--       if state.stopped then start() end
+--     end,
+--   })
+-- end
