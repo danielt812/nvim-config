@@ -41,6 +41,47 @@ local function fallback_buf(win)
   end
 end
 
+local function hide(term, win)
+  if term.layout == "horizontal" then
+    term.height = vim.api.nvim_win_get_height(win)
+    vim.api.nvim_win_close(win, false)
+  elseif term.layout == "vertical" then
+    term.width = vim.api.nvim_win_get_width(win)
+    vim.api.nvim_win_close(win, false)
+  elseif term.layout == "full" then
+    vim.o.showtabline = term.prev_showtabline or 1
+    local prev = term.prev_buf
+    if prev and prev ~= term.buf and vim.api.nvim_buf_is_valid(prev) then
+      switch_buf(win, prev)
+    else
+      fallback_buf(win)
+    end
+  end
+end
+
+local function show(term)
+  if term.layout == "full" then
+    term.prev_buf = vim.api.nvim_get_current_buf()
+    term.prev_showtabline = vim.o.showtabline
+    vim.o.showtabline = 0
+    switch_buf(0, term.buf)
+    vim.schedule(function()
+      local win = find_win(term.buf)
+      if not win then return end
+      local job_id
+      vim.api.nvim_buf_call(term.buf, function() job_id = vim.b.terminal_job_id end)
+      if job_id then
+        vim.fn.jobresize(job_id, vim.api.nvim_win_get_width(win), vim.api.nvim_win_get_height(win))
+        if term.cmd then vim.fn.chansend(job_id, "\x0c") end
+      end
+    end)
+  else
+    open_split(term)
+    switch_buf(0, term.buf)
+  end
+  vim.schedule(function() vim.cmd("startinsert") end)
+end
+
 local function create(term)
   if term.layout == "full" then
     term.prev_buf = vim.api.nvim_get_current_buf()
@@ -86,47 +127,6 @@ local function restore_full(term)
   else
     fallback_buf(win)
   end
-end
-
-local function hide(term, win)
-  if term.layout == "horizontal" then
-    term.height = vim.api.nvim_win_get_height(win)
-    vim.api.nvim_win_close(win, false)
-  elseif term.layout == "vertical" then
-    term.width = vim.api.nvim_win_get_width(win)
-    vim.api.nvim_win_close(win, false)
-  elseif term.layout == "full" then
-    vim.o.showtabline = term.prev_showtabline or 1
-    local prev = term.prev_buf
-    if prev and prev ~= term.buf and vim.api.nvim_buf_is_valid(prev) then
-      switch_buf(win, prev)
-    else
-      fallback_buf(win)
-    end
-  end
-end
-
-local function show(term)
-  if term.layout == "full" then
-    term.prev_buf = vim.api.nvim_get_current_buf()
-    term.prev_showtabline = vim.o.showtabline
-    vim.o.showtabline = 0
-    switch_buf(0, term.buf)
-    vim.schedule(function()
-      local win = find_win(term.buf)
-      if not win then return end
-      local job_id
-      vim.api.nvim_buf_call(term.buf, function() job_id = vim.b.terminal_job_id end)
-      if job_id then
-        vim.fn.jobresize(job_id, vim.api.nvim_win_get_width(win), vim.api.nvim_win_get_height(win))
-        if term.cmd then vim.fn.chansend(job_id, "\x0c") end
-      end
-    end)
-  else
-    open_split(term)
-    switch_buf(0, term.buf)
-  end
-  vim.schedule(function() vim.cmd("startinsert") end)
 end
 
 local function toggle_term(name, opts)
