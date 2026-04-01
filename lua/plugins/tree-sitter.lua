@@ -1,9 +1,5 @@
 local treesitter = require("nvim-treesitter")
 
-treesitter.setup({
-  install_dir = vim.fn.stdpath("data") .. "/site",
-})
-
 -- Add here more languages with which you want to use tree-sitter
 -- To see available languages:
 --   Execute `:lua require('nvim-treesitter').get_available()`
@@ -56,18 +52,13 @@ vim.api.nvim_create_autocmd("VimEnter", {
   callback = function()
     vim.api.nvim_create_user_command("TSUpdate", function(args)
       local langs = args.fargs
-      if #langs == 0 then
-        langs = vim.tbl_filter(
-          function(l) return not bundled[l] end,
-          treesitter.get_installed()
-        )
-      end
+      if #langs == 0 then langs = vim.tbl_filter(function(l) return not bundled[l] end, treesitter.get_installed()) end
       treesitter.update(langs, { summary = true })
     end, { nargs = "*", bar = true, desc = "Update installed treesitter parsers" })
   end,
 })
 
-local function isnt_installed(lang) return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0 end
+local isnt_installed = function(lang) return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0 end
 
 local to_install = vim.tbl_filter(isnt_installed, languages)
 
