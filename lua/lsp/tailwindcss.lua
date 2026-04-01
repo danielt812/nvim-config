@@ -41,29 +41,31 @@ return {
     })
     if root then cb(root) end
   end,
-  tailwindCSS = {
-    validate = true,
-    lint = {
-      cssConflict = "warning",
-      invalidApply = "error",
-      invalidConfigPath = "error",
-      invalidScreen = "error",
-      invalidTailwindDirective = "error",
-      invalidVariant = "error",
-      recommendedVariantOrder = "warning",
-    },
-    classAttributes = {
-      "class",
-      "className",
-      "class:list",
-      "classList",
-      "ngClass",
-    },
-    includeLanguages = {
-      elixir = "phoenix-heex",
-      eruby = "erb",
-      heex = "phoenix-heex",
-      htmlangular = "html",
+  settings = {
+    tailwindCSS = {
+      validate = true,
+      lint = {
+        cssConflict = "warning",
+        invalidApply = "error",
+        invalidConfigPath = "error",
+        invalidScreen = "error",
+        invalidTailwindDirective = "error",
+        invalidVariant = "error",
+        recommendedVariantOrder = "warning",
+      },
+      classAttributes = {
+        "class",
+        "className",
+        "class:list",
+        "classList",
+        "ngClass",
+      },
+      includeLanguages = {
+        elixir = "phoenix-heex",
+        eruby = "erb",
+        heex = "phoenix-heex",
+        htmlangular = "html",
+      },
     },
   },
 }
