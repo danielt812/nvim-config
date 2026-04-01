@@ -151,7 +151,7 @@ local strings = {
 }
 
 local highlighters = {}
-local highlight_tables = { colors, comments, http, links, strings, tests }
+local highlight_tables = { comments, http, links, strings, tests }
 
 for _, tbl in ipairs(highlight_tables) do
   highlighters = vim.tbl_extend("force", tbl, highlighters)
