@@ -12,7 +12,7 @@ local capabilities =
   })
 
 -- Shared on_attach
-local function on_attach(client, buf)
+local function on_attach(_, buf)
   local function map(mode, lhs, rhs, opts)
     opts = opts or {}
     opts.silent = opts.silent ~= false
@@ -46,16 +46,13 @@ local function on_attach(client, buf)
   map("n", "<leader>ls", vim.lsp.buf.signature_help,  { desc = "Signature Help" })
   map("n", "<leader>lt", vim.lsp.buf.type_definition, { desc = "Type Definition" })
   -- stylua: ignore end
-
-  if client:supports_method("textDocument/inlayHint") then
-    -- stylua: ignore
-    vim.lsp.inlay_hint.enable(false)
-  end
-
-  if client:supports_method("textDocument/linkedEditingRange") then
-    vim.lsp.linked_editing_range.enable(true, { client_id = client.id })
-  end
 end
+
+vim.lsp.linked_editing_range.enable(true)
+vim.lsp.inlay_hint.enable(false)
+vim.lsp.document_color.enable(true, {}, { style = "■ " })
+
+-- Disable default document_color (re-enabled per-client in on_attach with custom style)
 
 -- List of servers to enable
 local servers = {
@@ -80,8 +77,6 @@ local servers = {
   -- "tsgo",
   "yamlls",
 }
-
-vim.hl.priorities.semantic_tokens = 100
 
 -- Shared config for all servers
 vim.lsp.config("*", {
