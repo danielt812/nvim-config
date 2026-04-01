@@ -81,3 +81,15 @@ vim.api.nvim_create_autocmd("BufReadPre", {
     end
   end,
 })
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  group = vim.api.nvim_create_augroup("angular_filetype", { clear = true }),
+  pattern = "*.html",
+  desc = "Set htmlangular filetype for Angular templates",
+  callback = function(args)
+    if vim.fs.root(vim.api.nvim_buf_get_name(args.buf), "angular.json") then
+      vim.bo[args.buf].filetype = "htmlangular"
+      vim.treesitter.start(args.buf)
+    end
+  end,
+})
