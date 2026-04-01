@@ -325,8 +325,7 @@ end
 -- #############################################################################
 
 do
-  local pack = vim.fn.stdpath("data") .. "/site/pack/deps"
-  local pack_dirs = { pack .. "/start", pack .. "/opt" }
+  local pack_dirs = { vim.fn.stdpath("data") .. "/site/pack/core/opt" }
 
   local state = { mod_map = nil, libs = {}, timer = vim.uv.new_timer() }
 
