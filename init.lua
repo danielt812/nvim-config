@@ -163,6 +163,12 @@ later(function()
   plug("quicker")
 end)
 
+-- Task Runner -----------------------------------------------------------------
+later(function()
+  vim.pack.add({ "https://github.com/stevearc/overseer.nvim" })
+  plug("overseer")
+end)
+
 -- Editor ----------------------------------------------------------------------
 later(function()
   -- Multicursor

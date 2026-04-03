@@ -44,6 +44,10 @@
       "rev": "93d60a475f0b08a8eceb99255863977d3a25f310",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects"
     },
+    "overseer.nvim": {
+      "rev": "f818eefff81f4b12fb7cf236f1b6c16768a2fcbc",
+      "src": "https://github.com/stevearc/overseer.nvim"
+    },
     "quicker.nvim": {
       "rev": "063cc44da1eef8681bbd653b29d3bc961780886a",
       "src": "https://github.com/stevearc/quicker.nvim"
