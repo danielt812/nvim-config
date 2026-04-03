@@ -64,8 +64,18 @@ now(function()
 
   vim.g.colors_variant = "soft"
   vim.cmd("colorscheme everforest")
+end)
 
-  -- Mini modules now ------------------------------------------------------------
+later(function()
+  vim.cmd("packadd nvim.difftool")
+  vim.cmd("packadd nvim.undotree")
+  vim.cmd("packadd nvim.tohtml")
+  vim.cmd("packadd nohlsearch")
+  vim.cmd("packadd cfilter")
+end)
+
+-- Mini modules now ------------------------------------------------------------
+now(function()
   mplug("basics")
   mplug("completion")
   mplug("notify")
