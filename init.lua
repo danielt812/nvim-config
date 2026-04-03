@@ -70,8 +70,6 @@ later(function()
   vim.cmd("packadd nvim.difftool")
   vim.cmd("packadd nvim.undotree")
   vim.cmd("packadd nvim.tohtml")
-  vim.cmd("packadd nohlsearch")
-  vim.cmd("packadd cfilter")
 end)
 
 -- Mini modules now ------------------------------------------------------------
