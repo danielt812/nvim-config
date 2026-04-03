@@ -3,7 +3,7 @@
 -- #############################################################################
 
 local function clear_qf()
-  vim.cmd("cexpr []")
+  vim.fn.setqflist({}, "r")
   vim.cmd("cclose")
 end
 
