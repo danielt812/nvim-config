@@ -50,7 +50,7 @@ end
 
 vim.lsp.linked_editing_range.enable(true)
 vim.lsp.inlay_hint.enable(false)
-vim.lsp.document_color.enable(true, {}, { style = "■ " })
+vim.lsp.document_color.enable(false, {}, { style = "■ " })
 
 -- Disable default document_color (re-enabled per-client in on_attach with custom style)
 
