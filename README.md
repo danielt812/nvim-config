@@ -28,7 +28,7 @@ Apt:
 sudo apt install neovim
 ```
 
-Recommended version is 11.0 or above
+Recommended version is 12.0 or above
 
 ## Installation
 
@@ -39,20 +39,6 @@ Recommended version is 11.0 or above
 2. Open `nvim` and wait for plugins, tree-sitter parsers and language service providers to install.
 3. Exit out of Neovim for the changes to take effect.
 4. Run `:checkhealth` the next time you open `nvim`
-
-### Providers
-
-- Neovim python service provider:
-
-```sh
-pip install pynvim
-```
-
-- Neovim node service provider:
-
-```sh
-npm i -g neovim
-```
 
 ## License
 
