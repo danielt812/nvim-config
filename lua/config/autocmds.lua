@@ -82,6 +82,19 @@ vim.api.nvim_create_autocmd("BufReadPre", {
   end,
 })
 
+vim.api.nvim_create_autocmd({ "BufEnter", "OptionSet" }, {
+  group = vim.api.nvim_create_augroup("listchars_tab", { clear = true }),
+  pattern = { "*", "expandtab" },
+  desc = "Show tab char as > when using spaces, hide otherwise",
+  callback = function()
+    if vim.bo.expandtab then
+      vim.opt_local.listchars:append({ tab = "> " })
+    else
+      vim.opt_local.listchars:append({ tab = "  " })
+    end
+  end,
+})
+
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   group = vim.api.nvim_create_augroup("angular_filetype", { clear = true }),
   pattern = "*.html",

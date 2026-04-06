@@ -63,4 +63,4 @@ vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:ver25-TermCurso
 -- stylua: ignore end
 
 vim.hl.priorities.treesitter = 100
-vim.hl.priorities.semantic_tokens = 100
+vim.hl.priorities.semantic_tokens = 125

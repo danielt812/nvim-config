@@ -111,7 +111,7 @@ do
             virt_text = { { "│", "NonText" } },
             virt_text_pos = "overlay",
             virt_text_win_col = win_col,
-            virt_text_repeat_linebreak = true, -- Requires v0.10.0 or greater
+            virt_text_repeat_linebreak = true,
             hl_mode = "combine",
             priority = 1, -- This should be lower than mini.indentscope ext mark priority
           })
