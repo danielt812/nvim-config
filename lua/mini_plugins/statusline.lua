@@ -149,6 +149,7 @@ statusline.setup({
 
         local hl = "%#MiniStatuslineFileinfo#"
         local parts = {}
+        if vim.lsp.inline_completion.is_enabled() then parts[#parts + 1] = "%#MiniStatuslineCopilot#  " .. hl end
         if vim.wo.spell then parts[#parts + 1] = "%#MiniStatuslineSpell#󰓆" .. hl end
         if vim.wo.wrap then parts[#parts + 1] = "%#MiniStatuslineWrap#󰖶" .. hl end
 
@@ -259,8 +260,9 @@ local function gen_hl_groups()
   -- Git
   util_hl.merge_hl("Terminal", prefix .. "Devinfo", prefix .. "Git")
   -- Options
-  util_hl.merge_hl("MiniIconsGreen", prefix .. "Fileinfo", prefix .. "Spell")
-  util_hl.merge_hl("MiniIconsOrange", prefix .. "Fileinfo", prefix .. "Wrap")
+  util_hl.merge_hl("Green", prefix .. "Fileinfo", prefix .. "Spell")
+  util_hl.merge_hl("Orange", prefix .. "Fileinfo", prefix .. "Wrap")
+  util_hl.merge_hl("White", prefix .. "Fileinfo", prefix .. "Copilot")
 
   -- Mode line numbers
   -- stylua: ignore

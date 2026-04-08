@@ -1,5 +1,21 @@
 return {
   cmd = { "copilot-language-server", "--stdio" },
+  filetypes = {
+    "css",
+    "go",
+    "gomod",
+    "html",
+    "javascript",
+    "javascriptreact",
+    "json",
+    "lua",
+    "python",
+    "scss",
+    "sh",
+    "typescript",
+    "typescriptreact",
+    "yaml",
+  },
   root_dir = function(bufnr, cb)
     local fname = vim.api.nvim_buf_get_name(bufnr)
     local root = vim.fs.root(fname, ".git")

@@ -24,32 +24,49 @@ local function on_attach(_, buf)
   end
 
   -- stylua: ignore start
-  map("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
+  local code_action     = vim.lsp.buf.code_action
+  local declaration     = vim.lsp.buf.declaration
+  local definition      = vim.lsp.buf.definition
+  local hover           = vim.lsp.buf.hover
+  local implementation  = vim.lsp.buf.implementation
+  local references      = vim.lsp.buf.references
+  local rename          = vim.lsp.buf.rename
+  local signature_help  = vim.lsp.buf.signature_help
+  local type_definition = vim.lsp.buf.type_definition
 
-  -- g mappings
-  map("n", "gd",  vim.lsp.buf.definition,      { desc = "Go to Definition" })
-  map("n", "gla", vim.lsp.buf.code_action,     { desc = "Code Action" })
-  map("n", "glc", vim.lsp.buf.declaration,     { desc = "Declaration" })
-  map("n", "gld", vim.lsp.buf.definition,      { desc = "Definition" })
-  map("n", "glh", vim.lsp.buf.hover,           { desc = "Hover" })
-  map("n", "gli", vim.lsp.buf.implementation,  { desc = "Implementation" })
-  map("n", "gll", vim.lsp.codelens.run,        { desc = "CodeLens" })
-  map("n", "gln", vim.lsp.buf.rename,          { desc = "Rename" })
-  map("n", "glr", vim.lsp.buf.references,      { desc = "References" })
-  map("n", "gls", vim.lsp.buf.signature_help,  { desc = "Signature Help" })
-  map("n", "glt", vim.lsp.buf.type_definition, { desc = "Type Definition" })
+  local codelens        = vim.lsp.codelens.run
+  local color_present   = vim.lsp.document_color.color_presentation
+  -- stylua: ignore end
 
-  -- leader mappings
-  map("n", "<leader>la", vim.lsp.buf.code_action,     { desc = "Code Action" })
-  map("n", "<leader>lc", vim.lsp.buf.declaration,     { desc = "Declaration" })
-  map("n", "<leader>ld", vim.lsp.buf.definition,      { desc = "Definition" })
-  map("n", "<leader>lh", vim.lsp.buf.hover,           { desc = "Hover" })
-  map("n", "<leader>li", vim.lsp.buf.implementation,  { desc = "Implementation" })
-  map("n", "<leader>ll", vim.lsp.codelens.run,        { desc = "CodeLens" })
-  map("n", "<leader>ln", vim.lsp.buf.rename,          { desc = "Rename" })
-  map("n", "<leader>lr", vim.lsp.buf.references,      { desc = "References" })
-  map("n", "<leader>ls", vim.lsp.buf.signature_help,  { desc = "Signature Help" })
-  map("n", "<leader>lt", vim.lsp.buf.type_definition, { desc = "Type Definition" })
+  map("n", "K", hover, { desc = "Hover" })
+  -- stylua: ignore start
+
+  -- INFO: 'g' mappings
+  map("n", "gd",  definition,      { desc = "Go to Definition" })
+  map("n", "gla", code_action,     { desc = "Code Action" })
+  map("n", "glc", declaration,     { desc = "Declaration" })
+  map("n", "gld", definition,      { desc = "Definition" })
+  map("n", "glh", hover,           { desc = "Hover" })
+  map("n", "gli", implementation,  { desc = "Implementation" })
+  map("n", "gll", codelens,        { desc = "CodeLens" })
+  map("n", "gln", rename,          { desc = "Rename" })
+  map("n", "glp", color_present,   { desc = "Color Presentation" })
+  map("n", "glr", references,      { desc = "References" })
+  map("n", "gls", signature_help,  { desc = "Signature Help" })
+  map("n", "glt", type_definition, { desc = "Type Definition" })
+
+  -- INFO: 'leader' mappings
+  map("n", "<leader>la", code_action,     { desc = "Code Action" })
+  map("n", "<leader>lc", declaration,     { desc = "Declaration" })
+  map("n", "<leader>ld", definition,      { desc = "Definition" })
+  map("n", "<leader>lh", hover,           { desc = "Hover" })
+  map("n", "<leader>li", implementation,  { desc = "Implementation" })
+  map("n", "<leader>ll", codelens,        { desc = "CodeLens" })
+  map("n", "<leader>ln", rename,          { desc = "Rename" })
+  map("n", "<leader>lp", color_present,   { desc = "Color Presentation" })
+  map("n", "<leader>lr", references,      { desc = "References" })
+  map("n", "<leader>ls", signature_help,  { desc = "Signature Help" })
+  map("n", "<leader>lt", type_definition, { desc = "Type Definition" })
   -- stylua: ignore end
 end
 
@@ -72,6 +89,7 @@ vim.lsp.inline_completion.enable(false)
 
 local function toggle_inline_completion()
   vim.lsp.inline_completion.enable(not vim.lsp.inline_completion.is_enabled())
+  vim.cmd("redrawstatus")
 end
 
 vim.keymap.set("n", "\\a", toggle_inline_completion, { desc = "Toggle 'inline cmp'" })

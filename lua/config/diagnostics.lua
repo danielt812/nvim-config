@@ -21,6 +21,13 @@ vim.diagnostic.config({
 -- #                                  Keymaps                                  #
 -- #############################################################################
 
+local function toggle_diagnostics()
+  local is_enabled = vim.diagnostic.is_enabled({ bufnr = 0 })
+  vim.diagnostic.enable(not is_enabled, { bufnr = 0 })
+end
+
+vim.keymap.set("n", "\\d", toggle_diagnostics, { desc = "Toggle 'diagnostics'" })
+
 vim.keymap.set("n", "g?", function()
   local row = vim.api.nvim_win_get_cursor(0)[1] - 1
   local diags = vim.diagnostic.get(0, { lnum = row })

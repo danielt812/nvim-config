@@ -366,6 +366,11 @@ local highlights = {
   -- stylua: ignore end
 
   -- stylua: ignore start
+  ComplHint     = { fg = palette.grey1, italic = true, dim = true },
+  ComplHintMore = { fg = palette.grey1, italic = true, dim = true },
+  -- stylua: ignore end
+
+  -- stylua: ignore start
   LspSignatureActiveParameter = { link = "Search" },
   -- stylua: ignore end
 
@@ -926,7 +931,7 @@ local highlights = {
   MiniStatuslineDevinfo  = { fg = palette.grey2, bg = palette.bg1 },
   MiniStatuslineFilename = { fg = palette.grey2, bg = palette.bg2 },
   MiniStatuslineFileinfo = { fg = palette.grey2, bg = palette.bg1 },
-  MiniStatuslineInactive = { fg = palette.grey2, bg = palette.bg1 },
+  MiniStatuslineInactive = { fg = palette.grey2, bg = palette.bg1, dim = true },
   -- stylua: ignore end
 
   -- stylua: ignore start

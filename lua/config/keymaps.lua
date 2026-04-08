@@ -44,11 +44,16 @@ vim.keymap.set("n", "<", "<<",  { desc = "Indent line to left",   silent = true 
 vim.keymap.set("n", ">", ">>",  { desc = "Indent line to right",  silent = true })
 -- stylua: ignore end
 
+-- Redo
 vim.keymap.set("n", "U", "<c-r>", { desc = "Redo", silent = true })
+
+-- Toggle hlsearch
+vim.keymap.set("n", "\\h", "<cmd>let v:hlsearch = 1 - v:hlsearch<cr>", { desc = "Toggle 'hlsearch'" })
 
 -- Exit from insert mode by Esc in Terminal
 vim.keymap.set("t", "<esc><esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
+-- Don't yank empty lines
 vim.keymap.set("n", "dd", function()
   if vim.fn.getline("."):match("^%s*$") then return '"_dd' end
   return "dd"
