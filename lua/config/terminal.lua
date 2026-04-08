@@ -103,9 +103,7 @@ local function create(term)
         local failed = code ~= 0 and not stopped
         vim.schedule(function()
           vim.notify(msg, level)
-          if failed and term.buf and vim.api.nvim_buf_is_valid(term.buf) and not find_win(term.buf) then
-            show(term)
-          end
+          if failed and term.buf and vim.api.nvim_buf_is_valid(term.buf) and not find_win(term.buf) then show(term) end
         end)
       end
     or nil
@@ -162,7 +160,12 @@ local function toggle_smart()
     end
   end
 
-  if last_term_name and terms[last_term_name] and terms[last_term_name].buf and vim.api.nvim_buf_is_valid(terms[last_term_name].buf) then
+  if
+    last_term_name
+    and terms[last_term_name]
+    and terms[last_term_name].buf
+    and vim.api.nvim_buf_is_valid(terms[last_term_name].buf)
+  then
     show(terms[last_term_name])
   else
     vim.cmd("Term full")
@@ -446,11 +449,14 @@ local vertical   = function() toggle_term("vertical",   { layout = "vertical"   
 local horizontal = function() toggle_term("horizontal", { layout = "horizontal" }) end
 local full       = function() toggle_term("full",       { layout = "full"       }) end
 
+-- stylua: ignore start
 vim.keymap.set({ "n", "t" }, "<C-t>",  full,         { desc = "Full Terminal" })
 vim.keymap.set({ "n", "t" }, "<C-s>",  vertical,     { desc = "Split Terminal" })
 vim.keymap.set({ "n", "t" }, "<C-g>",  lazygit,      { desc = "Lazygit" })
 vim.keymap.set({ "n", "t" }, "<C-e>",  claude,       { desc = "Claude Code" })
+vim.keymap.set({ "n", "t" }, "\\t",    toggle_smart, { desc = "Toggle 'terminal'" })
 vim.keymap.set({ "n", "t" }, "<C-\\>", toggle_smart, { desc = "Toggle terminal" })
+-- stylua: ignore end
 
 -- Ctrl-HJKL Window Navigation ------------------------------------------------
 local tui_cmds = { "lazygit", "claude" }
