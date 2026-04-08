@@ -185,7 +185,12 @@ do
       end
       if result.userCode then
         vim.fn.setreg("+", result.userCode)
-        vim.notify("Copilot: code " .. result.userCode .. " copied to clipboard. Opening browser...")
+        local uri = result.verificationUri or result.verificationURIComplete or ""
+        vim.notify("Copilot: code " .. result.userCode .. " copied to clipboard.\nVisit: " .. uri)
+        if uri ~= "" then
+          local open_cmd = vim.uv.os_uname().sysname == "Darwin" and "open" or "xdg-open"
+          vim.fn.jobstart({ open_cmd, uri }, { detach = true })
+        end
       end
       if result.command then
         client:exec_cmd(result.command, { bufnr = 0 }, function(cmd_err, cmd_result)
