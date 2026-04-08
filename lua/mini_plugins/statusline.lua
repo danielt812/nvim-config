@@ -149,7 +149,7 @@ statusline.setup({
 
         local hl = "%#MiniStatuslineFileinfo#"
         local parts = {}
-        if vim.lsp.inline_completion.is_enabled() then parts[#parts + 1] = "%#MiniStatuslineCopilot#  " .. hl end
+        if vim.lsp.inline_completion.is_enabled() then parts[#parts + 1] = "%#MiniStatuslineCopilot#" .. hl end
         if vim.wo.spell then parts[#parts + 1] = "%#MiniStatuslineSpell#󰓆" .. hl end
         if vim.wo.wrap then parts[#parts + 1] = "%#MiniStatuslineWrap#󰖶" .. hl end
 
@@ -217,7 +217,7 @@ statusline.setup({
         "%<", -- Mark general truncate point
         { hl = "MiniStatuslineFilename", strings = combine_strings({ filename }, "│") },
         "%=", -- End left alignment
-        { hl = "MiniStatuslineFileinfo", strings = combine_strings({ disabled, options, filetype }, "│") },
+        { hl = "MiniStatuslineFileinfo", strings = combine_strings({ disabled, options, filetype }, "") },
         { hl = mode_hl, strings = combine_strings({ searchcount, location, progress }, "│") },
       })
     end,
