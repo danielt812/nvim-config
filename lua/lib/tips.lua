@@ -459,4 +459,14 @@ return {
     desc = "open a new empty buffer",
     example = ":enew | set ft=lua",
   },
+  {
+    cmd = "uniq",
+    desc = "deduplicate text in current buffer",
+    example = ":uniq",
+  },
+  {
+    cmd = "ipu(t)",
+    desc = "put text from register and adjust indent",
+    example = ":iput / :iput a",
+  },
 }

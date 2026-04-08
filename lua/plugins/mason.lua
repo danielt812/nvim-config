@@ -35,6 +35,7 @@ local ensure_installed = {
   "autotools-language-server",
   "basedpyright",
   "bash-language-server",
+  "copilot-language-server",
   "css-lsp",
   "css-variables-language-server",
   "cssmodules-language-server",

@@ -33,8 +33,13 @@ local function toggle_loc()
   if #vim.fn.getloclist(0) > 0 then vim.cmd("lopen") end
 end
 
+local function diag_format(d)
+  if d.source then return string.format("[%s] %s", d.source, d.message) end
+  return d.message
+end
+
 local function set_diagnostics_qf()
-  vim.diagnostic.setqflist({ bufnr = 0 })
+  vim.diagnostic.setqflist({ bufnr = 0, format = diag_format })
   local items = vim.fn.getqflist()
   if #items > 0 then
     vim.cmd("copen")
@@ -44,7 +49,7 @@ local function set_diagnostics_qf()
 end
 
 local function set_diagnostics_loc()
-  vim.diagnostic.setloclist({ bufnr = 0 })
+  vim.diagnostic.setloclist({ bufnr = 0, format = diag_format })
   local win = vim.api.nvim_get_current_win()
   local items = vim.fn.getloclist(win)
   if #items > 0 then

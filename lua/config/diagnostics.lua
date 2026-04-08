@@ -6,7 +6,7 @@ vim.diagnostic.config({
   -- signs = false,
   signs = {
     priority = 2,
-    severity = { min = "HINT", max = "ERROR" },
+    severity = { min = vim.diagnostic.severity.HINT, max = vim.diagnostic.severity.ERROR },
     text = {
       [vim.diagnostic.severity.ERROR] = signs.E,
       [vim.diagnostic.severity.WARN]  = signs.W,
@@ -29,8 +29,6 @@ vim.keymap.set("n", "g?", function()
   vim.fn.setreg("+", msg)
   vim.notify("Yanked: " .. msg)
 end, { desc = "Yank diagnostic" })
--- 1:1 adaptation of rachartier/tiny-inline-diagnostic.nvim (default "modern" preset)
--- All modules consolidated into a single file.
 
 -- #############################################################################
 -- #                            Virtual Diagnostics                            #

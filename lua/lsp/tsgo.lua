@@ -15,5 +15,13 @@ return {
     diagnostics = {
       ignoredCodes = { 80001 },
     },
+    -- typescript = {
+    --   referencesCodeLens = { enabled = true },
+    --   implementationsCodeLens = { enabled = true },
+    -- },
+    -- javascript = {
+    --   referencesCodeLens = { enabled = true },
+    --   implementationsCodeLens = { enabled = true },
+    -- },
   },
 }
