@@ -30,6 +30,7 @@ local function on_attach(_, buf)
   map("n", "gld", vim.lsp.buf.definition,      { desc = "Definition" })
   map("n", "glh", vim.lsp.buf.hover,           { desc = "Hover" })
   map("n", "gli", vim.lsp.buf.implementation,  { desc = "Implementation" })
+  map("n", "gll", vim.lsp.codelens.run,        { desc = "CodeLens" })
   map("n", "gln", vim.lsp.buf.rename,          { desc = "Rename" })
   map("n", "glr", vim.lsp.buf.references,      { desc = "References" })
   map("n", "gls", vim.lsp.buf.signature_help,  { desc = "Signature Help" })
@@ -41,6 +42,7 @@ local function on_attach(_, buf)
   map("n", "<leader>ld", vim.lsp.buf.definition,      { desc = "Definition" })
   map("n", "<leader>lh", vim.lsp.buf.hover,           { desc = "Hover" })
   map("n", "<leader>li", vim.lsp.buf.implementation,  { desc = "Implementation" })
+  map("n", "<leader>ll", vim.lsp.codelens.run,        { desc = "CodeLens" })
   map("n", "<leader>ln", vim.lsp.buf.rename,          { desc = "Rename" })
   map("n", "<leader>lr", vim.lsp.buf.references,      { desc = "References" })
   map("n", "<leader>ls", vim.lsp.buf.signature_help,  { desc = "Signature Help" })
@@ -50,9 +52,8 @@ end
 
 vim.lsp.linked_editing_range.enable(true)
 vim.lsp.inlay_hint.enable(false)
-vim.lsp.document_color.enable(false, {}, { style = "■ " })
-
--- Disable default document_color (re-enabled per-client in on_attach with custom style)
+vim.lsp.codelens.enable(true)
+vim.lsp.document_color.enable(true, nil, { style = "■ " })
 
 -- List of servers to enable
 local servers = {
@@ -73,8 +74,8 @@ local servers = {
   "marksman",
   "taplo",
   "tailwindcss",
-  "ts_ls",
-  -- "tsgo",
+  -- "ts_ls",
+  "tsgo",
   "yamlls",
 }
 

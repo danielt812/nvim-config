@@ -89,6 +89,17 @@ end
 return {
   cmd = { "gopls" },
   filetypes = { "go", "gomod" },
+  settings = {
+    gopls = {
+      codelenses = {
+        gc_details = true,
+        generate = true,
+        run_govulncheck = true,
+        test = true,
+        tidy = true,
+      },
+    },
+  },
   root_dir = function(bufnr, on_dir)
     local fname = vim.api.nvim_buf_get_name(bufnr)
     get_mod_cache_dir()

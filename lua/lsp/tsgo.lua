@@ -1,11 +1,10 @@
 return {
   cmd = { "tsgo", "--lsp", "--stdio" },
   filetypes = {
+    "javascript",
     "javascriptreact",
-    "javascript.jsx",
     "typescript",
     "typescriptreact",
-    "typescript.tsx",
   },
   root_dir = function(bufnr, cb)
     local fname = vim.api.nvim_buf_get_name(bufnr)

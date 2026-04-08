@@ -49,8 +49,19 @@ local function rgba_color(pattern)
   return string.format("#%02x%02x%02x", tonumber(r) * a, tonumber(g) * a, tonumber(b) * a)
 end
 
+-- Skip color highlights when LSP document_color is active on the buffer
+local function has_lsp_document_color(buf)
+  for _, client in ipairs(vim.lsp.get_clients({ bufnr = buf })) do
+    if client:supports_method("textDocument/documentColor") then return true end
+  end
+  return false
+end
+
 local function get_highlight(cb)
-  return function(_, match) return hipatterns.compute_hex_color_group(cb(match), "fg") end
+  return function(buf, match)
+    if has_lsp_document_color(buf) then return nil end
+    return hipatterns.compute_hex_color_group(cb(match), "fg")
+  end
 end
 
 local function color_extmark_opts(_, _, data)
@@ -234,4 +245,18 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   group = group,
   desc = "Create highlight groups",
   callback = gen_hl_groups,
+})
+
+-- When an LSP with document_color finishes loading, refresh hipatterns so it yields
+vim.api.nvim_create_autocmd("LspProgress", {
+  group = group,
+  pattern = "end",
+  desc = "Refresh hipatterns when document_color LSP finishes loading",
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if not client or not client:supports_method("textDocument/documentColor") then return end
+    for _, buf in ipairs(client.attached_buffers and vim.tbl_keys(client.attached_buffers) or {}) do
+      hipatterns.update(buf)
+    end
+  end,
 })

@@ -1,24 +1,20 @@
 local notify = require("mini.notify")
 
-local n_progress = 0
+local function in_lsp_progress() return vim.lsp.status() ~= "" end
 
-local function in_lsp_progress() return n_progress > 0 end
-
-local function lsp_progress_plus() n_progress = n_progress + 1 end
-
-local function lsp_progress_minus()
-  vim.defer_fn(function() n_progress = n_progress - 1 end, notify.config.lsp_progress.duration_last + 1)
+local function format(notif)
+  if notif.data.source ~= "lsp_progress" then return notify.default_format(notif) end
+  local response = notif.data.response
+  local value = response and response.value or {}
+  local title = value.title or ""
+  local message = value.message or ""
+  local pct = value.percentage
+  if value.kind == "end" then return title .. ": done" end
+  local parts = { title }
+  if message ~= "" then parts[#parts + 1] = message end
+  if pct then parts[#parts + 1] = "(" .. pct .. "%)" end
+  return table.concat(parts, " ")
 end
-
-vim.api.nvim_create_autocmd("LspProgress", {
-  callback = function(ev)
-    local value = ev.data.params.value
-    if value.kind == "begin" then lsp_progress_plus() end
-    if value.kind == "end" then lsp_progress_minus() end
-  end,
-})
-
-local function format(notif) return notif.data.source == "lsp_progress" and notif.msg or notify.default_format(notif) end
 
 local function window_config()
   local has_winbar = vim.o.winbar ~= "" and 1 or 0
