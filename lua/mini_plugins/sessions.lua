@@ -8,17 +8,16 @@ sessions.setup()
 
 local function delete_session() sessions.select("delete") end
 local function select_session() sessions.select("read") end
+local function restart_session() sessions.restart() end
 local function write_session()
   if vim.v.this_session ~= "" then return sessions.write() end
-
   local name = vim.fn.input("New session: ")
-
   if name == "" then return vim.notify("Session name required", vim.log.levels.ERROR) end
-
   sessions.write(name)
 end
 
-vim.keymap.set("n", "<leader>sd", delete_session, { desc = "Delete" })
-vim.keymap.set("n", "<leader>ss", select_session, { desc = "Select" })
-vim.keymap.set("n", "<leader>sw", write_session, { desc = "Write" })
+vim.keymap.set("n", "<leader>sd", delete_session,  { desc = "Delete" })
+vim.keymap.set("n", "<leader>sr", restart_session, { desc = "Restart" })
+vim.keymap.set("n", "<leader>ss", select_session,  { desc = "Select" })
+vim.keymap.set("n", "<leader>sw", write_session,   { desc = "Write" })
 -- stylua: ignore end
