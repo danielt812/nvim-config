@@ -92,7 +92,7 @@ local function toggle_inline_completion()
   vim.cmd("redrawstatus")
 end
 
-vim.keymap.set("n", "\\a", toggle_inline_completion, { desc = "Toggle 'inline cmp'" })
+vim.keymap.set("n", "\\a", toggle_inline_completion, { desc = "Toggle 'copilot'" })
 
 -- List of servers to enable
 local servers = {
