@@ -44,10 +44,6 @@
       "rev": "851e865342e5a4cb1ae23d31caf6e991e1c99f1e",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects"
     },
-    "overseer.nvim": {
-      "rev": "f818eefff81f4b12fb7cf236f1b6c16768a2fcbc",
-      "src": "https://github.com/stevearc/overseer.nvim"
-    },
     "quicker.nvim": {
       "rev": "063cc44da1eef8681bbd653b29d3bc961780886a",
       "src": "https://github.com/stevearc/quicker.nvim"
@@ -59,10 +55,6 @@
     "treesj": {
       "rev": "26bc2a8432ba3ea79ed6aa346fba780a3d372570",
       "src": "https://github.com/Wansmer/treesj"
-    },
-    "vim-coldfusion": {
-      "rev": "ddc82bbf0b1647e70191da4cd397bed9281ba9b9",
-      "src": "https://github.com/ernstvanderlinden/vim-coldfusion"
     }
   }
 }
