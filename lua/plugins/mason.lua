@@ -54,6 +54,7 @@ local ensure_installed = {
   "yaml-language-server",
   -- Formatters/Linters --------------------------------------------------------
   "goimports",
+  "ruff",
   "kulala-fmt",
   "prettier",
   "prettierd",

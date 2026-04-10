@@ -74,6 +74,9 @@ for _, filetype in ipairs(shfmt_filetypes) do
   conform.formatters_by_ft[filetype] = { "shfmt" }
 end
 
+-- ruff ------------------------------------------------------------------------
+conform.formatters_by_ft.python = { "ruff_organize_imports", "ruff_format" }
+
 -- yamlfmt ---------------------------------------------------------------------
 conform.formatters_by_ft.yaml = { "yamlfmt" }
 
