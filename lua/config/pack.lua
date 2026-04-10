@@ -1,46 +1,21 @@
-vim.api.nvim_create_user_command("PackUpdate", function(args)
-  if #args.fargs > 0 then
-    vim.pack.update(args.fargs, { force = args.bang })
-  else
-    vim.pack.update(nil, { force = args.bang })
-  end
-end, { bang = true, nargs = "*", desc = "Update plugins" })
+vim.api.nvim_create_user_command("PackUpdate", function() vim.pack.update() end, { desc = "Update plugins" })
 
-vim.api.nvim_create_user_command("PackClean", function(args)
-  local managed = {}
-  for _, plug in ipairs(vim.pack.get()) do
-    managed[plug.path] = true
+vim.api.nvim_create_user_command("PackClean", function()
+  local active, unused = {}, {}
+  for _, plugin in ipairs(vim.pack.get()) do
+    active[plugin.spec.name] = plugin.active
   end
 
-  local pack_dir = vim.fn.stdpath("data") .. "/site/pack/core/opt"
-  local unused = {}
-  for name, kind in vim.fs.dir(pack_dir) do
-    if kind == "directory" then
-      local path = pack_dir .. "/" .. name
-      if not managed[path] then
-        table.insert(unused, name)
-      end
-    end
+  for _, plugin in ipairs(vim.pack.get()) do
+    if not active[plugin.spec.name] then table.insert(unused, plugin.spec.name) end
   end
 
   if #unused == 0 then
-    vim.notify("Nothing to clean", vim.log.levels.INFO)
+    vim.api.nvim_echo({ { "vim.pack: ", "OkMsg" }, { "Nothing to clean" } }, true, {})
     return
   end
 
-  if args.bang then
-    vim.pack.del(unused, { force = true })
-    vim.notify("Deleted: " .. table.concat(unused, ", "), vim.log.levels.INFO)
-  else
-    vim.ui.select(
-      { "Yes", "No" },
-      { prompt = "Delete " .. #unused .. " unused plugins? (" .. table.concat(unused, ", ") .. ")" },
-      function(choice)
-        if choice == "Yes" then
-          vim.pack.del(unused, { force = true })
-          vim.notify("Deleted: " .. table.concat(unused, ", "), vim.log.levels.INFO)
-        end
-      end
-    )
-  end
-end, { bang = true, desc = "Delete unused plugins" })
+  local choice = vim.fn.confirm("Clean:" .. table.concat(unused, ", ") .. "?", "&Yes\n&No", 2)
+
+  if choice == 1 then vim.pack.del(unused) end
+end, { desc = "Delete unused plugins" })
