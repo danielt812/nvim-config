@@ -396,18 +396,104 @@ local runners = {
   rust = "cargo run",
 }
 
+local watch_augroup = vim.api.nvim_create_augroup("watch_file", { clear = true })
+
+local function run_term_name() return "run: " .. vim.fn.expand("%:t") end
+
+local function run_cmd()
+  local runner = runners[vim.bo.filetype]
+  if not runner then return nil end
+  return runner:format(vim.fn.expand("%:."))
+end
+
+local function send_cmd(term, cmd)
+  vim.fn.chansend(term.job_id, cmd .. "\n")
+  local win = find_win(term.buf)
+  if win then
+    local line_count = vim.api.nvim_buf_line_count(term.buf)
+    vim.api.nvim_win_set_cursor(win, { line_count, 0 })
+  end
+end
+
 local function run_file()
-  local ft = vim.bo.filetype
-  local runner = runners[ft]
-  if not runner then
-    vim.notify("No runner for filetype: " .. ft, vim.log.levels.WARN)
+  local cmd = run_cmd()
+  if not cmd then
+    vim.notify("No runner for filetype: " .. vim.bo.filetype, vim.log.levels.WARN)
     return
   end
-  local file = vim.fn.expand("%:p")
-  local cmd = runner:format(file)
-  local name = "run: " .. vim.fn.expand("%:t")
-  local shell = vim.o.shell
-  toggle_term(name, { layout = "vertical", cmd = shell .. " -c " .. vim.fn.shellescape(cmd .. "; exec " .. shell) })
+  local name = run_term_name()
+  local term = terms[name]
+  local prev_win = vim.api.nvim_get_current_win()
+
+  -- Re-run in existing terminal
+  if term and term.buf and vim.api.nvim_buf_is_valid(term.buf) and term.job_id then
+    if not find_win(term.buf) then show(term) end
+    send_cmd(term, cmd)
+    vim.cmd("stopinsert")
+    vim.api.nvim_set_current_win(prev_win)
+    return
+  end
+
+  -- Create new shell terminal and send command
+  toggle_term(name, { layout = "horizontal" })
+  vim.schedule(function()
+    local t = terms[name]
+    if t and t.job_id then send_cmd(t, cmd) end
+    vim.cmd("stopinsert")
+    vim.api.nvim_set_current_win(prev_win)
+  end)
+end
+
+local function watch_file()
+  local cmd = run_cmd()
+  if not cmd then
+    vim.notify("No runner for filetype: " .. vim.bo.filetype, vim.log.levels.WARN)
+    return
+  end
+  local src_buf = vim.api.nvim_get_current_buf()
+  local name = run_term_name()
+  local term = terms[name]
+
+  -- Toggle off if already watching
+  if vim.b[src_buf].watching then
+    vim.api.nvim_clear_autocmds({ group = watch_augroup, buffer = src_buf })
+    vim.b[src_buf].watching = false
+    vim.notify("Stopped watching: " .. vim.fn.expand("%:t"))
+    return
+  end
+
+  local prev_win = vim.api.nvim_get_current_win()
+
+  -- Reuse existing run terminal or create one
+  if not (term and term.buf and vim.api.nvim_buf_is_valid(term.buf) and term.job_id) then
+    toggle_term(name, { layout = "horizontal" })
+    vim.schedule(function()
+      local t = terms[name]
+      if t and t.job_id then send_cmd(t, cmd) end
+      vim.cmd("stopinsert")
+      vim.api.nvim_set_current_win(prev_win)
+    end)
+  else
+    if not find_win(term.buf) then show(term) end
+    send_cmd(term, cmd)
+    vim.cmd("stopinsert")
+    vim.api.nvim_set_current_win(prev_win)
+  end
+
+  vim.b[src_buf].watching = true
+
+  -- Re-run on save
+  vim.api.nvim_create_autocmd("BufWritePost", {
+    group = watch_augroup,
+    buffer = src_buf,
+    desc = "Re-run file on save",
+    callback = function()
+      if not vim.b[src_buf].watching then return true end
+      local t = terms[name]
+      if not t or not t.job_id then return true end
+      send_cmd(t, cmd)
+    end,
+  })
 end
 
 local function run_task()
@@ -493,7 +579,8 @@ vim.keymap.set("n", "<leader>gg", lazygit, { desc = "Lazygit" })
 vim.keymap.set("n", "<leader>gf", delta,   { desc = "Delta" })
 
 vim.keymap.set("n", "<leader>tt", run_task, { desc = "Run task" })
-vim.keymap.set("n", "<leader>tf", run_file, { desc = "Run file" })
+vim.keymap.set("n", "<leader>tf", run_file,   { desc = "Run file" })
+vim.keymap.set("n", "<leader>tw", watch_file, { desc = "Watch file" })
 
 vim.keymap.set("n", "<leader>to", open_task, { desc = "Open" })
 vim.keymap.set("n", "<leader>tk", kill_task, { desc = "Kill" })
