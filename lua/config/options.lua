@@ -27,7 +27,9 @@ vim.opt.infercase      = true -- Infer letter cases for a richer built-in keywor
 vim.opt.pumheight      = 10 -- Max popup menu height
 
 -- INFO: UI and display
+vim.opt.conceallevel   = 0         -- Show text normally, no concealing
 vim.opt.cursorline     = true      -- Highlight current line
+vim.opt.laststatus     = 3         -- Global statusline
 vim.opt.list           = true      -- Show invisible characters
 vim.opt.number         = true      -- Show absolute line numbers
 vim.opt.relativenumber = true      -- Show relative line numbers
@@ -37,7 +39,6 @@ vim.opt.showmode       = false     -- Don't show mode in command line
 vim.opt.signcolumn     = "yes"     -- Always show sign column
 vim.opt.winborder      = "rounded" -- Use rounded floating window borders
 vim.opt.wrap           = false     -- Display long lines as just one line
-vim.opt.conceallevel   = 0         -- Show text normally, no concealing
 
 -- INFO: Window splits
 vim.opt.splitbelow     = true -- Horizontal splits will be below
