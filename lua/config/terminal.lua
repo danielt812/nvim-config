@@ -296,8 +296,9 @@ local function rg_has_match(glob)
 end
 
 local function get_package_scripts()
-  if not rg_has_match("package.json") then return {} end
-  local path = vim.fn.getcwd() .. "/package.json"
+  local root = vim.fs.root(vim.api.nvim_buf_get_name(0), "package.json")
+  if not root then return {} end
+  local path = root .. "/package.json"
   local f = io.open(path, "r")
   if not f then return {} end
   local content = f:read("*a")
@@ -306,22 +307,23 @@ local function get_package_scripts()
   if not ok or type(decoded) ~= "table" or type(decoded.scripts) ~= "table" then return {} end
   local tasks = {}
   for name, _ in pairs(decoded.scripts) do
-    table.insert(tasks, { label = "npm: " .. name, cmd = "npm run " .. name })
+    table.insert(tasks, { label = "npm: " .. name, cmd = "cd " .. root .. " && npm run " .. name })
   end
   table.sort(tasks, function(a, b) return a.label < b.label end)
   return tasks
 end
 
 local function get_make_targets()
-  if not rg_has_match("Makefile") then return {} end
-  local path = vim.fn.getcwd() .. "/Makefile"
+  local root = vim.fs.root(vim.api.nvim_buf_get_name(0), "Makefile")
+  if not root then return {} end
+  local path = root .. "/Makefile"
   local f = io.open(path, "r")
   if not f then return {} end
   local tasks = {}
   for line in f:lines() do
     local target = line:match("^([%w_%-]+)%s*:")
     if target and target ~= ".PHONY" then
-      table.insert(tasks, { label = "make: " .. target, cmd = "make " .. target })
+      table.insert(tasks, { label = "make: " .. target, cmd = "cd " .. root .. " && make " .. target })
     end
   end
   f:close()
@@ -496,11 +498,18 @@ local function watch_file()
   })
 end
 
+local function get_live_server()
+  if not rg_has_match("*.html") then return {} end
+  if vim.fn.executable("live-server") ~= 1 then return {} end
+  return { { label = "live-server", cmd = "live-server" } }
+end
+
 local function run_task()
   local tasks = {}
   vim.list_extend(tasks, get_package_scripts())
   vim.list_extend(tasks, get_make_targets())
   vim.list_extend(tasks, get_scss_watch())
+  vim.list_extend(tasks, get_live_server())
 
   if #tasks == 0 then
     vim.notify("No tasks found", vim.log.levels.WARN)
