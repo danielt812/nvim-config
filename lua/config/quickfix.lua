@@ -39,7 +39,7 @@ local function diag_format(d)
 end
 
 local function set_diagnostics_qf()
-  vim.diagnostic.setqflist({ bufnr = 0, format = diag_format })
+  vim.diagnostic.setqflist({ bufnr = 0, format = diag_format, severity = { min = vim.diagnostic.severity.WARN } })
   local items = vim.fn.getqflist()
   if #items > 0 then
     vim.cmd("copen")
@@ -49,7 +49,7 @@ local function set_diagnostics_qf()
 end
 
 local function set_diagnostics_loc()
-  vim.diagnostic.setloclist({ bufnr = 0, format = diag_format })
+  vim.diagnostic.setloclist({ bufnr = 0, format = diag_format, severity = { min = vim.diagnostic.severity.WARN } })
   local win = vim.api.nvim_get_current_win()
   local items = vim.fn.getloclist(win)
   if #items > 0 then
