@@ -36,6 +36,7 @@ icons.setup({
     ["spec.jsx"] = js_table,
     ["spec.ts"]  = ts_table,
     ["spec.tsx"] = ts_table,
+    ["env"]      = { glyph = "󰒓", hl = "MiniIconsGrey" },
     -- stylua: ignore end
   },
   file = {
@@ -45,7 +46,6 @@ icons.setup({
     [".dockerignore"] = { glyph = "󰡨", hl = "MiniIconsAzure" },
     [".gitignore"]    = { glyph = "󰊢", hl = "MiniIconsOrange" },
     [".shellcheckrc"] = { glyph = "󰒓", hl = "MiniIconsGrey" },
-    [".env"]          = { glyph = "󰒓", hl = "MiniIconsGrey" },
     -- stylua: ignore end
   },
   filetype = {
