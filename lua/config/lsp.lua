@@ -150,11 +150,24 @@ do
   local function lsp_restart(opts)
     local filter = { bufnr = 0 }
     if opts.args ~= "" then filter = { name = opts.args } end
-    for _, client in ipairs(vim.lsp.get_clients(filter)) do
-      local name = client.name
+    local clients = vim.lsp.get_clients(filter)
+    if #clients == 0 then return end
+    local names = {}
+    for _, client in ipairs(clients) do
+      names[#names + 1] = client.name
       client:stop()
-      vim.defer_fn(function() vim.lsp.enable(name) end, 500)
-      vim.notify("Restarting " .. name)
+    end
+    -- Wait for clients to fully stop so LspDetach fires and clears
+    -- document_color/codelens/etc. state before the new client attaches.
+    vim.wait(2000, function()
+      for _, c in ipairs(clients) do
+        if not c:is_stopped() then return false end
+      end
+      return true
+    end, 20)
+    for _, name in ipairs(names) do
+      vim.lsp.enable(name)
+      vim.notify("Restarted " .. name)
     end
   end
 
@@ -392,6 +405,65 @@ do
       if not state[args.buf] or not state[args.buf].enabled then return end
       request_symbols(args.buf)
     end,
+  })
+end
+
+-- #############################################################################
+-- #                            Idle Auto-Stop LSP                             #
+-- #############################################################################
+
+do
+  local minutes = 10
+  local idle_timeout = minutes * 60 * 1000
+  local timer = vim.uv.new_timer()
+  local stopped_clients = {}
+
+  local function stop_all()
+    stopped_clients = {}
+    for _, client in ipairs(vim.lsp.get_clients()) do
+      stopped_clients[#stopped_clients + 1] = client.name
+      client:stop()
+    end
+    if #stopped_clients > 0 then
+      vim.notify(string.format("LSP stopped (idle %d minutes)", minutes), vim.log.levels.INFO)
+    end
+  end
+
+  local function restart_all()
+    if timer == nil then return end
+    timer:stop()
+    if #stopped_clients == 0 then return end
+    local names = stopped_clients
+    stopped_clients = {}
+    -- Only restart clients that aren't already attached
+    local active = {}
+    for _, c in ipairs(vim.lsp.get_clients()) do
+      active[c.name] = true
+    end
+    local to_restart = vim.tbl_filter(function(name) return not active[name] end, names)
+    if #to_restart == 0 then return end
+    for _, name in ipairs(to_restart) do
+      vim.lsp.enable(name)
+    end
+    vim.notify("LSP restarted", vim.log.levels.INFO)
+  end
+
+  local function reset_timer()
+    if timer == nil then return end
+    timer:stop()
+    timer:start(idle_timeout, 0, vim.schedule_wrap(stop_all))
+  end
+
+  vim.api.nvim_create_autocmd("FocusLost", {
+    group = vim.api.nvim_create_augroup("lsp_idle_stop", { clear = true }),
+    desc = "Start LSP idle timer on focus lost",
+    callback = reset_timer,
+  })
+
+  vim.api.nvim_create_autocmd("FocusGained", {
+    group = vim.api.nvim_create_augroup("lsp_idle_resume", { clear = true }),
+    desc = "Cancel idle timer and restart LSP on focus",
+    callback = restart_all,
   })
 end
 
