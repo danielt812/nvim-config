@@ -1,11 +1,13 @@
 if not os.getenv("TMUX") then return end
 
+-- stylua: ignore start
 local socket   = vim.split(os.getenv("TMUX") or "", ",")[1]
 local pane     = os.getenv("TMUX_PANE")
 local pane_id  = pane and tonumber(pane:sub(2)) or nil
 
 local dirs = { h = "L", j = "D", k = "U", l = "R" }
 local opp  = { h = "l", j = "k", k = "j", l = "h" }
+-- stylua: ignore end
 
 local function tmux_exec(cmd)
   local h = io.popen("tmux -S " .. socket .. " " .. cmd)
