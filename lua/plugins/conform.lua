@@ -98,6 +98,13 @@ conform.formatters_by_ft.xml = { "xmlformatter" }
 -- kulala-fmt ----------------------------------------------------------------
 conform.formatters_by_ft.http = { "kulala-fmt" }
 
+-- clang-format ----------------------------------------------------------------
+local clang_filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" }
+
+for _, filetype in ipairs(clang_filetypes) do
+  conform.formatters_by_ft[filetype] = { "clang_format" }
+end
+
 -- vim.api.nvim_create_autocmd("BufWritePre", {
 --   group = vim.api.nvim_create_augroup("format_on_save", { clear = true }),
 --   desc = "Format on save",

@@ -97,6 +97,7 @@ vim.keymap.set("n", "\\a", toggle_inline_completion, { desc = "Toggle 'copilot'"
 -- List of servers to enable
 local servers = {
   "angularls",
+  "clangd",
   "autotools_ls",
   "copilot",
   "basedpyright",
