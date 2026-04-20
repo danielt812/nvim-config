@@ -56,6 +56,7 @@ icons.setup({
     ["text.kulala_ui"] = { glyph = "󰏚", hl = "MiniIconsWhite" },
     ["terminal"]       = { glyph = "", hl = "MiniIconsPurple" },
     ["tmux"]           = { glyph = "", hl = "MiniIconsGreen" },
+    ["nvim-pack"]      = { glyph = "", hl = "MiniIconsGreen" }
     -- stylua: ignore end
   },
   lsp = {
