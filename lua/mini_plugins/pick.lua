@@ -30,13 +30,15 @@ pick.setup({
 -- NOTE: Only filter colorschemes in my runtime
 local function pick_colorschemes()
   local config = vim.fn.stdpath("config")
+  local pack = vim.fn.stdpath("data") .. "/site/pack/"
   local names = vim.tbl_filter(function(name)
+    if vim.startswith(name, "mini") or vim.endswith(name, "hue") then return false end
     local files = vim.list_extend(
       vim.api.nvim_get_runtime_file("colors/" .. name .. ".vim", false),
       vim.api.nvim_get_runtime_file("colors/" .. name .. ".lua", false)
     )
     for _, path in ipairs(files) do
-      if vim.startswith(path, config) then return true end
+      if vim.startswith(path, config) or vim.startswith(path, pack) then return true end
     end
     return false
   end, vim.fn.getcompletion("", "color"))
@@ -70,7 +72,7 @@ local function pick_git_checkout(remote)
 
   pick.start({
     source = {
-      name = remote and "Git branches (remote)" or "Git branches (local)",
+      name = remote and "Git checkout (remote)" or "Git checkout (local)",
       items = branches,
       choose = function(item) vim.cmd("Git checkout " .. item) end,
     },
