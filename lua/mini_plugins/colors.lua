@@ -1,5 +1,4 @@
 local colors = require("mini.colors")
-colors.setup()
 
 local ns = vim.api.nvim_create_namespace("on_highlight")
 local group = vim.api.nvim_create_augroup("mini_colors", { clear = true })
