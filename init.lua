@@ -52,6 +52,14 @@ now(function()
 
   conf("options")
   conf("keymaps")
+
+  -- Manpager - load minimal config and bail
+  if vim.g.manpager then
+    vim.g.colors_variant = "soft"
+    vim.cmd("colorscheme everforest")
+    return
+  end
+
   conf("autocmds")
   conf("lsp")
   conf("diagnostics")
@@ -62,9 +70,11 @@ now(function()
   conf("folds")
   conf("pack")
 
-  vim.g.colors_variant = "soft"
+  vim.g.colors_variant = "soft" -- soft | medium | hard
   vim.cmd("colorscheme everforest")
 end)
+
+if vim.g.manpager then return end
 
 later(function()
   vim.cmd("packadd nvim.difftool")
