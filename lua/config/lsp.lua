@@ -113,6 +113,7 @@ local servers = {
   "jsonls",
   "lua_ls",
   "marksman",
+  "rust_analyzer",
   "taplo",
   "tailwindcss",
   -- "ts_ls",
@@ -147,10 +148,13 @@ vim.lsp.enable(servers)
 do
   local group = vim.api.nvim_create_augroup("lsp", { clear = true })
 
+  -- Servers managed outside vim.lsp.enable (e.g. mini.snippets)
+  local unmanaged = { ["mini.snippets"] = true }
+
   local function lsp_restart(opts)
     local filter = { bufnr = 0 }
     if opts.args ~= "" then filter = { name = opts.args } end
-    local clients = vim.lsp.get_clients(filter)
+    local clients = vim.tbl_filter(function(c) return not unmanaged[c.name] end, vim.lsp.get_clients(filter))
     if #clients == 0 then return end
     local names = {}
     for _, client in ipairs(clients) do
@@ -166,6 +170,7 @@ do
       return true
     end, 20)
     for _, name in ipairs(names) do
+      vim.lsp.enable(name, false)
       vim.lsp.enable(name)
       vim.notify("Restarted " .. name)
     end
@@ -231,6 +236,17 @@ do
     group = group,
     desc = "Semantic highlighting",
     callback = lsp_semantic_hl,
+  })
+
+  vim.api.nvim_create_autocmd("LspAttach", {
+    group = group,
+    desc = "Enable document_color only for tailwindcss",
+    callback = function(args)
+      local client = vim.lsp.get_client_by_id(args.data.client_id)
+      if client and client.name == "tailwindcss" then
+        vim.lsp.document_color.enable(true, args.buf, { style = "■ " })
+      end
+    end,
   })
 end
 
@@ -418,11 +434,15 @@ do
   local timer = vim.uv.new_timer()
   local stopped_clients = {}
 
+  local unmanaged_idle = { ["mini.snippets"] = true }
+
   local function stop_all()
     stopped_clients = {}
     for _, client in ipairs(vim.lsp.get_clients()) do
-      stopped_clients[#stopped_clients + 1] = client.name
-      client:stop()
+      if not unmanaged_idle[client.name] then
+        stopped_clients[#stopped_clients + 1] = client.name
+        client:stop()
+      end
     end
     if #stopped_clients > 0 then
       vim.notify(string.format("LSP stopped (idle %d minutes)", minutes), vim.log.levels.INFO)
