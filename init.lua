@@ -69,9 +69,11 @@ now(function()
   conf("tmux")
   conf("folds")
   conf("pack")
+  conf("highlight")
 
   vim.g.colors_variant = "soft" -- soft | medium | hard
-  vim.cmd("colorscheme everforest")
+  vim.g.monochrome_flavor = "azurite" -- amber | amethyst | azurite | jade | onyx | ruby
+  vim.cmd("colorscheme monochrome")
 end)
 
 if vim.g.manpager then return end
@@ -134,13 +136,15 @@ now(function()
   vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" })
   plug("tree-sitter")
 
-  -- Rainbow delimeters
-  vim.pack.add({ "https://github.com/HiPhish/rainbow-delimiters.nvim" })
-  plug("rainbow-delimeters")
-
   -- Split/join
   vim.pack.add({ "https://github.com/Wansmer/treesj" })
   plug("treesj")
+end)
+
+later(function()
+  -- Rainbow delimeters
+  vim.pack.add({ "https://github.com/HiPhish/rainbow-delimiters.nvim" })
+  plug("rainbow-delimeters")
 end)
 
 -- Filetype rendering ----------------------------------------------------------

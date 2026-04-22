@@ -194,6 +194,15 @@ local highlights = {
   TermCursor = {},
   -- stylua: ignore end
 
+  -- Per-Mode Cursors (Wired Via `guicursor`) ---------------------------------
+  -- stylua: ignore start
+  CursorNormal  = { fg = palette.bg0, bg = palette.fg },
+  CursorInsert  = { fg = palette.bg0, bg = palette.green },
+  CursorVisual  = { fg = palette.bg0, bg = palette.blue },
+  CursorReplace = { fg = palette.bg0, bg = palette.red },
+  CursorCommand = { fg = palette.fg,  bg = palette.grey1 },
+  -- stylua: ignore end
+
   -- stylua: ignore start
   CursorLineNr    = { fg = palette.fg },
   CursorLine      = { bg = palette.bg2 },
