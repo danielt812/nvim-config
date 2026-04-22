@@ -49,9 +49,9 @@ local function rgba_color(pattern)
   return string.format("#%02x%02x%02x", tonumber(r) * a, tonumber(g) * a, tonumber(b) * a)
 end
 
--- Skip color highlights when LSP document_color is active on the buffer
+-- Skip color highlights when tailwindcss LSP is handling them for the buffer
 local function has_lsp_document_color(buf)
-  for _, client in ipairs(vim.lsp.get_clients({ bufnr = buf })) do
+  for _, client in ipairs(vim.lsp.get_clients({ bufnr = buf, name = "tailwindcss" })) do
     if client:supports_method("textDocument/documentColor") then return true end
   end
   return false
@@ -254,7 +254,8 @@ vim.api.nvim_create_autocmd("LspProgress", {
   desc = "Refresh hipatterns when document_color LSP finishes loading",
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
-    if not client or not client:supports_method("textDocument/documentColor") then return end
+    if not client or client.name ~= "tailwindcss" then return end
+    if not client:supports_method("textDocument/documentColor") then return end
     for _, buf in ipairs(client.attached_buffers and vim.tbl_keys(client.attached_buffers) or {}) do
       hipatterns.update(buf)
     end

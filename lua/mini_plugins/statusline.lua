@@ -258,7 +258,7 @@ local function gen_hl_groups()
     util_hl.merge_hl("MiniIcons" .. suffix, prefix .. "Fileinfo", prefix .. "Icons" .. suffix)
   end
   -- Git
-  util_hl.merge_hl("Terminal", prefix .. "Devinfo", prefix .. "Git")
+  util_hl.merge_hl("White", prefix .. "Devinfo", prefix .. "Git")
   -- Options
   util_hl.merge_hl("Green", prefix .. "Fileinfo", prefix .. "Spell")
   util_hl.merge_hl("Orange", prefix .. "Fileinfo", prefix .. "Wrap")

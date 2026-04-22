@@ -16,6 +16,7 @@ indentscope.setup({
     predicate = function(scope)
       if not vim.api.nvim_buf_is_valid(scope.buf_id) then return false end
       if should_ignore(vim.bo[scope.buf_id].filetype) then return false end
+      if vim.fn.foldclosed(scope.reference.line) ~= -1 then return false end
       return not scope.body.is_incomplete
     end,
 
@@ -100,6 +101,8 @@ do
     vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
 
     for lnum = top, bot do
+      if vim.fn.foldclosed(lnum) ~= -1 then goto continue end
+
       local indent = get_indent(buf, lnum)
       local line = vim.api.nvim_buf_get_lines(buf, lnum - 1, lnum, false)[1] or ""
       local is_blank = line:match("^%s*$") ~= nil
@@ -117,6 +120,7 @@ do
           })
         end
       end
+      ::continue::
     end
   end
 
