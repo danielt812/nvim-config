@@ -60,7 +60,4 @@ vim.opt.clipboard = "unnamed" -- Sync with system clipboard
 vim.opt.updatetime = 1000 -- CursorHold and swap write interval (ms)
 vim.opt.shortmess:append("S") -- Don't show search count
 
-vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:ver25-TermCursor" -- Cursor shape per mode
-
-vim.hl.priorities.treesitter = 100 -- Treesitter highlight priority
-vim.hl.priorities.semantic_tokens = 125 -- Semantic tokens override treesitter
+vim.opt.guicursor = "n-sm:block-CursorNormal,v:block-CursorVisual,c:block-CursorCommand,i-ci-ve:ver25-CursorInsert,r-cr-o:hor20-CursorReplace,t:ver25-TermCursor" -- Cursor shape and color per mode
