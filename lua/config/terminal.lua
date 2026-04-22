@@ -498,6 +498,16 @@ local function watch_file()
   })
 end
 
+local function get_go_tasks()
+  local root = vim.fs.root(vim.api.nvim_buf_get_name(0), "go.mod")
+  if not root then return {} end
+  return {
+    { label = "go: build", cmd = "cd " .. root .. " && go build ." },
+    { label = "go: run", cmd = "cd " .. root .. " && go run ." },
+    { label = "go: install", cmd = "cd " .. root .. " && go install" },
+  }
+end
+
 local function get_live_server()
   if not rg_has_match("*.html") then return {} end
   if vim.fn.executable("live-server") ~= 1 then return {} end
@@ -508,6 +518,7 @@ local function run_task()
   local tasks = {}
   vim.list_extend(tasks, get_package_scripts())
   vim.list_extend(tasks, get_make_targets())
+  vim.list_extend(tasks, get_go_tasks())
   vim.list_extend(tasks, get_scss_watch())
   vim.list_extend(tasks, get_live_server())
 
