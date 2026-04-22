@@ -84,7 +84,7 @@ end
 vim.lsp.linked_editing_range.enable(true)
 vim.lsp.inlay_hint.enable(false)
 vim.lsp.codelens.enable(true)
-vim.lsp.document_color.enable(true, nil, { style = "■ " })
+vim.lsp.document_color.enable(false, nil, { style = "■ " })
 vim.lsp.inline_completion.enable(false)
 
 local function toggle_inline_completion()
@@ -244,7 +244,7 @@ do
     callback = function(args)
       local client = vim.lsp.get_client_by_id(args.data.client_id)
       if client and client.name == "tailwindcss" then
-        vim.lsp.document_color.enable(true, args.buf, { style = "■ " })
+        vim.lsp.document_color.enable(true, { bufnr = args.buf }, { style = "■ " })
       end
     end,
   })

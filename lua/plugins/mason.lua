@@ -48,6 +48,7 @@ local ensure_installed = {
   "json-lsp",
   "lua-language-server",
   "marksman",
+  "rust-analyzer",
   "tailwindcss-language-server",
   "taplo",
   "tsgo",
