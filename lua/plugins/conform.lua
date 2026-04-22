@@ -80,6 +80,9 @@ conform.formatters_by_ft.python = { "ruff_organize_imports", "ruff_format" }
 -- yamlfmt ---------------------------------------------------------------------
 conform.formatters_by_ft.yaml = { "yamlfmt" }
 
+-- rustfmt ---------------------------------------------------------------------
+conform.formatters_by_ft.rust = { "rustfmt" }
+
 local function format()
   conform.format()
   vim.notify("Formatting " .. vim.fn.expand("%:t"), vim.log.levels.INFO)

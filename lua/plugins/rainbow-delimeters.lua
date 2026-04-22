@@ -26,6 +26,7 @@ local colorschemes = {
   everforest = { "Red", "Yellow", "Green", "Blue", "Orange", "Violet", "Cyan" },
   gruvbox = { "Violet", "Blue", "Cyan", "Green", "Yellow", "Orange", "Red" },
   sonokai = { "Yellow", "Violet", "Blue", "Orange", "Green", "Red", "Cyan" },
+  monochrome = { "Red", "Yellow", "Orange" },
 }
 
 local function normalize_hl(name)
