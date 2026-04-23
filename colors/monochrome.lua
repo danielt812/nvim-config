@@ -44,9 +44,9 @@ end
 
 -- Shade map: shade_0 darkest -> shade_9 brightest.
 local bg_dim = p.shade_0
-local float_bg = mono.shade(base_hex, 10.5, 63, palette_opts)
 local comment_fg = mono.shade(base_hex, 48, 0, palette_opts)
 local nontext_fg = mono.shade(base_hex, 32, 0, palette_opts)
+local cursor_line_bg = mono.shade(base_hex, 15, 0, palette_opts)
 local bg = "#161616"
 -- local bg = p.shade_1
 local cursor = p.shade_2
@@ -57,6 +57,8 @@ local dim = p.shade_6
 local fg = p.shade_7
 local emphasis = p.shade_8
 local bright = p.shade_9
+
+local float_bg = visual
 
 -- A couple of hue-shifted tints for diff bg. Derived from the base palette but
 -- pulled slightly toward green/red in lightness so add/delete read distinctly
@@ -102,8 +104,8 @@ local highlights = {
   SignColumn = { bg = "NONE" },
 
   ColorColumn = { bg = subtle },
-  CursorColumn = { bg = cursor },
-  CursorLine = { bg = cursor },
+  CursorColumn = { bg = visual },
+  CursorLine = { bg = visual },
   CursorLineNr = { fg = emphasis, bold = true },
   LineNr = { fg = dim },
   LineNrAbove = { fg = dim },
@@ -146,7 +148,7 @@ local highlights = {
   PmenuMatch = { fg = bright, bold = true },
   PmenuMatchSel = { fg = bg, bold = true },
   WildMenu = { fg = bg, bg = fg },
-  MsgArea = { bg = float_bg },
+  MsgArea = { fg = fg, bg = bg },
 
   StatusLine = { fg = emphasis, bg = cursor, bold = true },
   StatusLineNC = { fg = dim, bg = cursor },
@@ -514,8 +516,8 @@ local highlights = {
 
   MiniStatuslineDevinfo = { fg = dim, bg = cursor },
   MiniStatuslineFilename = { fg = dim, bg = cursor },
-  MiniStatuslineFileinfo = { fg = dim, bg = cursor },
-  MiniStatuslineInactive = { fg = dim, bg = cursor },
+  MiniStatuslineFileinfo = { fg = dim, bg = visual },
+  MiniStatuslineInactive = { fg = dim, bg = visual },
 
   MiniSurround = { link = "IncSearch" },
 
