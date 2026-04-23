@@ -61,6 +61,7 @@ now(function()
   end
 
   conf("autocmds")
+  conf("cmdline")
   conf("lsp")
   conf("diagnostics")
   conf("marks")
