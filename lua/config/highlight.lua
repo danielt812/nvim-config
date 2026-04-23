@@ -1,12 +1,23 @@
 vim.hl.priorities.treesitter = 100 -- Treesitter highlight priority
 vim.hl.priorities.semantic_tokens = 100 -- Semantic tokens override treesitter
 
+local function set_terminal_hl()
+  vim.api.nvim_set_hl(0, "Terminal", { fg = "#ffffff", bg = "#161616" })
+end
+
+set_terminal_hl()
+
 local colors = require("mini.colors")
 
 local min_dur = 500
 local max_dur = 800
 local ns = vim.api.nvim_create_namespace("on_highlight")
 local group = vim.api.nvim_create_augroup("highlight", { clear = true })
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  group = group,
+  callback = set_terminal_hl,
+})
 
 local function hl_bg(name)
   local hl = vim.api.nvim_get_hl(0, { name = name, link = false })
@@ -52,7 +63,7 @@ local function effect_ltr(sweep_end)
   end
 end
 
-local function animate(buf, from_hl, to_hl, ranges, min_dur, max_dur, effect)
+local function animate(buf, from_hl, to_hl, ranges, effect)
   if not vim.api.nvim_buf_is_valid(buf) then return end
   if vim.bo[buf].filetype == "ministarter" then return end
   if #ranges == 0 then return end
@@ -207,7 +218,7 @@ local function on_paste()
   local function finish()
     done = true
     paste_attached[buf] = nil
-    if #ranges > 0 then animate(buf, "OnPaste", "Normal", merge_ranges(ranges), min_dur, max_dur) end
+    if #ranges > 0 then animate(buf, "OnPaste", "Normal", merge_ranges(ranges)) end
   end
 
   paste_attached[buf] = true
@@ -326,7 +337,7 @@ local function on_undo_redo(from_hl, to_hl, effect)
       if #guard > 2 then
         table.remove(guard, 1)
         table.remove(guard, #guard)
-        animate(buf, from_hl, to_hl, guard, min_dur, max_dur, effect)
+        animate(buf, from_hl, to_hl, guard, effect)
       end
     end)
   end
@@ -390,8 +401,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
       end_row = vim.fn.line("']") - 1,
       end_col = vim.fn.col("']"),
     }
-    vim.schedule(
-      function() animate(vim.api.nvim_get_current_buf(), "OnYank", "Normal", { yank_range }, min_dur, max_dur) end
-    )
+    vim.schedule(function() animate(vim.api.nvim_get_current_buf(), "OnYank", "Normal", { yank_range }) end)
   end,
 })
