@@ -32,6 +32,8 @@ tabline.setup({
 
 vim.keymap.set("n", "<leader>bp", pin.toggle, { desc = "Pin/Unpin" })
 
+vim.o.showtabline = 0
+
 -- for i = 1, 9 do
 --   vim.keymap.set("n", "<leader>b" .. i, function()
 --     local bufs = vim.fn.getbufinfo({ buflisted = 1 })

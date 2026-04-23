@@ -50,3 +50,27 @@ starter.setup({
 local function open() starter.open() end
 
 vim.keymap.set("n", "<leader>e;", open, { desc = "Starter" })
+
+-- #############################################################################
+-- #                            Automatic Commands                             #
+-- #############################################################################
+
+local group = vim.api.nvim_create_augroup("mini_starter_tabline", { clear = true })
+
+vim.api.nvim_create_autocmd("User", {
+  group = group,
+  pattern = "MiniStarterOpened",
+  desc = "Hide tabline on starter page",
+  callback = function()
+    vim.o.showtabline = 0
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufLeave", {
+  group = group,
+  desc = "Restore tabline on leaving starter",
+  callback = function()
+    if vim.bo.filetype == "ministarter" then vim.o.showtabline = 2 end
+  end,
+})
+
