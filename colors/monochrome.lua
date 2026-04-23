@@ -5,7 +5,8 @@ vim.g.colors_name = "monochrome"
 
 -- Configuration ---------------------------------------------------------------
 -- Select a flavor by setting `vim.g.monochrome_flavor` to one of:
--- amber | amethyst | azurite | jade | onyx | ruby — before `:colorscheme monochrome`.
+-- amber | amethyst | azurite | garnet | jade | onyx | ruby | tanzanite | topaz
+-- before `:colorscheme monochrome`.
 
 local base_hex
 local palette_opts = {}
@@ -16,6 +17,8 @@ elseif vim.g.monochrome_flavor == "amethyst" then
   base_hex = "#c04fc8"
 elseif vim.g.monochrome_flavor == "azurite" then
   base_hex = "#4fa8c8"
+elseif vim.g.monochrome_flavor == "garnet" then
+  base_hex = "#c8554f"
 elseif vim.g.monochrome_flavor == "jade" then
   base_hex = "#4fc89a"
 elseif vim.g.monochrome_flavor == "onyx" then
@@ -23,6 +26,10 @@ elseif vim.g.monochrome_flavor == "onyx" then
   palette_opts.achromatic = true
 elseif vim.g.monochrome_flavor == "ruby" then
   base_hex = "#c84f65"
+elseif vim.g.monochrome_flavor == "tanzanite" then
+  base_hex = "#654fc8"
+elseif vim.g.monochrome_flavor == "topaz" then
+  base_hex = "#c88a4f"
 else
   vim.notify("Not a valid monochrome_flavor: " .. tostring(vim.g.monochrome_flavor), vim.log.levels.ERROR)
   return
@@ -38,7 +45,10 @@ end
 -- Shade map: shade_0 darkest -> shade_9 brightest.
 local bg_dim = p.shade_0
 local float_bg = mono.shade(base_hex, 10.5, 63, palette_opts)
-local bg = "#161616" -- p.shade_1
+local comment_fg = mono.shade(base_hex, 48, 0, palette_opts)
+local nontext_fg = mono.shade(base_hex, 32, 0, palette_opts)
+local bg = "#161616"
+-- local bg = p.shade_1
 local cursor = p.shade_2
 local visual = p.shade_3
 local subtle = p.shade_4
@@ -122,7 +132,7 @@ local highlights = {
   MatchParen = { fg = bright, bold = true, underline = true },
 
   Conceal = { fg = dim },
-  NonText = { fg = dim },
+  NonText = { fg = nontext_fg },
   SpecialKey = { fg = subtle },
   Whitespace = { fg = subtle },
 
@@ -177,8 +187,8 @@ local highlights = {
   Changed = { fg = blue },
 
   -- Syntax -------------------------------------------------------------------
-  Comment = { fg = dim, italic = true },
-  SpecialComment = { fg = dim, bold = true, italic = true },
+  Comment = { fg = comment_fg, italic = true },
+  SpecialComment = { fg = comment_fg, bold = true, italic = true },
   Constant = { fg = fg },
   String = { fg = fg },
   Character = { fg = fg },
@@ -320,10 +330,10 @@ local highlights = {
   ["@punctuation.delimiter"] = { fg = fg },
   ["@punctuation.special"] = { fg = emphasis, bold = true },
   ["@comment"] = { link = "Comment" },
-  ["@comment.documentation"] = { fg = dim, italic = true },
+  ["@comment.documentation"] = { fg = comment_fg, italic = true },
   ["@comment.error"] = { fg = emphasis, bold = true },
   ["@comment.warning"] = { fg = fg },
-  ["@comment.note"] = { fg = dim, italic = true },
+  ["@comment.note"] = { fg = comment_fg, italic = true },
   ["@comment.todo"] = { link = "Todo" },
   ["@tag"] = { fg = emphasis, bold = true },
   ["@tag.attribute"] = { fg = fg, italic = true },

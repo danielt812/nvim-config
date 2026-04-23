@@ -61,7 +61,7 @@ now(function()
   end
 
   conf("autocmds")
-  conf("cmdline")
+  -- conf("cmdline")
   conf("lsp")
   conf("diagnostics")
   conf("marks")
@@ -73,7 +73,16 @@ now(function()
   conf("highlight")
 
   vim.g.colors_variant = "soft" -- soft | medium | hard
-  vim.g.monochrome_flavor = "azurite" -- amber | amethyst | azurite | jade | onyx | ruby
+  -- amber |
+  -- amethyst |
+  -- azurite |
+  -- garnet |
+  -- jade |
+  -- onyx |
+  -- ruby |
+  -- tanzanite |
+  -- topaz
+  vim.g.monochrome_flavor = "jade"
   vim.cmd("colorscheme monochrome")
 end)
 
