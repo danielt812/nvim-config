@@ -2,22 +2,27 @@ return {
   {
     cmd = "args <glob>",
     desc = "load files into arglist",
-    example = ":args * | :argdo %s/old/new/ge | update",
+    example = ":args `fd -t f` or :args `find . -type f`",
   },
   {
     cmd = "argdo <cmd>",
     desc = "run cmd on each file in arglist",
-    example = ":argdo normal @q",
+    example = ":argdo retab | write",
   },
   {
     cmd = "earlier <time>",
     desc = "undo all changes from time period",
-    example = ":earlier 1m / :later 1m",
+    example = ":earlier 1m or :later 1m",
   },
   {
     cmd = "cdo <cmd>",
     desc = "run cmd on each quickfix entry",
-    example = ":cdo s/foo/bar/g",
+    example = ":cdo s/foo/bar/g or :cdo g/foo/d",
+  },
+  {
+    cmd = "cfdo <cmd> | up(date)",
+    desc = "run cmd across quickfix files",
+    example = ":cfdo %s/foo/bar/g | write",
   },
   {
     cmd = "g/<pattern>/d",
@@ -32,7 +37,7 @@ return {
   {
     cmd = "sort u",
     desc = "sort and deduplicate lines",
-    example = ":sort u / :sort! / :sort n",
+    example = ":sort u or :sort! or :sort n",
   },
   {
     cmd = "tab split",
@@ -45,29 +50,9 @@ return {
     example = ":r !ls -la",
   },
   {
-    cmd = "set spell",
-    desc = "enable spellcheck",
-    example = ":set spell / :set nospell",
-  },
-  {
-    cmd = "%s/\\v(<a>|<b>)/<c>/g",
-    desc = "very magic regex for alternation",
-    example = ":%s/\\v(foo|bar)/baz/g",
-  },
-  {
-    cmd = "cfdo <cmd> | up(date)",
-    desc = "run cmd across quickfix files and save",
-    example = ":cfdo %s/foo/bar/g | update",
-  },
-  {
     cmd = "windo diffthis",
     desc = "diff all visible windows",
-    example = ":windo diffthis / :diffoff!",
-  },
-  {
-    cmd = "packadd <plugin>",
-    desc = "load an optional plugin on demand",
-    example = ":packadd cfilter",
+    example = ":windo diffthis or :diffoff!",
   },
   {
     cmd = "verbose map <key>",
@@ -97,7 +82,7 @@ return {
   {
     cmd = "marks <?mark>",
     desc = "list all marks",
-    example = ":marks a / :delmarks a-z",
+    example = ":marks a",
   },
   {
     cmd = "undofile",
@@ -141,7 +126,7 @@ return {
   },
   {
     cmd = "retab",
-    desc = "convert tabs/spaces",
+    desc = "convert tabs to spaces",
     example = ":retab",
   },
   {
@@ -305,21 +290,6 @@ return {
     example = ":match ErrorMsg /\\s\\+$/",
   },
   {
-    cmd = "%s/\\s\\+$//e",
-    desc = "strip trailing whitespace",
-    example = ":%s/\\s\\+$//e",
-  },
-  {
-    cmd = "%s/\\n\\{3,}/\\r\\r/e",
-    desc = "collapse 3+ blank lines into 2",
-    example = ":%s/\\n\\{3,}/\\r\\r/e",
-  },
-  {
-    cmd = "g/^$/d",
-    desc = "delete all blank lines",
-    example = ":g/^$/d / :g/^\\s*$/d",
-  },
-  {
     cmd = "sort /<pattern>/",
     desc = "sort by text matching pattern",
     example = ":sort /.*\\%2v/",
@@ -338,16 +308,6 @@ return {
     cmd = "'<,'>!<cmd>",
     desc = "filter selection through shell",
     example = ":'<,'>!tac / :'<,'>!sort / :'<,'>!uniq",
-  },
-  {
-    cmd = "e ++enc=<encoding>",
-    desc = "reopen file with specific encoding",
-    example = ":e ++enc=latin1",
-  },
-  {
-    cmd = "e ++ff=<format>",
-    desc = "reopen file with line ending format",
-    example = ":e ++ff=unix / :e ++ff=dos",
   },
   {
     cmd = "set fileformat=<fmt>",
