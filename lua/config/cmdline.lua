@@ -145,3 +145,9 @@ vim.api.nvim_create_autocmd({ "VimResized", "TabEnter" }, {
     if cmdline_type then reposition() end
   end,
 })
+
+vim.api.nvim_create_autocmd("InsertEnter", {
+  group = group,
+  desc = "Clear lingering ui2 messages when entering insert mode",
+  callback = function() pcall(vim.cmd, "echo ''") end,
+})
