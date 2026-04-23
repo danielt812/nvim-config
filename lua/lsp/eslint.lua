@@ -96,7 +96,7 @@ return {
   on_attach = function(client, bufnr)
     -- Recreate the `LspEslintFixAll` command
     vim.api.nvim_buf_create_user_command(bufnr, "EslintFixAll", function()
-      client.request_sync("workspace/executeCommand", {
+      client:request_sync("workspace/executeCommand", {
         command = "eslint.applyAllFixes",
         arguments = {
           {
