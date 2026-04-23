@@ -46,6 +46,7 @@ icons.setup({
     [".dockerignore"] = { glyph = "󰡨", hl = "MiniIconsAzure" },
     [".gitignore"]    = { glyph = "󰊢", hl = "MiniIconsOrange" },
     [".shellcheckrc"] = { glyph = "󰒓", hl = "MiniIconsGrey" },
+    [".env"]          = { glyph = "󰒓", hl = "MiniIconsGrey" },
     -- stylua: ignore end
   },
   filetype = {
