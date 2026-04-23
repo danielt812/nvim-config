@@ -1,5 +1,5 @@
 vim.hl.priorities.treesitter = 100 -- Treesitter highlight priority
-vim.hl.priorities.semantic_tokens = 100 -- Semantic tokens override treesitter
+vim.hl.priorities.semantic_tokens = 125 -- Semantic tokens override treesitter
 
 local function set_terminal_hl()
   vim.api.nvim_set_hl(0, "Terminal", { fg = "#ffffff", bg = "#161616" })
