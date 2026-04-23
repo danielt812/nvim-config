@@ -7,7 +7,7 @@ misc.setup({
 })
 
 misc.setup_restore_cursor()
-misc.setup_termbg_sync()
+-- misc.setup_termbg_sync()
 
 -- #############################################################################
 -- #                                  Keymaps                                  #
