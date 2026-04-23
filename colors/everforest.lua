@@ -159,7 +159,6 @@ local highlights = {
   -- stylua: ignore start
   Normal   = { fg = palette.fg,    bg = palette.bg0 },
   NormalNC = { fg = palette.fg,    bg = palette.bg0 },
-  Terminal = { fg = palette.white, bg = palette.bg_dim }, -- NOTE: CUSTOM
   -- stylua: ignore end
 
   -- stylua: ignore start

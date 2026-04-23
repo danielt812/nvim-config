@@ -38,7 +38,7 @@ end
 -- Shade map: shade_0 darkest -> shade_9 brightest.
 local bg_dim = p.shade_0
 local float_bg = mono.shade(base_hex, 10.5, 63, palette_opts)
-local bg = p.shade_1
+local bg = "#161616" -- p.shade_1
 local cursor = p.shade_2
 local visual = p.shade_3
 local subtle = p.shade_4
@@ -53,9 +53,17 @@ local bright = p.shade_9
 -- without breaking the monochrome feel.
 
 -- stylua: ignore start
-local diff_add    = "#3b4439"
-local diff_change = "#374141"
-local diff_delete = "#4c3432"
+local bg_red    = "#4c3432"
+local bg_orange = "#4a3a2f"
+local bg_yellow = "#4f422e"
+local bg_green  = "#3b4439"
+local bg_cyan   = "#364544"
+local bg_blue   = "#374141"
+local bg_purple = "#443840"
+
+local diff_add    = bg_green
+local diff_change = bg_blue
+local diff_delete = bg_red
 -- stylua: ignore end
 
 -- Accent colors for icons, git signs, diagnostics.
@@ -75,9 +83,9 @@ local highlights = {
   Normal = { fg = fg, bg = bg },
   NormalNC = { fg = fg, bg = bg },
   NormalFloat = { fg = fg, bg = float_bg },
+
   FloatBorder = { fg = dim, bg = float_bg },
   FloatTitle = { fg = emphasis, bg = float_bg, bold = true },
-  Terminal = { fg = fg, bg = bg_dim },
   EndOfBuffer = { fg = subtle },
   Folded = { fg = dim, bg = cursor, italic = true },
   FoldColumn = { fg = dim },
@@ -128,6 +136,7 @@ local highlights = {
   PmenuMatch = { fg = bright, bold = true },
   PmenuMatchSel = { fg = bg, bold = true },
   WildMenu = { fg = bg, bg = fg },
+  MsgArea = { bg = float_bg },
 
   StatusLine = { fg = emphasis, bg = cursor, bold = true },
   StatusLineNC = { fg = dim, bg = cursor },
@@ -171,7 +180,7 @@ local highlights = {
   Comment = { fg = dim, italic = true },
   SpecialComment = { fg = dim, bold = true, italic = true },
   Constant = { fg = fg },
-  String = { fg = fg, italic = true },
+  String = { fg = fg },
   Character = { fg = fg },
   Number = { fg = fg },
   Boolean = { fg = bright, bold = true },
@@ -265,7 +274,7 @@ local highlights = {
   ["@constant.macro"] = { fg = emphasis, bold = true },
   ["@module"] = { fg = fg },
   ["@label"] = { fg = emphasis, bold = true },
-  ["@string"] = { fg = fg, italic = true },
+  ["@string"] = { fg = fg },
   ["@string.escape"] = { fg = emphasis, bold = true },
   ["@string.special"] = { fg = emphasis, bold = true },
   ["@character"] = { fg = fg },
@@ -297,7 +306,7 @@ local highlights = {
   ["@exception"] = { fg = bright, bold = true },
   ["@include"] = { fg = emphasis, bold = true },
   ["@type"] = { fg = fg, underline = true },
-  ["@type.builtin"] = { fg = fg, underline = true },
+  ["@type.builtin"] = { fg = emphasis, underline = true },
   ["@type.definition"] = { fg = fg, underline = true },
   ["@type.qualifier"] = { fg = emphasis, bold = true },
   ["@attribute"] = { fg = fg },
@@ -360,7 +369,7 @@ local highlights = {
   ["@lsp.type.namespace"] = { fg = fg },
   ["@lsp.type.number"] = { fg = fg },
   ["@lsp.type.operator"] = { fg = bright },
-  ["@lsp.type.string"] = { fg = fg, italic = true },
+  ["@lsp.type.string"] = { fg = fg },
   ["@lsp.type.regexp"] = { fg = emphasis, bold = true },
   ["@lsp.type.type"] = { fg = fg, underline = true },
   ["@lsp.type.typeParameter"] = { fg = fg, italic = true },
@@ -552,6 +561,15 @@ local highlights = {
   Cyan = { fg = cyan },
   Blue = { fg = blue },
   Purple = { fg = purple },
+
+  -- Tinted BG Groups (Read By `config/highlight.lua` For Yank/Paste/Undo/Redo)
+  BgRed = { bg = bg_red },
+  BgOrange = { bg = bg_orange },
+  BgYellow = { bg = bg_yellow },
+  BgGreen = { bg = bg_green },
+  BgCyan = { bg = bg_cyan },
+  BgBlue = { bg = bg_blue },
+  BgPurple = { bg = bg_purple },
 }
 
 for group, opts in pairs(highlights) do
