@@ -73,16 +73,7 @@ now(function()
   conf("highlight")
 
   vim.g.colors_variant = "soft" -- soft | medium | hard
-  -- amber |
-  -- amethyst |
-  -- azurite |
-  -- garnet |
-  -- jade |
-  -- onyx |
-  -- ruby |
-  -- tanzanite |
-  -- topaz
-  vim.g.monochrome_flavor = "jade"
+  vim.g.monochrome_color = "blue" -- blue | cyan | green | magenta | orange | pink | red | violet | yellow
   vim.cmd("colorscheme monochrome")
 end)
 
@@ -113,7 +104,6 @@ later(function()
   mplug("bracketed")
   mplug("clue")
   mplug("cmdline")
-  mplug("colors")
   mplug("comment")
   mplug("cursorword")
   mplug("diff")

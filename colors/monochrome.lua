@@ -34,28 +34,39 @@ else
   return
 end
 
-local mono = require("mini_plugins.colors")
-local p = mono.gen_monochrome_palette(base_hex, palette_opts)
-if p == nil then
-  vim.notify("monochrome: invalid base hue " .. tostring(base_hex), vim.log.levels.ERROR)
-  return
+local colors = require("mini.colors")
+
+-- Derive a hex color at the given L/S in okhsl, with hue drifted around the
+-- L=50 midpoint (so darks pull cooler/warmer than lights). Returns nil if
+-- base_hex is invalid.
+local function shade(l, s)
+  if palette_opts.achromatic then s = 0 end
+  local hue_shift = palette_opts.hue_shift or 20
+  local base = colors.convert(base_hex, "okhsl")
+  if base == nil then return end
+  local h = ((base.h or 0) + hue_shift * (50 - l) / 50) % 360
+  return colors.convert({ h = h, s = math.min(100, s), l = math.min(100, l) }, "hex")
 end
 
-local function shade(l, s)
-  return mono.shade(base_hex, math.min(100, l), math.min(100, s), palette_opts)
+if shade(50, 50) == nil then
+  vim.notify("monochrome: invalid base hue " .. tostring(base_hex), vim.log.levels.ERROR)
+  return
 end
 
 -- Chromatic shades (flavor-tinted) ------------------------------------------
 local darker  = shade(30, 55)
 local dark    = shade(50, 50)
-local normal  = shade(70, 70)
+local base    = shade(70, 70)
 local light   = shade(82, 85)
 local lighter = shade(92, 88)
 
 -- Achromatic shades (pure grey) ---------------------------------------------
-local low  = mono.shade(base_hex, 12, 0, palette_opts)
-local mid  = mono.shade(base_hex, 30, 0, palette_opts)
-local high = mono.shade(base_hex, 55, 0, palette_opts)
+local low  = shade(12, 0)
+local mid  = shade(30, 0)
+local high = shade(55, 0)
+
+-- Flavor-tinted selection background ----------------------------------------
+local visual_bg = shade(22, 60)
 
 local bg = "#161616"
 
@@ -71,10 +82,6 @@ local bg_green  = "#3b4439"
 local bg_cyan   = "#364544"
 local bg_blue   = "#374141"
 local bg_purple = "#443840"
-
-local diff_add    = bg_green
-local diff_change = bg_blue
-local diff_delete = bg_red
 -- stylua: ignore end
 
 -- Accent colors for icons, git signs, diagnostics.
@@ -91,9 +98,9 @@ local white  = "#ffffff"
 -- stylua: ignore end
 
 local highlights = {
-  Normal = { fg = normal, bg = bg },
-  NormalNC = { fg = normal, bg = bg },
-  NormalFloat = { fg = normal, bg = low },
+  Normal = { fg = base, bg = bg },
+  NormalNC = { fg = base, bg = bg },
+  NormalFloat = { fg = base, bg = low },
 
   FloatBorder = { fg = dark, bg = low },
   FloatTitle = { fg = light, bg = low, bold = true },
@@ -117,16 +124,16 @@ local highlights = {
   TermCursorNC = { fg = bg, bg = dark },
 
   -- Per-Mode Cursors (Wired Via `guicursor`) ---------------------------------
-  CursorNormal = { fg = bg, bg = normal },
+  CursorNormal = { fg = bg, bg = base },
   CursorInsert = { fg = bg, bg = lighter },
   CursorVisual = { fg = bg, bg = lighter },
   CursorReplace = { fg = bg, bg = light },
-  CursorCommand = { fg = normal, bg = dark },
+  CursorCommand = { fg = base, bg = dark },
 
-  Visual = { bg = low },
-  VisualNOS = { bg = low },
+  Visual = { bg = visual_bg },
+  VisualNOS = { bg = visual_bg },
 
-  Search = { fg = bg, bg = normal, bold = true },
+  Search = { fg = bg, bg = base, bold = true },
   IncSearch = { fg = bg, bg = lighter, bold = true },
   CurSearch = { fg = bg, bg = lighter, bold = true },
   Substitute = { fg = bg, bg = lighter },
@@ -137,26 +144,26 @@ local highlights = {
   SpecialKey = { fg = mid },
   Whitespace = { fg = mid },
 
-  Pmenu = { fg = normal, bg = low },
-  PmenuSel = { fg = bg, bg = normal, bold = true },
-  PmenuKind = { fg = normal, bg = low },
-  PmenuKindSel = { fg = bg, bg = normal },
+  Pmenu = { fg = base, bg = low },
+  PmenuSel = { fg = bg, bg = base, bold = true },
+  PmenuKind = { fg = base, bg = low },
+  PmenuKindSel = { fg = bg, bg = base },
   PmenuExtra = { fg = dark, bg = low },
   PmenuSbar = { bg = low },
   PmenuThumb = { bg = dark },
   PmenuMatch = { fg = lighter, bold = true },
   PmenuMatchSel = { fg = bg, bold = true },
-  WildMenu = { fg = bg, bg = normal },
-  MsgArea = { fg = normal, bg = bg },
+  WildMenu = { fg = bg, bg = base },
+  MsgArea = { fg = base, bg = bg },
 
   StatusLine = { fg = light, bg = low, bold = true },
   StatusLineNC = { fg = dark, bg = low },
-  StatusLineTerm = { fg = normal, bg = low },
+  StatusLineTerm = { fg = base, bg = low },
   StatusLineTermNC = { fg = dark, bg = low },
 
   TabLine = { fg = dark, bg = low },
   TabLineFill = { fg = green, bg = low },
-  TabLineSel = { fg = normal, bg = low },
+  TabLineSel = { fg = base, bg = low },
 
   WinBar = { fg = light, bg = bg, bold = true },
   WinBarNC = { fg = dark, bg = bg },
@@ -173,15 +180,15 @@ local highlights = {
   QuickFixLine = { bg = low, bold = true },
 
   -- Spell --------------------------------------------------------------------
-  SpellBad = { undercurl = true, sp = normal },
+  SpellBad = { undercurl = true, sp = base },
   SpellCap = { undercurl = true, sp = dark },
   SpellLocal = { undercurl = true, sp = dark },
   SpellRare = { undercurl = true, sp = dark },
 
   -- Diff ---------------------------------------------------------------------
-  DiffAdd = { bg = diff_add },
-  DiffChange = { bg = diff_change },
-  DiffDelete = { fg = dark, bg = diff_delete },
+  DiffAdd = { bg = bg_green },
+  DiffChange = { bg = bg_blue },
+  DiffDelete = { fg = dark, bg = bg_red },
   DiffText = { bg = mid, bold = true },
   Added = { fg = green, bold = true },
   Removed = { fg = red, italic = true },
@@ -190,13 +197,13 @@ local highlights = {
   -- Syntax -------------------------------------------------------------------
   Comment = { fg = high, italic = true },
   SpecialComment = { fg = high, bold = true, italic = true },
-  Constant = { fg = normal },
-  String = { fg = normal },
-  Character = { fg = normal },
-  Number = { fg = normal },
+  Constant = { fg = base },
+  String = { fg = base },
+  Character = { fg = base },
+  Number = { fg = base },
   Boolean = { fg = lighter, bold = true },
-  Float = { fg = normal },
-  Identifier = { fg = normal },
+  Float = { fg = base },
+  Identifier = { fg = base },
   Function = { fg = light, bold = true },
   Statement = { fg = lighter, bold = true },
   Conditional = { fg = lighter, bold = true },
@@ -210,19 +217,19 @@ local highlights = {
   Define = { fg = light, bold = true },
   Macro = { fg = light, bold = true },
   PreCondit = { fg = light, bold = true },
-  Type = { fg = normal, underline = true },
+  Type = { fg = base, underline = true },
   StorageClass = { fg = light, bold = true },
-  Structure = { fg = normal, underline = true },
-  Typedef = { fg = normal, underline = true },
-  Special = { fg = normal },
+  Structure = { fg = base, underline = true },
+  Typedef = { fg = base, underline = true },
+  Special = { fg = base },
   SpecialChar = { fg = light, bold = true },
-  Tag = { fg = normal, underline = true },
-  Delimiter = { fg = normal },
-  Debug = { fg = normal },
-  Underlined = { fg = normal, underline = true },
+  Tag = { fg = base, underline = true },
+  Delimiter = { fg = base },
+  Debug = { fg = base },
+  Underlined = { fg = base, underline = true },
   Ignore = { fg = mid },
   Error = { fg = light, bold = true, underline = true },
-  Todo = { fg = bg, bg = normal, bold = true },
+  Todo = { fg = bg, bg = base, bold = true },
 
   Bold = { bold = true },
   Italic = { italic = true },
@@ -258,10 +265,10 @@ local highlights = {
   DiagnosticUnnecessary = { fg = dark },
   DiagnosticDeprecated = { strikethrough = true },
 
-  ErrorText = { bg = diff_delete, undercurl = true, sp = red },
+  ErrorText = { bg = bg_red, undercurl = true, sp = red },
   HintText = { bg = low, undercurl = true, sp = cyan },
   InfoText = { bg = low, undercurl = true, sp = blue },
-  WarningText = { bg = diff_change, undercurl = true, sp = yellow },
+  WarningText = { bg = bg_blue, undercurl = true, sp = yellow },
 
   -- LSP ----------------------------------------------------------------------
   LspReferenceText = { bg = low },
@@ -276,32 +283,32 @@ local highlights = {
   CurrentWord = { link = "Underline" },
 
   -- Treesitter ---------------------------------------------------------------
-  ["@variable"] = { fg = normal },
+  ["@variable"] = { fg = base },
   ["@variable.builtin"] = { fg = lighter, italic = true },
-  ["@variable.parameter"] = { fg = normal, italic = true },
-  ["@variable.member"] = { fg = normal },
-  ["@constant"] = { fg = normal },
+  ["@variable.parameter"] = { fg = base, italic = true },
+  ["@variable.member"] = { fg = base },
+  ["@constant"] = { fg = base },
   ["@constant.builtin"] = { fg = light, bold = true },
   ["@constant.macro"] = { fg = light, bold = true },
-  ["@module"] = { fg = normal },
+  ["@module"] = { fg = base },
   ["@label"] = { fg = light, bold = true },
-  ["@string"] = { fg = normal },
+  ["@string"] = { fg = base },
   ["@string.escape"] = { fg = light, bold = true },
   ["@string.special"] = { fg = light, bold = true },
-  ["@character"] = { fg = normal },
+  ["@character"] = { fg = base },
   ["@character.special"] = { fg = light, bold = true },
-  ["@number"] = { fg = normal },
-  ["@number.float"] = { fg = normal },
+  ["@number"] = { fg = base },
+  ["@number.float"] = { fg = base },
   ["@boolean"] = { fg = lighter, bold = true },
-  ["@float"] = { fg = normal },
+  ["@float"] = { fg = base },
   ["@function"] = { fg = lighter, bold = true },
   ["@function.builtin"] = { fg = lighter, bold = true, italic = true },
   ["@function.call"] = { fg = lighter },
   ["@function.macro"] = { fg = light, bold = true },
   ["@function.method"] = { fg = light, bold = true },
-  ["@function.method.call"] = { fg = normal },
+  ["@function.method.call"] = { fg = base },
   ["@method"] = { fg = light, bold = true },
-  ["@method.call"] = { fg = normal },
+  ["@method.call"] = { fg = base },
   ["@constructor"] = { fg = light, bold = true },
   ["@keyword"] = { fg = lighter, bold = true },
   ["@keyword.function"] = { fg = lighter, bold = true },
@@ -316,74 +323,74 @@ local highlights = {
   ["@repeat"] = { fg = lighter, bold = true },
   ["@exception"] = { fg = lighter, bold = true },
   ["@include"] = { fg = light, bold = true },
-  ["@type"] = { fg = normal, underline = true },
+  ["@type"] = { fg = base, underline = true },
   ["@type.builtin"] = { fg = light, underline = true },
-  ["@type.definition"] = { fg = normal, underline = true },
+  ["@type.definition"] = { fg = base, underline = true },
   ["@type.qualifier"] = { fg = light, bold = true },
-  ["@attribute"] = { fg = normal },
-  ["@field"] = { fg = normal },
-  ["@property"] = { fg = normal },
-  ["@parameter"] = { fg = normal, italic = true },
+  ["@attribute"] = { fg = base },
+  ["@field"] = { fg = base },
+  ["@property"] = { fg = base },
+  ["@parameter"] = { fg = base, italic = true },
   ["@operator"] = { fg = lighter },
-  ["@namespace"] = { fg = normal },
-  ["@punctuation"] = { fg = normal },
-  ["@punctuation.bracket"] = { fg = normal },
-  ["@punctuation.delimiter"] = { fg = normal },
+  ["@namespace"] = { fg = base },
+  ["@punctuation"] = { fg = base },
+  ["@punctuation.bracket"] = { fg = base },
+  ["@punctuation.delimiter"] = { fg = base },
   ["@punctuation.special"] = { fg = light, bold = true },
   ["@comment"] = { link = "Comment" },
   ["@comment.documentation"] = { fg = high, italic = true },
   ["@comment.error"] = { fg = light, bold = true },
-  ["@comment.warning"] = { fg = normal },
+  ["@comment.warning"] = { fg = base },
   ["@comment.note"] = { fg = high, italic = true },
   ["@comment.todo"] = { link = "Todo" },
   ["@tag"] = { fg = light, bold = true },
-  ["@tag.attribute"] = { fg = normal, italic = true },
-  ["@tag.delimiter"] = { fg = normal },
-  ["@text"] = { fg = normal },
+  ["@tag.attribute"] = { fg = base, italic = true },
+  ["@tag.delimiter"] = { fg = base },
+  ["@text"] = { fg = base },
   ["@text.strong"] = { fg = light, bold = true },
-  ["@text.bright"] = { fg = normal, italic = true },
-  ["@text.underline"] = { fg = normal, underline = true },
-  ["@text.strike"] = { fg = normal, strikethrough = true },
+  ["@text.bright"] = { fg = base, italic = true },
+  ["@text.underline"] = { fg = base, underline = true },
+  ["@text.strike"] = { fg = base, strikethrough = true },
   ["@text.title"] = { fg = lighter, bold = true },
-  ["@text.literal"] = { fg = normal },
-  ["@text.uri"] = { fg = normal, underline = true },
-  ["@text.reference"] = { fg = normal, italic = true },
-  ["@diff.plus"] = { bg = diff_add },
-  ["@diff.minus"] = { bg = diff_delete },
-  ["@diff.delta"] = { bg = diff_change },
+  ["@text.literal"] = { fg = base },
+  ["@text.uri"] = { fg = base, underline = true },
+  ["@text.reference"] = { fg = base, italic = true },
+  ["@diff.plus"] = { bg = bg_green },
+  ["@diff.minus"] = { bg = bg_red },
+  ["@diff.delta"] = { bg = bg_blue },
   ["@markup.heading"] = { fg = lighter, bold = true },
   ["@markup.strong"] = { bold = true },
   ["@markup.italic"] = { italic = true },
   ["@markup.underline"] = { underline = true },
   ["@markup.strike"] = { strikethrough = true },
-  ["@markup.link"] = { fg = normal, italic = true },
-  ["@markup.link.url"] = { fg = normal, underline = true },
+  ["@markup.link"] = { fg = base, italic = true },
+  ["@markup.link.url"] = { fg = base, underline = true },
   ["@markup.link.label"] = { fg = light, bold = true },
   ["@markup.raw"] = { bg = low },
   ["@markup.list"] = { fg = dark },
   ["@markup.quote"] = { fg = dark, italic = true },
 
   -- Semantic tokens ----------------------------------------------------------
-  ["@lsp.type.class"] = { fg = normal, underline = true },
-  ["@lsp.type.struct"] = { fg = normal, underline = true },
-  ["@lsp.type.interface"] = { fg = normal, underline = true },
-  ["@lsp.type.enum"] = { fg = normal, underline = true },
-  ["@lsp.type.enumMember"] = { fg = normal },
-  ["@lsp.type.parameter"] = { fg = normal, italic = true },
+  ["@lsp.type.class"] = { fg = base, underline = true },
+  ["@lsp.type.struct"] = { fg = base, underline = true },
+  ["@lsp.type.interface"] = { fg = base, underline = true },
+  ["@lsp.type.enum"] = { fg = base, underline = true },
+  ["@lsp.type.enumMember"] = { fg = base },
+  ["@lsp.type.parameter"] = { fg = base, italic = true },
   ["@lsp.type.variable"] = { fg = lighter },
-  ["@lsp.type.property"] = { fg = normal },
+  ["@lsp.type.property"] = { fg = base },
   ["@lsp.type.function"] = { fg = lighter, bold = true },
   ["@lsp.type.method"] = { fg = light, bold = true },
   ["@lsp.type.macro"] = { fg = light, bold = true },
   ["@lsp.type.keyword"] = { fg = lighter, bold = true },
   ["@lsp.type.modifier"] = { fg = light, bold = true },
-  ["@lsp.type.namespace"] = { fg = normal },
-  ["@lsp.type.number"] = { fg = normal },
+  ["@lsp.type.namespace"] = { fg = base },
+  ["@lsp.type.number"] = { fg = base },
   ["@lsp.type.operator"] = { fg = lighter },
-  ["@lsp.type.string"] = { fg = normal },
+  ["@lsp.type.string"] = { fg = base },
   ["@lsp.type.regexp"] = { fg = light, bold = true },
-  ["@lsp.type.type"] = { fg = normal, underline = true },
-  ["@lsp.type.typeParameter"] = { fg = normal, italic = true },
+  ["@lsp.type.type"] = { fg = base, underline = true },
+  ["@lsp.type.typeParameter"] = { fg = base, italic = true },
   ["@lsp.type.decorator"] = { fg = light, bold = true },
   ["@lsp.type.comment"] = { link = "Comment" },
   ["@lsp.mod.defaultLibrary"] = { fg = lighter, italic = true },
@@ -393,8 +400,8 @@ local highlights = {
   MiniAnimateNormalFloat = { link = "NormalFloat" },
 
   MiniClueBorder = { link = "FloatBorder" },
-  MiniClueDescGroup = { fg = normal, bg = low },
-  MiniClueDescSingle = { fg = normal, bg = low },
+  MiniClueDescGroup = { fg = base, bg = low },
+  MiniClueDescSingle = { fg = base, bg = low },
   MiniClueNextKey = { fg = dark, bg = low, bold = true },
   MiniClueNextKeyWithPostkeys = { fg = red, bg = low, bold = true },
   MiniClueSeparator = { fg = dark, bg = low },
@@ -417,7 +424,7 @@ local highlights = {
   MiniDepsChangeAdded = { link = "Added" },
   MiniDepsChangeRemoved = { link = "Removed" },
   MiniDepsHints = { fg = dark, italic = true },
-  MiniDepsInfo = { fg = normal },
+  MiniDepsInfo = { fg = base },
   MiniDepsMsgBreaking = { fg = light, bold = true },
   MiniDepsPlaceholder = { link = "Comment" },
   MiniDepsTitle = { link = "Title" },
@@ -458,7 +465,7 @@ local highlights = {
   MiniJump = { fg = bg, bg = lighter, bold = true },
   MiniJump2dDim = { link = "Comment" },
   MiniJump2dSpot = { fg = lighter, bold = true },
-  MiniJump2dSpotAhead = { fg = normal, bold = true },
+  MiniJump2dSpotAhead = { fg = base, bold = true },
   MiniJump2dSpotUnique = { fg = light, bold = true, underline = true },
 
   MiniMapNormal = { link = "NormalFloat" },
@@ -486,7 +493,7 @@ local highlights = {
   MiniPickNormal = { link = "NormalFloat" },
   MiniPickPreviewLine = { bg = low },
   MiniPickPreviewRegion = { link = "IncSearch" },
-  MiniPickPrompt = { fg = normal, bg = low, bold = true },
+  MiniPickPrompt = { fg = base, bg = low, bold = true },
   MiniPickPromptCaret = { link = "MiniPickPrompt" },
   MiniPickPromptPrefix = { link = "MiniPickPrompt" },
 
@@ -498,7 +505,7 @@ local highlights = {
 
   MiniStarterCurrent = { link = "Normal" },
   MiniStarterFooter = { fg = dark },
-  MiniStarterHeader = { fg = normal, bold = true },
+  MiniStarterHeader = { fg = base, bold = true },
   MiniStarterInactive = { link = "Comment" },
   MiniStarterItem = { link = "Normal" },
   MiniStarterItemBullet = { fg = dark },
@@ -506,17 +513,17 @@ local highlights = {
   MiniStarterQuery = { fg = lighter, bold = true },
   MiniStarterSection = { link = "Title" },
 
-  MiniStatuslineModeNormal = { fg = bg, bg = normal, bold = true },
+  MiniStatuslineModeNormal = { fg = bg, bg = base, bold = true },
   MiniStatuslineModeInsert = { fg = bg, bg = lighter, bold = true },
-  MiniStatuslineModeVisual = { fg = bg, bg = cyan, bold = true },
-  MiniStatuslineModeReplace = { fg = bg, bg = red, bold = true },
+  MiniStatuslineModeVisual = { fg = bg, bg = light, bold = true },
+  MiniStatuslineModeReplace = { fg = bg, bg = lighter, bold = true },
   MiniStatuslineModeCommand = { fg = bg, bg = dark, bold = true },
-  MiniStatuslineModeOther = { fg = bg, bg = dark, bold = true },
+  MiniStatuslineModeOther = { fg = bg, bg = darker, bold = true },
 
   MiniStatuslineDevinfo = { fg = dark, bg = low },
-  MiniStatuslineFilename = { fg = dark, bg = low },
+  MiniStatuslineFilename = { fg = dark, bg = visual_bg },
   MiniStatuslineFileinfo = { fg = dark, bg = low },
-  MiniStatuslineInactive = { fg = dark, bg = low },
+  MiniStatuslineInactive = { fg = dark, bg = visual_bg },
 
   MiniSurround = { link = "IncSearch" },
 
@@ -540,8 +547,8 @@ local highlights = {
   MasonHeaderSecondary = { fg = lighter, reverse = true },
   MasonHighlight = { fg = lighter },
   MasonHighlightSecondary = { fg = lighter },
-  MasonHighlightBlock = { fg = normal, bg = bg, reverse = true },
-  MasonHighlightBlockBold = { fg = normal, bg = bg, reverse = true, bold = true },
+  MasonHighlightBlock = { fg = base, bg = bg, reverse = true },
+  MasonHighlightBlockBold = { fg = base, bg = bg, reverse = true, bold = true },
   MasonHighlightBlockSecondary = { fg = light, bg = bg, reverse = true },
   MasonHighlightBlockBoldSecondary = { fg = light, bg = bg, reverse = true, bold = true },
   MasonMuted = { fg = dark },
@@ -549,20 +556,20 @@ local highlights = {
 
   -- https://github.com/igorlfs/nvim-dap-view
   NvimDapViewTab = { fg = dark, bg = bg },
-  NvimDapViewTabSelected = { fg = normal, bg = bg, bold = true },
+  NvimDapViewTabSelected = { fg = base, bg = bg, bold = true },
   NvimDapViewTabFill = { fg = dark, bg = bg },
 
   -- https://github.com/mistweaverco/kulala.nvim
   KulalaTab = { fg = dark, bg = low },
-  KulalaTabSel = { fg = normal, bg = low, bold = true },
+  KulalaTabSel = { fg = base, bg = low, bold = true },
 
   -- https://github.com/HiPhish/rainbow-delimiters.nvim
   RainbowDelimiterRed = { fg = darker },
   RainbowDelimiterOrange = { fg = dark },
-  RainbowDelimiterYellow = { fg = normal },
+  RainbowDelimiterYellow = { fg = base },
 
   -- Predefined groups used by linked highlights ------------------------------
-  Fg = { fg = normal },
+  Fg = { fg = base },
   Grey = { fg = grey },
   White = { fg = white },
   Red = { fg = red },
@@ -594,17 +601,17 @@ end
 -- Terminal palette (monochrome gradient) -------------------------------------
 vim.g.terminal_color_0 = low
 vim.g.terminal_color_1 = lighter
-vim.g.terminal_color_2 = normal
-vim.g.terminal_color_3 = normal
+vim.g.terminal_color_2 = base
+vim.g.terminal_color_3 = base
 vim.g.terminal_color_4 = dark
 vim.g.terminal_color_5 = lighter
-vim.g.terminal_color_6 = normal
+vim.g.terminal_color_6 = base
 vim.g.terminal_color_7 = mid
 vim.g.terminal_color_8 = dark
 vim.g.terminal_color_9 = lighter
 vim.g.terminal_color_10 = lighter
 vim.g.terminal_color_11 = lighter
-vim.g.terminal_color_12 = normal
+vim.g.terminal_color_12 = base
 vim.g.terminal_color_13 = lighter
-vim.g.terminal_color_14 = normal
+vim.g.terminal_color_14 = base
 vim.g.terminal_color_15 = lighter
