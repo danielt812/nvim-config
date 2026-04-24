@@ -61,12 +61,14 @@ local light   = shade(82, 85)
 local lighter = shade(92, 88)
 
 -- Achromatic shades (pure grey) ---------------------------------------------
-local low  = shade(12, 0)
-local mid  = shade(30, 0)
-local high = shade(55, 0)
+local lower  = shade(10, 0)
+local low    = shade(16, 0)
+local mid    = shade(26, 0)
+local high   = shade(40, 0)
+local higher = shade(55, 0)
 
 -- Flavor-tinted selection background ----------------------------------------
-local visual_bg = shade(22, 60)
+local visual = shade(22, 60)
 
 local bg = "#161616"
 
@@ -130,8 +132,8 @@ local highlights = {
   CursorReplace = { fg = bg, bg = light },
   CursorCommand = { fg = base, bg = dark },
 
-  Visual = { bg = visual_bg },
-  VisualNOS = { bg = visual_bg },
+  Visual = { bg = visual },
+  VisualNOS = { bg = visual },
 
   Search = { fg = bg, bg = base, bold = true },
   IncSearch = { fg = bg, bg = lighter, bold = true },
@@ -156,10 +158,10 @@ local highlights = {
   WildMenu = { fg = bg, bg = base },
   MsgArea = { fg = base, bg = bg },
 
-  StatusLine = { fg = light, bg = low, bold = true },
-  StatusLineNC = { fg = dark, bg = low },
-  StatusLineTerm = { fg = base, bg = low },
-  StatusLineTermNC = { fg = dark, bg = low },
+  StatusLine = { fg = light, bg = lower, bold = true },
+  StatusLineNC = { fg = dark, bg = lower },
+  StatusLineTerm = { fg = base, bg = lower },
+  StatusLineTermNC = { fg = dark, bg = lower },
 
   TabLine = { fg = dark, bg = low },
   TabLineFill = { fg = green, bg = low },
@@ -520,10 +522,10 @@ local highlights = {
   MiniStatuslineModeCommand = { fg = bg, bg = dark, bold = true },
   MiniStatuslineModeOther = { fg = bg, bg = darker, bold = true },
 
-  MiniStatuslineDevinfo = { fg = dark, bg = low },
-  MiniStatuslineFilename = { fg = dark, bg = visual_bg },
-  MiniStatuslineFileinfo = { fg = dark, bg = low },
-  MiniStatuslineInactive = { fg = dark, bg = visual_bg },
+  MiniStatuslineDevinfo = { fg = dark, bg = lower },
+  MiniStatuslineFilename = { fg = dark, bg = low },
+  MiniStatuslineFileinfo = { fg = dark, bg = lower },
+  MiniStatuslineInactive = { fg = dark, bg = low },
 
   MiniSurround = { link = "IncSearch" },
 
