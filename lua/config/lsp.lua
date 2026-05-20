@@ -83,7 +83,7 @@ end
 
 vim.lsp.linked_editing_range.enable(true)
 vim.lsp.inlay_hint.enable(false)
-vim.lsp.codelens.enable(true)
+vim.lsp.codelens.enable(false)
 vim.lsp.document_color.enable(false, nil, { style = "■ " })
 vim.lsp.inline_completion.enable(false)
 
@@ -238,13 +238,18 @@ do
     callback = lsp_semantic_hl,
   })
 
+  -- Disable document_color globally and set style once. Provider.active is
+  -- empty at this point, so the internal re-request loop is a no-op (avoids
+  -- the assert failure that fires when the loop hits a stale client_id).
+  vim.lsp.document_color.enable(false, nil, { style = "■ " })
+
   vim.api.nvim_create_autocmd("LspAttach", {
     group = group,
     desc = "Enable document_color only for tailwindcss",
     callback = function(args)
       local client = vim.lsp.get_client_by_id(args.data.client_id)
       if client and client.name == "tailwindcss" then
-        vim.lsp.document_color.enable(true, { bufnr = args.buf }, { style = "■ " })
+        vim.lsp.document_color.enable(true, { bufnr = args.buf })
       end
     end,
   })
