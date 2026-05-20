@@ -1,11 +1,11 @@
 {
   "plugins": {
     "conform.nvim": {
-      "rev": "086a40dc7ed8242c03be9f47fbcee68699cc2395",
+      "rev": "18aeab3d63d350dcf44d64c462cc489a3412af40",
       "src": "https://github.com/stevearc/conform.nvim"
     },
     "helpview.nvim": {
-      "rev": "518789535a0cb146224a428edf93a70f98b795db",
+      "rev": "0057599e169ea6ffd53fef77f279cb13b61e174a",
       "src": "https://github.com/OXY2DEV/helpview.nvim"
     },
     "kulala.nvim": {
@@ -13,19 +13,15 @@
       "src": "https://github.com/mistweaverco/kulala.nvim"
     },
     "markview.nvim": {
-      "rev": "e27dee8b2a61f89ac3a06deae0264ad1d3f7b62c",
+      "rev": "a55e91f25994617a477d4a0e0b326f9dfa648f80",
       "src": "https://github.com/OXY2DEV/markview.nvim"
     },
     "mason.nvim": {
-      "rev": "b03fb0f20bc1d43daf558cda981a2be22e73ac42",
+      "rev": "cbf8d285e1462dd24acf3507817be2bbcb035919",
       "src": "https://github.com/mason-org/mason.nvim"
     },
-    "mfd.nvim": {
-      "rev": "5d6067159e1b1116a12f34827a353572dbf3bdb9",
-      "src": "https://github.com/kungfusheep/mfd.nvim"
-    },
     "mini.nvim": {
-      "rev": "d76247d6e3ffa222784be5b156770e37c665f67e",
+      "rev": "264b5c8fc6e82212af0dc5c345145cfa916efeb6",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "multicursor.nvim": {
@@ -33,11 +29,11 @@
       "src": "https://github.com/jake-stewart/multicursor.nvim"
     },
     "nvim-dap": {
-      "rev": "45a69eba683a2c448dd9ecfc4de89511f0646b5f",
+      "rev": "531771530d4f82ad2d21e436e3cc052d68d7aebb",
       "src": "https://github.com/mfussenegger/nvim-dap"
     },
     "nvim-dap-view": {
-      "rev": "dd43736f30ed70571a02e8c560ab69746ad7a1ed",
+      "rev": "2fe10567913fca43f352791ac83d19b9fdeacc95",
       "src": "https://github.com/igorlfs/nvim-dap-view"
     },
     "nvim-treesitter": {
@@ -49,11 +45,11 @@
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects"
     },
     "quicker.nvim": {
-      "rev": "063cc44da1eef8681bbd653b29d3bc961780886a",
+      "rev": "1c9322b7e2967472548ba9bccd1ccd40e49d0a49",
       "src": "https://github.com/stevearc/quicker.nvim"
     },
     "rainbow-delimiters.nvim": {
-      "rev": "08783ec022e7ddefe0f12a16f1ac4968f55478b0",
+      "rev": "a798325b7f36acc62741d1029930a7b96d4dd4bf",
       "src": "https://github.com/HiPhish/rainbow-delimiters.nvim"
     },
     "treesj": {

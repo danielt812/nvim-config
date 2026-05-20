@@ -74,7 +74,7 @@ now(function()
 
   vim.g.colors_variant = "soft" -- soft | medium | hard
   vim.g.monochrome_color = "blue" -- blue | cyan | green | magenta | orange | pink | red | violet | yellow
-  vim.cmd("colorscheme monochrome")
+  vim.cmd("colorscheme everforest")
 end)
 
 if vim.g.manpager then return end

@@ -9,7 +9,6 @@ vim.g.colors_name = "monochrome"
 -- before `:colorscheme monochrome`.
 
 local base_hex
-local palette_opts = {}
 
 if vim.g.monochrome_color == "blue" then
   base_hex = "#4fa8c8"
@@ -40,8 +39,7 @@ local colors = require("mini.colors")
 -- L=50 midpoint (so darks pull cooler/warmer than lights). Returns nil if
 -- base_hex is invalid.
 local function shade(l, s)
-  if palette_opts.achromatic then s = 0 end
-  local hue_shift = palette_opts.hue_shift or 20
+  local hue_shift = 20
   local base = colors.convert(base_hex, "okhsl")
   if base == nil then return end
   local h = ((base.h or 0) + hue_shift * (50 - l) / 50) % 360
@@ -54,23 +52,26 @@ if shade(50, 50) == nil then
 end
 
 -- Chromatic shades (flavor-tinted) ------------------------------------------
-local darker  = shade(30, 55)
-local dark    = shade(50, 50)
-local base    = shade(70, 70)
-local light   = shade(82, 85)
-local lighter = shade(92, 88)
+local darker = shade(35, 70)
+local dark = shade(53, 65)
+local base = shade(70, 75)
+local light = shade(85, 92)
+local lighter = shade(95, 95)
 
 -- Achromatic shades (pure grey) ---------------------------------------------
-local lower  = shade(10, 0)
-local low    = shade(16, 0)
-local mid    = shade(26, 0)
-local high   = shade(40, 0)
-local higher = shade(55, 0)
+local lower = shade(20, 0)
+local low = shade(28, 0)
+local mid = shade(36, 0)
+local high = shade(44, 0)
+local higher = shade(52, 0)
 
 -- Flavor-tinted selection background ----------------------------------------
 local visual = shade(22, 60)
 
-local bg = "#161616"
+-- local bg = "#202020"
+local bg = shade(12, 50)
+local bg_float = shade(16, 54)
+
 
 -- A couple of hue-shifted tints for diff bg. Derived from the base palette but
 -- pulled slightly toward green/red in lightness so add/delete read distinctly
@@ -102,18 +103,18 @@ local white  = "#ffffff"
 local highlights = {
   Normal = { fg = base, bg = bg },
   NormalNC = { fg = base, bg = bg },
-  NormalFloat = { fg = base, bg = low },
+  NormalFloat = { fg = base, bg = bg_float },
 
-  FloatBorder = { fg = dark, bg = low },
-  FloatTitle = { fg = light, bg = low, bold = true },
+  FloatBorder = { fg = dark, bg = bg_float },
+  FloatTitle = { fg = light, bg = bg_float, bold = true },
   EndOfBuffer = { fg = mid },
   Folded = { fg = dark, bg = low, italic = true },
   FoldColumn = { fg = dark },
   SignColumn = { bg = "NONE" },
 
   ColorColumn = { bg = mid },
-  CursorColumn = { bg = low },
-  CursorLine = { bg = low },
+  CursorColumn = { bg = visual },
+  CursorLine = { bg = visual },
   CursorLineNr = { fg = light, bold = true },
   LineNr = { fg = dark },
   LineNrAbove = { fg = dark },
@@ -285,65 +286,79 @@ local highlights = {
   CurrentWord = { link = "Underline" },
 
   -- Treesitter ---------------------------------------------------------------
+  -- Hierarchy: darker (punctuation) → dark (markup) → base (identifiers/literals)
+  -- → light (types/functions/named entities) → lighter (keywords/control flow)
+
+  -- Identifiers & literals (base)
   ["@variable"] = { fg = base },
-  ["@variable.builtin"] = { fg = lighter, italic = true },
-  ["@variable.parameter"] = { fg = base, italic = true },
+  ["@variable.parameter"] = { fg = base },
   ["@variable.member"] = { fg = base },
   ["@constant"] = { fg = base },
-  ["@constant.builtin"] = { fg = light, bold = true },
-  ["@constant.macro"] = { fg = light, bold = true },
-  ["@module"] = { fg = base },
-  ["@label"] = { fg = light, bold = true },
+  ["@module"] = { fg = light },
+  ["@namespace"] = { fg = light },
   ["@string"] = { fg = base },
-  ["@string.escape"] = { fg = light, bold = true },
-  ["@string.special"] = { fg = light, bold = true },
   ["@character"] = { fg = base },
-  ["@character.special"] = { fg = light, bold = true },
   ["@number"] = { fg = base },
   ["@number.float"] = { fg = base },
-  ["@boolean"] = { fg = lighter, bold = true },
   ["@float"] = { fg = base },
-  ["@function"] = { fg = lighter, bold = true },
-  ["@function.builtin"] = { fg = lighter, bold = true, italic = true },
-  ["@function.call"] = { fg = lighter },
+  ["@attribute"] = { fg = base, italic = true },
+  ["@field"] = { fg = base },
+  ["@property"] = { fg = base },
+  ["@parameter"] = { fg = base, italic = true },
+
+  -- Special literals & builtins (light)
+  ["@variable.builtin"] = { fg = light, italic = true, bold = true },
+  ["@constant.builtin"] = { fg = light, bold = true },
+  ["@constant.macro"] = { fg = light, bold = true },
+  ["@string.escape"] = { fg = light, bold = true },
+  ["@string.special"] = { fg = light, bold = true },
+  ["@character.special"] = { fg = light, bold = true },
+
+  -- Functions, methods, constructors (light)
+  ["@function"] = { fg = light, bold = true },
+  ["@function.call"] = { fg = light },
+  ["@function.builtin"] = { fg = light, bold = true, italic = true },
   ["@function.macro"] = { fg = light, bold = true },
   ["@function.method"] = { fg = light, bold = true },
-  ["@function.method.call"] = { fg = base },
+  ["@function.method.call"] = { fg = light },
   ["@method"] = { fg = light, bold = true },
-  ["@method.call"] = { fg = base },
+  ["@method.call"] = { fg = light },
   ["@constructor"] = { fg = light, bold = true },
+
+  -- Types (light, underlined)
+  ["@type"] = { fg = light, underline = true },
+  ["@type.builtin"] = { fg = light, underline = true, italic = true },
+  ["@type.definition"] = { fg = light, bold = true, underline = true },
+  ["@type.qualifier"] = { fg = light, italic = true },
+  ["@label"] = { fg = light, bold = true },
+
+  -- Keywords & control flow (lighter, most salient)
   ["@keyword"] = { fg = lighter, bold = true },
   ["@keyword.function"] = { fg = lighter, bold = true },
-  ["@keyword.operator"] = { fg = lighter },
+  ["@keyword.operator"] = { fg = light },
   ["@keyword.return"] = { fg = lighter, bold = true },
-  ["@keyword.import"] = { fg = light, bold = true },
-  ["@keyword.modifier"] = { fg = light, bold = true },
+  ["@keyword.import"] = { fg = lighter, bold = true },
+  ["@keyword.modifier"] = { fg = lighter, italic = true },
   ["@keyword.conditional"] = { fg = lighter, bold = true },
   ["@keyword.repeat"] = { fg = lighter, bold = true },
   ["@keyword.exception"] = { fg = lighter, bold = true },
   ["@conditional"] = { fg = lighter, bold = true },
   ["@repeat"] = { fg = lighter, bold = true },
   ["@exception"] = { fg = lighter, bold = true },
-  ["@include"] = { fg = light, bold = true },
-  ["@type"] = { fg = base, underline = true },
-  ["@type.builtin"] = { fg = light, underline = true },
-  ["@type.definition"] = { fg = base, underline = true },
-  ["@type.qualifier"] = { fg = light, bold = true },
-  ["@attribute"] = { fg = base },
-  ["@field"] = { fg = base },
-  ["@property"] = { fg = base },
-  ["@parameter"] = { fg = base, italic = true },
+  ["@include"] = { fg = lighter, bold = true },
+  ["@boolean"] = { fg = lighter, bold = true },
   ["@operator"] = { fg = lighter },
-  ["@namespace"] = { fg = base },
-  ["@punctuation"] = { fg = base },
-  ["@punctuation.bracket"] = { fg = base },
-  ["@punctuation.delimiter"] = { fg = base },
+
+  -- Punctuation (darker, recedes)
+  ["@punctuation"] = { fg = darker },
+  ["@punctuation.bracket"] = { fg = darker },
+  ["@punctuation.delimiter"] = { fg = darker },
   ["@punctuation.special"] = { fg = light, bold = true },
   ["@comment"] = { link = "Comment" },
-  ["@comment.documentation"] = { fg = high, italic = true },
+  ["@comment.documentation"] = { fg = higher, italic = true },
   ["@comment.error"] = { fg = light, bold = true },
   ["@comment.warning"] = { fg = base },
-  ["@comment.note"] = { fg = high, italic = true },
+  ["@comment.note"] = { fg = higher, italic = true },
   ["@comment.todo"] = { link = "Todo" },
   ["@tag"] = { fg = light, bold = true },
   ["@tag.attribute"] = { fg = base, italic = true },
@@ -373,40 +388,49 @@ local highlights = {
   ["@markup.quote"] = { fg = dark, italic = true },
 
   -- Semantic tokens ----------------------------------------------------------
-  ["@lsp.type.class"] = { fg = base, underline = true },
-  ["@lsp.type.struct"] = { fg = base, underline = true },
-  ["@lsp.type.interface"] = { fg = base, underline = true },
-  ["@lsp.type.enum"] = { fg = base, underline = true },
-  ["@lsp.type.enumMember"] = { fg = base },
+  -- Identifiers (base)
+  ["@lsp.type.variable"] = { fg = base },
   ["@lsp.type.parameter"] = { fg = base, italic = true },
-  ["@lsp.type.variable"] = { fg = lighter },
   ["@lsp.type.property"] = { fg = base },
-  ["@lsp.type.function"] = { fg = lighter, bold = true },
+  ["@lsp.type.enumMember"] = { fg = base },
+  ["@lsp.type.number"] = { fg = base },
+  ["@lsp.type.string"] = { fg = base },
+
+  -- Types (light, underlined)
+  ["@lsp.type.class"] = { fg = light, underline = true },
+  ["@lsp.type.struct"] = { fg = light, underline = true },
+  ["@lsp.type.interface"] = { fg = light, underline = true },
+  ["@lsp.type.enum"] = { fg = light, underline = true },
+  ["@lsp.type.type"] = { fg = light, underline = true },
+  ["@lsp.type.typeParameter"] = { fg = light, underline = true },
+  ["@lsp.type.namespace"] = { fg = light },
+
+  -- Functions & methods (light)
+  ["@lsp.type.function"] = { fg = light, bold = true },
   ["@lsp.type.method"] = { fg = light, bold = true },
   ["@lsp.type.macro"] = { fg = light, bold = true },
-  ["@lsp.type.keyword"] = { fg = lighter, bold = true },
-  ["@lsp.type.modifier"] = { fg = light, bold = true },
-  ["@lsp.type.namespace"] = { fg = base },
-  ["@lsp.type.number"] = { fg = base },
-  ["@lsp.type.operator"] = { fg = lighter },
-  ["@lsp.type.string"] = { fg = base },
-  ["@lsp.type.regexp"] = { fg = light, bold = true },
-  ["@lsp.type.type"] = { fg = base, underline = true },
-  ["@lsp.type.typeParameter"] = { fg = base, italic = true },
   ["@lsp.type.decorator"] = { fg = light, bold = true },
+  ["@lsp.type.regexp"] = { fg = light, bold = true },
+
+  -- Control flow (lighter)
+  ["@lsp.type.keyword"] = { fg = lighter, bold = true },
+  ["@lsp.type.operator"] = { fg = light },
+  ["@lsp.type.modifier"] = { fg = lighter, italic = true },
+
+  -- Misc
   ["@lsp.type.comment"] = { link = "Comment" },
-  ["@lsp.mod.defaultLibrary"] = { fg = lighter, italic = true },
+  ["@lsp.mod.defaultLibrary"] = { italic = true, bold = true },
 
   -- https://github.com/nvim-mini/mini.nvim
   MiniAnimateCursor = { reverse = true, nocombine = true },
   MiniAnimateNormalFloat = { link = "NormalFloat" },
 
   MiniClueBorder = { link = "FloatBorder" },
-  MiniClueDescGroup = { fg = base, bg = low },
-  MiniClueDescSingle = { fg = base, bg = low },
-  MiniClueNextKey = { fg = dark, bg = low, bold = true },
-  MiniClueNextKeyWithPostkeys = { fg = red, bg = low, bold = true },
-  MiniClueSeparator = { fg = dark, bg = low },
+  MiniClueDescGroup = { link = "NormalFloat" },
+  MiniClueDescSingle = { link = "NormalFloat" },
+  MiniClueNextKey = { fg = dark, bg = bg_float, bold = true },
+  MiniClueNextKeyWithPostkeys = { fg = red, bg = lower, bold = true },
+  MiniClueSeparator = { fg = dark, bg = bg_float },
   MiniClueTitle = { link = "FloatTitle" },
 
   MiniCmdlinePeekBorder = { link = "FloatBorder" },
@@ -444,7 +468,7 @@ local highlights = {
 
   MiniFilesBorder = { link = "FloatBorder" },
   MiniFilesBorderModified = { fg = light, bg = low, bold = true },
-  MiniFilesCursorLine = { bg = low },
+  MiniFilesCursorLine = { bg = visual },
   MiniFilesDirectory = { link = "Directory" },
   MiniFilesFile = { link = "NormalFloat" },
   MiniFilesNormal = { link = "NormalFloat" },
@@ -488,14 +512,14 @@ local highlights = {
   MiniPickCursor = { blend = 100, nocombine = true },
   MiniPickIconDirectory = { link = "Directory" },
   MiniPickIconFile = { link = "MiniPickNormal" },
-  MiniPickHeader = { fg = lighter, bg = low, bold = true },
-  MiniPickMatchCurrent = { bg = low },
+  MiniPickHeader = { fg = lighter, bg = bg_float, bold = true },
+  MiniPickMatchCurrent = { bg = visual },
   MiniPickMatchMarked = { link = "Visual" },
   MiniPickMatchRanges = { fg = lighter, bold = true, underline = true },
   MiniPickNormal = { link = "NormalFloat" },
-  MiniPickPreviewLine = { bg = low },
+  MiniPickPreviewLine = { bg = visual },
   MiniPickPreviewRegion = { link = "IncSearch" },
-  MiniPickPrompt = { fg = base, bg = low, bold = true },
+  MiniPickPrompt = { fg = base, bg = bg_float, bold = true },
   MiniPickPromptCaret = { link = "MiniPickPrompt" },
   MiniPickPromptPrefix = { link = "MiniPickPrompt" },
 
@@ -569,6 +593,10 @@ local highlights = {
   RainbowDelimiterRed = { fg = darker },
   RainbowDelimiterOrange = { fg = dark },
   RainbowDelimiterYellow = { fg = base },
+  RainbowDelimiterGreen = { fg = light },
+  RainbowDelimiterCyan = { fg = lighter },
+  RainbowDelimiterBlue = { fg = higher },
+  RainbowDelimiterViolet = { fg = high },
 
   -- Predefined groups used by linked highlights ------------------------------
   Fg = { fg = base },
@@ -599,21 +627,3 @@ for group, opts in pairs(highlights) do
   end
   vim.api.nvim_set_hl(0, group, opts)
 end
-
--- Terminal palette (monochrome gradient) -------------------------------------
-vim.g.terminal_color_0 = low
-vim.g.terminal_color_1 = lighter
-vim.g.terminal_color_2 = base
-vim.g.terminal_color_3 = base
-vim.g.terminal_color_4 = dark
-vim.g.terminal_color_5 = lighter
-vim.g.terminal_color_6 = base
-vim.g.terminal_color_7 = mid
-vim.g.terminal_color_8 = dark
-vim.g.terminal_color_9 = lighter
-vim.g.terminal_color_10 = lighter
-vim.g.terminal_color_11 = lighter
-vim.g.terminal_color_12 = base
-vim.g.terminal_color_13 = lighter
-vim.g.terminal_color_14 = base
-vim.g.terminal_color_15 = lighter
