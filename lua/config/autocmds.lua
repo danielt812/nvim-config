@@ -106,3 +106,19 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     end
   end,
 })
+
+vim.api.nvim_create_autocmd("VimEnter", {
+  group = vim.api.nvim_create_augroup("shada_cleanup", { clear = true }),
+  desc = "Remove stale shada temp files left by crashes (avoids E138 on quit)",
+  callback = function()
+    local dir = vim.fn.stdpath("state") .. "/shada"
+    local cutoff = os.time() - 3600 -- Older than 1 hour, so live writes are never touched
+    for name in vim.fs.dir(dir) do
+      if name:match("^main%.shada%.tmp%.%a$") then
+        local path = dir .. "/" .. name
+        local st = vim.uv.fs_stat(path)
+        if st and st.mtime.sec < cutoff then vim.fn.delete(path) end
+      end
+    end
+  end,
+})
