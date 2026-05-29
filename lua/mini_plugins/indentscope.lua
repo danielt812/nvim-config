@@ -1,8 +1,17 @@
 local indentscope = require("mini.indentscope")
 
-local ft_ignore = { "checkhealth", "git", "help", "man", "markdown", "terminal", "mason" }
-
-local function should_ignore(ft) return ft:match("^mini") or vim.tbl_contains(ft_ignore, ft) end
+local function ignore_ft(ft)
+  return ft:match("^mini")
+    or vim.tbl_contains({
+      "checkhealth",
+      "git",
+      "help",
+      "man",
+      "markdown",
+      "terminal",
+      "mason",
+    }, ft)
+end
 
 indentscope.setup({
   -- Draw options
@@ -15,7 +24,7 @@ indentscope.setup({
     -- Default draws only fully computed scope (see `options.n_lines`).
     predicate = function(scope)
       if not vim.api.nvim_buf_is_valid(scope.buf_id) then return false end
-      if should_ignore(vim.bo[scope.buf_id].filetype) then return false end
+      if ignore_ft(vim.bo[scope.buf_id].filetype) then return false end
       if vim.fn.foldclosed(scope.reference.line) ~= -1 then return false end
       return not scope.body.is_incomplete
     end,
@@ -86,7 +95,7 @@ do
   end
 
   local function render(buf, win)
-    if vim.b[buf].miniindentscope_disable or should_ignore(vim.bo[buf].filetype) then return end
+    if vim.b[buf].miniindentscope_disable or ignore_ft(vim.bo[buf].filetype) then return end
     local win_config = vim.api.nvim_win_get_config(win)
     if win_config and win_config.relative ~= "" and win ~= vim.api.nvim_get_current_win() then return end
 
@@ -96,7 +105,7 @@ do
 
     local view = vim.api.nvim_win_call(win, function() return vim.fn.winsaveview() end)
     local top = view.topline
-    local bot = math.min(top + vim.api.nvim_win_get_height(win) - 1, vim.api.nvim_buf_line_count(buf))
+    local bot = vim.fn.line("w$", win) -- Last visible line, accounts for folds and wrapped lines
     local leftcol = view.leftcol
     vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
 
@@ -130,6 +139,7 @@ do
       for _, buf in ipairs(vim.api.nvim_list_bufs()) do
         vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
       end
+      state = {}
       return
     end
     for _, win in ipairs(vim.api.nvim_list_wins()) do
