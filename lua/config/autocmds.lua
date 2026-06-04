@@ -7,12 +7,22 @@ vim.api.nvim_create_autocmd("BufEnter", {
 vim.api.nvim_create_autocmd("BufWinEnter", {
   group = vim.api.nvim_create_augroup("open_help_vs", { clear = true }),
   desc = "Open help/man files in vertical split",
-  callback = vim.schedule_wrap(function()
+  callback = function(args)
     if vim.o.columns <= 110 then return end
-    if vim.bo.buftype == "help" or vim.bo.filetype == "man" then
-      vim.cmd("wincmd L")
-    end
-  end),
+    if vim.bo[args.buf].buftype ~= "help" and vim.bo[args.buf].filetype ~= "man" then return end
+    local win = vim.api.nvim_get_current_win()
+    vim.schedule(function()
+      if not vim.api.nvim_win_is_valid(win) then return end
+      -- Close any open ministarter — it destabilises the help split
+      for _, b in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_loaded(b) and vim.bo[b].filetype == "ministarter" then
+          pcall(vim.api.nvim_buf_delete, b, { force = true })
+          break
+        end
+      end
+      vim.api.nvim_win_call(win, function() vim.cmd("wincmd L") end)
+    end)
+  end,
 })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
