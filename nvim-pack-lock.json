@@ -9,7 +9,7 @@
       "src": "https://github.com/OXY2DEV/helpview.nvim"
     },
     "kulala.nvim": {
-      "rev": "7d60be1f091cc40a64d5a14b926d060b205fc24b",
+      "rev": "a82a20a4f065275b91375744fbff9839db1dffd0",
       "src": "https://github.com/mistweaverco/kulala.nvim"
     },
     "markview.nvim": {
@@ -17,11 +17,11 @@
       "src": "https://github.com/OXY2DEV/markview.nvim"
     },
     "mason.nvim": {
-      "rev": "bb639d4bf385a4d89f478b83af4d770be05ab7eb",
+      "rev": "16ba83bfc8a25f52bb545134f5bee082b195c460",
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "15abccbe23525ee0502d2efe620c77db00bfb93c",
+      "rev": "cbae4fa396bbf9c802b3d2dc2e9c5362e8fb9468",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "multicursor.nvim": {
@@ -33,7 +33,7 @@
       "src": "https://github.com/mfussenegger/nvim-dap"
     },
     "nvim-dap-view": {
-      "rev": "a03a085b020197f441f6c63383f0cb7321729f6e",
+      "rev": "3f328fc8d59835b09b65f85cd62cb255bf93dce5",
       "src": "https://github.com/igorlfs/nvim-dap-view"
     },
     "nvim-treesitter": {
