@@ -116,8 +116,8 @@ local servers = {
   "rust_analyzer",
   "taplo",
   "tailwindcss",
-  -- "ts_ls",
-  "tsgo",
+  "ts_ls",
+  -- "tsgo",
   "yamlls",
 }
 
