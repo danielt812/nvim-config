@@ -31,6 +31,7 @@ local scratch_types = {
   { ft = "markdown", ext = "md" },
   { ft = "python", ext = "py" },
   { ft = "text", ext = "txt" },
+  { ft = "yaml" },
 }
 
 -- Create scratch buffer
@@ -49,7 +50,6 @@ local function scratch_buffer()
     end)
   end)
 end
-
 
 local function rename_buffer()
   local current = vim.api.nvim_buf_get_name(0)
