@@ -56,7 +56,7 @@ vim.opt.foldtext = "v:lua.foldtext()" -- Custom fold text function
 vim.opt.spellfile = vim.fn.stdpath("config") .. "/spell/en.utf-8.add" -- Custom spell file path
 
 -- INFO: System and performance
-vim.opt.clipboard = "unnamed" -- Sync with system clipboard
+vim.opt.clipboard = "unnamedplus" -- Sync with system clipboard
 vim.opt.updatetime = 1000 -- CursorHold and swap write interval (ms)
 vim.opt.shortmess:append("S") -- Don't show search count
 
