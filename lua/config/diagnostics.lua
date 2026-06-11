@@ -756,8 +756,6 @@ do
 
   local function attach(buf)
     if state.attached[buf] then return end
-    local fname = vim.api.nvim_buf_get_name(buf)
-    if fname:match("%.env") then return end
     state.attached[buf] = true
 
     vim.api.nvim_create_autocmd("DiagnosticChanged", {
