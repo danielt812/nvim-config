@@ -59,5 +59,6 @@ vim.opt.spellfile = vim.fn.stdpath("config") .. "/spell/en.utf-8.add" -- Custom 
 vim.opt.clipboard = "unnamedplus" -- Sync with system clipboard
 vim.opt.updatetime = 1000 -- CursorHold and swap write interval (ms)
 vim.opt.shortmess:append("S") -- Don't show search count
+vim.opt.shortmess:append("c") -- Don't show ins-completion messages (e.g. "Pattern not found")
 
 vim.opt.guicursor = "n-sm:block-CursorNormal,v:block-CursorVisual,c:block-CursorCommand,i-ci-ve:ver25-CursorInsert,r-cr-o:hor20-CursorReplace,t:ver25-TermCursor" -- Cursor shape and color per mode

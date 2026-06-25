@@ -45,8 +45,12 @@ do
   local ns = vim.api.nvim_create_namespace("virtual_diagnostics")
   local group = vim.api.nvim_create_augroup("virtual_diagnostics", { clear = true })
 
-  local state = {
+  local config = {
     enabled = true,
+    show_codes = true,
+  }
+
+  local state = {
     cache = {},
     attached = {},
     last_cursor = {},
@@ -230,7 +234,7 @@ do
   end
 
   local function get_diag_icon(severity)
-    local key = vim.diagnostic.severity[severity]:sub(1, 1)
+    local key = (severity_names[severity] or severity_names[1]):sub(1, 1)
     return signs[key] or key
   end
 
@@ -458,7 +462,8 @@ do
         if ns_info and ns_info.name then client_name = ns_info.name:match("^vim%.lsp%.(.+)%.[%d]+$") end
       end
       local name = client_name or diag.source
-      if name then source_tag = " [" .. name .. "]" end
+      local code = (config.show_codes and diag.code) and (" " .. diag.code) or ""
+      if name then source_tag = " [" .. name .. code .. "]" end
     end
 
     local other_offset = get_extmark_offset(buf, diag_line, line_length)
@@ -695,7 +700,7 @@ do
 
   local function render(buf)
     if not vim.api.nvim_win_is_valid(vim.api.nvim_get_current_win()) then return end
-    if not (state.enabled and vim.diagnostic.is_enabled({ bufnr = buf }) and vim.api.nvim_buf_is_valid(buf)) then
+    if not (config.enabled and vim.diagnostic.is_enabled({ bufnr = buf }) and vim.api.nvim_buf_is_valid(buf)) then
       pcall(vim.api.nvim_buf_clear_namespace, buf, ns, 0, -1)
       return
     end
@@ -795,9 +800,9 @@ do
           return
         end
         if vim.tbl_contains(disabled_modes, vim.fn.mode()) then
-          state.enabled = false
+          config.enabled = false
         else
-          state.enabled = true
+          config.enabled = true
         end
         render(args.buf)
       end,

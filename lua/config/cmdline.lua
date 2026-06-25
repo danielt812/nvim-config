@@ -53,10 +53,11 @@ local function reposition()
   local buf = vim.api.nvim_win_get_buf(win)
   local content_height = math.max(1, vim.api.nvim_buf_line_count(buf))
 
-  if not cmd_win_saved then
-    cmd_win_saved = vim.api.nvim_win_get_config(win)
-    vim.wo[win].winhighlight = "Normal:MsgArea,FloatBorder:FloatBorder"
-  end
+  if not cmd_win_saved then cmd_win_saved = vim.api.nvim_win_get_config(win) end
+  -- Re-apply every show: core ui2 recreates the cmd window and resets winhighlight
+  -- to `Normal:MsgArea` (renders dark for search), so a once-only set gets clobbered.
+  -- `Search:,CurSearch:,IncSearch:` mirrors core's hiding of search highlights here.
+  vim.wo[win].winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,Search:,CurSearch:,IncSearch:"
 
   if cmdline_type and vim.tbl_contains(config.native_types, cmdline_type) then
     pcall(vim.api.nvim_win_set_config, win, {
@@ -92,9 +93,20 @@ local function wrap_cmdline_show()
   local orig = cmdline_mod.cmdline_show
   cmdline_mod.cmdline_show = function(...)
     local ret = orig(...)
+    -- Strip the `vim` treesitter syntax highlighting core applies to `:` commands so
+    -- the cmdline renders in plain Normal text. Core writes these as `@capture`
+    -- extmarks in its own namespace; drop them, keeping any (non-`@`) prompt highlight.
+    local buf = ui2.bufs.cmd
+    if buf > 0 and vim.api.nvim_buf_is_valid(buf) then
+      for _, m in ipairs(vim.api.nvim_buf_get_extmarks(buf, ui2.ns, 0, -1, { details = true })) do
+        local hl = m[4] and m[4].hl_group
+        if type(hl) == "string" and hl:sub(1, 1) == "@" then
+          pcall(vim.api.nvim_buf_del_extmark, buf, ui2.ns, m[1])
+        end
+      end
+    end
     if cmdline_type then
-      local is_search = cmdline_type == "/" or cmdline_type == "?"
-      if not is_search and not vim.tbl_contains(config.native_types, cmdline_type) then set_cmdheight_0() end
+      if not vim.tbl_contains(config.native_types, cmdline_type) then set_cmdheight_0() end
       reposition()
     end
     return ret
@@ -149,5 +161,5 @@ vim.api.nvim_create_autocmd({ "VimResized", "TabEnter" }, {
 vim.api.nvim_create_autocmd("InsertEnter", {
   group = group,
   desc = "Clear lingering ui2 messages when entering insert mode",
-  callback = function() pcall(vim.cmd, "echo ''") end,
+  callback = function() pcall(function() vim.cmd("echo ''") end) end,
 })
