@@ -30,6 +30,17 @@ end
 -- `mini.pairs`. Honour the same `vim.g.minipairs_disable` toggle so disabling
 -- pairs in buffers also disables them in the input prompt.
 local key_handler = function(state, key)
+  -- Paste the system clipboard at the caret, mirroring `sys_paste` in mini.pick.
+  if key == vim.keycode("<C-v>") then
+    local paste = vim.fn.getreg("+"):gsub("[\r\n]+", " ")
+    local caret, value = state.caret, state.input
+    local before = vim.fn.strcharpart(value, 0, caret - 1)
+    local after = vim.fn.strcharpart(value, caret - 1)
+    state.input = before .. paste .. after
+    state.caret = caret + vim.fn.strchars(paste)
+    return state
+  end
+
   local autopair = not vim.g.minipairs_disable
   return input.default_key(state, key, { autopair = autopair })
 end
