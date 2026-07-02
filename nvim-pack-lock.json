@@ -9,11 +9,11 @@
       "src": "https://github.com/OXY2DEV/helpview.nvim"
     },
     "kulala.nvim": {
-      "rev": "87c8f0136f0eaebe1dcea6f7448a34cea40b9513",
+      "rev": "7fba542e4300c0d915f64da8a759f68ca1bd6b77",
       "src": "https://github.com/mistweaverco/kulala.nvim"
     },
     "markview.nvim": {
-      "rev": "301e431c7b618235f5447d54465c70934bd33668",
+      "rev": "1b6709be9b0e452b8c0df0e9faa177078b0e7865",
       "src": "https://github.com/OXY2DEV/markview.nvim"
     },
     "mason.nvim": {
@@ -21,7 +21,7 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "c248713d3530710f67ec804cfbdfcd5b02b19dee",
+      "rev": "c5cdbadeb423ff724e27a42ab2d1c504d1d6fc5a",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "multicursor.nvim": {
