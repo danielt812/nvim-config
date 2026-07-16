@@ -89,8 +89,8 @@ do
   local function get_indent(buf, lnum)
     return vim.api.nvim_buf_call(buf, function()
       if vim.fn.getline(lnum):match("^%s*$") == nil then return vim.fn.indent(lnum) end
-      local p, n = vim.fn.prevnonblank(lnum), vim.fn.nextnonblank(lnum)
-      return math.max(p > 0 and vim.fn.indent(p) or 0, n > 0 and vim.fn.indent(n) or 0)
+      local prev, next = vim.fn.prevnonblank(lnum), vim.fn.nextnonblank(lnum)
+      return math.max(prev > 0 and vim.fn.indent(prev) or 0, next > 0 and vim.fn.indent(next) or 0)
     end)
   end
 
