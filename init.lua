@@ -185,12 +185,6 @@ later(function()
   plug("multicursor")
 end)
 
--- Rest Client -----------------------------------------------------------------
-later(function()
-  vim.pack.add({ "https://github.com/mistweaverco/kulala.nvim" })
-  plug("kulala")
-end)
-
 -- Work ------------------------------------------------------------------------
 now(function()
   local work = vim.fn.stdpath("config") .. "/work/init.lua"

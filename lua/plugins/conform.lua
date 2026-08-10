@@ -98,9 +98,6 @@ end, { desc = "Open Conform log file" })
 -- xmlformatter ----------------------------------------------------------------
 conform.formatters_by_ft.xml = { "xmlformatter" }
 
--- kulala-fmt ----------------------------------------------------------------
-conform.formatters_by_ft.http = { "kulala-fmt" }
-
 -- clang-format ----------------------------------------------------------------
 local clang_filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" }
 

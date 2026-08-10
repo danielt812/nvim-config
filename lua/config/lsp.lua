@@ -306,7 +306,7 @@ do
     end
 
     local method = "textDocument/documentSymbol"
-    local skip = { ["mini.snippets"] = true, kulala = true }
+    local skip = { ["mini.snippets"] = true }
     local clients = vim.lsp.get_clients({ bufnr = buf, method = method })
     clients = vim.tbl_filter(function(c) return not skip[c.name] end, clients)
     if #clients == 0 then return end

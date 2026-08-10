@@ -57,7 +57,6 @@ local ensure_installed = {
   -- Formatters/Linters --------------------------------------------------------
   "goimports",
   "ruff",
-  "kulala-fmt",
   "prettier",
   "prettierd",
   "shellcheck",

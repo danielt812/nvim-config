@@ -585,10 +585,6 @@ local highlights = {
   NvimDapViewTabSelected = { fg = base, bg = bg, bold = true },
   NvimDapViewTabFill = { fg = dark, bg = bg },
 
-  -- https://github.com/mistweaverco/kulala.nvim
-  KulalaTab = { fg = dark, bg = low },
-  KulalaTabSel = { fg = base, bg = low, bold = true },
-
   -- https://github.com/HiPhish/rainbow-delimiters.nvim
   RainbowDelimiterRed = { fg = darker },
   RainbowDelimiterOrange = { fg = dark },

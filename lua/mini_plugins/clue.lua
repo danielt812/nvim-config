@@ -42,7 +42,6 @@ clue.setup({
     { mode = { "n", "v" }, keys = "<leader>g",  desc = "+Git" },
     { mode = { "n", "v" }, keys = "<leader>l",  desc = "+Lsp" },
     { mode = { "n", "v" }, keys = "<leader>q",  desc = "+Quickfix" },
-    { mode = { "n", "v" }, keys = "<leader>r",  desc = "+Rest" },
     { mode = { "n", "v" }, keys = "<leader>s",  desc = "+Session" },
     { mode = { "n", "v" }, keys = "<leader>t",  desc = "+Terminal" },
     { mode = { "n", "v" }, keys = "<leader>v",  desc = "+Visits" },

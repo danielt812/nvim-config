@@ -53,8 +53,6 @@ icons.setup({
     -- stylua: ignore start
     ["dap-view"]       = { glyph = "", hl = "MiniIconsRed" },
     ["ghostty"]        = { glyph = "󱙝", hl = "MiniIconsBlue" },
-    ["json.kulala_ui"] = { glyph = "󰏚", hl = "MiniIconsWhite" },
-    ["text.kulala_ui"] = { glyph = "󰏚", hl = "MiniIconsWhite" },
     ["terminal"]       = { glyph = "", hl = "MiniIconsPurple" },
     ["tmux"]           = { glyph = "", hl = "MiniIconsGreen" },
     ["nvim-pack"]      = { glyph = "", hl = "MiniIconsGreen" }
