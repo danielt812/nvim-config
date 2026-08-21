@@ -1,8 +1,13 @@
 {
   "Code Block": {
     "prefix": "codeblock",
-    "body": "```${1:language}\n\t$0\n```",
+    "body": "```${1:language}\n$0\n```",
     "description": "Fenced code block"
+  },
+  "Text": {
+    "prefix": "text",
+    "body": "```text\n$0\n```",
+    "description": "Fenced text block"
   },
   "Image": {
     "prefix": "image",
