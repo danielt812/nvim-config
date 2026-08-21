@@ -32,7 +32,7 @@ local languages = {
   "regex",
   "scss",
   "sql",
-  "tmux",
+  -- "tmux", -- https://github.com/nvim-treesitter/nvim-treesitter/commit/78bebef150057eff7f26044bb177fbbf82ff047d
   "toml",
   "tsx",
   "typescript",
