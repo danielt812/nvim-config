@@ -1,5 +1,4 @@
 local starter = require("mini.starter")
-local tips = require("lib.tips")
 
 local header = table.concat({
   [[                          _         ]],
@@ -9,15 +8,9 @@ local header = table.concat({
   [[/_/ /_/\___/\____/|___/_/_/ /_/ /_/ ]],
 }, "\n")
 
-math.randomseed(os.time())
-local t = tips[math.random(#tips)]
-local parts = {
-  "Tip\n",
-  ":" .. t.cmd,
-  "→ " .. t.desc,
-}
-if t.example then table.insert(parts, t.example) end
-local tip = table.concat(parts, "\n")
+local v = vim.version()
+local nvim_version = string.format("v%d.%d.%d", v.major, v.minor, v.patch)
+local footer = table.concat({ nvim_version, ":h news → latest changes" }, "\n")
 
 starter.setup({
   evaluate_single = true,
@@ -40,7 +33,7 @@ starter.setup({
     starter.gen_hook.indexing("all", { "Builtin actions", "Pick", "Actions" }),
     starter.gen_hook.aligning("center", "center"),
   },
-  footer = tip,
+  footer = footer,
 })
 
 -- #############################################################################
