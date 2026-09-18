@@ -62,3 +62,6 @@ end, { expr = true })
 vim.keymap.set("n", "yy", function()
   if vim.fn.getline(".") ~= "" then vim.cmd("normal! yy") end
 end, { noremap = true, silent = true })
+
+-- Join Lines
+vim.keymap.set("x", "<C-j>", function() vim.cmd("normal! J") end, { desc = "Join selected lines", silent = true })
