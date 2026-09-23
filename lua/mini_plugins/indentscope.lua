@@ -107,7 +107,6 @@ do
     local top = view.topline
     local bot = vim.fn.line("w$", win) -- Last visible line, accounts for folds and wrapped lines
     local leftcol = view.leftcol
-    vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
 
     for lnum = top, bot do
       if vim.fn.foldclosed(lnum) ~= -1 then goto continue end
@@ -142,15 +141,24 @@ do
       state = {}
       return
     end
+    -- Extmarks belong to the buffer, so group windows by buffer and clear each
+    -- buffer once. Otherwise a split of the same buffer wipes the other window.
+    local wins_by_buf, dirty = {}, {}
     for _, win in ipairs(vim.api.nvim_list_wins()) do
       local buf = vim.api.nvim_win_get_buf(win)
-      if opts.lazy then
-        local key = buf .. ":" .. vim.fn.line("w0", win) .. ":" .. vim.fn.line("w$", win)
-        if state[win] == key then goto continue end
-        state[win] = key
+      wins_by_buf[buf] = wins_by_buf[buf] or {}
+      table.insert(wins_by_buf[buf], win)
+      local key = buf .. ":" .. vim.fn.line("w0", win) .. ":" .. vim.fn.line("w$", win)
+      if not opts.lazy or state[win] ~= key then dirty[buf] = true end
+      state[win] = key
+    end
+    for buf, wins in pairs(wins_by_buf) do
+      if dirty[buf] then
+        vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
+        for _, win in ipairs(wins) do
+          render(buf, win)
+        end
       end
-      render(buf, win)
-      ::continue::
     end
   end
 
