@@ -85,21 +85,12 @@ vim.lsp.linked_editing_range.enable(true)
 vim.lsp.inlay_hint.enable(false)
 vim.lsp.codelens.enable(false)
 vim.lsp.document_color.enable(false, nil, { style = "■ " })
-vim.lsp.inline_completion.enable(false)
-
-local function toggle_inline_completion()
-  vim.lsp.inline_completion.enable(not vim.lsp.inline_completion.is_enabled())
-  vim.cmd("redrawstatus")
-end
-
-vim.keymap.set("n", "\\a", toggle_inline_completion, { desc = "Toggle 'copilot'" })
 
 -- List of servers to enable
 local servers = {
   "angularls",
   "clangd",
   "autotools_ls",
-  "copilot",
   "basedpyright",
   "bashls",
   "css_variables",
@@ -186,50 +177,10 @@ do
 
   local function lsp_semantic_hl() vim.api.nvim_set_hl(0, "@lsp.type.variable", {}) end
 
-  local function lsp_copilot_signin()
-    local clients = vim.lsp.get_clients({ name = "copilot" })
-    if #clients == 0 then
-      vim.notify("Copilot LSP not attached", vim.log.levels.WARN)
-      return
-    end
-    local client = clients[1]
-    client:request("signIn", vim.empty_dict(), function(err, result) ---@diagnostic disable-line: param-type-mismatch
-      if err then
-        vim.notify("Copilot sign-in error: " .. vim.inspect(err), vim.log.levels.ERROR)
-        return
-      end
-      if result.status == "AlreadySignedIn" then
-        vim.notify("Copilot: already signed in as " .. result.user)
-        return
-      end
-      if result.userCode then
-        vim.fn.setreg("+", result.userCode)
-        local uri = result.verificationUri or result.verificationURIComplete or ""
-        vim.notify("Copilot: code " .. result.userCode .. " copied to clipboard.\nVisit: " .. uri)
-        if uri ~= "" then
-          local open_cmd = vim.uv.os_uname().sysname == "Darwin" and "open" or "xdg-open"
-          vim.fn.jobstart({ open_cmd, uri }, { detach = true })
-        end
-      end
-      if result.command then
-        client:exec_cmd(result.command, { bufnr = 0 }, function(cmd_err, cmd_result)
-          if cmd_err then
-            vim.notify("Copilot sign-in failed: " .. vim.inspect(cmd_err), vim.log.levels.ERROR)
-            return
-          end
-          if cmd_result and cmd_result.status == "OK" then
-            vim.notify("Copilot: signed in as " .. (cmd_result.user or "unknown"))
-          end
-        end)
-      end
-    end)
-  end
-
   -- stylua: ignore start
   vim.api.nvim_create_user_command("LspRestart",       lsp_restart,        { desc = "Lsp restart", nargs = "?", complete = lsp_restart_cmp })
   vim.api.nvim_create_user_command("LspInfo",          lsp_info,           { desc = "Lsp checkhealth" })
   vim.api.nvim_create_user_command("LspLog",           lsp_log,            { desc = "Lsp log" })
-  vim.api.nvim_create_user_command("LspCopilotSignIn", lsp_copilot_signin, { desc = "Sign in to GitHub Copilot" })
   -- stylua: ignore end
 
   vim.api.nvim_create_autocmd("ColorScheme", {

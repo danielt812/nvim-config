@@ -36,7 +36,6 @@ local ensure_installed = {
   "basedpyright",
   "bash-language-server",
   "clangd",
-  "copilot-language-server",
   "css-lsp",
   "css-variables-language-server",
   "cssmodules-language-server",

@@ -60,7 +60,6 @@ icons.setup({
   },
   lsp = {
     -- stylua: ignore start
-    ["copilot"] = { glyph = "", hl = "MiniIconsOrange" },
     ["snippet"] = { glyph = "", hl = "MiniIconsGreen" },
     -- stylua: ignore end
   },

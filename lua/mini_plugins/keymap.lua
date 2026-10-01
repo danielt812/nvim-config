@@ -5,18 +5,7 @@ local map_multistep = keymap.map_multistep
 local map_combo     = keymap.map_combo
 -- stylua: ignore end
 
-local ns_inline = vim.api.nvim_create_namespace("nvim.lsp.inline_completion")
-
-local inline_completion = {
-  condition = function()
-    if not vim.lsp.inline_completion.is_enabled({ bufnr = 0 }) then return false end
-    return #vim.api.nvim_buf_get_extmarks(0, ns_inline, 0, -1, {}) > 0
-  end,
-  action = function() vim.lsp.inline_completion.get() end,
-}
-
 local tab_steps = {
-  inline_completion,
   "minisnippets_next",
   "increase_indent",
   "jump_after_tsnode",
