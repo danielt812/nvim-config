@@ -17,11 +17,11 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "8831fa150fa26492cfe135801fa498132f1491d2",
+      "rev": "e3f2349a65143ff062f0b70ee9d68d8ce35c7059",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "multicursor.nvim": {
-      "rev": "704b99f10a72cc05d370cfeb294ff83412a8ab55",
+      "rev": "c574bfc1f7e63dfea3e64b8453c9f7c660127238",
       "src": "https://github.com/jake-stewart/multicursor.nvim"
     },
     "nvim-dap": {
@@ -33,7 +33,7 @@
       "src": "https://github.com/igorlfs/nvim-dap-view"
     },
     "nvim-treesitter": {
-      "rev": "1a4f47b03dfe92d28de7d5654c67327ef008c9e6",
+      "rev": "ca581c3436fc2b236847f5b739ebc263739e5ca6",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-treesitter-textobjects": {
