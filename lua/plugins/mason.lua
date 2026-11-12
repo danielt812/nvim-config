@@ -50,6 +50,7 @@ local ensure_installed = {
   "rust-analyzer",
   "tailwindcss-language-server",
   "taplo",
+  "texlab",
   "tsgo",
   "typescript-language-server",
   "yaml-language-server",

@@ -23,6 +23,7 @@ return {
     local root = vim.fs.root(fname, { ".git" })
     if root then cb(root) end
   end,
+  single_file_support = true,
   settings = {
     yaml = {
       schemaStore = { enable = false },

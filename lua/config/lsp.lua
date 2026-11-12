@@ -107,6 +107,7 @@ local servers = {
   "rust_analyzer",
   "taplo",
   "tailwindcss",
+  "texlab",
   "ts_ls",
   -- "tsgo",
   "yamlls",
@@ -118,6 +119,29 @@ vim.lsp.config("*", {
   capabilities = capabilities,
 })
 
+-- Emulate lspconfig's single_file_support: when root_dir finds no root,
+-- start the server without a workspace instead of not attaching
+local function with_single_file_support(conf)
+  local root_dir = conf.root_dir
+  if not conf.single_file_support or type(root_dir) ~= "function" then return conf end
+  conf.root_dir = function(bufnr, cb)
+    -- Skip unnamed buffers
+    if vim.api.nvim_buf_get_name(bufnr) == "" then return end
+    local done = false
+    root_dir(bufnr, function(root)
+      if done then return end
+      done = true
+      cb(root)
+    end)
+    -- No root found, start in single file mode
+    if not done then
+      done = true
+      cb(nil)
+    end
+  end
+  return conf
+end
+
 -- Register per-server overrides
 for _, server in ipairs(servers) do
   local ok, conf = pcall(require, "lsp." .. server)
@@ -125,7 +149,7 @@ for _, server in ipairs(servers) do
     vim.notify("Failed to load LSP config: lsp." .. server, vim.log.levels.WARN)
     conf = {}
   end
-  vim.lsp.config(server, conf)
+  vim.lsp.config(server, with_single_file_support(conf))
 end
 
 vim.lsp.protocol.CompletionItemKind.Emmet = "󰅴 Emmet Abbreviation"

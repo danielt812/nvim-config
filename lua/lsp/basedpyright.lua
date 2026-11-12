@@ -14,6 +14,7 @@ return {
     })
     if root then cb(root) end
   end,
+  single_file_support = true,
   settings = {
     basedpyright = {
       analysis = {
