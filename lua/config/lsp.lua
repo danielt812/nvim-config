@@ -213,6 +213,30 @@ do
     callback = lsp_semantic_hl,
   })
 
+  -- ts_ls tags an object key as `class` when its value's type is a class
+  -- (e.g. Angular routes: `component: NotFoundPage`), which paints the key like a
+  -- type. For object-literal keys only, put treesitter's member colour back on
+  -- top. Real class references (NotFoundPage, m.AdminPage) keep the LSP colour.
+  vim.api.nvim_create_autocmd("LspTokenUpdate", {
+    group = group,
+    desc = "Treesitter colour for class-typed object keys",
+    callback = function(args)
+      local token = args.data.token
+      if token.type ~= "class" then return end
+      local ok, node = pcall(vim.treesitter.get_node, { bufnr = args.buf, pos = { token.line, token.start_col } })
+      if not ok or not node or node:type() ~= "property_identifier" then return end
+      local parent = node:parent()
+      if not parent or parent:type() ~= "pair" or parent:field("key")[1] ~= node then return end
+      vim.lsp.semantic_tokens.highlight_token(
+        token,
+        args.buf,
+        args.data.client_id,
+        "@variable.member",
+        { priority = vim.hl.priorities.semantic_tokens + 5 }
+      )
+    end,
+  })
+
   -- Disable document_color globally and set style once. Provider.active is
   -- empty at this point, so the internal re-request loop is a no-op (avoids
   -- the assert failure that fires when the loop hits a stale client_id).

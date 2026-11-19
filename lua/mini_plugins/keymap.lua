@@ -30,7 +30,7 @@ map_multistep({ "i", "c" }, "<c-cr>", { "pmenu_accept" })
 -- stylua: ignore end
 
 -- Handle pair plugins
-map_multistep("i", "<cr>", { "nvimautopairs_cr", "minipairs_cr" })
+map_multistep("i", "<cr>", { "pmenu_accept", "nvimautopairs_cr", "minipairs_cr" })
 map_multistep("i", "<bs>", { "nvimautopairs_bs", "minipairs_bs" })
 
 map_combo("n", "<esc>", "<cmd>nohlsearch<cr>", { desc = "Clear highlight" })
