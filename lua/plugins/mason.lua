@@ -51,7 +51,7 @@ local ensure_installed = {
   "tailwindcss-language-server",
   "taplo",
   "texlab",
-  "tsgo",
+  "tsc",
   "typescript-language-server",
   "yaml-language-server",
   -- Formatters/Linters --------------------------------------------------------

@@ -1,5 +1,5 @@
 return {
-  cmd = { "tsgo", "--lsp", "--stdio" },
+  cmd = { "tsc", "--lsp", "--stdio" },
   filetypes = {
     "javascript",
     "javascriptreact",
@@ -11,6 +11,7 @@ return {
     local root = vim.fs.root(fname, { "tsconfig.json", "jsconfig.json", "package.json", "tsconfig.base.json", ".git" })
     if root then cb(root) end
   end,
+  single_file_support = true,
   settings = {
     diagnostics = {
       ignoredCodes = { 80001 },

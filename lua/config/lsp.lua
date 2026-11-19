@@ -109,7 +109,7 @@ local servers = {
   "tailwindcss",
   "texlab",
   "ts_ls",
-  -- "tsgo",
+  -- "tsc",
   "yamlls",
 }
 

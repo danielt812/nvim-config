@@ -17,6 +17,10 @@ return {
     diagnostics = {
       ignoredCodes = { 80001, 80005 },
     },
+    -- Type check JS files that aren't covered by a jsconfig.json/tsconfig.json
+    implicitProjectConfiguration = {
+      checkJs = true,
+    },
     typescript = {
       referencesCodeLens = { enabled = true },
       implementationsCodeLens = { enabled = true },
